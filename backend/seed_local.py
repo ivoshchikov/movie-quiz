@@ -12,23 +12,21 @@ questions = [
     ("5.png", "Форрест Гамп",    ["Форрест Гамп", "Зелёная миля", "Одержимость", "1+1"])
 ]
 
-# ───────────────────────────────────────────────────────────────────────────
-# Заменяем <Public_Dev_URL> на ваш Public Development URL R2 (r2.dev)
-R2_BASE = "https://pub-80682570ed594b069e491bc7f2184f75.r2.dev"
-# Например, полный адрес для 1.png будет:
-# https://pub-80682570ed594b069e491bc7f2184f75.r2.dev/1.png
+# ── Обратите внимание: мы прибавляем "/posters" после R2_BASE ──
+R2_BASE = "https://pub-80682570ed594b069e491bc7f2184f75.r2.dev/posters"
+# Пример: полный адрес будет "https://pub-…r2.dev/posters/1.png"
 
 with Session(engine) as s:
-    # 1) Очищаем все старые записи в таблице question
+    # 1) Удаляем все старые записи
     s.exec(delete(Question))
     s.commit()
 
-    # 2) Вставляем новые вопросы с R2 URL
+    # 2) Вставляем новые вопросы, каждое image_url = R2_BASE + "/" + fname
     for fname, correct, opts in questions:
         q = Question(
-            image_url     = f"{R2_BASE}/{fname}",
+            image_url      = f"{R2_BASE}/{fname}",
             correct_answer = correct,
-            options_json  = json.dumps(opts)
+            options_json   = json.dumps(opts)
         )
         s.add(q)
 
