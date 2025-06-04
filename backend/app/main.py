@@ -21,7 +21,7 @@ def on_startup() -> None:
     session = get_session()
     existing = session.exec(select(Question)).first()
     if existing is None:
-        # Таблица пуста — добавляем 5 “ручных” вопросов с правильными URL на ваш Render-домен
+        # Таблица пуста — добавляем 5 «ручных» вопросов с правильными URL на ваш Render-домен
         questions = [
             ("1.png", "Матрица",         ["Матрица", "Начало", "Терминатор", "Дюна"]),
             ("2.png", "Побег из Шоушенка", ["Побег из Шоушенка", "Зелёная миля", "Форрест Гамп", "Остров проклятых"]),
@@ -43,14 +43,17 @@ def on_startup() -> None:
         session.commit()
     session.close()
 
-# Подключаем роуты API
+
+# Подключаем маршруты API (/question, /answer)
 app.include_router(router)
+
 
 @app.get("/ping")
 def ping():
     return {"ok": True}
 
-# Определяем корень backend (чтобы собрать правильный путь)
+
+# Определяем корень backend (чтобы собрать правильный путь к статике)
 BASE_DIR = Path(__file__).parent.parent  # …/backend
 
 # 1) Сначала «отдаём» все файлы из backend/static/posters по URL /posters/*
