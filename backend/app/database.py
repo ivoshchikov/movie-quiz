@@ -1,10 +1,20 @@
+import os
 from sqlmodel import SQLModel, create_engine, Session
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-db_path = BASE_DIR / "quiz.db"
+# ── Определяем строку подключения:
+#    Если в окружении задана переменная DATABASE_URL (например, на Render), она будет использована.
+#    Иначе, для локальной разработки, fallback на SQLite-файл quiz.db.
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    f"sqlite:///{Path(__file__).resolve().parent.parent / 'quiz.db'}"
+)
 
-DATABASE_URL = f"sqlite:///{db_path}"
+# Если Render прислал URL в формате "postgres://", заменим на "postgresql://"
+# (SQLAlchemy/SQLModel ожидают именно postgresql://)
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 engine = create_engine(DATABASE_URL, echo=True)
 
 def create_db_and_tables():
