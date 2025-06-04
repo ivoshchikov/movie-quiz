@@ -13,7 +13,7 @@ questions = [
 ]
 
 # ── Обратите внимание: мы прибавляем "/posters" после R2_BASE ──
-R2_BASE = "https://pub-80682570ed594b069e491bc7f2184f75.r2.dev/posters"
+R2_BASE = "https://movie-quiz-uybe.onrender.com/posters"
 # Пример: полный адрес будет "https://pub-…r2.dev/posters/1.png"
 
 with Session(engine) as s:
