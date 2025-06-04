@@ -5,28 +5,31 @@ from fastapi.staticfiles import StaticFiles
 from app.routes import router
 from app.database import create_db_and_tables
 
-# ── Создаём приложение ─────────────────────────────────────────
 app = FastAPI(title="Movie Quiz API")
 
-# ── Инициализируем БД при старте ───────────────────────────────
 @app.on_event("startup")
 def on_startup() -> None:
     create_db_and_tables()
 
-# ── Подключаем маршруты API (/question, /answer) ──────────────
 app.include_router(router)
 
-# ── Пинг для быстрой проверки ─────────────────────────────────
 @app.get("/ping")
 def ping():
     return {"ok": True}
 
-# ── Папка со статикой ─────────────────────────────────────────
 BASE_DIR = Path(__file__).parent.parent  # …/backend
 
-# 1) HTML-интерфейс (index.html + JS/CSS)
+# 1) Первым делом «отдаём» всё, что лежит в backend/static/posters,
+#    по адресу /posters/* 
+app.mount(
+    "/posters",
+    StaticFiles(directory = BASE_DIR / "static" / "posters"),
+    name = "posters_files"
+)
+
+# 2) Затем — всё остальное из backend/static (index.html, JS, CSS и т.д.)
 app.mount(
     "/",
-    StaticFiles(directory=BASE_DIR / "static", html=True),
-    name="static",
+    StaticFiles(directory = BASE_DIR / "static", html=True),
+    name = "static"
 )
