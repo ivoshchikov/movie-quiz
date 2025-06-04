@@ -21,15 +21,8 @@ app.include_router(router)
 def ping():
     return {"ok": True}
 
-# ── Папки со статикой ─────────────────────────────────────────
-BASE_DIR = Path(__file__).parent.parent        # …/backend
-
-# 2) Локальные постеры и прочие медиа
-app.mount(
-    "/media",
-    StaticFiles(directory=BASE_DIR / "media"),
-    name="media",
-)
+# ── Папка со статикой ─────────────────────────────────────────
+BASE_DIR = Path(__file__).parent.parent  # …/backend
 
 # 1) HTML-интерфейс (index.html + JS/CSS)
 app.mount(
@@ -37,4 +30,3 @@ app.mount(
     StaticFiles(directory=BASE_DIR / "static", html=True),
     name="static",
 )
-
