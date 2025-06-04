@@ -1,43 +1,50 @@
-from fastapi import APIRouter, HTTPException
+from typing import List, Optional
+import random, json
+
+from fastapi import APIRouter, HTTPException, Query
 from sqlmodel import Session, select
+
 from app.models import Question
 from app.database import engine
-from pydantic import BaseModel
-import random
-import json
 
 router = APIRouter()
 
+# ─────────────────────────  GET /question  ──────────────────────────
 @router.get("/question")
-def get_question():
+def get_question(exclude: Optional[str] = Query(None)):
+    """Вернёт случайный вопрос, НЕ входящий в exclude"""
+    exclude_ids: List[int] = [int(x) for x in exclude.split(',')] if exclude else []
+
     with Session(engine) as session:
-        questions = session.exec(select(Question)).all()
-        if not questions:
-            raise HTTPException(status_code=404, detail="No questions found")
+        stmt = select(Question).where(Question.id.not_in(exclude_ids))
+        qlist = session.exec(stmt).all()
 
-        question = random.choice(questions)
+        if not qlist:
+            raise HTTPException(status_code=404, detail="no-more-questions")
 
+        q = random.choice(qlist)
         return {
-            "id": question.id,
-            "image_url": question.image_url,
-            "options": json.loads(question.options_json)
+            "id": q.id,
+            "image_url": q.image_url,
+            "options": json.loads(q.options_json)
         }
 
-# 👇 Добавляем схему для входящих данных
+# ─────────────────────────  POST /answer  ──────────────────────────
+from pydantic import BaseModel
+
 class AnswerRequest(BaseModel):
     question_id: int
     answer: str
 
-@router.post("/answer")
+class AnswerResponse(BaseModel):
+    correct: bool
+    correct_answer: str
+
+@router.post("/answer", response_model=AnswerResponse)
 def check_answer(data: AnswerRequest):
     with Session(engine) as session:
-        question = session.get(Question, data.question_id)
-        if not question:
-            raise HTTPException(status_code=404, detail="Question not found")
-
-        is_correct = (data.answer == question.correct_answer)
-
-        return {
-            "correct": is_correct,
-            "correct_answer": question.correct_answer
-        }
+        q = session.get(Question, data.question_id)
+        if not q:
+            raise HTTPException(404, "Question not found")
+        correct = (data.answer.strip() == q.correct_answer.strip())
+        return {"correct": correct, "correct_answer": q.correct_answer}
