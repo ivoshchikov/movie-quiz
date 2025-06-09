@@ -49,3 +49,10 @@ sqlmodel
 fastapi
 pydantic
 uvicorn
+fastapi
+uvicorn
+sqlmodel
+alembic
+fastapi-admin
+tortoise-orm
+aioredis==1.3.1
