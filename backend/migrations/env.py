@@ -1,44 +1,26 @@
 from logging.config import fileConfig
-from pathlib import Path
-import os
-import sys
-
-# Добавляем путь к вашему приложению, чтобы работали импорты:
-sys.path.append(str(Path(__file__).resolve().parents[1] / "app"))
-
-from sqlmodel import SQLModel
-from app.models import Question, Category  # <-- ваши модели
-
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import create_engine, pool
 from alembic import context
 
-# this is the Alembic Config object
-config = context.config
+from app.database import DATABASE_URL
+from app.models import SQLModel
 
-# Настраиваем логгирование (стандартный код):
+config = context.config
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
+
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Здесь говорим Alembic: «диаграмма моделей = metadata SQLModel»
 target_metadata = SQLModel.metadata
 
-def run_migrations_offline():
+def run_migrations_offline() -> None:
     url = config.get_main_option("sqlalchemy.url")
-    context.configure(
-        url=url,
-        target_metadata=target_metadata,
-        literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
-    )
+    context.configure(url=url, target_metadata=target_metadata, literal_binds=True)
     with context.begin_transaction():
         context.run_migrations()
 
-def run_migrations_online():
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+def run_migrations_online() -> None:
+    connectable = create_engine(DATABASE_URL, poolclass=pool.NullPool)
     with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
