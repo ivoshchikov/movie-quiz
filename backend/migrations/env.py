@@ -1,30 +1,28 @@
-"""Alembic configuration for Movie-Quiz.
-
-Запускается как `alembic revision / upgrade`.
-Берёт DATABASE_URL из app.database, чтобы одинаково работать
-локально (SQLite) и на Render (PostgreSQL).
-"""
-
 from logging.config import fileConfig
+from pathlib import Path
+import os
+import sys
+
+# Добавляем путь к вашему приложению, чтобы работали импорты:
+sys.path.append(str(Path(__file__).resolve().parents[1] / "app"))
+
+from sqlmodel import SQLModel
+from app.models import Question, Category  # <-- ваши модели
+
+from sqlalchemy import engine_from_config, pool
 from alembic import context
-from sqlalchemy import create_engine, pool
 
-from app.database import DATABASE_URL        # <-- наша строка подключения
-from app.models import SQLModel              # <-- все модели (metadata)
-
-# ────────────────────────── Alembic config ──────────────────────────
+# this is the Alembic Config object
 config = context.config
-# подменяем значение из alembic.ini
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
+# Настраиваем логгирование (стандартный код):
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = SQLModel.metadata         # для autogenerate
+# Здесь говорим Alembic: «диаграмма моделей = metadata SQLModel»
+target_metadata = SQLModel.metadata
 
-# ───────────────────────────── offline ──────────────────────────────
-def run_migrations_offline() -> None:
-    """`alembic upgrade` с флагом --sql (генерация pure SQL)."""
+def run_migrations_offline():
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
@@ -35,26 +33,17 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
-# ───────────────────────────── online ───────────────────────────────
-def run_migrations_online() -> None:
-    """Нормальный режим: создаём Engine и подключение."""
-    connectable = create_engine(
-        DATABASE_URL,
+def run_migrations_online():
+    connectable = engine_from_config(
+        config.get_section(config.config_ini_section),
+        prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            compare_type=True,            # дифф по типам колонок
-            compare_server_default=True,  # дифф по default'ам
-        )
-
+        context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()
 
-# ────────────────────────────────────────────────────────────────────
 if context.is_offline_mode():
     run_migrations_offline()
 else:
