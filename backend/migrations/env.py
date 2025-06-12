@@ -4,6 +4,9 @@
 Берёт DATABASE_URL из app.database, чтобы одинаково работать
 локально (SQLite) и на Render (PostgreSQL).
 """
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from logging.config import fileConfig
 from alembic import context
