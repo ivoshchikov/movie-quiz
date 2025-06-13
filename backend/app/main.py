@@ -1,15 +1,67 @@
 # backend/app/main.py
 
+from dotenv import load_dotenv
+load_dotenv()
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+import os
+from sqladmin import Admin, ModelView
+from sqladmin.authentication import AuthenticationBackend
 from sqlmodel import Session, select
 from app.routes import router
 from app.database import create_db_and_tables, get_session
 from app.models import Question
+from app.database import engine
+from app.models import Category
+from starlette.requests import Request
 import json
 
 app = FastAPI(title="Movie Quiz API")
+
+class DummyAuth(AuthenticationBackend):
+    async def login(self, request: Request) -> bool:
+        # здесь по-хорошему формируем сессию: request.session.update({"token": "..."})
+        return True
+
+    async def logout(self, request: Request) -> bool:
+        # очистка сессии
+        request.session.clear()
+        return True
+
+    async def authenticate(self, request: Request) -> bool:
+        # если хотите всегда пропускать:
+        return True
+    
+# инициализируем админку — только секретный ключ
+auth_backend = DummyAuth(secret_key=os.getenv("SECRET_KEY"))
+
+# создаём админку с префиксом /admin
+admin = Admin(
+     app,
+     engine,
+     authentication_backend=auth_backend,
+     base_url="/admin"   # этот параметр по умолчанию и так "/admin"
+ )
+
+# создаём «CRUD»-вьюхи для моделей
+class CategoryAdmin(ModelView, model=Category):
+    column_list = [Category.id, Category.name]
+    column_searchable_list = [Category.name]
+
+class QuestionAdmin(ModelView, model=Question):
+    column_list = [
+        Question.id,
+        Question.image_url,
+        Question.options_json,
+        Question.correct_answer,
+        Question.category_id,
+    ]
+    column_searchable_list = [Question.correct_answer]
+    column_filters = [Question.category_id]
+
+admin.add_view(CategoryAdmin)
+admin.add_view(QuestionAdmin)
 
 
 @app.on_event("startup")
