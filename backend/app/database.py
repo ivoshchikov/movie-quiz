@@ -1,24 +1,22 @@
+# backend/app/database.py
+
 import os
+from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine, Session
-from pathlib import Path
 
-# ── Определяем строку подключения:
-#    Если в окружении задана переменная DATABASE_URL (например, на Render), она будет использована.
-#    Иначе, для локальной разработки, fallback на SQLite-файл quiz.db.
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    f"sqlite:///{Path(__file__).resolve().parent.parent / 'quiz.db'}"
-)
+# 1) Загружаем .env
+load_dotenv()
 
-# Если Render прислал URL в формате "postgres://", заменим на "postgresql://"
-# (SQLAlchemy/SQLModel ожидают именно postgresql://)
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+# 2) Берём URL из .env
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL is not set in .env")
 
+# 3) Создаём engine именно для Postgres
 engine = create_engine(DATABASE_URL, echo=True)
 
-def create_db_and_tables():
+def create_db_and_tables() -> None:
     SQLModel.metadata.create_all(engine)
 
-def get_session():
+def get_session() -> Session:
     return Session(engine)
