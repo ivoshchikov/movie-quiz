@@ -49,3 +49,4 @@ sqlmodel
 fastapi
 pydantic
 uvicorn
+sqladmin==0.20.1
