@@ -1,7 +1,7 @@
 # backend/clear_questions.py
 
 import os
-from sqlmodel import Session, delete
+from sqlmodel import delete
 from app.database import get_session
 from app.models import Question
 

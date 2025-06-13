@@ -1,11 +1,13 @@
 from typing import List, Optional
-import random, json
+import random
+import json
 
 from fastapi import APIRouter, HTTPException, Query
 from sqlmodel import Session, select
 
 from app.models import Question
 from app.database import engine
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -16,7 +18,11 @@ def get_question(exclude: Optional[str] = Query(None)):
     exclude_ids: List[int] = [int(x) for x in exclude.split(',')] if exclude else []
 
     with Session(engine) as session:
-        stmt = select(Question).where(Question.id.not_in(exclude_ids))
+        # mypy: Question.id имеет тип Optional[int], а not_in() — динамический метод SQLAlchemy
+        stmt = select(Question).where(
+            Question.id.not_in(exclude_ids)
+        )         # type: ignore[attr-defined]
+
         qlist = session.exec(stmt).all()
 
         if not qlist:
@@ -30,7 +36,7 @@ def get_question(exclude: Optional[str] = Query(None)):
         }
 
 # ─────────────────────────  POST /answer  ──────────────────────────
-from pydantic import BaseModel
+
 
 class AnswerRequest(BaseModel):
     question_id: int
