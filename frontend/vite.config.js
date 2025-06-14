@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: "../backend/static",  // ← сборка будет прямо в backend/static
-    emptyOutDir: true,            // содержимое папки backend/static перед билдом очищается
+    emptyOutDir: false,            // содержимое папки backend/static перед билдом очищается
     assetsDir: "assets",          // js/css попадут в backend/static/assets
   },
   server: {
