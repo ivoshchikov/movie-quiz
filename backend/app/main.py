@@ -3,16 +3,18 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from pathlib import Path
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 import os
 import json
+from pathlib import Path
+
+from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
+from fastapi.staticfiles import StaticFiles
+from starlette.requests import Request
 
 from sqladmin import Admin, ModelView
 from sqladmin.authentication import AuthenticationBackend
 from sqlmodel import select
-from starlette.requests import Request
 
 from app.routes import router
 from app.database import create_db_and_tables, get_session, engine
@@ -20,6 +22,11 @@ from app.models import Question, Category
 
 app = FastAPI(title="Movie Quiz API")
 
+# включаем поддержку сессий (нужна админке sqladmin)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SECRET_KEY"),
+)
 
 # --- Админка через sqladmin без реальной аутентификации ---
 class DummyAuth(AuthenticationBackend):
@@ -39,7 +46,7 @@ admin = Admin(
     app,
     engine,
     authentication_backend=auth_backend,
-    base_url="/admin"  # по умолчанию "/admin"
+    base_url="/admin"
 )
 
 
@@ -71,7 +78,7 @@ def on_startup() -> None:
     session = get_session()
     first = session.exec(select(Question)).first()
     if not first:
-        RENDER_BASE = "https://movie-quiz-uybe.onrender.com/posters"
+        RENDER_BASE = os.getenv("IMAGE_BASE_URL", "/posters")
         questions = [
             ("1.png", "Матрица",         ["Матрица", "Начало", "Терминатор", "Дюна"]),
             ("2.png", "Побег из Шоушенка", ["Побег из Шоушенка", "Зелёная миля", "Форрест Гамп", "Остров проклятых"]),
@@ -99,17 +106,17 @@ def ping():
     return {"ok": True}
 
 
-# --- Статика для фронтенда квиза ---
+# --- Статика для фронтенда и картинок ---
 BASE_DIR = Path(__file__).parent.parent
 
-# Раздаём плакаты
+# Статика постеров
 app.mount(
     "/posters",
     StaticFiles(directory=BASE_DIR / "static" / "posters"),
     name="posters"
 )
 
-# SPA фронтенд (index.html, JS, CSS и т.д.)
+# Весь фронтенд-код из backend/static: index.html, assets/ и т.п.
 app.mount(
     "/",
     StaticFiles(directory=BASE_DIR / "static", html=True),
