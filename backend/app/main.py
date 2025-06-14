@@ -56,15 +56,24 @@ class CategoryAdmin(ModelView, model=Category):
 
 
 class QuestionAdmin(ModelView, model=Question):
+    # какие колонки видеть в списке
     column_list = [
         Question.id,
         Question.image_url,
-        Question.options_json,
         Question.correct_answer,
-        Question.category_id,
+        Question.category,          # ← видно название категории
     ]
+
+    # что показывать в форме создания/редактирования
+    form_columns = [
+        "image_url",
+        "correct_answer",
+        "options_json",
+        "category",                 # ← выпад-список с названиями категорий
+    ]
+
     column_searchable_list = [Question.correct_answer]
-    column_filters = [Question.category_id]
+    column_filters = [Question.category]
 
 
 admin.add_view(CategoryAdmin)
