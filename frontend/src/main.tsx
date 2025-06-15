@@ -1,13 +1,13 @@
-// src/main.tsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
 
-import './index.css'   // ⬅️ Tailwind CSS (обязательно до подключения компонентов)
-import App from './App'
+console.log("VITE_SUPABASE_URL =", import.meta.env.VITE_SUPABASE_URL);
+console.log("VITE_SUPABASE_ANON_KEY =", import.meta.env.VITE_SUPABASE_ANON_KEY);
 
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

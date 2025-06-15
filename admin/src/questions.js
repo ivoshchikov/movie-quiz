@@ -1,8 +1,0 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { List, Datagrid, TextField, EditButton, Edit, SimpleForm, TextInput, Create, ReferenceInput, SelectInput } from "react-admin";
-// Список вопросов
-export const QuestionList = () => (_jsx(List, { children: _jsxs(Datagrid, { rowClick: "edit", children: [_jsx(TextField, { source: "id" }), _jsx(TextField, { source: "image_url", label: "Image URL" }), _jsx(TextField, { source: "correct_answer", label: "Correct Answer" }), _jsx(TextField, { source: "options_json", label: "Options (JSON)" }), _jsx(TextField, { source: "category_id", label: "Category ID" }), _jsx(EditButton, {})] }) }));
-// Редактирование вопроса
-export const QuestionEdit = () => (_jsx(Edit, { children: _jsxs(SimpleForm, { children: [_jsx(TextInput, { source: "image_url", label: "Image URL", fullWidth: true }), _jsx(TextInput, { source: "correct_answer", label: "Correct Answer", fullWidth: true }), _jsx(TextInput, { source: "options_json", label: "Options (JSON)", fullWidth: true }), _jsx(ReferenceInput, { source: "category_id", reference: "category", children: _jsx(SelectInput, { optionText: "name" }) })] }) }));
-// Создание вопроса
-export const QuestionCreate = () => (_jsx(Create, { children: _jsxs(SimpleForm, { children: [_jsx(TextInput, { source: "image_url", label: "Image URL", fullWidth: true }), _jsx(TextInput, { source: "correct_answer", label: "Correct Answer", fullWidth: true }), _jsx(TextInput, { source: "options_json", label: "Options (JSON)", fullWidth: true }), _jsx(ReferenceInput, { source: "category_id", reference: "category", children: _jsx(SelectInput, { optionText: "name" }) })] }) }));
