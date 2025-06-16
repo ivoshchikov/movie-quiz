@@ -6,9 +6,8 @@ export default defineConfig({
   base: "/",           // чтобы все пути к ассетам были абсолютными от корня
   plugins: [react()],
   build: {
-    outDir: "../backend/static",  // ← сборка будет прямо в backend/static
-    emptyOutDir: false,            // содержимое папки backend/static перед билдом очищается
-    assetsDir: "assets",          // js/css попадут в backend/static/assets
+    outDir: "../frontend/dist",  // ← сборка будет прямо в backend/static
+    emptyOutDir: true,            
   },
   server: {
     proxy: {
