@@ -1,5 +1,5 @@
 // frontend/src/api.ts
-import { supabase } from "./supabaseClient";   // ← скорректирован путь
+import { supabase } from "./supabaseClient";  // ← скорректирован путь
 
 /* ---------- типы ---------- */
 export interface Category {

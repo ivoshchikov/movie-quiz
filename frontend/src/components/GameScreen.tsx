@@ -27,8 +27,8 @@ export default function GameScreen() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCats, setLoadingCats] = useState(true);
 
-  const intervalRef = useRef<number>();
-  const timeoutRef = useRef<number>();
+  const intervalRef = useRef<number>(0);
+  const timeoutRef = useRef<number>(0);
 
   // ─── load categories для header ────────────────────────────────────────────────
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function GameScreen() {
       setSeconds(20);
       // добавляем только что показанный вопрос в список исключений
       setExclude([...currentExclude, question.id]);
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (e.message === "no-more-questions") {
         // когда вопросы закончились — навигация на результат
         navigate("/result", {

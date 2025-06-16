@@ -19,11 +19,12 @@ export default function StartScreen() {
       .finally(() => setLoading(false));
   }, []);
 
-  // кнопка блокируется, пока идёт загрузка
-  const isDisabled = loading;
+  // блокируем кнопку, пока идёт загрузка или не выбрана категория
+  const isDisabled = loading || selected === undefined;
 
   const start = () => {
-    navigate("/play", { state: { categoryId: selected } });
+    // сюда selected гарантированно number, потому что кнопка разблокирована
+    navigate("/play", { state: { categoryId: selected! } });
   };
 
   return (
@@ -38,7 +39,11 @@ export default function StartScreen() {
             setSelected(e.target.value ? Number(e.target.value) : undefined)
           }
         >
-          <option value="">Все</option>
+          {/* плейсхолдер, недоступная опция */}
+          <option value="" disabled>
+            -- выберите категорию --
+          </option>
+          {/* реальные категории из БД */}
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
