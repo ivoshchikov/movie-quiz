@@ -4,20 +4,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 interface State {
   score?: number;
   categoryId?: number;
+  difficultyId?: number;
 }
 
 export default function ResultScreen() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { score = 0, categoryId } = (state as State) || {};
+  const { score = 0, categoryId, difficultyId } = (state as State) || {};
 
   const playAgain = () => {
-    // стартуем новый раунд в той же категории
-    navigate("/play", { state: { categoryId } });
+    // стартуем новый раунд в той же категории и на том же уровне сложности
+    navigate("/play", { state: { categoryId, difficultyId } });
   };
 
   const chooseCategory = () => {
-    // возвращаемся на стартовый экран для выбора категории
+    // возвращаемся на стартовый экран для выбора категории и сложности
     navigate("/");
   };
 

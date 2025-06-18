@@ -1,107 +1,149 @@
 // frontend/src/components/GameScreen.tsx
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getQuestion, checkAnswer, getCategories } from "../api";
-import type { Question, Category } from "../api";
+import {
+  getQuestion,
+  checkAnswer,
+  getCategories,
+  getDifficultyLevels,
+} from "../api";
+import type { Question, Category, DifficultyLevel } from "../api";
 
 interface LocationState {
   categoryId?: number;
+  difficultyId?: number;
 }
 
 export default function GameScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { state } = location as { state?: LocationState; key: string };
-  const { categoryId } = (state || {}) as LocationState;
-  const playKey = location.key; // обновляется при каждом заходе
+  const { state, key: playKey } = useLocation() as {
+    state?: LocationState;
+    key: string;
+  };
+  const { categoryId, difficultyId } = state || {};
 
-  // ─── game state ─────────────────────────────────────────────────────────────
+  // ─── справочники ─────────────────────────────────────────────────────────────
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+
+  const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
+  const [loadingDiffs, setLoadingDiffs] = useState(true);
+
+  // ─── состояние игры ─────────────────────────────────────────────────────────
   const [exclude, setExclude] = useState<number[]>([]);
   const [q, setQ] = useState<Question | null>(null);
   const [score, setScore] = useState(0);
-  const scoreRef = useRef(0); // всегда актуальный счёт
-  const [seconds, setSeconds] = useState(20);
+  const scoreRef = useRef(0);
+  const [seconds, setSeconds] = useState(0);
+  const [lives, setLives] = useState(0);
+  const [mistakesLeft, setMistakesLeft] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [lastAnswer, setLastAnswer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCats, setLoadingCats] = useState(true);
 
   const intervalRef = useRef<number>(0);
   const timeoutRef = useRef<number>(0);
 
-  // ─── load categories для header ────────────────────────────────────────────────
+  // ─── загрузка справочников ────────────────────────────────────────────────────
   useEffect(() => {
     if (categoryId == null) {
       setLoadingCats(false);
-      return;
+    } else {
+      setLoadingCats(true);
+      getCategories()
+        .then(setCategories)
+        .catch(console.error)
+        .finally(() => setLoadingCats(false));
     }
-    setLoadingCats(true);
-    getCategories()
-      .then((cats) => setCategories(cats))
-      .catch(console.error)
-      .finally(() => setLoadingCats(false));
   }, [categoryId]);
 
-  const categoryName =
-    categoryId == null
-      ? "Все"
-      : categories.find((c) => c.id === categoryId)?.name ?? "...";
-
-  // ─── fetch next question ──────────────────────────────────────────────────────
-  // теперь автоматически добавляем id загруженного вопроса в exclude
-  async function loadQuestion(currentExclude = exclude) {
-    // сброс feedback
-    setAnswered(false);
-    setLastAnswer(null);
-    setIsCorrect(false);
-
-    try {
-      const question = await getQuestion(currentExclude, categoryId);
-      setQ(question);
-      setSeconds(20);
-      // добавляем только что показанный вопрос в список исключений
-      setExclude([...currentExclude, question.id]);
-    } catch (e: unknown) {
-      if (e.message === "no-more-questions") {
-        // когда вопросы закончились — навигация на результат
-        navigate("/result", {
-          state: { score: scoreRef.current, categoryId },
-        });
-      }
-    }
-  }
-
-  // ─── старт новой игры при входе или смене категории ────────────────────────────
   useEffect(() => {
-    // сбросим всё
+    if (difficultyId == null) {
+      setLoadingDiffs(false);
+    } else {
+      setLoadingDiffs(true);
+      getDifficultyLevels()
+        .then(setDifficulties)
+        .catch(console.error)
+        .finally(() => setLoadingDiffs(false));
+    }
+  }, [difficultyId]);
+
+  // ─── старт нового раунда или смена параметров ────────────────────────────────
+  useEffect(() => {
+    // сброс состояний
     setExclude([]);
     setScore(0);
     scoreRef.current = 0;
     setAnswered(false);
     setLastAnswer(null);
     setIsCorrect(false);
-    // загрузить первый вопрос, передав пустой exclude
+
+    // настройки выбранного уровня
+    if (!loadingDiffs && difficultyId != null) {
+      const level = difficulties.find((d) => d.id === difficultyId);
+      if (level) {
+        setLives(level.lives);
+        setMistakesLeft(level.mistakes_allowed);
+        setSeconds(level.time_limit_secs);
+      }
+    }
+
     loadQuestion([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId, playKey]);
+  }, [categoryId, difficultyId, playKey, loadingDiffs]);
 
-  // ─── таймер ───────────────────────────────────────────────────────────────────
+  async function loadQuestion(currentExclude: number[]) {
+    setAnswered(false);
+    setLastAnswer(null);
+    setIsCorrect(false);
+
+    try {
+      const question = await getQuestion(
+        currentExclude,
+        categoryId,
+        difficultyId
+      );
+      setQ(question);
+
+      // обновить таймер на всякий случай
+      const level = difficulties.find((d) => d.id === difficultyId);
+      if (level) {
+        setSeconds(level.time_limit_secs);
+      }
+
+      setExclude([...currentExclude, question.id]);
+    } catch (e: any) {
+      if (e.message === "no-more-questions") {
+        navigate("/result", {
+          state: { score: scoreRef.current, categoryId, difficultyId },
+        });
+      }
+    }
+  }
+
+  // ─── логика таймера ───────────────────────────────────────────────────────────
   useEffect(() => {
     if (!q) return;
     intervalRef.current = window.setInterval(() => {
       setSeconds((s) => {
         if (s === 1) {
           window.clearInterval(intervalRef.current);
-          navigate("/result", {
-            state: { score: scoreRef.current, categoryId },
-          });
+          if (mistakesLeft > 0) {
+            setMistakesLeft((m) => m - 1);
+            setLives((l) => l - 1);
+            loadQuestion(exclude);
+          } else {
+            navigate("/result", {
+              state: { score: scoreRef.current, categoryId, difficultyId },
+            });
+          }
         }
         return s - 1;
       });
     }, 1000);
     return () => window.clearInterval(intervalRef.current);
-  }, [q, navigate, categoryId]);
+  }, [q, mistakesLeft, navigate, categoryId, difficultyId, exclude]);
 
   // ─── перемешиваем варианты ───────────────────────────────────────────────────
   const shuffledOptions = useMemo(() => {
@@ -109,7 +151,7 @@ export default function GameScreen() {
     return [...q.options].sort(() => Math.random() - 0.5);
   }, [q]);
 
-  // ─── ответ пользователя ───────────────────────────────────────────────────────
+  // ─── обработка ответа ────────────────────────────────────────────────────────
   const handleAnswer = (answer: string) => {
     if (!q || answered) return;
     window.clearInterval(intervalRef.current);
@@ -121,27 +163,30 @@ export default function GameScreen() {
         setAnswered(true);
 
         if (res.correct) {
-          // обновляем счёт
           setScore((s) => {
             const next = s + 1;
             scoreRef.current = next;
             return next;
           });
-          // через паузу грузим следующий вопрос (с учётом уже обновлённого exclude)
-          timeoutRef.current = window.setTimeout(() => loadQuestion(), 500);
+          timeoutRef.current = window.setTimeout(() => loadQuestion(exclude), 500);
         } else {
-          // при ошибке сразу переходим на результат
-          timeoutRef.current = window.setTimeout(() => {
-            navigate("/result", {
-              state: { score: scoreRef.current, categoryId },
-            });
-          }, 500);
+          if (mistakesLeft > 0) {
+            setMistakesLeft((m) => m - 1);
+            setLives((l) => l - 1);
+            timeoutRef.current = window.setTimeout(() => loadQuestion(exclude), 500);
+          } else {
+            timeoutRef.current = window.setTimeout(() => {
+              navigate("/result", {
+                state: { score: scoreRef.current, categoryId, difficultyId },
+              });
+            }, 500);
+          }
         }
       })
       .catch(console.error);
   };
 
-  // очистка таймаутов/интервалов при unmount
+  // ─── очистка ─────────────────────────────────────────────────────────────────
   useEffect(
     () => () => {
       window.clearTimeout(timeoutRef.current);
@@ -154,32 +199,36 @@ export default function GameScreen() {
 
   return (
     <div className="game-screen">
-      <header className="game-header">
-        <div className="game-category">
-          {loadingCats ? "..." : `Категория: ${categoryName}`}
+      <header className="game-header flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>{loadingCats ? "..." : `Категория: ${categories.find(c => c.id === categoryId)?.name}`}</div>
+        <div>{loadingDiffs ? "..." : `Сложность: ${difficulties.find(d => d.id === difficultyId)?.name}`}</div>
+        {/* Иконки жизней */}
+        <div className="flex space-x-1">
+          {Array.from({ length: lives }).map((_, i) => (
+            <span key={i} className="text-xl">❤️</span>
+          ))}
         </div>
-        <div className="game-score">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="star-icon"
-          >
+        <div className="game-score flex items-center">
+          <svg viewBox="0 0 24 24" className="star-icon">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
           </svg>
-          {score}
+          <span className="ml-1 text-lg">{score}</span>
         </div>
       </header>
 
-      <div className="timer-feedback">
+      <div className="timer-feedback mt-4">
+        <div className="timer-seconds text-2xl font-bold mb-1">
+          {seconds}s
+        </div>
         <div className="timer-bar-wrapper">
           <div
             className="timer-bar"
             style={{
-              width: `${(seconds / 20) * 100}%`,
+              width: `${(seconds / (difficulties.find(d => d.id === difficultyId)?.time_limit_secs ?? 20)) * 100}%`,
               backgroundColor:
-                seconds > 12
+                seconds > ((difficulties.find(d => d.id === difficultyId)?.time_limit_secs ?? 20) * 0.6)
                   ? "#4ade80"
-                  : seconds > 6
+                  : seconds > ((difficulties.find(d => d.id === difficultyId)?.time_limit_secs ?? 20) * 0.3)
                   ? "#facc15"
                   : "#f87171",
             }}
@@ -187,26 +236,18 @@ export default function GameScreen() {
         </div>
       </div>
 
-      <div className="poster-container">
+      <div className="poster-container mt-6">
         <img src={q.image_url} alt="poster" className="poster" />
       </div>
 
-      <div className="answers-grid">
+      <div className="answers-grid mt-6">
         {shuffledOptions.map((opt) => {
-          const isSelected = answered && lastAnswer === opt;
-          const classes = [
-            "answer-btn",
-            isSelected && (isCorrect ? "correct" : "wrong"),
-          ]
+          const isSel = answered && lastAnswer === opt;
+          const cls = ["answer-btn", isSel && (isCorrect ? "correct" : "wrong")]
             .filter(Boolean)
             .join(" ");
           return (
-            <button
-              key={opt}
-              className={classes}
-              onClick={() => handleAnswer(opt)}
-              disabled={answered}
-            >
+            <button key={opt} className={cls} onClick={() => handleAnswer(opt)} disabled={answered}>
               {opt}
             </button>
           );

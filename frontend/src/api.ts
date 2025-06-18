@@ -1,5 +1,5 @@
 // frontend/src/api.ts
-import { supabase } from "./supabaseClient";  // ← скорректирован путь
+import { supabase } from "./supabaseClient";
 
 /* ---------- типы ---------- */
 export interface Category {
@@ -7,12 +7,23 @@ export interface Category {
   name: string;
 }
 
+export interface DifficultyLevel {
+  id: number;
+  key: string;
+  name: string;
+  time_limit_secs: number;
+  lives: number;
+  mistakes_allowed: number;
+  sort_order: number;
+}
+
 export interface Question {
   id: number;
-  image_url: string;    // теперь это уже полный публичный URL
+  image_url: string;
   options: string[];
   correct_answer: string;
   category_id: number;
+  difficulty_level_id: number;
 }
 
 /* ---------- Category API через Supabase DB ---------- */
@@ -26,10 +37,22 @@ export async function getCategories(): Promise<Category[]> {
   return data!;
 }
 
+/* ---------- DifficultyLevel API через Supabase DB ---------- */
+export async function getDifficultyLevels(): Promise<DifficultyLevel[]> {
+  const { data, error } = await supabase
+    .from<DifficultyLevel>("difficulty_level")
+    .select("id, key, name, time_limit_secs, lives, mistakes_allowed, sort_order")
+    .order("sort_order", { ascending: true });
+
+  if (error) throw error;
+  return data!;
+}
+
 /* ---------- Вопросы с Storage + DB ---------- */
 export async function getQuestion(
   exclude: number[] = [],
-  categoryId?: number
+  categoryId?: number,
+  difficultyId?: number
 ): Promise<Question> {
   // 1) вытаскиваем все подходящие
   let query = supabase
@@ -39,15 +62,20 @@ export async function getQuestion(
       options_json: unknown;
       correct_answer: string;
       category_id: number;
+      difficulty_level_id: number;
     }>("question")
-    .select("id, image_url, options_json, correct_answer, category_id");
+    .select(
+      "id, image_url, options_json, correct_answer, category_id, difficulty_level_id"
+    );
 
   if (exclude.length > 0) {
-    // Supabase поддерживает in(), not() и т.п.
     query = query.not("id", "in", `(${exclude.join(",")})`);
   }
   if (categoryId != null) {
     query = query.eq("category_id", categoryId);
+  }
+  if (difficultyId != null) {
+    query = query.eq("difficulty_level_id", difficultyId);
   }
 
   const { data: all, error } = await query;
@@ -60,10 +88,10 @@ export async function getQuestion(
   const raw = all[Math.floor(Math.random() * all.length)];
 
   // 3) подменяем image_url на публичный URL из Storage
-  const key = raw.image_url.replace(/^\/?posters\//, '');  // на всякий случай
+  const key = raw.image_url.replace(/^\/?posters\//, "");
   const { data: urlData, error: urlError } = supabase
     .storage
-    .from('movies')
+    .from("movies")
     .getPublicUrl(key);
 
   if (urlError) console.warn("Failed to get publicUrl for", raw.image_url, urlError);
@@ -80,6 +108,7 @@ export async function getQuestion(
     options: opts,
     correct_answer: raw.correct_answer,
     category_id: raw.category_id,
+    difficulty_level_id: raw.difficulty_level_id,
   };
 }
 
