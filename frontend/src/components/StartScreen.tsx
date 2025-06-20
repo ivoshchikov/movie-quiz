@@ -3,8 +3,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCategories, getDifficultyLevels } from "../api";
 import type { Category, DifficultyLevel } from "../api";
+import { useAuth } from "../AuthContext";
 
 export default function StartScreen() {
+  const { user, loading } = useAuth();
+
+  // DEBUG: что приходит из AuthContext?
+  console.log("▶ StartScreen auth:", { user, loading });
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCats, setLoadingCats] = useState(true);
   const [selectedCat, setSelectedCat] = useState<number | undefined>(undefined);
@@ -50,6 +56,7 @@ export default function StartScreen() {
     <div className="start-screen">
       <h1 className="title">Quiz</h1>
 
+      {/* Выбор категории */}
       <label className="select-wrapper">
         <span>Выберите категорию</span>
         <select
@@ -69,6 +76,7 @@ export default function StartScreen() {
         </select>
       </label>
 
+      {/* Выбор сложности */}
       <label className="select-wrapper">
         <span>Выберите сложность</span>
         <select
@@ -88,6 +96,7 @@ export default function StartScreen() {
         </select>
       </label>
 
+      {/* Кнопка "Играть" */}
       <button
         className="btn-primary"
         onClick={start}
@@ -95,6 +104,26 @@ export default function StartScreen() {
       >
         {loadingCats || loadingDiffs ? "Загрузка…" : "Играть"}
       </button>
+
+      {/* Кнопка "Войти"/"Выйти" */}
+      {!user ? (
+        <button
+          onClick={() => navigate("/login")}
+          className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150 mt-4"
+        >
+          Войти
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            // очистим сессию и сразу принудительно перезагрузим страницу
+            signOut().then(() => window.location.reload());
+          }}
+          className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150 mt-4"
+        >
+          Выйти
+        </button>
+      )}
     </div>
   );
 }
