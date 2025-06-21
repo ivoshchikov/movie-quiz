@@ -94,7 +94,7 @@ export async function getQuestion(
     .from("movies")
     .getPublicUrl(key);
 
-  if (urlError) console.warn("Failed to get publicUrl for", raw.image_url, urlError);
+  if (urlError) console.error("Failed to get publicUrl for", raw.image_url, urlError);
   const publicUrl = urlData?.publicUrl ?? raw.image_url;
 
   // 4) десериализуем options_json
