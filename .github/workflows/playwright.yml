@@ -15,9 +15,12 @@ jobs:
     - uses: actions/checkout@v4
 
     # --- ВСЕ дальнейшие шаги выполняем внутри ./frontend ---
-    - name: Install dependencies
-      run: npm ci
+    - name: Install dependencies (prod + dev)
+      run: npm ci --include=dev
       working-directory: frontend
+      env:
+        NODE_ENV: ""
+
 
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
