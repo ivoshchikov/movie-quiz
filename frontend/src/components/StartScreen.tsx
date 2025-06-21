@@ -6,7 +6,7 @@ import type { Category, DifficultyLevel } from "../api";
 import { useAuth } from "../AuthContext";
 
 export default function StartScreen() {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();   // ← добавили signOut
 
   // DEBUG: что приходит из AuthContext?
   console.log("▶ StartScreen auth:", { user, loading });
@@ -119,6 +119,7 @@ export default function StartScreen() {
             // очистим сессию и сразу принудительно перезагрузим страницу
             signOut().then(() => window.location.reload());
           }}
+          onClick={() => signOut()}   // перезагрузка не нужна, контекст сам обновится
           className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150 mt-4"
         >
           Выйти
