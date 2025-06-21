@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:e2e": "playwright test --reporter=line"
+    "test:e2e": "playwright test --reporter=line,html"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",

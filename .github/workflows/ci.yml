@@ -34,7 +34,7 @@ jobs:
         working-directory: frontend
         env:
           CI: true
-        run: npm run test:e2e
+        run: npx playwright test --reporter=line,html
 
       - name: Upload Playwright report
         if: failure()
