@@ -1,10 +1,9 @@
+# .github/workflows/playwright.yml
 name: Playwright Tests
 
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  push:        { branches: [ main, master ] }
+  pull_request:{ branches: [ main, master ] }
 
 jobs:
   test:
@@ -14,29 +13,28 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # ====== Install dependencies (prod + dev) ======
-    - name: Install frontend dependencies
+    # ====== install dependencies (dev + prod) ======
+    - name: Install frontend deps
       working-directory: frontend
-      # отключаем прод-режим и говорим брать devDeps
-      run: |
-        npm ci --include=dev
       env:
-        CI: ""                  # ← переопределяем
+        # сбрасываем флаг, который GitHub задаёт автоматически
+        CI: ""
+        # отключаем прод-режим npm
         NPM_CONFIG_PRODUCTION: "false"
-        NODE_ENV: "development"
-
+      run: |
+        npm install --no-audit --progress=false
 
     # ====== Playwright browsers ======
     - name: Install Playwright browsers
       working-directory: frontend
       run: npx playwright install --with-deps
 
-    # ====== Run tests ======
+    # ====== run tests ======
     - name: Run Playwright tests
       working-directory: frontend
       run: npx playwright test --reporter=line
 
-    # ====== Сохранить html-отчёт (если нужен) ======
+    # ====== attach HTML-report (всегда) ======
     - name: Upload Playwright report
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
