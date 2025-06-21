@@ -36,6 +36,12 @@ jobs:
           CI: true
         run: npx playwright test --reporter=line,html
 
+      - name: "Debug: вывести содержимое frontend после тестов"
+        working-directory: frontend
+        run: |
+          echo ">>> Начинаем печатать дерево frontend:"
+          ls -R .
+
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
