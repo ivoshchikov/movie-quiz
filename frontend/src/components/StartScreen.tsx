@@ -6,22 +6,19 @@ import type { Category, DifficultyLevel } from "../api";
 import { useAuth } from "../AuthContext";
 
 export default function StartScreen() {
-  const { user, loading, signOut } = useAuth();   // ← добавили signOut
+  const { user, loading, signOut } = useAuth();
 
-  // DEBUG: что приходит из AuthContext?
-  console.log("▶ StartScreen auth:", { user, loading });
+  const [categories,       setCategories]  = useState<Category[]>([]);
+  const [loadingCats,      setLoadingCats] = useState(true);
+  const [selectedCat,      setSelectedCat] = useState<number>();
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCats, setLoadingCats] = useState(true);
-  const [selectedCat, setSelectedCat] = useState<number | undefined>(undefined);
-
-  const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
-  const [loadingDiffs, setLoadingDiffs] = useState(true);
-  const [selectedDiff, setSelectedDiff] = useState<number | undefined>(undefined);
+  const [difficulties,     setDifficulties] = useState<DifficultyLevel[]>([]);
+  const [loadingDiffs,     setLoadingDiffs] = useState(true);
+  const [selectedDiff,     setSelectedDiff] = useState<number>();
 
   const navigate = useNavigate();
 
-  // загрузка категорий
+  /* ── загрузка справочников ───────────────────────────── */
   useEffect(() => {
     setLoadingCats(true);
     getCategories()
@@ -30,7 +27,6 @@ export default function StartScreen() {
       .finally(() => setLoadingCats(false));
   }, []);
 
-  // загрузка уровней сложности
   useEffect(() => {
     setLoadingDiffs(true);
     getDifficultyLevels()
@@ -39,11 +35,10 @@ export default function StartScreen() {
       .finally(() => setLoadingDiffs(false));
   }, []);
 
-  // блокируем кнопку, пока идёт загрузка или не выбраны оба селекта
   const isDisabled =
     loadingCats ||
     loadingDiffs ||
-    selectedCat === undefined ||
+    selectedCat  === undefined ||
     selectedDiff === undefined;
 
   const start = () => {
@@ -56,56 +51,44 @@ export default function StartScreen() {
     <div className="start-screen">
       <h1 className="title">Quiz</h1>
 
-      {/* Выбор категории */}
+      {/* Категория */}
       <label className="select-wrapper">
         <span>Выберите категорию</span>
         <select
           value={selectedCat ?? ""}
-          onChange={(e) =>
+          onChange={e =>
             setSelectedCat(e.target.value ? Number(e.target.value) : undefined)
           }
         >
-          <option value="" disabled>
-            -- выберите категорию --
-          </option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
+          <option value="" disabled>-- выберите категорию --</option>
+          {categories.map(c => (
+            <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
       </label>
 
-      {/* Выбор сложности */}
+      {/* Сложность */}
       <label className="select-wrapper">
         <span>Выберите сложность</span>
         <select
           value={selectedDiff ?? ""}
-          onChange={(e) =>
+          onChange={e =>
             setSelectedDiff(e.target.value ? Number(e.target.value) : undefined)
           }
         >
-          <option value="" disabled>
-            -- выберите уровень --
-          </option>
-          {difficulties.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name}
-            </option>
+          <option value="" disabled>-- выберите уровень --</option>
+          {difficulties.map(d => (
+            <option key={d.id} value={d.id}>{d.name}</option>
           ))}
         </select>
       </label>
 
-      {/* Кнопка "Играть" */}
-      <button
-        className="btn-primary"
-        onClick={start}
-        disabled={isDisabled}
-      >
+      {/* Играть */}
+      <button className="btn-primary" onClick={start} disabled={isDisabled}>
         {loadingCats || loadingDiffs ? "Загрузка…" : "Играть"}
       </button>
 
-      {/* Кнопка "Войти"/"Выйти" */}
+      {/* Авторизация */}
       {!user ? (
         <button
           onClick={() => navigate("/login")}
@@ -115,11 +98,7 @@ export default function StartScreen() {
         </button>
       ) : (
         <button
-          onClick={() => {
-            // очистим сессию и сразу принудительно перезагрузим страницу
-            signOut().then(() => window.location.reload());
-          }}
-          onClick={() => signOut()}   // перезагрузка не нужна, контекст сам обновится
+          onClick={signOut}
           className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150 mt-4"
         >
           Выйти
