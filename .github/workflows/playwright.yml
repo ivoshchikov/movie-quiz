@@ -14,24 +14,29 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # --- ВСЕ дальнейшие шаги выполняем внутри ./frontend ---
-    - name: Install dependencies (prod + dev)
-      run: npm ci --include=dev
+    # ====== Install dependencies (prod + dev) ======
+    - name: Install frontend dependencies
       working-directory: frontend
       env:
-        NODE_ENV: ""
+        # гарантируем, что npm не вырежет devDeps
+        NPM_CONFIG_PRODUCTION: "false"
+        NODE_ENV: "development"
+      run: |
+        npm ci
 
-
-    - name: Install Playwright Browsers
+    # ====== Playwright browsers ======
+    - name: Install Playwright browsers
+      working-directory: frontend
       run: npx playwright install --with-deps
-      working-directory: frontend
 
+    # ====== Run tests ======
     - name: Run Playwright tests
-      run: npx playwright test
       working-directory: frontend
+      run: npx playwright test --reporter=line
 
+    # ====== Сохранить html-отчёт (если нужен) ======
     - name: Upload Playwright report
-      if: ${{ !cancelled() }}
+      if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
         name: playwright-report
