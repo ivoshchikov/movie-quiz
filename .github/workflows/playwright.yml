@@ -17,12 +17,14 @@ jobs:
     # ====== Install dependencies (prod + dev) ======
     - name: Install frontend dependencies
       working-directory: frontend
+      # отключаем прод-режим и говорим брать devDeps
+      run: |
+        npm ci --include=dev
       env:
-        # гарантируем, что npm не вырежет devDeps
+        CI: ""                  # ← переопределяем
         NPM_CONFIG_PRODUCTION: "false"
         NODE_ENV: "development"
-      run: |
-        npm ci
+
 
     # ====== Playwright browsers ======
     - name: Install Playwright browsers
