@@ -128,3 +128,29 @@ export async function checkAnswer(
   const correct = data.correct_answer.trim() === answer.trim();
   return { correct, correct_answer: data.correct_answer };
 }
+
+// Вернуть профиль текущего пользователя
+export async function getProfile(userId: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("user_id, nickname, avatar_url, created_at")
+    .eq("user_id", userId)
+    .single();
+  if (error && error.code !== "PGRST116") throw error; // 116 = no rows
+  return data; // либо объект, либо null
+}
+
+// Создать или обновить профиль
+export async function upsertProfile(
+  userId: string,
+  nickname: string,
+  avatarUrl?: string
+) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .upsert({ user_id: userId, nickname, avatar_url: avatarUrl })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}

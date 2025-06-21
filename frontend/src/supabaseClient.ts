@@ -1,4 +1,3 @@
-// frontend/src/supabaseClient.ts
 import { createClient } from "@supabase/supabase-js";
 import type { Session } from "@supabase/supabase-js";
 
@@ -9,34 +8,23 @@ export const SUPABASE_ANON_KEY =
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/**
- * Утилитарная обёртка над Supabase Auth.
- * Её и импортируем как `auth`.
- */
 export const auth = {
-  // Войти через Google OAuth
   signInWithGoogle: () =>
     supabase.auth.signInWithOAuth({ provider: "google" }),
 
-  // Войти по email-ссылке
   signInWithEmail: (email: string) =>
     supabase.auth.signInWithOtp({ email }),
 
-  // Выйти
-  signOut: () => supabase.auth.signOut(),
+  // локальный logout (без service-role)
+  signOut: () => supabase.auth.signOut({ scope: "local" }),
 
-  // Получить текущую сессию
   getSession: () => supabase.auth.getSession(),
 
-  // Подписка на изменения сессии
   onAuthStateChange: (
-    callback: (event: string, session: Session | null) => void
+    cb: (event: string, session: Session | null) => void
   ) => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      callback(event, session);
-    });
-    return subscription;          // чтобы потом можно было отписаться
+    const { data: { subscription } } =
+      supabase.auth.onAuthStateChange(cb);
+    return subscription;
   },
 };
