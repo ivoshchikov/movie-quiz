@@ -1,9 +1,15 @@
-// frontend/src/AuthContext.tsx
-import React, { createContext, useContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
-import { supabase, auth } from "./supabaseClient";
+// src/AuthContext.tsx
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { auth } from "./supabaseClient";
 import type { Session, User } from "@supabase/supabase-js";
 
+/* ---- тип контекста ---- */
 interface AuthContextValue {
   user: User | null;
   session: Session | null;
@@ -13,55 +19,48 @@ interface AuthContextValue {
   signOut: () => Promise<void>;
 }
 
+/* ---- контекст ---- */
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+/* ---- провайдер ---- */
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  /* начальная сессия и подписка на изменения */
   useEffect(() => {
-    // 1) Получаем текущую сессию
+    // 1) получить текущую сессию
     auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // 2) Подписываемся на изменения (вход/выход)
-    const subscription = auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    // 2) слушать изменения
+    const subscription = auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      setUser(nextSession?.user ?? null);
       setLoading(false);
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
+  /* методы */
   const value: AuthContextValue = {
     user,
     session,
     loading,
-    signInWithGoogle: async () => {
-      await auth.signInWithGoogle();
-    },
-    signInWithEmail: async (email) => {
-      await auth.signInWithEmail(email);
-    },
-       signOut: async () => {
-     try {
-       await auth.signOut();
-     } catch (error) {
-       console.error("Ошибка при выходе:", error);
-     }
-   },
+    signInWithGoogle: () => auth.signInWithGoogle(),
+    signInWithEmail: (email) => auth.signInWithEmail(email),
+    signOut: () => auth.signOut(), // scope: "local" уже задано в supabaseClient
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
+/* ---- хук удобного доступа ---- */
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) {
