@@ -5,32 +5,47 @@ interface State {
   score?: number;
   categoryId?: number;
   difficultyId?: number;
+  elapsedSecs?: number;      // ⬅ NEW
+}
+
+function formatSecs(sec: number) {
+  const m = Math.floor(sec / 60)
+    .toString()
+    .padStart(2, "0");
+  const s = (sec % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
 }
 
 export default function ResultScreen() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { score = 0, categoryId, difficultyId } = (state as State) || {};
+  const {
+    score = 0,
+    categoryId,
+    difficultyId,
+    elapsedSecs = 0,
+  } = (state as State) || {};
 
   const playAgain = () => {
-    // стартуем новый раунд в той же категории и на том же уровне сложности
     navigate("/play", { state: { categoryId, difficultyId } });
   };
 
   const chooseCategory = () => {
-    // возвращаемся на стартовый экран для выбора категории и сложности
     navigate("/");
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-full px-4 py-8 gap-8 bg-black text-white">
-      {/* Заголовок */}
       <h1 className="text-4xl font-semibold">Ваш результат</h1>
 
-      {/* Большая цифра */}
+      {/* количество очков */}
       <div className="text-7xl font-extrabold">{score}</div>
 
-      {/* Кнопки действий */}
+      {/* NEW: время сессии */}
+      <div className="text-2xl font-medium">
+        Время игры: <span className="font-bold">{formatSecs(elapsedSecs)}</span>
+      </div>
+
       <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={playAgain}
