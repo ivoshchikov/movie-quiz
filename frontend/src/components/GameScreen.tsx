@@ -69,6 +69,7 @@ export default function GameScreen() {
     await supabase.rpc('upsert_user_best', {
       p_user_id: user?.id ?? null,
       p_category_id: currentCatId,
+      p_difficulty_id: difficultyId ?? null,
       p_score: scoreRef.current,
       p_time: elapsedSecs,
     });
