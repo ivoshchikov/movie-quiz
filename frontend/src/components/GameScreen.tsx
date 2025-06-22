@@ -8,7 +8,7 @@ import {
   getDifficultyLevels,
 } from "../api";
 import type { Question, Category, DifficultyLevel } from "../api";
-import { getPublicUrl } from "../supabase";
+import { supabase, getPublicUrl } from "../supabase";   // ← supabase client
 import CircleTimer from "./CircleTimer";
 import LinearTimer from "./LinearTimer";
 
@@ -25,17 +25,17 @@ export default function GameScreen() {
   };
   const { categoryId, difficultyId } = state || {};
 
-  /* ─── момент старта всей сессии ───────────────────────── */
+  /* ── момент старта всей сессии ───────────────────────── */
   const sessionStartRef = useRef(Date.now());
-  const [sessionSecs, setSessionSecs] = useState(0);   // ⬅ live-секундомер
+  const [sessionSecs, setSessionSecs] = useState(0);
 
-  /* ─── справочники ─────────────────────────────────────── */
+  /* ── справочники ─────────────────────────────────────── */
   const [categories,   setCategories]   = useState<Category[]>([]);
   const [loadingCats,  setLoadingCats]  = useState(true);
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
   const [loadingDiffs, setLoadingDiffs] = useState(true);
 
-  /* ─── состояние игры ──────────────────────────────────── */
+  /* ── состояние игры ──────────────────────────────────── */
   const [exclude,      setExclude]      = useState<number[]>([]);
   const [q,            setQ]            = useState<Question | null>(null);
   const [score,        setScore]        = useState(0);
@@ -47,12 +47,11 @@ export default function GameScreen() {
   const [lastAnswer,   setLastAnswer]   = useState<string | null>(null);
   const [isCorrect,    setIsCorrect]    = useState(false);
 
-  const intervalRef = useRef<number>(0);   // для таймера вопроса
+  const intervalRef = useRef<number>(0);
   const timeoutRef  = useRef<number>(0);
 
-  /* ─── живой секундомер всей сессии ────────────────────── */
+  /* ── live-секундомер всей сессии ─────────────────────── */
   useEffect(() => {
-    // тикает раз в секунду, пишет в sessionSecs
     const id = window.setInterval(() => {
       setSessionSecs(
         Math.floor((Date.now() - sessionStartRef.current) / 1000)
@@ -61,17 +60,30 @@ export default function GameScreen() {
     return () => window.clearInterval(id);
   }, []);
 
-  /* ─── HELPERS ─────────────────────────────────────────── */
+  /* ── helpers ─────────────────────────────────────────── */
   const fmtTime = (t: number) =>
     `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(
       2,
       "0"
     )}`;
 
-  const endGame = () => {
+  /* запись «лучшего» результата и переход к /result */
+  const endGame = async () => {
     const elapsedSecs = Math.floor(
       (Date.now() - sessionStartRef.current) / 1000
     );
+
+    /* 1️⃣ upsert в user_best */
+    const { data: { user } } = await supabase.auth.getUser();
+
+    await supabase.rpc("upsert_user_best", {
+      p_user_id:     user?.id ?? null,
+      p_category_id: categoryId,
+      p_score:       scoreRef.current,
+      p_time:        elapsedSecs,
+    });
+
+    /* 2️⃣ переходим к экрану результата */
     navigate("/result", {
       state: {
         score: scoreRef.current,
@@ -82,33 +94,29 @@ export default function GameScreen() {
     });
   };
 
-  /* ─── загрузка справочников ───────────────────────────── */
+  /* ── загрузка справочников ───────────────────────────── */
   useEffect(() => {
-    if (categoryId == null) setLoadingCats(false);
-    else {
-      setLoadingCats(true);
-      getCategories()
-        .then(setCategories)
-        .catch(console.error)
-        .finally(() => setLoadingCats(false));
-    }
+    if (categoryId == null) { setLoadingCats(false); return; }
+    setLoadingCats(true);
+    getCategories()
+      .then(setCategories)
+      .catch(console.error)
+      .finally(() => setLoadingCats(false));
   }, [categoryId]);
 
   useEffect(() => {
-    if (difficultyId == null) setLoadingDiffs(false);
-    else {
-      setLoadingDiffs(true);
-      getDifficultyLevels()
-        .then(setDifficulties)
-        .catch(console.error)
-        .finally(() => setLoadingDiffs(false));
-    }
+    if (difficultyId == null) { setLoadingDiffs(false); return; }
+    setLoadingDiffs(true);
+    getDifficultyLevels()
+      .then(setDifficulties)
+      .catch(console.error)
+      .finally(() => setLoadingDiffs(false));
   }, [difficultyId]);
 
-  /* ─── старт нового раунда ─────────────────────────────── */
+  /* ── старт нового раунда ─────────────────────────────── */
   useEffect(() => {
     sessionStartRef.current = Date.now();
-    setSessionSecs(0);                     // обнуляем секундомер
+    setSessionSecs(0);
     setExclude([]);
     setScore(0);
     scoreRef.current = 0;
@@ -117,14 +125,13 @@ export default function GameScreen() {
     setIsCorrect(false);
 
     if (!loadingDiffs && difficultyId != null) {
-      const level = difficulties.find((d) => d.id === difficultyId);
+      const level = difficulties.find(d => d.id === difficultyId);
       if (level) {
         setLives(level.lives);
         setMistakesLeft(level.mistakes_allowed);
         setSeconds(level.time_limit_secs);
       }
     }
-
     loadQuestion([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, difficultyId, playKey, loadingDiffs]);
@@ -135,37 +142,31 @@ export default function GameScreen() {
     setIsCorrect(false);
     try {
       const question = await getQuestion(
-        currentExclude,
-        categoryId,
-        difficultyId
+        currentExclude, categoryId, difficultyId
       );
       setQ(question);
 
-      const level = difficulties.find((d) => d.id === difficultyId);
+      const level = difficulties.find(d => d.id === difficultyId);
       if (level) setSeconds(level.time_limit_secs);
 
       setExclude([...currentExclude, question.id]);
     } catch (e: any) {
-      if (e.message === "no-more-questions") {
-        endGame();
-      }
+      if (e.message === "no-more-questions") endGame();
     }
   }
 
-  /* ─── таймер вопроса ─────────────────────────────────── */
+  /* ── таймер вопроса ─────────────────────────────────── */
   useEffect(() => {
     if (!q) return;
     intervalRef.current = window.setInterval(() => {
-      setSeconds((s) => {
+      setSeconds(s => {
         if (s === 1) {
           window.clearInterval(intervalRef.current);
           if (mistakesLeft > 0) {
-            setMistakesLeft((m) => m - 1);
-            setLives((l) => l - 1);
+            setMistakesLeft(m => m - 1);
+            setLives(l => l - 1);
             loadQuestion(exclude);
-          } else {
-            endGame();
-          }
+          } else endGame();
         }
         return s - 1;
       });
@@ -173,78 +174,77 @@ export default function GameScreen() {
     return () => window.clearInterval(intervalRef.current);
   }, [q, mistakesLeft, exclude]);
 
-  /* ─── перемешиваем варианты ───────────────────────────── */
-  const shuffledOptions = useMemo(() => {
-    if (!q) return [];
-    return [...q.options].sort(() => Math.random() - 0.5);
-  }, [q]);
+  /* ── перемешиваем варианты ───────────────────────────── */
+  const shuffledOptions = useMemo(
+    () => (q ? [...q.options].sort(() => Math.random() - 0.5) : []),
+    [q]
+  );
 
-  /* ─── обработка ответа ───────────────────────────────── */
+  /* ── обработка ответа ───────────────────────────────── */
   const handleAnswer = (answer: string) => {
     if (!q || answered) return;
     window.clearInterval(intervalRef.current);
     setLastAnswer(answer);
 
-    checkAnswer(q.id, answer)
-      .then((res) => {
-        setIsCorrect(res.correct);
-        setAnswered(true);
+    checkAnswer(q.id, answer).then(async (res) => {
+      setIsCorrect(res.correct);
+      setAnswered(true);
 
-        if (res.correct) {
-          setScore((s) => {
-            const next = s + 1;
-            scoreRef.current = next;
-            return next;
-          });
+      /* 1️⃣ фиксируем статистику по вопросу */
+      await supabase.rpc("touch_question_stats", {
+        p_question_id: q.id,
+        p_is_correct:  res.correct,
+      });
+
+      if (res.correct) {
+        setScore(s => {
+          const next = s + 1;
+          scoreRef.current = next;
+          return next;
+        });
+        timeoutRef.current = window.setTimeout(
+          () => loadQuestion(exclude), 500
+        );
+      } else {
+        if (mistakesLeft > 0) {
+          setMistakesLeft(m => m - 1);
+          setLives(l => l - 1);
           timeoutRef.current = window.setTimeout(
-            () => loadQuestion(exclude),
-            500
+            () => loadQuestion(exclude), 500
           );
         } else {
-          if (mistakesLeft > 0) {
-            setMistakesLeft((m) => m - 1);
-            setLives((l) => l - 1);
-            timeoutRef.current = window.setTimeout(
-              () => loadQuestion(exclude),
-              500
-            );
-          } else {
-            timeoutRef.current = window.setTimeout(endGame, 500);
-          }
+          timeoutRef.current = window.setTimeout(endGame, 500);
         }
-      })
-      .catch(console.error);
+      }
+    }).catch(console.error);
   };
 
-  /* ─── очистка эффектов ───────────────────────────────── */
-  useEffect(
-    () => () => {
-      window.clearTimeout(timeoutRef.current);
-      window.clearInterval(intervalRef.current);
-    },
-    []
-  );
+  /* ── очистка ─────────────────────────────────────────── */
+  useEffect(() => () => {
+    window.clearTimeout(timeoutRef.current);
+    window.clearInterval(intervalRef.current);
+  }, []);
 
   if (!q) return <p className="loading">Загрузка…</p>;
 
-  /* ─── вспомогательные данные ─────────────────────────── */
+  /* ── подготовка данных для UI ───────────────────────── */
   const categoryLabel =
     loadingCats
       ? "..."
-      : categories.find((c) => c.id === categoryId)?.name ?? "—";
+      : categories.find(c => c.id === categoryId)?.name ?? "—";
 
   const difficultyLabel =
     loadingDiffs
       ? "..."
-      : difficulties.find((d) => d.id === difficultyId)?.name ?? "—";
+      : difficulties.find(d => d.id === difficultyId)?.name ?? "—";
 
   const totalSecs =
-    difficulties.find((d) => d.id === difficultyId)?.time_limit_secs ?? 20;
+    difficulties.find(d => d.id === difficultyId)?.time_limit_secs ?? 20;
 
-  /* ─── рендер ─────────────────────────────────────────── */
+  /* ── рендер ─────────────────────────────────────────── */
   return (
     <div className="game-screen">
-      {/* ---------- компактная шапка ---------- */}
+      {/* ---------- верхняя панель ---------- */}
       <header className="game-header gap-2">
         <div className="flex flex-col sm:flex-row sm:space-x-4 text-sm sm:text-base">
           <span>{categoryLabel}</span>
@@ -255,16 +255,14 @@ export default function GameScreen() {
           {/* жизни */}
           <div className="flex space-x-1">
             {Array.from({ length: lives }).map((_, i) => (
-              <span key={i} className="text-xl">
-                ❤️
-              </span>
+              <span key={i} className="text-xl">❤️</span>
             ))}
           </div>
 
           {/* круговой таймер */}
           <CircleTimer seconds={seconds} total={totalSecs} />
 
-          {/* счёт + live-сессия */}
+          {/* счёт + секундомер */}
           <div className="game-score flex items-center space-x-2">
             <div className="flex items-center">
               <svg viewBox="0 0 24 24" className="star-icon">
@@ -272,8 +270,6 @@ export default function GameScreen() {
               </svg>
               <span className="ml-1 text-lg">{score}</span>
             </div>
-
-            {/* live-таймер */}
             <span className="text-sm opacity-80">{fmtTime(sessionSecs)}</span>
           </div>
         </div>
@@ -287,9 +283,9 @@ export default function GameScreen() {
       {/* ---------- линейный таймер ---------- */}
       <LinearTimer seconds={seconds} total={totalSecs} />
 
-      {/* ---------- варианты ответов ---------- */}
+      {/* ---------- ответы ---------- */}
       <div className="answers-grid mt-6">
-        {shuffledOptions.map((opt) => {
+        {shuffledOptions.map(opt => {
           const isSel = answered && lastAnswer === opt;
           const cls = ["answer-btn", isSel && (isCorrect ? "correct" : "wrong")]
             .filter(Boolean)
