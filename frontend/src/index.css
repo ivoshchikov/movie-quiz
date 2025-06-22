@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* общий фон и цвет */
-html, body, #root {
+/* -------------------------------------------------------------------------- */
+/*  БАЗОВЫЕ СТИЛИ                                                             */
+/* -------------------------------------------------------------------------- */
+
+html,
+body,
+#root {
   @apply h-full bg-black text-white;
 }
 
@@ -11,15 +16,9 @@ html, body, #root {
 .start-screen {
   @apply flex flex-col items-center justify-center h-full gap-6 px-4;
 }
-.title {
-  @apply text-4xl font-bold m-0;
-}
-.select-wrapper {
-  @apply flex flex-col items-start gap-2 w-full max-w-md;
-}
-.select-wrapper span {
-  @apply font-medium text-lg;
-}
+.title            { @apply text-4xl font-bold m-0; }
+.select-wrapper   { @apply flex flex-col items-start gap-2 w-full max-w-md; }
+.select-wrapper span   { @apply font-medium text-lg; }
 .select-wrapper select {
   @apply w-full py-2 px-3 border border-gray-300 rounded-md appearance-none bg-white text-black cursor-pointer;
   background-image: url('/icons/arrow-down.svg');
@@ -32,73 +31,62 @@ html, body, #root {
   background-color: #4f46e5;
   color: #fff;
 }
-.btn-primary:hover:not(:disabled) {
-  @apply scale-105;
-  background-color: #4338ca;
-}
-.btn-primary:disabled {
-  @apply opacity-70 cursor-default;
-  background-color: #a5b4fc;
-}
+.btn-primary:hover:not(:disabled) { @apply scale-105;   background-color: #4338ca; }
+.btn-primary:disabled             { @apply opacity-70 cursor-default; background-color: #a5b4fc; }
 
-/* === GAME SCREEN === */
-.game-screen {
-  @apply flex flex-col items-center px-4 py-6 gap-6;
-}
-.game-header {
-  @apply flex justify-between items-center w-full max-w-2xl;
-}
-.game-category {
-  @apply text-lg font-medium;
-}
-.game-score {
-  @apply flex items-center text-lg;
-}
-.star-icon {
-  @apply w-6 h-6 mr-2 text-yellow-400 fill-current;
-}
+/* -------------------------------------------------------------------------- */
+/*  GAME SCREEN                                                               */
+/* -------------------------------------------------------------------------- */
 
-/* Timer */
-.timer-feedback {
-  @apply w-full max-w-2xl;
-}
-.timer-bar-wrapper {
-  @apply h-2 bg-gray-700 rounded overflow-hidden;
-}
-.timer-bar {
-  @apply h-full;
-  transition: width 1s linear, background-color 0.3s ease;
-}
+.game-screen { @apply flex flex-col items-center px-4 py-6 gap-6; }
 
-/* Poster */
+/* ── компактная шапка ────────────────────────────────────────────────────── */
+.game-header { @apply flex justify-between items-center w-full max-w-2xl gap-2; }
+.game-category { @apply text-lg font-medium; }
+.game-score    { @apply flex items-center text-lg; }
+.star-icon     { @apply w-6 h-6 mr-2 text-yellow-400 fill-current; }
+
+/* круговой таймер */
+.circle-timer { @apply w-14 h-14; }
+
+/* ── Poster ──────────────────────────────────────────────────────────────── */
 .poster-container {
-  @apply w-full max-w-2xl rounded overflow-hidden;
+  @apply w-full max-w-5xl rounded overflow-hidden;
+  aspect-ratio: 16 / 9;                    /* базовое 16:9 */
+  box-shadow: 0 0 20px rgb(0 0 0 / 0.5);
 }
-.poster {
-  @apply w-full h-auto object-contain;
+.poster { @apply w-full h-full object-contain; }
+
+/* ── Answers grid ────────────────────────────────────────────────────────── */
+.answers-grid { @apply grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl; }
+.answer-btn   { @apply p-4 bg-gray-800 text-white rounded shadow-md transition-transform duration-100 ease-in-out; }
+.answer-btn:hover:not(:disabled) { @apply -translate-y-1; }
+.answer-btn.correct { @apply bg-green-500 text-white; }
+.answer-btn.wrong   { @apply bg-red-500 text-white; }
+.answer-btn:disabled { @apply cursor-default opacity-70; }
+
+/* loading */
+.loading { @apply text-lg mt-4; }
+
+/* ── линейный таймер ──────────────────────────────────────────────────────── */
+.linear-timer-wrapper { @apply w-full max-w-5xl h-2 bg-gray-700 rounded overflow-hidden; }
+.linear-timer-bar     { @apply h-full transition-[width] duration-1000; }
+
+/* -------------------------------------------------------------------------- */
+/*  RESPONSIVE TWEAKS  (чтобы ответы всегда помещались без скролла)          */
+/* -------------------------------------------------------------------------- */
+
+/* 1️⃣ — Невысокие ноутбуки (макс-высота окна 820 px)  
+       Делаем постер «плоским»: ширина/высота ≈ 2.3 (21:9)  */
+@media (max-height: 820px) {
+  .poster-container { aspect-ratio: 21 / 9; }
 }
 
-/* Answers grid */
-.answers-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl;
-}
-.answer-btn {
-  @apply p-4 bg-gray-800 text-white rounded shadow-md transition-transform duration-100 ease-in-out;
-}
-.answer-btn:hover:not(:disabled) {
-  @apply -translate-y-1;
-}
-.answer-btn.correct {
-  @apply bg-green-500 text-white;
-}
-.answer-btn.wrong {
-  @apply bg-red-500 text-white;
-}
-.answer-btn:disabled {
-  @apply cursor-default opacity-70;
-}
-
-/* Loading state */
-.loading {
-  @apply text-lg mt-4;
+/* 2️⃣ — Очень низкие экраны (<= 650 px высоты, split-view и т.п.)  
+       Ограничиваем высоту постера половиной экрана */
+@media (max-height: 650px) {
+  .poster-container {
+    aspect-ratio: unset;   /* снимаем фикс. соотношение */
+    max-height: 50vh;      /* не выше половины окна */
+  }
 }

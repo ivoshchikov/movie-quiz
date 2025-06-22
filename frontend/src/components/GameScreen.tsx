@@ -8,7 +8,9 @@ import {
   getDifficultyLevels,
 } from "../api";
 import type { Question, Category, DifficultyLevel } from "../api";
-import { getPublicUrl } from "../supabase";   // ⬅ добавили
+import { getPublicUrl } from "../supabase";
+import CircleTimer from "./CircleTimer";
+import LinearTimer from "./LinearTimer";          // ⬅ НОВЫЙ импорт
 
 interface LocationState {
   categoryId?: number;
@@ -196,75 +198,62 @@ export default function GameScreen() {
   if (!q) return <p className="loading">Загрузка…</p>;
 
   /* ─── рендер ─────────────────────────────────────────── */
+  const categoryLabel =
+    loadingCats
+      ? "..."
+      : categories.find((c) => c.id === categoryId)?.name ?? "—";
+
+  const difficultyLabel =
+    loadingDiffs
+      ? "..."
+      : difficulties.find((d) => d.id === difficultyId)?.name ?? "—";
+
+  const totalSecs =
+    difficulties.find((d) => d.id === difficultyId)?.time_limit_secs ?? 20;
+
   return (
     <div className="game-screen">
-      {/* ---------- шапка ---------- */}
-      <header className="game-header flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          {loadingCats
-            ? "..."
-            : `Категория: ${categories.find((c) => c.id === categoryId)?.name}`}
+      {/* ---------- компактная шапка ---------- */}
+      <header className="game-header gap-2">
+        <div className="flex flex-col sm:flex-row sm:space-x-4 text-sm sm:text-base">
+          <span>{categoryLabel}</span>
+          <span>{difficultyLabel}</span>
         </div>
-        <div>
-          {loadingDiffs
-            ? "..."
-            : `Сложность: ${
-                difficulties.find((d) => d.id === difficultyId)?.name
-              }`}
-        </div>
-        <div className="flex space-x-1">
-          {Array.from({ length: lives }).map((_, i) => (
-            <span key={i} className="text-xl">
-              ❤️
-            </span>
-          ))}
-        </div>
-        <div className="game-score flex items-center">
-          <svg viewBox="0 0 24 24" className="star-icon">
-            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-          </svg>
-          <span className="ml-1 text-lg">{score}</span>
+
+        <div className="flex items-center gap-3">
+          {/* жизни */}
+          <div className="flex space-x-1">
+            {Array.from({ length: lives }).map((_, i) => (
+              <span key={i} className="text-xl">
+                ❤️
+              </span>
+            ))}
+          </div>
+
+          {/* круговой таймер */}
+          <CircleTimer seconds={seconds} total={totalSecs} />
+
+          {/* счёт */}
+          <div className="game-score flex items-center">
+            <svg viewBox="0 0 24 24" className="star-icon">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+            <span className="ml-1 text-lg">{score}</span>
+          </div>
         </div>
       </header>
-
-      {/* ---------- таймер ---------- */}
-      <div className="timer-feedback mt-4">
-        <div className="timer-seconds text-2xl font-bold mb-1">{seconds}s</div>
-        <div className="timer-bar-wrapper">
-          <div
-            className="timer-bar"
-            style={{
-              width: `${
-                (seconds /
-                  (difficulties.find((d) => d.id === difficultyId)
-                    ?.time_limit_secs ?? 20)) *
-                100
-              }%`,
-              backgroundColor:
-                seconds >
-                (difficulties.find((d) => d.id === difficultyId)
-                  ?.time_limit_secs ?? 20) *
-                  0.6
-                  ? "#4ade80"
-                  : seconds >
-                    (difficulties.find((d) => d.id === difficultyId)
-                      ?.time_limit_secs ?? 20) *
-                      0.3
-                  ? "#facc15"
-                  : "#f87171",
-            }}
-          />
-        </div>
-      </div>
 
       {/* ---------- постер ---------- */}
       <div className="poster-container mt-6">
         <img
-          src={getPublicUrl(q.image_url)}   // ⬅ использует новую утилиту
+          src={getPublicUrl(q.image_url)}
           alt="poster"
           className="poster"
         />
       </div>
+
+      {/* ---------- линейный таймер ---------- */}
+      <LinearTimer seconds={seconds} total={totalSecs} />
 
       {/* ---------- варианты ответов ---------- */}
       <div className="answers-grid mt-6">
