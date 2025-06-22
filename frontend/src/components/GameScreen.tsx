@@ -8,7 +8,7 @@ import {
   getDifficultyLevels,
 } from "../api";
 import type { Question, Category, DifficultyLevel } from "../api";
-import { supabase, getPublicUrl } from "../supabase";   // ← supabase client
+import { supabase, getPublicUrl } from "../supabase";
 import CircleTimer from "./CircleTimer";
 import LinearTimer from "./LinearTimer";
 
@@ -69,25 +69,24 @@ export default function GameScreen() {
 
   /* запись «лучшего» результата и переход к /result */
   const endGame = async () => {
-    const elapsedSecs = Math.floor(
-      (Date.now() - sessionStartRef.current) / 1000
-    );
+    const elapsedSecs  = Math.floor((Date.now() - sessionStartRef.current) / 1000);
+    const currentCatId = q?.category_id ?? categoryId;   // ← ключевая правка
 
     /* 1️⃣ upsert в user_best */
     const { data: { user } } = await supabase.auth.getUser();
 
     await supabase.rpc("upsert_user_best", {
       p_user_id:     user?.id ?? null,
-      p_category_id: categoryId,
+      p_category_id: currentCatId,
       p_score:       scoreRef.current,
       p_time:        elapsedSecs,
     });
 
-    /* 2️⃣ переходим к экрану результата */
+    /* 2️⃣ переход к экрану результата */
     navigate("/result", {
       state: {
-        score: scoreRef.current,
-        categoryId,
+        score:        scoreRef.current,
+        categoryId:   currentCatId,
         difficultyId,
         elapsedSecs,
       },
@@ -227,7 +226,7 @@ export default function GameScreen() {
 
   if (!q) return <p className="loading">Загрузка…</p>;
 
-  /* ── подготовка данных для UI ───────────────────────── */
+  /* ── данные для UI ──────────────────────────────────── */
   const categoryLabel =
     loadingCats
       ? "..."
@@ -244,7 +243,7 @@ export default function GameScreen() {
   /* ── рендер ─────────────────────────────────────────── */
   return (
     <div className="game-screen">
-      {/* ---------- верхняя панель ---------- */}
+      {/* верхняя панель */}
       <header className="game-header gap-2">
         <div className="flex flex-col sm:flex-row sm:space-x-4 text-sm sm:text-base">
           <span>{categoryLabel}</span>
@@ -275,15 +274,15 @@ export default function GameScreen() {
         </div>
       </header>
 
-      {/* ---------- постер ---------- */}
+      {/* постер */}
       <div className="poster-container mt-6">
         <img src={getPublicUrl(q.image_url)} alt="poster" className="poster" />
       </div>
 
-      {/* ---------- линейный таймер ---------- */}
+      {/* линейный таймер */}
       <LinearTimer seconds={seconds} total={totalSecs} />
 
-      {/* ---------- ответы ---------- */}
+      {/* ответы */}
       <div className="answers-grid mt-6">
         {shuffledOptions.map(opt => {
           const isSel = answered && lastAnswer === opt;
