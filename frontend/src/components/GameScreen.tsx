@@ -10,7 +10,7 @@ import {
 import type { Question, Category, DifficultyLevel } from "../api";
 import { getPublicUrl } from "../supabase";
 import CircleTimer from "./CircleTimer";
-import LinearTimer from "./LinearTimer";          // ⬅ НОВЫЙ импорт
+import LinearTimer from "./LinearTimer";
 
 interface LocationState {
   categoryId?: number;
@@ -24,6 +24,10 @@ export default function GameScreen() {
     key: string;
   };
   const { categoryId, difficultyId } = state || {};
+
+  /* ─── момент старта всей сессии ───────────────────────── */
+  const sessionStartRef = useRef(Date.now());
+  const [sessionSecs, setSessionSecs] = useState(0);   // ⬅ live-секундомер
 
   /* ─── справочники ─────────────────────────────────────── */
   const [categories,   setCategories]   = useState<Category[]>([]);
@@ -43,8 +47,40 @@ export default function GameScreen() {
   const [lastAnswer,   setLastAnswer]   = useState<string | null>(null);
   const [isCorrect,    setIsCorrect]    = useState(false);
 
-  const intervalRef = useRef<number>(0);
+  const intervalRef = useRef<number>(0);   // для таймера вопроса
   const timeoutRef  = useRef<number>(0);
+
+  /* ─── живой секундомер всей сессии ────────────────────── */
+  useEffect(() => {
+    // тикает раз в секунду, пишет в sessionSecs
+    const id = window.setInterval(() => {
+      setSessionSecs(
+        Math.floor((Date.now() - sessionStartRef.current) / 1000)
+      );
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  /* ─── HELPERS ─────────────────────────────────────────── */
+  const fmtTime = (t: number) =>
+    `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(
+      2,
+      "0"
+    )}`;
+
+  const endGame = () => {
+    const elapsedSecs = Math.floor(
+      (Date.now() - sessionStartRef.current) / 1000
+    );
+    navigate("/result", {
+      state: {
+        score: scoreRef.current,
+        categoryId,
+        difficultyId,
+        elapsedSecs,
+      },
+    });
+  };
 
   /* ─── загрузка справочников ───────────────────────────── */
   useEffect(() => {
@@ -71,6 +107,8 @@ export default function GameScreen() {
 
   /* ─── старт нового раунда ─────────────────────────────── */
   useEffect(() => {
+    sessionStartRef.current = Date.now();
+    setSessionSecs(0);                     // обнуляем секундомер
     setExclude([]);
     setScore(0);
     scoreRef.current = 0;
@@ -109,14 +147,12 @@ export default function GameScreen() {
       setExclude([...currentExclude, question.id]);
     } catch (e: any) {
       if (e.message === "no-more-questions") {
-        navigate("/result", {
-          state: { score: scoreRef.current, categoryId, difficultyId },
-        });
+        endGame();
       }
     }
   }
 
-  /* ─── таймер ──────────────────────────────────────────── */
+  /* ─── таймер вопроса ─────────────────────────────────── */
   useEffect(() => {
     if (!q) return;
     intervalRef.current = window.setInterval(() => {
@@ -128,16 +164,14 @@ export default function GameScreen() {
             setLives((l) => l - 1);
             loadQuestion(exclude);
           } else {
-            navigate("/result", {
-              state: { score: scoreRef.current, categoryId, difficultyId },
-            });
+            endGame();
           }
         }
         return s - 1;
       });
     }, 1000);
     return () => window.clearInterval(intervalRef.current);
-  }, [q, mistakesLeft, navigate, categoryId, difficultyId, exclude]);
+  }, [q, mistakesLeft, exclude]);
 
   /* ─── перемешиваем варианты ───────────────────────────── */
   const shuffledOptions = useMemo(() => {
@@ -175,11 +209,7 @@ export default function GameScreen() {
               500
             );
           } else {
-            timeoutRef.current = window.setTimeout(() => {
-              navigate("/result", {
-                state: { score: scoreRef.current, categoryId, difficultyId },
-              });
-            }, 500);
+            timeoutRef.current = window.setTimeout(endGame, 500);
           }
         }
       })
@@ -197,7 +227,7 @@ export default function GameScreen() {
 
   if (!q) return <p className="loading">Загрузка…</p>;
 
-  /* ─── рендер ─────────────────────────────────────────── */
+  /* ─── вспомогательные данные ─────────────────────────── */
   const categoryLabel =
     loadingCats
       ? "..."
@@ -211,6 +241,7 @@ export default function GameScreen() {
   const totalSecs =
     difficulties.find((d) => d.id === difficultyId)?.time_limit_secs ?? 20;
 
+  /* ─── рендер ─────────────────────────────────────────── */
   return (
     <div className="game-screen">
       {/* ---------- компактная шапка ---------- */}
@@ -233,23 +264,24 @@ export default function GameScreen() {
           {/* круговой таймер */}
           <CircleTimer seconds={seconds} total={totalSecs} />
 
-          {/* счёт */}
-          <div className="game-score flex items-center">
-            <svg viewBox="0 0 24 24" className="star-icon">
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-            </svg>
-            <span className="ml-1 text-lg">{score}</span>
+          {/* счёт + live-сессия */}
+          <div className="game-score flex items-center space-x-2">
+            <div className="flex items-center">
+              <svg viewBox="0 0 24 24" className="star-icon">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+              <span className="ml-1 text-lg">{score}</span>
+            </div>
+
+            {/* live-таймер */}
+            <span className="text-sm opacity-80">{fmtTime(sessionSecs)}</span>
           </div>
         </div>
       </header>
 
       {/* ---------- постер ---------- */}
       <div className="poster-container mt-6">
-        <img
-          src={getPublicUrl(q.image_url)}
-          alt="poster"
-          className="poster"
-        />
+        <img src={getPublicUrl(q.image_url)} alt="poster" className="poster" />
       </div>
 
       {/* ---------- линейный таймер ---------- */}
