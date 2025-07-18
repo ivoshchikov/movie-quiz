@@ -33,7 +33,7 @@ export default function ProfileSetupScreen() {
   }, [authLoading, user, navigate]);
 
   if (authLoading || loading) {
-    return <div className="flex items-center justify-center h-full">Загрузка…</div>;
+    return <div className="flex items-center justify-center h-full">Loading…</div>;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,7 +58,7 @@ export default function ProfileSetupScreen() {
           className="border p-2 rounded w-full bg-white text-black"
         />
         <button type="submit" className="btn-primary" disabled={!nickname.trim()}>
-          Сохранить ник
+          Save
         </button>
       </form>
     </div>

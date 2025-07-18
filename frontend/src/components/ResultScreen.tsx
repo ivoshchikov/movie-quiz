@@ -1,11 +1,12 @@
 // frontend/src/components/ResultScreen.tsx
 import { useLocation, useNavigate } from "react-router-dom";
+import Seo from "./Seo";                              // ← NEW
 
 interface State {
   score?: number;
   categoryId?: number;
   difficultyId?: number;
-  elapsedSecs?: number;      // ⬅ NEW
+  elapsedSecs?: number;
 }
 
 function formatSecs(sec: number) {
@@ -35,41 +36,51 @@ export default function ResultScreen() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-4 py-8 gap-8 bg-black text-white">
-      <h1 className="text-4xl font-semibold">Ваш результат</h1>
+    <>
+      <Seo
+        title="Your result | Hard Quiz"
+        description={`You scored ${score} point${
+          score === 1 ? "" : "s"
+        } in ${formatSecs(elapsedSecs)}. Can you beat it?`}
+      />
 
-      {/* количество очков */}
-      <div className="text-7xl font-extrabold">{score}</div>
+      <div className="flex flex-col items-center justify-center h-full px-4 py-8 gap-8 bg-black text-white">
+        <h1 className="text-4xl font-semibold">Your result</h1>
 
-      {/* NEW: время сессии */}
-      <div className="text-2xl font-medium">
-        Время игры: <span className="font-bold">{formatSecs(elapsedSecs)}</span>
+        {/* score */}
+        <div className="text-7xl font-extrabold">{score}</div>
+
+        {/* session time */}
+        <div className="text-2xl font-medium">
+          Time:&nbsp;
+          <span className="font-bold">{formatSecs(elapsedSecs)}</span>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button
+            onClick={playAgain}
+            className="
+              px-8 py-3 text-lg font-medium rounded-md
+              bg-indigo-600 hover:bg-indigo-700
+              transform hover:scale-105
+              transition-all duration-150
+            "
+          >
+            Play again
+          </button>
+          <button
+            onClick={chooseCategory}
+            className="
+              px-6 py-3 text-base font-medium rounded-md
+              border border-white
+              hover:opacity-80
+              transition-opacity duration-150
+            "
+          >
+            Choose another category
+          </button>
+        </div>
       </div>
-
-      <div className="flex flex-col sm:flex-row gap-4">
-        <button
-          onClick={playAgain}
-          className="
-            px-8 py-3 text-lg font-medium rounded-md
-            bg-indigo-600 hover:bg-indigo-700
-            transform hover:scale-105
-            transition-all duration-150
-          "
-        >
-          Сыграть ещё
-        </button>
-        <button
-          onClick={chooseCategory}
-          className="
-            px-6 py-3 text-base font-medium rounded-md
-            border border-white
-            hover:opacity-80
-            transition-opacity duration-150
-          "
-        >
-          Выбрать другую категорию
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
