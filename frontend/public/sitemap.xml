@@ -1,0 +1,8 @@
+cat > public/sitemap.xml <<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://hard-quiz.com/</loc></url>
+  <url><loc>https://hard-quiz.com/play</loc></url>
+  <url><loc>https://hard-quiz.com/result</loc></url>
+</urlset>
+XML
