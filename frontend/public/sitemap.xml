@@ -1,8 +1,27 @@
-cat > public/sitemap.xml <<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Hard-Quiz – static sitemap  -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://hard-quiz.com/</loc></url>
-  <url><loc>https://hard-quiz.com/play</loc></url>
-  <url><loc>https://hard-quiz.com/result</loc></url>
+
+  <!-- Homepage / landing -->
+  <url>
+    <loc>https://hard-quiz.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Game entry screen (category & difficulty selectors) -->
+  <url>
+    <loc>https://hard-quiz.com/play</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Result page (static route) -->
+  <url>
+    <loc>https://hard-quiz.com/result</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Добавляйте новые страницы по мере появления -->
 </urlset>
-XML
