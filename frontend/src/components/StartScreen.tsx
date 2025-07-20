@@ -12,53 +12,80 @@ import {
 import { useAuth } from "../AuthContext";
 import Seo from "./Seo";
 
+const DEFAULT_CAT_ID = 1;               // «General»
+
 export default function StartScreen() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
 
-  /* ───── dictionaries ───── */
+  /* ─────────── справочники ─────────── */
   const [categories,   setCategories]   = useState<Category[]>([]);
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
   const [loadingCats,  setLoadingCats]  = useState(true);
   const [loadingDiffs, setLoadingDiffs] = useState(true);
 
-  /* ───── best results ───── */
+  /* ─────────── рекорды игрока ─────────── */
   const [bestRows,    setBestRows]    = useState<UserBestRow[]>([]);
   const [bestLoading, setBestLoading] = useState(false);
 
-  /* ───── ui state ───── */
-  const [selectedCat,  setSelectedCat]  = useState<number>();
+  /* ─────────── UI-состояние ─────────── */
+  const [selectedCat,  setSelectedCat]  = useState<number>(DEFAULT_CAT_ID);
   const [selectedDiff, setSelectedDiff] = useState<number>();
 
-  /* ───── load dictionaries once ───── */
+  /* ─────────── загрузка словарей ─────────── */
   useEffect(() => {
-    getCategories().then(setCategories).catch(console.error).finally(() => setLoadingCats(false));
-    getDifficultyLevels().then(setDifficulties).catch(console.error).finally(() => setLoadingDiffs(false));
+    getCategories()
+      .then(data => {
+        setCategories(data);
+        // если «General» нет в БД → берём первую попавшуюся категорию
+        if (!data.find(c => c.id === DEFAULT_CAT_ID) && data.length)
+          setSelectedCat(data[0].id);
+      })
+      .catch(console.error)
+      .finally(() => setLoadingCats(false));
+
+    getDifficultyLevels()
+      .then(setDifficulties)
+      .catch(console.error)
+      .finally(() => setLoadingDiffs(false));
   }, []);
 
-  /* ───── load user best after login ───── */
+  /* ─────────── загрузка рекордов ─────────── */
   useEffect(() => {
     if (!user) { setBestRows([]); return; }
     setBestLoading(true);
-    getMyBest().then(setBestRows).catch(console.error).finally(() => setBestLoading(false));
+    getMyBest()
+      .then(setBestRows)
+      .catch(console.error)
+      .finally(() => setBestLoading(false));
   }, [user]);
 
-  /* ───── helpers ───── */
+  /* ─────────── хелперы мапы id→объект ─────────── */
   const diffById = useMemo(() => new Map(difficulties.map(d => [d.id, d])), [difficulties]);
-  const catById  = useMemo(() => new Map(categories.map(c  => [c.id, c])),  [categories]);
 
-  const bestForSelectedCat = useMemo(
-    () => (selectedCat ? bestRows.filter(r => r.category_id === selectedCat) : bestRows),
-    [bestRows, selectedCat],
-  );
+  /* ─────────── данные для таблицы (всегда по всем уровням) ─────────── */
+  const tableRows = useMemo(() => {
+    return difficulties.map(diff => {
+      const rec = bestRows.find(
+        r => r.category_id === selectedCat && r.difficulty_level_id === diff.id
+      );
+      return {
+        diffName: diff.name,
+        score:    rec?.best_score ?? "—",
+        time:     rec ? `${String(Math.floor(rec.best_time / 60)).padStart(2,"0")}:${String(rec.best_time % 60).padStart(2,"0")}` : "—",
+      };
+    });
+  }, [difficulties, bestRows, selectedCat]);
 
+  /* ─────────── действия ─────────── */
   const canPlay =
-    !loadingCats && !loadingDiffs && selectedCat !== undefined && selectedDiff !== undefined;
+    !loadingCats && !loadingDiffs &&
+    selectedCat !== undefined && selectedDiff !== undefined;
 
   const startGame = () =>
     navigate("/play", { state: { categoryId: selectedCat!, difficultyId: selectedDiff! } });
 
-  /* ───── render ───── */
+  /* ─────────── рендер ─────────── */
   return (
     <>
       <Seo
@@ -66,43 +93,44 @@ export default function StartScreen() {
         description="Choose a category and difficulty level to start guessing movie posters!"
       />
 
-      <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-8 px-4">
-
-        {/* ---------- LEFT: best results ---------- */}
+      <div className="flex flex-col lg:flex-row gap-12 start-screen">
+        {/* ---------- Левая колонка: лучшие результаты ---------- */}
         {user && (
           <section className="w-full lg:w-1/2">
-            <h2 className="text-2xl font-semibold mb-4">Your best results</h2>
+            <div className="flex items-baseline justify-between mb-3">
+              <h2 className="text-xl sm:text-2xl font-semibold">
+                Your best results
+              </h2>
+
+              {/* селект категории для таблицы */}
+              <select
+                className="border border-gray-400 rounded bg-white text-black text-xs sm:text-sm px-2 py-1"
+                value={selectedCat}
+                onChange={e => setSelectedCat(Number(e.target.value))}
+              >
+                {categories.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
 
             {bestLoading ? (
               <p>Loading…</p>
-            ) : bestForSelectedCat.length === 0 ? (
-              <p className="opacity-70">No results yet — play and set a record!</p>
             ) : (
-              <table className="w-full text-left text-sm border-collapse">
+              <table className="w-full text-left text-xs sm:text-sm border-collapse">
                 <thead className="border-b border-gray-600">
                   <tr>
-                    {!selectedCat && <th className="py-1 pr-2">Category</th>}
-                    <th className="py-1 pr-2">Level</th>
-                    <th className="py-1 pr-2">Score</th>
-                    <th className="py-1">Time</th>
+                    <th className="py-1 px-2">Level</th>
+                    <th className="py-1 px-2">Score</th>
+                    <th className="py-1 px-2">Time</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {bestForSelectedCat.map(row => (
-                    <tr key={`${row.category_id}-${row.difficulty_level_id}`}>
-                      {!selectedCat && (
-                        <td className="py-1 pr-2">
-                          {catById.get(row.category_id)?.name ?? row.category_id}
-                        </td>
-                      )}
-                      <td className="py-1 pr-2">
-                        {diffById.get(row.difficulty_level_id)?.name ?? row.difficulty_level_id}
-                      </td>
-                      <td className="py-1 pr-2">{row.best_score}</td>
-                      <td className="py-1">
-                        {String(Math.floor(row.best_time / 60)).padStart(2, "0")}:
-                        {String(row.best_time % 60).padStart(2, "0")}
-                      </td>
+                  {tableRows.map(row => (
+                    <tr key={row.diffName}>
+                      <td className="py-1 px-2">{row.diffName}</td>
+                      <td className="py-1 px-2">{row.score}</td>
+                      <td className="py-1 px-2">{row.time}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -111,11 +139,11 @@ export default function StartScreen() {
           </section>
         )}
 
-        {/* ---------- RIGHT: quiz setup ---------- */}
-        <section className="w-full lg:w-1/2 max-w-md">
-          <h1 className="title mb-6">Hard&nbsp;Quiz</h1>
+        {/* ---------- Правая колонка: форма запуска игры ---------- */}
+        <section className="flex-grow max-w-lg">
+          <h1 className="title mb-4">Hard&nbsp;Quiz</h1>
 
-          {/* Category */}
+          {/* выбор категории (для игры) */}
           <label className="select-wrapper">
             <span>Select category</span>
             <select
@@ -123,11 +151,13 @@ export default function StartScreen() {
               onChange={e => setSelectedCat(e.target.value ? Number(e.target.value) : undefined)}
             >
               <option value="" disabled>-- Choose category --</option>
-              {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              {categories.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
             </select>
           </label>
 
-          {/* Difficulty */}
+          {/* выбор сложности */}
           <label className="select-wrapper">
             <span>Select level</span>
             <select
@@ -135,32 +165,39 @@ export default function StartScreen() {
               onChange={e => setSelectedDiff(e.target.value ? Number(e.target.value) : undefined)}
             >
               <option value="" disabled>-- Choose level --</option>
-              {difficulties.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+              {difficulties.map(d => (
+                <option key={d.id} value={d.id}>{d.name}</option>
+              ))}
             </select>
           </label>
 
-          {/* Buttons row */}
-          <div className="flex gap-4 mt-6">
-            <button className="btn-primary" onClick={startGame} disabled={!canPlay}>
-              {loadingCats || loadingDiffs ? "Loading…" : "Play"}
-            </button>
+          {/* кнопка Play */}
+          <button
+            className="btn-primary mt-4"
+            onClick={startGame}
+            disabled={!canPlay}
+          >
+            {loadingCats || loadingDiffs ? "Loading…" : "Play"}
+          </button>
 
-            {!user ? (
+          {/* Auth */}
+          {!authLoading && (
+            !user ? (
               <button
                 onClick={() => navigate("/login")}
-                className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150"
+                className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150 mt-6"
               >
-                Log&nbsp;in
+                Log in
               </button>
             ) : (
               <button
                 onClick={signOut}
-                className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150"
+                className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150 mt-6"
               >
-                Log&nbsp;out
+                Log out
               </button>
-            )}
-          </div>
+            )
+          )}
         </section>
       </div>
     </>
