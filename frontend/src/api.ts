@@ -1,7 +1,9 @@
 // frontend/src/api.ts
 import { supabase } from "./supabaseClient";
 
-/* ---------- типы ---------- */
+/* ────────────────────────────────────────────────────────────
+   TYPES
+───────────────────────────────────────────────────────────── */
 export interface Category {
   id: number;
   name: string;
@@ -26,7 +28,19 @@ export interface Question {
   difficulty_level_id: number;
 }
 
-/* ---------- Category API через Supabase DB ---------- */
+/* ⬇⬇⬇  NEW: строка из таблицы user_best  */
+export interface UserBestRow {
+  user_id: string;
+  category_id: number;
+  difficulty_level_id: number;
+  best_score: number;
+  best_time: number;
+  updated_at: string;
+}
+
+/* ────────────────────────────────────────────────────────────
+   CATEGORIES
+───────────────────────────────────────────────────────────── */
 export async function getCategories(): Promise<Category[]> {
   const { data, error } = await supabase
     .from<Category>("category")
@@ -37,24 +51,47 @@ export async function getCategories(): Promise<Category[]> {
   return data!;
 }
 
-/* ---------- DifficultyLevel API через Supabase DB ---------- */
+/* ────────────────────────────────────────────────────────────
+   DIFFICULTY LEVELS
+───────────────────────────────────────────────────────────── */
 export async function getDifficultyLevels(): Promise<DifficultyLevel[]> {
   const { data, error } = await supabase
     .from<DifficultyLevel>("difficulty_level")
-    .select("id, key, name, time_limit_secs, lives, mistakes_allowed, sort_order")
+    .select(
+      "id, key, name, time_limit_secs, lives, mistakes_allowed, sort_order",
+    )
     .order("sort_order", { ascending: true });
 
   if (error) throw error;
   return data!;
 }
 
-/* ---------- Вопросы с Storage + DB ---------- */
+/* ────────────────────────────────────────────────────────────
+   USER BEST RESULTS  (NEW)
+───────────────────────────────────────────────────────────── */
+/** Возвращает ВСЕ best-результаты текущего авторизованного пользователя.  
+ *  RLS-политика в БД уже ограничивает выборку «только мои строки». */
+export async function getMyBest(): Promise<UserBestRow[]> {
+  const { data, error } = await supabase
+    .from<UserBestRow>("user_best")
+    .select(
+      "user_id, category_id, difficulty_level_id, best_score, best_time, updated_at",
+    )
+    .order("best_score", { ascending: false });
+
+  if (error) throw error;
+  return data ?? [];
+}
+
+/* ────────────────────────────────────────────────────────────
+   QUESTIONS
+───────────────────────────────────────────────────────────── */
 export async function getQuestion(
   exclude: number[] = [],
   categoryId?: number,
-  difficultyId?: number
+  difficultyId?: number,
 ): Promise<Question> {
-  // 1) вытаскиваем все подходящие
+  /* 1️⃣ — выбираем подходящие строки */
   let query = supabase
     .from<{
       id: number;
@@ -65,7 +102,7 @@ export async function getQuestion(
       difficulty_level_id: number;
     }>("question")
     .select(
-      "id, image_url, options_json, correct_answer, category_id, difficulty_level_id"
+      "id, image_url, options_json, correct_answer, category_id, difficulty_level_id",
     );
 
   if (exclude.length > 0) {
@@ -84,20 +121,19 @@ export async function getQuestion(
     throw new Error("no-more-questions");
   }
 
-  // 2) случайный выбор
+  /* 2️⃣ — случайный вопрос */
   const raw = all[Math.floor(Math.random() * all.length)];
 
-  // 3) подменяем image_url на публичный URL из Storage
+  /* 3️⃣ — конвертируем путь к изображению в public-URL */
   const key = raw.image_url.replace(/^\/?posters\//, "");
-  const { data: urlData, error: urlError } = supabase
-    .storage
+  const { data: urlData, error: urlError } = supabase.storage
     .from("movies")
     .getPublicUrl(key);
 
   if (urlError) console.error("Failed to get publicUrl for", raw.image_url, urlError);
   const publicUrl = urlData?.publicUrl ?? raw.image_url;
 
-  // 4) десериализуем options_json
+  /* 4️⃣ — парсим options_json */
   const opts: string[] = Array.isArray(raw.options_json)
     ? (raw.options_json as string[])
     : JSON.parse(raw.options_json as string);
@@ -112,10 +148,12 @@ export async function getQuestion(
   };
 }
 
-/* ---------- Проверка ответа ---------- */
+/* ────────────────────────────────────────────────────────────
+   ANSWER CHECK
+───────────────────────────────────────────────────────────── */
 export async function checkAnswer(
   questionId: number,
-  answer: string
+  answer: string,
 ): Promise<{ correct: boolean; correct_answer: string }> {
   const { data, error } = await supabase
     .from<{ correct_answer: string }>("question")
@@ -129,7 +167,9 @@ export async function checkAnswer(
   return { correct, correct_answer: data.correct_answer };
 }
 
-// Вернуть профиль текущего пользователя
+/* ────────────────────────────────────────────────────────────
+   PROFILE HELPERS  (unchanged)
+───────────────────────────────────────────────────────────── */
 export async function getProfile(userId: string) {
   const { data, error } = await supabase
     .from("profiles")
@@ -137,14 +177,13 @@ export async function getProfile(userId: string) {
     .eq("user_id", userId)
     .single();
   if (error && error.code !== "PGRST116") throw error; // 116 = no rows
-  return data; // либо объект, либо null
+  return data;
 }
 
-// Создать или обновить профиль
 export async function upsertProfile(
   userId: string,
   nickname: string,
-  avatarUrl?: string
+  avatarUrl?: string,
 ) {
   const { data, error } = await supabase
     .from("profiles")
