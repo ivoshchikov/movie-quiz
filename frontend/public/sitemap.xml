@@ -23,5 +23,12 @@
     <priority>0.3</priority>
   </url>
 
+    <!-- How-to-play page -->
+  <url>
+    <loc>https://hard-quiz.com/how-to-play</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
   <!-- Добавляйте новые страницы по мере появления -->
 </urlset>

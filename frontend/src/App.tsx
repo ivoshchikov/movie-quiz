@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import StartScreen        from "./components/StartScreen";
 import GameScreen         from "./components/GameScreen";
 import ResultScreen       from "./components/ResultScreen";
+import HowToPlay         from "./components/HowToPlay";
 import LoginScreen        from "./components/LoginScreen";
 import ProfileSetupScreen from "./components/ProfileSetupScreen";
 import PrivateRoute       from "./PrivateRoute";
@@ -22,6 +23,8 @@ export default function App() {
       </Helmet>
 
       <Routes>
+        {/* Static rules/SEO page */}
+        <Route path="/how-to-play" element={<HowToPlay />} />
         {/* Public */}
         <Route path="/login"         element={<LoginScreen />} />
         <Route path="/setup-profile" element={<ProfileSetupScreen />} />

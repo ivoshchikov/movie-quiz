@@ -1,6 +1,6 @@
 // frontend/src/components/StartScreen.tsx
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   getCategories,
   getDifficultyLevels,
@@ -194,6 +194,15 @@ export default function StartScreen() {
                 </button>
               )
             )}
+          </div>
+           {/* ссылка «How to play» */}
+          <div className="mt-4">
+            <Link
+              to="/how-to-play"
+              className="text-sm underline opacity-80 hover:opacity-100"
+            >
+              How&nbsp;to&nbsp;play
+            </Link>
           </div>
         </section>
       </div>
