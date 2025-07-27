@@ -7,35 +7,37 @@ import { getProfile, upsertProfile } from "../api";
 export default function ProfileSetupScreen() {
   const { user, loading: authLoading } = useAuth();
   const [nickname, setNickname] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading,  setLoading]  = useState(true);
   const navigate = useNavigate();
 
+  /* ─── загрузка профиля / защита маршрута ─────────────────────────── */
   useEffect(() => {
-    // Ждём, пока провайдер авторизации определит user
-    if (authLoading) return;
+    if (authLoading) return;           // ждём, пока Auth определится
 
-    // Если пользователь не залогинен — уводим на старт
-    if (!user) {
+    if (!user) {                       // не залогинен → домой
       navigate("/", { replace: true });
       return;
     }
 
-    // Проверяем, есть ли уже профиль
     getProfile(user.id).then((profile) => {
-      if (profile) {
-        // Есть профиль — обратно на старт
+      // ник уже есть → сразу на старт
+      if (profile && profile.nickname) {
         navigate("/", { replace: true });
       } else {
-        // Нет — показываем форму
-        setLoading(false);
+        setLoading(false);             // показываем форму
       }
     });
   }, [authLoading, user, navigate]);
 
   if (authLoading || loading) {
-    return <div className="flex items-center justify-center h-full">Loading…</div>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        Loading…
+      </div>
+    );
   }
 
+  /* ─── submit ─────────────────────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!nickname.trim()) return;
@@ -43,21 +45,30 @@ export default function ProfileSetupScreen() {
       await upsertProfile(user!.id, nickname.trim());
       navigate("/", { replace: true });
     } catch {
-      alert("Ошибка. Возможно, этот ник уже занят.");
+      alert("Ошибка: возможно, ник уже занят.");
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-6 px-4">
       <h1 className="text-2xl font-semibold">Придумайте ник</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-sm">
+
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 w-full max-w-sm"
+      >
         <input
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           placeholder="Ваш ник"
           className="border p-2 rounded w-full bg-white text-black"
+          maxLength={20}
         />
-        <button type="submit" className="btn-primary" disabled={!nickname.trim()}>
+        <button
+          type="submit"
+          className="btn-primary"
+          disabled={!nickname.trim()}
+        >
           Save
         </button>
       </form>

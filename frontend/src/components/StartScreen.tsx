@@ -5,12 +5,15 @@ import {
   getCategories,
   getDifficultyLevels,
   getMyBest,
+  getProfile,
   Category,
   DifficultyLevel,
   UserBestRow,
 } from "../api";
 import { useAuth } from "../AuthContext";
 import Seo from "./Seo";
+import LoginModal    from "./LoginModal";
+import NicknameModal from "./NicknameModal";
 
 const DEFAULT_CAT_ID = 1; // «General»
 
@@ -31,13 +34,16 @@ export default function StartScreen() {
   /* ─── ui state ───────────────────────────────── */
   const [selectedCat,  setSelectedCat]  = useState<number>(DEFAULT_CAT_ID);
   const [selectedDiff, setSelectedDiff] = useState<number>();
+  const [showLogin, setShowLogin] = useState(false);
+  const [showNick,  setShowNick]  = useState(false);
+  const [profile,   setProfile]   = useState<{ nickname: string | null } | null>(null);
 
   /* ─── load dictionaries once ─────────────────── */
   useEffect(() => {
     getCategories()
-      .then(data => {
+      .then((data) => {
         setCategories(data);
-        if (!data.find(c => c.id === DEFAULT_CAT_ID) && data.length)
+        if (!data.find((c) => c.id === DEFAULT_CAT_ID) && data.length)
           setSelectedCat(data[0].id);
       })
       .catch(console.error)
@@ -49,9 +55,16 @@ export default function StartScreen() {
       .finally(() => setLoadingDiffs(false));
   }, []);
 
-  /* ─── load best rows (on login) ──────────────── */
+  /* ─── profile + best rows (on login) ─────────── */
   useEffect(() => {
-    if (!user) { setBestRows([]); return; }
+    if (!user) {
+      setProfile(null);
+      setBestRows([]);
+      return;
+    }
+
+    getProfile(user.id).then(setProfile).catch(console.error);
+
     setBestLoading(true);
     getMyBest()
       .then(setBestRows)
@@ -59,26 +72,40 @@ export default function StartScreen() {
       .finally(() => setBestLoading(false));
   }, [user]);
 
+  /* ─── show Nickname modal if needed ───────────── */
+  useEffect(() => {
+    if (user && profile && !profile.nickname) setShowNick(true);
+  }, [user, profile]);
+
   /* ─── helpers ────────────────────────────────── */
   const tableRows = useMemo(() => {
-    return difficulties.map(diff => {
+    return difficulties.map((diff) => {
       const rec = bestRows.find(
-        r => r.category_id === selectedCat && r.difficulty_level_id === diff.id
+        (r) =>
+          r.category_id === selectedCat && r.difficulty_level_id === diff.id,
       );
       return {
         diffName: diff.name,
-        score:    rec?.best_score ?? "—",
-        time:     rec ? `${String(Math.floor(rec.best_time/60)).padStart(2,"0")}:${String(rec.best_time%60).padStart(2,"0")}` : "—",
+        score: rec?.best_score ?? "—",
+        time: rec
+          ? `${String(Math.floor(rec.best_time / 60)).padStart(2, "0")}:${String(
+              rec.best_time % 60,
+            ).padStart(2, "0")}`
+          : "—",
       };
     });
   }, [difficulties, bestRows, selectedCat]);
 
   const canPlay =
-    !loadingCats && !loadingDiffs &&
-    selectedCat !== undefined && selectedDiff !== undefined;
+    !loadingCats &&
+    !loadingDiffs &&
+    selectedCat !== undefined &&
+    selectedDiff !== undefined;
 
   const startGame = () =>
-    navigate("/play", { state: { categoryId: selectedCat!, difficultyId: selectedDiff! } });
+    navigate("/play", {
+      state: { categoryId: selectedCat!, difficultyId: selectedDiff! },
+    });
 
   /* ─── render ─────────────────────────────────── */
   return (
@@ -96,17 +123,20 @@ export default function StartScreen() {
               Your best results
             </h2>
 
-            {/* category picker for table */}
+            {/* category picker */}
             <select
               className="border border-gray-400 rounded bg-white text-black text-xs sm:text-sm px-2 py-1 mb-4"
               value={selectedCat}
-              onChange={e => setSelectedCat(Number(e.target.value))}
+              onChange={(e) => setSelectedCat(Number(e.target.value))}
             >
-              {categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
               ))}
             </select>
 
+            {/* results table */}
             {bestLoading ? (
               <p>Loading…</p>
             ) : (
@@ -119,7 +149,7 @@ export default function StartScreen() {
                   </tr>
                 </thead>
                 <tbody>
-                  {tableRows.map(row => (
+                  {tableRows.map((row) => (
                     <tr key={row.diffName}>
                       <td className="py-1 px-2">{row.diffName}</td>
                       <td className="py-1 px-2">{row.score}</td>
@@ -129,6 +159,16 @@ export default function StartScreen() {
                 </tbody>
               </table>
             )}
+
+            {/* change nickname */}
+            {profile && profile.nickname && (
+              <button
+                onClick={() => setShowNick(true)}
+                className="mt-2 text-xs underline opacity-70 hover:opacity-100"
+              >
+                Change nickname
+              </button>
+            )}
           </section>
         )}
 
@@ -136,38 +176,52 @@ export default function StartScreen() {
         <section className="w-full lg:w-2/3 flex flex-col items-center">
           <h1 className="title mb-4">Hard&nbsp;Quiz</h1>
 
-          {/* form container to limit width */}
+          {/* selectors */}
           <div className="w-full max-w-md">
-            {/* category for game */}
             <label className="select-wrapper">
               <span>Select category</span>
               <select
                 value={selectedCat ?? ""}
-                onChange={e => setSelectedCat(e.target.value ? Number(e.target.value) : undefined)}
+                onChange={(e) =>
+                  setSelectedCat(
+                    e.target.value ? Number(e.target.value) : undefined,
+                  )
+                }
               >
-                <option value="" disabled>-- Choose category --</option>
-                {categories.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
+                <option value="" disabled>
+                  -- Choose category --
+                </option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
                 ))}
               </select>
             </label>
 
-            {/* difficulty */}
             <label className="select-wrapper">
               <span>Select level</span>
               <select
                 value={selectedDiff ?? ""}
-                onChange={e => setSelectedDiff(e.target.value ? Number(e.target.value) : undefined)}
+                onChange={(e) =>
+                  setSelectedDiff(
+                    e.target.value ? Number(e.target.value) : undefined,
+                  )
+                }
               >
-                <option value="" disabled>-- Choose level --</option>
-                {difficulties.map(d => (
-                  <option key={d.id} value={d.id}>{d.name}</option>
+                <option value="" disabled>
+                  -- Choose level --
+                </option>
+                {difficulties.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
+                  </option>
                 ))}
               </select>
             </label>
           </div>
 
-          {/* buttons block */}
+          {/* buttons */}
           <div className="flex gap-4 mt-6">
             <button
               className="btn-primary"
@@ -177,10 +231,10 @@ export default function StartScreen() {
               {loadingCats || loadingDiffs ? "Loading…" : "Play"}
             </button>
 
-            {!authLoading && (
-              !user ? (
+            {!authLoading &&
+              (!user ? (
                 <button
-                  onClick={() => navigate("/login")}
+                  onClick={() => setShowLogin(true)}
                   className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150"
                 >
                   Log in
@@ -192,10 +246,10 @@ export default function StartScreen() {
                 >
                   Log out
                 </button>
-              )
-            )}
+              ))}
           </div>
-           {/* ссылка «How to play» */}
+
+          {/* how-to-play */}
           <div className="mt-4">
             <Link
               to="/how-to-play"
@@ -206,6 +260,15 @@ export default function StartScreen() {
           </div>
         </section>
       </div>
+
+      {/* ---------- Modals ---------- */}
+      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
+
+      <NicknameModal
+        open={showNick}
+        onClose={() => setShowNick(false)}
+        prefill={localStorage.getItem("pre_nickname") || ""}
+      />
     </>
   );
 }
