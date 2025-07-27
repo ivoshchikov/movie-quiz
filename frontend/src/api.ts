@@ -193,3 +193,11 @@ export async function upsertProfile(
   if (error) throw error;
   return data;
 }
+/* --- CHECK NICKNAME --------------------------------------------------- */
+export async function isNicknameTaken(nick: string): Promise<boolean> {
+  const { data, error } = await supabase.rpc("is_nickname_taken", {
+    p_nick: nick,
+  });
+  if (error) throw error;
+  return !!data;
+}
