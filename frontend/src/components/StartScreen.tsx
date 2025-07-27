@@ -21,24 +21,24 @@ export default function StartScreen() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
 
-  /* ─── dictionaries ───────────────────────────── */
+  /* ─── dictionaries ──────────────────────────── */
   const [categories,   setCategories]   = useState<Category[]>([]);
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
   const [loadingCats,  setLoadingCats]  = useState(true);
   const [loadingDiffs, setLoadingDiffs] = useState(true);
 
-  /* ─── user best rows ─────────────────────────── */
+  /* ─── best rows ─────────────────────────────── */
   const [bestRows,    setBestRows]    = useState<UserBestRow[]>([]);
   const [bestLoading, setBestLoading] = useState(false);
 
-  /* ─── ui state ───────────────────────────────── */
+  /* ─── ui state ──────────────────────────────── */
   const [selectedCat,  setSelectedCat]  = useState<number>(DEFAULT_CAT_ID);
   const [selectedDiff, setSelectedDiff] = useState<number>();
   const [showLogin, setShowLogin] = useState(false);
   const [showNick,  setShowNick]  = useState(false);
   const [profile,   setProfile]   = useState<{ nickname: string | null } | null>(null);
 
-  /* ─── load dictionaries once ─────────────────── */
+  /* ─── load dictionaries once ────────────────── */
   useEffect(() => {
     getCategories()
       .then((data) => {
@@ -55,7 +55,7 @@ export default function StartScreen() {
       .finally(() => setLoadingDiffs(false));
   }, []);
 
-  /* ─── profile + best rows (on login) ─────────── */
+  /* ─── profile + best rows ───────────────────── */
   useEffect(() => {
     if (!user) {
       setProfile(null);
@@ -72,12 +72,12 @@ export default function StartScreen() {
       .finally(() => setBestLoading(false));
   }, [user]);
 
-  /* ─── show Nickname modal if needed ───────────── */
+  /* ─── open Nickname modal if needed ─────────── */
   useEffect(() => {
     if (user && profile && !profile.nickname) setShowNick(true);
   }, [user, profile]);
 
-  /* ─── helpers ────────────────────────────────── */
+  /* ─── helpers ───────────────────────────────── */
   const tableRows = useMemo(() => {
     return difficulties.map((diff) => {
       const rec = bestRows.find(
@@ -107,7 +107,7 @@ export default function StartScreen() {
       state: { categoryId: selectedCat!, difficultyId: selectedDiff! },
     });
 
-  /* ─── render ─────────────────────────────────── */
+  /* ─── render ────────────────────────────────── */
   return (
     <>
       <Seo
@@ -116,7 +116,7 @@ export default function StartScreen() {
       />
 
       <div className="flex flex-col lg:flex-row lg:gap-10 start-screen">
-        {/* ---------- LEFT 1/3 : best results ---------- */}
+        {/* ---------- LEFT : best results ---------- */}
         {user && (
           <section className="w-full lg:w-1/3">
             <h2 className="text-xl sm:text-2xl font-semibold mb-3">
@@ -161,7 +161,7 @@ export default function StartScreen() {
             )}
 
             {/* change nickname */}
-            {profile && profile.nickname && (
+            {profile?.nickname && (
               <button
                 onClick={() => setShowNick(true)}
                 className="mt-2 text-xs underline opacity-70 hover:opacity-100"
@@ -172,7 +172,7 @@ export default function StartScreen() {
           </section>
         )}
 
-        {/* ---------- RIGHT 2/3 : game setup ---------- */}
+        {/* ---------- RIGHT : game setup ---------- */}
         <section className="w-full lg:w-2/3 flex flex-col items-center">
           <h1 className="title mb-4">Hard&nbsp;Quiz</h1>
 
@@ -221,8 +221,15 @@ export default function StartScreen() {
             </label>
           </div>
 
-          {/* buttons */}
-          <div className="flex gap-4 mt-6">
+          {/* buttons + greeting */}
+          <div className="flex items-center gap-4 mt-6">
+            {/* greeting */}
+            {profile?.nickname && (
+              <span className="text-sm opacity-80">
+                Hi,&nbsp;<strong>{profile.nickname}</strong>
+              </span>
+            )}
+
             <button
               className="btn-primary"
               onClick={startGame}
@@ -268,6 +275,7 @@ export default function StartScreen() {
         open={showNick}
         onClose={() => setShowNick(false)}
         prefill={localStorage.getItem("pre_nickname") || ""}
+        onSaved={(n) => setProfile((p) => (p ? { ...p, nickname: n } : p))}
       />
     </>
   );
