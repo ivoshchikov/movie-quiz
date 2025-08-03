@@ -2,11 +2,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
+import Layout             from "./components/Layout";          // ← NEW
 import StartScreen        from "./components/StartScreen";
 import GameScreen         from "./components/GameScreen";
 import ResultScreen       from "./components/ResultScreen";
-import HowToPlay         from "./components/HowToPlay";
-import LoginScreen        from "./components/LoginScreen";
+import HowToPlay          from "./components/HowToPlay";
 import ProfileSetupScreen from "./components/ProfileSetupScreen";
 import PrivateRoute       from "./PrivateRoute";
 
@@ -23,23 +23,28 @@ export default function App() {
       </Helmet>
 
       <Routes>
-        {/* Static rules/SEO page */}
-        <Route path="/how-to-play" element={<HowToPlay />} />
-        {/* Public */}
-        <Route path="/login"         element={<LoginScreen />} />
-        <Route path="/setup-profile" element={<ProfileSetupScreen />} />
-        <Route path="/"              element={<StartScreen />} />
-        <Route path="/play"          element={<GameScreen />} />
-        <Route path="/result"        element={<ResultScreen />} />
+        {/* ── всё внутри общего Layout ── */}
+        <Route element={<Layout />}>
+          {/* главная */}
+          <Route index element={<StartScreen />} />
 
-        {/* Protected (появятся позже) */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/daily"       element={<div>Daily…</div>} />
-          <Route path="/leaderboard" element={<div>Leaderboard…</div>} />
+          {/* статическая страница правил */}
+          <Route path="how-to-play" element={<HowToPlay />} />
+
+          {/* публичные */}
+          <Route path="setup-profile" element={<ProfileSetupScreen />} />
+          <Route path="play"          element={<GameScreen />} />
+          <Route path="result"        element={<ResultScreen />} />
+
+          {/* защищённые (появятся позже) */}
+          <Route element={<PrivateRoute />}>
+            <Route path="daily"       element={<div>Daily…</div>} />
+            <Route path="leaderboard" element={<div>Leaderboard…</div>} />
+          </Route>
+
+          {/* fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
-
-        {/* everything else → home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );
