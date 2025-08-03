@@ -12,31 +12,30 @@ import {
 } from "../api";
 import { useAuth } from "../AuthContext";
 import Seo from "./Seo";
-import LoginModal    from "./LoginModal";
 import NicknameModal from "./NicknameModal";
 
 const DEFAULT_CAT_ID = 1; // «General»
 
 export default function StartScreen() {
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   /* ─── dictionaries ──────────────────────────── */
-  const [categories,   setCategories]   = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
-  const [loadingCats,  setLoadingCats]  = useState(true);
+  const [loadingCats, setLoadingCats] = useState(true);
   const [loadingDiffs, setLoadingDiffs] = useState(true);
 
   /* ─── best rows ─────────────────────────────── */
-  const [bestRows,    setBestRows]    = useState<UserBestRow[]>([]);
+  const [bestRows, setBestRows] = useState<UserBestRow[]>([]);
   const [bestLoading, setBestLoading] = useState(false);
 
   /* ─── ui state ──────────────────────────────── */
-  const [selectedCat,  setSelectedCat]  = useState<number>(DEFAULT_CAT_ID);
+  const [selectedCat, setSelectedCat] = useState<number>(DEFAULT_CAT_ID);
   const [selectedDiff, setSelectedDiff] = useState<number>();
-  const [showLogin, setShowLogin] = useState(false);
-  const [showNick,  setShowNick]  = useState(false);
-  const [profile,   setProfile]   = useState<{ nickname: string | null } | null>(null);
+  const [showNick, setShowNick] = useState(false);
+  const [profile, setProfile] =
+    useState<{ nickname: string | null } | null>(null);
 
   /* ─── load dictionaries once ────────────────── */
   useEffect(() => {
@@ -62,7 +61,6 @@ export default function StartScreen() {
       setBestRows([]);
       return;
     }
-
     getProfile(user.id).then(setProfile).catch(console.error);
 
     setBestLoading(true);
@@ -115,7 +113,7 @@ export default function StartScreen() {
         description="Choose a category and difficulty level to start guessing movie posters!"
       />
 
-      <div className="flex flex-col lg:flex-row lg:gap-10 start-screen">
+      <div className="start-screen lg:flex-row lg:gap-10">
         {/* ---------- LEFT : best results ---------- */}
         {user && (
           <section className="w-full lg:w-1/3">
@@ -123,7 +121,6 @@ export default function StartScreen() {
               Your best results
             </h2>
 
-            {/* category picker */}
             <select
               className="border border-gray-400 rounded bg-white text-black text-xs sm:text-sm px-2 py-1 mb-4"
               value={selectedCat}
@@ -136,7 +133,6 @@ export default function StartScreen() {
               ))}
             </select>
 
-            {/* results table */}
             {bestLoading ? (
               <p>Loading…</p>
             ) : (
@@ -160,7 +156,6 @@ export default function StartScreen() {
               </table>
             )}
 
-            {/* change nickname */}
             {profile?.nickname && (
               <button
                 onClick={() => setShowNick(true)}
@@ -221,40 +216,14 @@ export default function StartScreen() {
             </label>
           </div>
 
-          {/* buttons + greeting */}
-          <div className="flex items-center gap-4 mt-6">
-            {/* greeting */}
-            {profile?.nickname && (
-              <span className="text-sm opacity-80">
-                Hi,&nbsp;<strong>{profile.nickname}</strong>
-              </span>
-            )}
-
-            <button
-              className="btn-primary"
-              onClick={startGame}
-              disabled={!canPlay}
-            >
-              {loadingCats || loadingDiffs ? "Loading…" : "Play"}
-            </button>
-
-            {!authLoading &&
-              (!user ? (
-                <button
-                  onClick={() => setShowLogin(true)}
-                  className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150"
-                >
-                  Log in
-                </button>
-              ) : (
-                <button
-                  onClick={signOut}
-                  className="px-6 py-3 text-base font-medium rounded-md border border-white hover:opacity-80 transition-opacity duration-150"
-                >
-                  Log out
-                </button>
-              ))}
-          </div>
+          {/* play button */}
+          <button
+            className="btn-primary mt-6"
+            onClick={startGame}
+            disabled={!canPlay}
+          >
+            {loadingCats || loadingDiffs ? "Loading…" : "Play"}
+          </button>
 
           {/* how-to-play */}
           <div className="mt-4">
@@ -268,9 +237,7 @@ export default function StartScreen() {
         </section>
       </div>
 
-      {/* ---------- Modals ---------- */}
-      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
-
+      {/* nickname modal */}
       <NicknameModal
         open={showNick}
         onClose={() => setShowNick(false)}
