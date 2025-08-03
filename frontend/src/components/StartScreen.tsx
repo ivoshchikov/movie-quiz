@@ -1,6 +1,6 @@
 // frontend/src/components/StartScreen.tsx
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
   getCategories,
   getDifficultyLevels,
@@ -11,38 +11,45 @@ import {
   UserBestRow,
 } from "../api";
 import { useAuth } from "../AuthContext";
-import Seo from "./Seo";
+import Seo           from "./Seo";
 import NicknameModal from "./NicknameModal";
 
 const DEFAULT_CAT_ID = 1; // «General»
 
 export default function StartScreen() {
   const { user, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
+  const location  = useLocation();
+  const catFromNav: number | undefined =
+    (location.state as any)?.categoryId as number | undefined;
 
-  /* ─── dictionaries ──────────────────────────── */
-  const [categories, setCategories] = useState<Category[]>([]);
+  /* ─── dictionaries ─────────────────────────── */
+  const [categories,   setCategories]   = useState<Category[]>([]);
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
-  const [loadingCats, setLoadingCats] = useState(true);
+  const [loadingCats,  setLoadingCats]  = useState(true);
   const [loadingDiffs, setLoadingDiffs] = useState(true);
 
-  /* ─── best rows ─────────────────────────────── */
-  const [bestRows, setBestRows] = useState<UserBestRow[]>([]);
+  /* ─── best rows ────────────────────────────── */
+  const [bestRows,    setBestRows]    = useState<UserBestRow[]>([]);
   const [bestLoading, setBestLoading] = useState(false);
 
-  /* ─── ui state ──────────────────────────────── */
-  const [selectedCat, setSelectedCat] = useState<number>(DEFAULT_CAT_ID);
+  /* ─── ui state ─────────────────────────────── */
+  const [selectedCat,  setSelectedCat]  = useState<number>(DEFAULT_CAT_ID);
   const [selectedDiff, setSelectedDiff] = useState<number>();
-  const [showNick, setShowNick] = useState(false);
-  const [profile, setProfile] =
+  const [showNick,     setShowNick]     = useState(false);
+  const [profile,      setProfile]      =
     useState<{ nickname: string | null } | null>(null);
 
-  /* ─── load dictionaries once ────────────────── */
+  /* ─── 1) загрузка справочников ─────────────── */
   useEffect(() => {
     getCategories()
       .then((data) => {
         setCategories(data);
-        if (!data.find((c) => c.id === DEFAULT_CAT_ID) && data.length)
+
+        // применяем категорию из URL, если есть
+        if (catFromNav && data.some((c) => c.id === catFromNav))
+          setSelectedCat(catFromNav);
+        else if (!data.some((c) => c.id === DEFAULT_CAT_ID) && data.length)
           setSelectedCat(data[0].id);
       })
       .catch(console.error)
@@ -52,15 +59,23 @@ export default function StartScreen() {
       .then(setDifficulties)
       .catch(console.error)
       .finally(() => setLoadingDiffs(false));
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // один раз при загрузке
 
-  /* ─── profile + best rows ───────────────────── */
+  /* ─── 2) реагируем на повторные клики в шапке ─ */
+  useEffect(() => {
+    if (catFromNav && categories.some((c) => c.id === catFromNav))
+      setSelectedCat(catFromNav);
+  }, [catFromNav, categories]);
+
+  /* ─── 3) профиль + лучшие результаты ────────── */
   useEffect(() => {
     if (!user) {
       setProfile(null);
       setBestRows([]);
       return;
     }
+
     getProfile(user.id).then(setProfile).catch(console.error);
 
     setBestLoading(true);
@@ -70,12 +85,12 @@ export default function StartScreen() {
       .finally(() => setBestLoading(false));
   }, [user]);
 
-  /* ─── open Nickname modal if needed ─────────── */
+  /* ─── 4) показать модалку, если нет ника ─────── */
   useEffect(() => {
     if (user && profile && !profile.nickname) setShowNick(true);
   }, [user, profile]);
 
-  /* ─── helpers ───────────────────────────────── */
+  /* ─── helpers: строки таблицы ───────────────── */
   const tableRows = useMemo(() => {
     return difficulties.map((diff) => {
       const rec = bestRows.find(
@@ -84,8 +99,8 @@ export default function StartScreen() {
       );
       return {
         diffName: diff.name,
-        score: rec?.best_score ?? "—",
-        time: rec
+        score:    rec?.best_score ?? "—",
+        time:     rec
           ? `${String(Math.floor(rec.best_time / 60)).padStart(2, "0")}:${String(
               rec.best_time % 60,
             ).padStart(2, "0")}`
@@ -105,7 +120,7 @@ export default function StartScreen() {
       state: { categoryId: selectedCat!, difficultyId: selectedDiff! },
     });
 
-  /* ─── render ────────────────────────────────── */
+  /* ─── render ───────────────────────────────── */
   return (
     <>
       <Seo
@@ -121,6 +136,7 @@ export default function StartScreen() {
               Your best results
             </h2>
 
+            {/* выбор категории для таблицы */}
             <select
               className="border border-gray-400 rounded bg-white text-black text-xs sm:text-sm px-2 py-1 mb-4"
               value={selectedCat}
@@ -133,6 +149,7 @@ export default function StartScreen() {
               ))}
             </select>
 
+            {/* таблица результатов */}
             {bestLoading ? (
               <p>Loading…</p>
             ) : (
@@ -156,6 +173,7 @@ export default function StartScreen() {
               </table>
             )}
 
+            {/* смена ника */}
             {profile?.nickname && (
               <button
                 onClick={() => setShowNick(true)}
@@ -171,8 +189,8 @@ export default function StartScreen() {
         <section className="w-full lg:w-2/3 flex flex-col items-center">
           <h1 className="title mb-4">Hard&nbsp;Quiz</h1>
 
-          {/* selectors */}
           <div className="w-full max-w-md">
+            {/* category */}
             <label className="select-wrapper">
               <span>Select category</span>
               <select
@@ -194,6 +212,7 @@ export default function StartScreen() {
               </select>
             </label>
 
+            {/* difficulty */}
             <label className="select-wrapper">
               <span>Select level</span>
               <select
