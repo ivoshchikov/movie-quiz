@@ -1,13 +1,13 @@
 // frontend/src/components/Layout.tsx
 import { Fragment, useEffect, useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
-import { getCategories, getProfile, Category } from "../api";
+import { getProfile } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
 
 export default function Layout() {
-  /* ── auth ───────────────────────────────────── */
+  /* ─── auth ─────────────────────────────── */
   const { user, signOut } = useAuth();
   const [profile, setProfile] =
     useState<{ nickname: string | null } | null>(null);
@@ -18,51 +18,21 @@ export default function Layout() {
     getProfile(user.id).then(setProfile).catch(console.error);
   }, [user]);
 
-  /* ── categories ─────────────────────────────── */
-  const [cats, setCats] = useState<Category[]>([]);
-  useEffect(() => {
-    getCategories().then(setCats).catch(console.error);
-  }, []);
-
-  /* ── active category from router state ──────── */
-  const activeId: number | undefined =
-    (useLocation().state as any)?.categoryId;
-
   const year = new Date().getFullYear();
-
-  /* helper для классов ссылок */
-  const navCls = (id?: number) =>
-    `block px-4 py-2 text-sm hover:text-indigo-400 ${
-      activeId === id ? "font-semibold text-indigo-400" : ""
-    }`;
+  const itemCls = "block px-4 py-2 text-sm hover:text-indigo-400";
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
-      {/* ────────── HEADER ────────── */}
+      {/* ── Header ───────────────────────────────────── */}
       <header className="sticky top-0 z-30 h-14 bg-[#0d0d0d]/95 backdrop-blur shadow-md">
         <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between px-4">
           {/* logo */}
-          <Link to="/" className="whitespace-nowrap text-xl font-bold">
+          <Link to="/" className="text-xl font-bold whitespace-nowrap">
             Hard&nbsp;Quiz
           </Link>
 
-          {/* ── Desktop nav ───────────────── */}
+          {/* ---------- Desktop nav (без категорий) ---------- */}
           <nav className="hidden items-center space-x-6 text-sm md:flex">
-            {cats.map((c) => (
-              <Link
-                key={c.id}
-                to="/"
-                state={{ categoryId: c.id }}
-                className={
-                  activeId === c.id
-                    ? "border-b-2 border-indigo-500 pb-[2px] font-semibold"
-                    : "hover:text-indigo-400"
-                }
-              >
-                {c.name}
-              </Link>
-            ))}
-
             <Link to="/how-to-play" className="hover:text-indigo-400">
               Rules
             </Link>
@@ -89,7 +59,7 @@ export default function Layout() {
             )}
           </nav>
 
-          {/* ── Mobile burger ─────────────── */}
+          {/* ---------- Mobile burger (без категорий) ---------- */}
           <Menu as="div" className="relative md:hidden">
             <Menu.Button className="inline-flex items-center justify-center p-2">
               <svg
@@ -113,30 +83,10 @@ export default function Layout() {
               leaveTo="opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black/50 focus:outline-none">
-                {/* categories */}
-                {cats.map((c) => (
-                  <Menu.Item key={c.id} as={Fragment}>
-                    {({ close }) => (
-                      <Link
-                        to="/"
-                        state={{ categoryId: c.id }}
-                        onClick={() => close()}
-                        className={navCls(c.id)}
-                      >
-                        {c.name}
-                      </Link>
-                    )}
-                  </Menu.Item>
-                ))}
-
                 {/* rules */}
                 <Menu.Item as={Fragment}>
                   {({ close }) => (
-                    <Link
-                      to="/how-to-play"
-                      onClick={() => close()}
-                      className={navCls()}
-                    >
+                    <Link to="/how-to-play" onClick={() => close()} className={itemCls}>
                       Rules
                     </Link>
                   )}
@@ -153,7 +103,7 @@ export default function Layout() {
                           close();
                           setShowLogin(true);
                         }}
-                        className={navCls()}
+                        className={itemCls}
                       >
                         Log&nbsp;in
                       </button>
@@ -173,7 +123,7 @@ export default function Layout() {
                             close();
                             signOut();
                           }}
-                          className={navCls()}
+                          className={itemCls}
                         >
                           Log&nbsp;out
                         </button>
@@ -187,19 +137,22 @@ export default function Layout() {
         </div>
       </header>
 
-      {/* ────────── MAIN ────────── */}
+      {/* ── Main ───────────────────────────── */}
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
         <Outlet />
       </main>
 
-      {/* ────────── FOOTER ───────── */}
-      <footer className="bg-gray-900 py-4 text-sm">
-        <div className="mx-auto w-full max-w-6xl px-4 text-center sm:text-left">
-          © {year}&nbsp;Hard&nbsp;Quiz
+      {/* ── Footer ─────────────────────────── */}
+      <footer className="border-t border-white/10 bg-[#0d0d0d]">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-6 text-sm opacity-70">
+          <span>© {year} Hard Quiz</span>
+          <Link to="/how-to-play" className="hover:opacity-100">
+            Rules
+          </Link>
         </div>
       </footer>
 
-      {/* login modal */}
+      {/* ── Auth modal ─────────────────────── */}
       <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
     </div>
   );
