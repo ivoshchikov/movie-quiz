@@ -69,8 +69,6 @@ export async function getDifficultyLevels(): Promise<DifficultyLevel[]> {
 /* ────────────────────────────────────────────────────────────
    USER BEST RESULTS  (NEW)
 ───────────────────────────────────────────────────────────── */
-/** Возвращает ВСЕ best-результаты текущего авторизованного пользователя.  
- *  RLS-политика в БД уже ограничивает выборку «только мои строки». */
 export async function getMyBest(): Promise<UserBestRow[]> {
   const { data, error } = await supabase
     .from<UserBestRow>("user_best")
@@ -91,7 +89,6 @@ export async function getQuestion(
   categoryId?: number,
   difficultyId?: number,
 ): Promise<Question> {
-  /* 1️⃣ — выбираем подходящие строки */
   let query = supabase
     .from<{
       id: number;
@@ -121,10 +118,8 @@ export async function getQuestion(
     throw new Error("no-more-questions");
   }
 
-  /* 2️⃣ — случайный вопрос */
   const raw = all[Math.floor(Math.random() * all.length)];
 
-  /* 3️⃣ — конвертируем путь к изображению в public-URL */
   const key = raw.image_url.replace(/^\/?posters\//, "");
   const { data: urlData, error: urlError } = supabase.storage
     .from("movies")
@@ -133,7 +128,6 @@ export async function getQuestion(
   if (urlError) console.error("Failed to get publicUrl for", raw.image_url, urlError);
   const publicUrl = urlData?.publicUrl ?? raw.image_url;
 
-  /* 4️⃣ — парсим options_json */
   const opts: string[] = Array.isArray(raw.options_json)
     ? (raw.options_json as string[])
     : JSON.parse(raw.options_json as string);
@@ -168,7 +162,7 @@ export async function checkAnswer(
 }
 
 /* ────────────────────────────────────────────────────────────
-   PROFILE HELPERS  (unchanged)
+   PROFILE HELPERS
 ───────────────────────────────────────────────────────────── */
 export async function getProfile(userId: string) {
   const { data, error } = await supabase
@@ -193,6 +187,7 @@ export async function upsertProfile(
   if (error) throw error;
   return data;
 }
+
 /* --- CHECK NICKNAME --------------------------------------------------- */
 export async function isNicknameTaken(nick: string): Promise<boolean> {
   const { data, error } = await supabase.rpc("is_nickname_taken", {
@@ -202,23 +197,17 @@ export async function isNicknameTaken(nick: string): Promise<boolean> {
   return !!data;
 }
 
-/* ────────────────────────────────────────────────────────────
-   QUESTIONS: COUNT FOR CATEGORY × DIFFICULTY  (NEW)
-───────────────────────────────────────────────────────────── */
+/* --- COUNT QUESTIONS for category + difficulty ------------------------ */
 export async function countQuestions(
   categoryId: number,
-  difficultyId?: number
+  difficultyId: number,
 ): Promise<number> {
-  let query = supabase
+  const { count, error } = await supabase
     .from("question")
     .select("id", { count: "exact", head: true })
-    .eq("category_id", categoryId);
+    .eq("category_id", categoryId)
+    .eq("difficulty_level_id", difficultyId);
 
-  if (difficultyId != null) {
-    query = query.eq("difficulty_level_id", difficultyId);
-  }
-
-  const { count, error } = await query;
   if (error) throw error;
   return count ?? 0;
 }

@@ -43,15 +43,13 @@ export default function StartScreen() {
   const [profile,      setProfile]      =
     useState<{ nickname: string | null } | null>(null);
 
-  /* NEW: availability for selected pair */
-  const [qCount, setQCount] = useState<number | null>(null);
-  const [qCountLoading, setQCountLoading] = useState(false);
+  /* ─── availability ─────────────────────────── */
+  const [qCount, setQCount] = useState<number | null>(null); // null = неизвестно
 
   /* ─── 1) загрузка справочников ─────────────── */
   useEffect(() => {
     getCategories()
       .then((data) => {
-        // фиксируем порядок: Actors, Actresses, All movies, TV series
         const withOrder = [...data].sort((a, b) => {
           const ia = CATEGORY_ORDER.indexOf(a.name as any);
           const ib = CATEGORY_ORDER.indexOf(b.name as any);
@@ -104,19 +102,17 @@ export default function StartScreen() {
     if (user && profile && !profile.nickname) setShowNick(true);
   }, [user, profile]);
 
-  /* ─── 5) проверяем наличие вопросов для выбранной пары ─ */
+  /* ─── 5) считаем доступность вопросов для выбранной пары ─ */
   useEffect(() => {
-    if (selectedCat == null || selectedDiff == null) {
-      setQCount(null);
-      return;
+    setQCount(null); // сбрасываем индикатор
+    if (selectedCat && selectedDiff) {
+      countQuestions(selectedCat, selectedDiff)
+        .then((n) => setQCount(n))
+        .catch((e) => {
+          console.error(e);
+          setQCount(0);
+        });
     }
-    let cancelled = false;
-    setQCountLoading(true);
-    countQuestions(selectedCat, selectedDiff)
-      .then((n) => { if (!cancelled) setQCount(n); })
-      .catch((e) => { console.error(e); if (!cancelled) setQCount(0); })
-      .finally(() => { if (!cancelled) setQCountLoading(false); });
-    return () => { cancelled = true; };
   }, [selectedCat, selectedDiff]);
 
   /* ─── helpers: строки таблицы ───────────────── */
@@ -138,12 +134,22 @@ export default function StartScreen() {
     });
   }, [difficulties, bestRows, selectedCat]);
 
+  const isAvailable = qCount == null ? true : qCount > 0;
   const canPlay =
     !loadingCats &&
     !loadingDiffs &&
     selectedCat !== undefined &&
     selectedDiff !== undefined &&
-    (qCount ?? 0) > 0; // ← должно быть > 0
+    isAvailable;
+
+  const playText =
+    loadingCats || loadingDiffs
+      ? "Loading…"
+      : selectedDiff == null
+      ? "Play"
+      : isAvailable
+      ? "Play"
+      : "Coming soon";
 
   const startGame = () =>
     navigate("/play", {
@@ -256,29 +262,16 @@ export default function StartScreen() {
                 </div>
               </RadioGroup>
             </div>
-
-            {/* availability note */}
-            {selectedDiff != null && qCountLoading && (
-              <p className="mt-2 text-sm opacity-70">Checking availability…</p>
-            )}
-            {selectedDiff != null && !qCountLoading && (qCount ?? 0) === 0 && (
-              <p className="mt-2 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-300">
-                This category & level are in progress. Please try another combination — we’re adding questions soon.
-              </p>
-            )}
           </div>
 
           {/* play button */}
           <button
-            className="btn-primary mt-6 disabled:cursor-not-allowed"
+            className="btn-primary mt-6 disabled:opacity-70"
             onClick={startGame}
             disabled={!canPlay}
+            title={!isAvailable && selectedCat && selectedDiff ? "No questions yet" : undefined}
           >
-            {loadingCats || loadingDiffs
-              ? "Loading…"
-              : selectedDiff != null && (qCount ?? 0) === 0
-              ? "Coming soon"
-              : "Play"}
+            {playText}
           </button>
 
           {/* how-to-play */}
