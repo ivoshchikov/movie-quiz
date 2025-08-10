@@ -1,6 +1,7 @@
 // frontend/src/components/StartScreen.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { RadioGroup } from "@headlessui/react";
 import {
   getCategories,
   getDifficultyLevels,
@@ -15,9 +16,10 @@ import Seo           from "./Seo";
 import NicknameModal from "./NicknameModal";
 
 const DEFAULT_CAT_ID = 1; // «General»
+const CATEGORY_ORDER = ["Actors", "Actresses", "All movies", "TV series"] as const;
 
 export default function StartScreen() {
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const navigate  = useNavigate();
   const location  = useLocation();
   const catFromNav: number | undefined =
@@ -44,13 +46,20 @@ export default function StartScreen() {
   useEffect(() => {
     getCategories()
       .then((data) => {
-        setCategories(data);
+        // фиксируем порядок: Actors, Actresses, All movies, TV series
+        const withOrder = [...data].sort((a, b) => {
+          const ia = CATEGORY_ORDER.indexOf(a.name as any);
+          const ib = CATEGORY_ORDER.indexOf(b.name as any);
+          const da = ia === -1 ? 999 : ia;
+          const db = ib === -1 ? 999 : ib;
+          return da - db || a.name.localeCompare(b.name);
+        });
+        setCategories(withOrder);
 
-        // применяем категорию из URL, если есть
-        if (catFromNav && data.some((c) => c.id === catFromNav))
+        if (catFromNav && withOrder.some((c) => c.id === catFromNav))
           setSelectedCat(catFromNav);
-        else if (!data.some((c) => c.id === DEFAULT_CAT_ID) && data.length)
-          setSelectedCat(data[0].id);
+        else if (!withOrder.some((c) => c.id === DEFAULT_CAT_ID) && withOrder.length)
+          setSelectedCat(withOrder[0].id);
       })
       .catch(console.error)
       .finally(() => setLoadingCats(false));
@@ -60,7 +69,7 @@ export default function StartScreen() {
       .catch(console.error)
       .finally(() => setLoadingDiffs(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // один раз при загрузке
+  }, []);
 
   /* ─── 2) реагируем на повторные клики в шапке ─ */
   useEffect(() => {
@@ -120,6 +129,17 @@ export default function StartScreen() {
       state: { categoryId: selectedCat!, difficultyId: selectedDiff! },
     });
 
+  const selectedCatName =
+    categories.find((c) => c.id === selectedCat)?.name ?? "—";
+
+  const pillCls = (checked: boolean) =>
+    [
+      "px-3 py-1.5 rounded-full text-sm border transition",
+      checked
+        ? "bg-indigo-600 border-indigo-600 text-white"
+        : "border-gray-500 hover:border-indigo-400",
+    ].join(" ");
+
   /* ─── render ───────────────────────────────── */
   return (
     <>
@@ -132,24 +152,11 @@ export default function StartScreen() {
         {/* ---------- LEFT : best results ---------- */}
         {user && (
           <section className="w-full lg:w-1/3">
-            <h2 className="text-xl sm:text-2xl font-semibold mb-3">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-1">
               Your best results
             </h2>
+            <p className="mb-3 text-sm opacity-70">Category: {selectedCatName}</p>
 
-            {/* выбор категории для таблицы */}
-            <select
-              className="border border-gray-400 rounded bg-white text-black text-xs sm:text-sm px-2 py-1 mb-4"
-              value={selectedCat}
-              onChange={(e) => setSelectedCat(Number(e.target.value))}
-            >
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-
-            {/* таблица результатов */}
             {bestLoading ? (
               <p>Loading…</p>
             ) : (
@@ -173,7 +180,6 @@ export default function StartScreen() {
               </table>
             )}
 
-            {/* смена ника */}
             {profile?.nickname && (
               <button
                 onClick={() => setShowNick(true)}
@@ -187,52 +193,48 @@ export default function StartScreen() {
 
         {/* ---------- RIGHT : game setup ---------- */}
         <section className="w-full lg:w-2/3 flex flex-col items-center">
-          <h1 className="title mb-4">Hard&nbsp;Quiz</h1>
+          <div className="w-full max-w-md space-y-4 text-center">
+            {/* категории — сегмент-кнопки */}
+            <div className="flex flex-col items-center gap-2">
+              <span className="font-medium text-lg">Select category</span>
+              <RadioGroup value={selectedCat} onChange={setSelectedCat}>
+                <RadioGroup.Label className="sr-only">
+                  Select category
+                </RadioGroup.Label>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {categories.map((c) => (
+                    <RadioGroup.Option key={c.id} value={c.id}>
+                      {({ checked }) => (
+                        <button type="button" className={pillCls(checked)}>
+                          {c.name}
+                        </button>
+                      )}
+                    </RadioGroup.Option>
+                  ))}
+                </div>
+              </RadioGroup>
+            </div>
 
-          <div className="w-full max-w-md">
-            {/* category */}
-            <label className="select-wrapper">
-              <span>Select category</span>
-              <select
-                value={selectedCat ?? ""}
-                onChange={(e) =>
-                  setSelectedCat(
-                    e.target.value ? Number(e.target.value) : undefined,
-                  )
-                }
-              >
-                <option value="" disabled>
-                  -- Choose category --
-                </option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            {/* difficulty */}
-            <label className="select-wrapper">
-              <span>Select level</span>
-              <select
-                value={selectedDiff ?? ""}
-                onChange={(e) =>
-                  setSelectedDiff(
-                    e.target.value ? Number(e.target.value) : undefined,
-                  )
-                }
-              >
-                <option value="" disabled>
-                  -- Choose level --
-                </option>
-                {difficulties.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {/* уровни сложности — сегмент-кнопки */}
+            <div className="flex flex-col items-center gap-2">
+              <span className="font-medium text-lg">Select level</span>
+              <RadioGroup value={selectedDiff} onChange={setSelectedDiff}>
+                <RadioGroup.Label className="sr-only">
+                  Select level
+                </RadioGroup.Label>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {difficulties.map((d) => (
+                    <RadioGroup.Option key={d.id} value={d.id}>
+                      {({ checked }) => (
+                        <button type="button" className={pillCls(checked)}>
+                          {d.name}
+                        </button>
+                      )}
+                    </RadioGroup.Option>
+                  ))}
+                </div>
+              </RadioGroup>
+            </div>
           </div>
 
           {/* play button */}
