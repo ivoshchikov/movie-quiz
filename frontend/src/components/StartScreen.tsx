@@ -7,6 +7,7 @@ import {
   getDifficultyLevels,
   getMyBest,
   getProfile,
+  countQuestions,               // ← NEW
   Category,
   DifficultyLevel,
   UserBestRow,
@@ -41,6 +42,10 @@ export default function StartScreen() {
   const [showNick,     setShowNick]     = useState(false);
   const [profile,      setProfile]      =
     useState<{ nickname: string | null } | null>(null);
+
+  /* NEW: availability for selected pair */
+  const [qCount, setQCount] = useState<number | null>(null);
+  const [qCountLoading, setQCountLoading] = useState(false);
 
   /* ─── 1) загрузка справочников ─────────────── */
   useEffect(() => {
@@ -99,6 +104,21 @@ export default function StartScreen() {
     if (user && profile && !profile.nickname) setShowNick(true);
   }, [user, profile]);
 
+  /* ─── 5) проверяем наличие вопросов для выбранной пары ─ */
+  useEffect(() => {
+    if (selectedCat == null || selectedDiff == null) {
+      setQCount(null);
+      return;
+    }
+    let cancelled = false;
+    setQCountLoading(true);
+    countQuestions(selectedCat, selectedDiff)
+      .then((n) => { if (!cancelled) setQCount(n); })
+      .catch((e) => { console.error(e); if (!cancelled) setQCount(0); })
+      .finally(() => { if (!cancelled) setQCountLoading(false); });
+    return () => { cancelled = true; };
+  }, [selectedCat, selectedDiff]);
+
   /* ─── helpers: строки таблицы ───────────────── */
   const tableRows = useMemo(() => {
     return difficulties.map((diff) => {
@@ -122,7 +142,8 @@ export default function StartScreen() {
     !loadingCats &&
     !loadingDiffs &&
     selectedCat !== undefined &&
-    selectedDiff !== undefined;
+    selectedDiff !== undefined &&
+    (qCount ?? 0) > 0; // ← должно быть > 0
 
   const startGame = () =>
     navigate("/play", {
@@ -235,15 +256,29 @@ export default function StartScreen() {
                 </div>
               </RadioGroup>
             </div>
+
+            {/* availability note */}
+            {selectedDiff != null && qCountLoading && (
+              <p className="mt-2 text-sm opacity-70">Checking availability…</p>
+            )}
+            {selectedDiff != null && !qCountLoading && (qCount ?? 0) === 0 && (
+              <p className="mt-2 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-300">
+                This category & level are in progress. Please try another combination — we’re adding questions soon.
+              </p>
+            )}
           </div>
 
           {/* play button */}
           <button
-            className="btn-primary mt-6"
+            className="btn-primary mt-6 disabled:cursor-not-allowed"
             onClick={startGame}
             disabled={!canPlay}
           >
-            {loadingCats || loadingDiffs ? "Loading…" : "Play"}
+            {loadingCats || loadingDiffs
+              ? "Loading…"
+              : selectedDiff != null && (qCount ?? 0) === 0
+              ? "Coming soon"
+              : "Play"}
           </button>
 
           {/* how-to-play */}

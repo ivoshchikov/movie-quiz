@@ -201,3 +201,24 @@ export async function isNicknameTaken(nick: string): Promise<boolean> {
   if (error) throw error;
   return !!data;
 }
+
+/* ────────────────────────────────────────────────────────────
+   QUESTIONS: COUNT FOR CATEGORY × DIFFICULTY  (NEW)
+───────────────────────────────────────────────────────────── */
+export async function countQuestions(
+  categoryId: number,
+  difficultyId?: number
+): Promise<number> {
+  let query = supabase
+    .from("question")
+    .select("id", { count: "exact", head: true })
+    .eq("category_id", categoryId);
+
+  if (difficultyId != null) {
+    query = query.eq("difficulty_level_id", difficultyId);
+  }
+
+  const { count, error } = await query;
+  if (error) throw error;
+  return count ?? 0;
+}
