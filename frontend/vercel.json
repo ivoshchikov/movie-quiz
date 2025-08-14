@@ -1,8 +1,9 @@
-cat > vercel.json <<'JSON'
+cat > frontend/vercel.json <<'JSON'
 {
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+
   "headers": [
     {
       "source": "/(sitemap\\.xml|feed\\.xml)",
@@ -12,6 +13,7 @@ cat > vercel.json <<'JSON'
       ]
     }
   ],
+
   "routes": [
     { "handle": "filesystem" },
     { "src": "/(sitemap\\.xml|feed\\.xml)", "dest": "/$1" },
