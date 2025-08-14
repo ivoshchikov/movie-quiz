@@ -1,5 +1,6 @@
 // frontend/src/components/GameScreen.tsx
 import { useEffect, useState, useMemo, useRef } from "react";
+import { shuffle } from "../utils/shuffle";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getQuestion,
@@ -190,7 +191,7 @@ export default function GameScreen() {
 
   /* ---------- shuffle options ---------- */
   const shuffledOptions = useMemo(
-    () => (q ? [...q.options].sort(() => Math.random() - 0.5) : []),
+    () => (q ? shuffle(q.options) : []),
     [q],
   );
 

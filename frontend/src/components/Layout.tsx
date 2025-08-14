@@ -2,6 +2,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
+import { Helmet } from "react-helmet-async";
 import { getProfile } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
@@ -23,6 +24,11 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
+      {/* site-wide head bits */}
+      <Helmet>
+        <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+      </Helmet>
+
       {/* ── Header ───────────────────────────────────── */}
       <header className="sticky top-0 z-30 h-14 bg-[#0d0d0d]/95 backdrop-blur shadow-md">
         <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between px-4">
@@ -33,6 +39,9 @@ export default function Layout() {
 
           {/* ---------- Desktop nav (без категорий) ---------- */}
           <nav className="hidden items-center space-x-6 text-sm md:flex">
+            <Link to="/blog" className="hover:text-indigo-400">
+              Blog
+            </Link>
             <Link to="/how-to-play" className="hover:text-indigo-400">
               Rules
             </Link>

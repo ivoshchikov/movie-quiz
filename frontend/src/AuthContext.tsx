@@ -10,7 +10,6 @@ interface AuthContextValue {
   loading: boolean;
 
   signInWithGoogle: () => Promise<void>;
-  signInWithEmail:  (email: string) => Promise<void>;
   signOut:          () => Promise<void>;
 }
 
@@ -47,7 +46,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loading,
 
     signInWithGoogle: () => auth.signInWithGoogle(),
-    signInWithEmail:  (email) => auth.signInWithEmail(email),
     signOut:          () => auth.signOut({ scope: "local" }),
   };
 
