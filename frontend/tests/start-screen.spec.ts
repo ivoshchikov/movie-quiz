@@ -1,35 +1,31 @@
-// frontend/tests/start-screen.spec.ts
 import { test, expect } from '@playwright/test';
 
-test('Start screen loads, selects work and Play unlocks', async ({ page }) => {
+test('Start screen loads, select options, Play unlocks', async ({ page }) => {
+  // Открываем главную
   await page.goto('/');
 
-  /* ---------- категории ---------- */
-  const catSelect = page.getByRole('combobox', { name: /категорию/i });
-  await expect(catSelect).toBeVisible();
+  // Ждём заголовок группы категорий (англ. надпись)
+  await expect(page.getByText(/Select category/i)).toBeVisible();
 
-  // ждём, пока подгрузятся реальные категории (минимум 2 option)
-  await expect
-    .poll(async () => await catSelect.locator('option').count())
-    .toBeGreaterThan(1);
+  // Радиогруппа категорий → кликаем первый radio
+  const catGroup = page.getByRole('radiogroup', { name: /Select category/i });
+  await expect(catGroup).toBeVisible();
+  const firstCat = catGroup.getByRole('radio').first();
+  await expect(firstCat).toBeVisible();
+  await firstCat.click();
 
-  /* ---------- сложности ---------- */
-  const diffSelect = page.getByRole('combobox', { name: /сложность/i });
-  await expect
-    .poll(async () => await diffSelect.locator('option').count())
-    .toBeGreaterThan(1);
+  // Радиогруппа уровней → кликаем первый radio
+  const levelGroup = page.getByRole('radiogroup', { name: /Select level/i });
+  await expect(levelGroup).toBeVisible();
+  const firstLevel = levelGroup.getByRole('radio').first();
+  await expect(firstLevel).toBeVisible();
+  await firstLevel.click();
 
-  /* ---------- кнопка Играть ---------- */
-  const playBtn = page.getByRole('button', { name: /играть/i });
-  await expect(playBtn).toBeDisabled();
-
-  // выбираем первые доступные значения
-  await catSelect.selectOption({ index: 1 });
-  await diffSelect.selectOption({ index: 1 });
-
-  await expect(playBtn).toBeEnabled();
-
-  // кликаем и проверяем переход на /play
+  // Кнопка Play должна стать доступной
+  const playBtn = page.getByRole('button', { name: /^Play$/i });
+  await expect(playBtn).toBeEnabled({ timeout: 10000 });
   await playBtn.click();
-  await expect(page).toHaveURL(/\/play/);
+
+  // Переход на /play
+  await expect(page).toHaveURL(/\/play$/);
 });

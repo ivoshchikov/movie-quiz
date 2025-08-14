@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
+          cache: npm
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install deps
@@ -30,16 +30,13 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # Важно: dev-серверу нужны переменные окружения.
-      # Добавь их в GitHub → Settings → Secrets and variables → Actions → New repository secret:
-      #   VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
       - name: Run tests
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: npm run test:e2e
 
-      - name: Upload HTML report
+      - name: Upload HTML report on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
