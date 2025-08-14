@@ -37,7 +37,7 @@ export default function Layout() {
             Hard&nbsp;Quiz
           </Link>
 
-          {/* ---------- Desktop nav (без категорий) ---------- */}
+          {/* ---------- Desktop nav ---------- */}
           <nav className="hidden items-center space-x-6 text-sm md:flex">
             <Link to="/blog" className="hover:text-indigo-400">
               Blog
@@ -68,7 +68,7 @@ export default function Layout() {
             )}
           </nav>
 
-          {/* ---------- Mobile burger (без категорий) ---------- */}
+          {/* ---------- Mobile burger ---------- */}
           <Menu as="div" className="relative md:hidden">
             <Menu.Button className="inline-flex items-center justify-center p-2">
               <svg
@@ -92,6 +92,15 @@ export default function Layout() {
               leaveTo="opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black/50 focus:outline-none">
+                {/* blog */}
+                <Menu.Item as={Fragment}>
+                  {({ close }) => (
+                    <Link to="/blog" onClick={() => close()} className={itemCls}>
+                      Blog
+                    </Link>
+                  )}
+                </Menu.Item>
+
                 {/* rules */}
                 <Menu.Item as={Fragment}>
                   {({ close }) => (
@@ -135,7 +144,7 @@ export default function Layout() {
                           className={itemCls}
                         >
                           Log&nbsp;out
-                        </button>
+                          </button>
                       )}
                     </Menu.Item>
                   </>
@@ -155,9 +164,14 @@ export default function Layout() {
       <footer className="border-t border-white/10 bg-[#0d0d0d]">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-6 text-sm opacity-70">
           <span>© {year} Hard Quiz</span>
-          <Link to="/how-to-play" className="hover:opacity-100">
-            Rules
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/blog" className="hover:opacity-100">
+              Blog
+            </Link>
+            <Link to="/how-to-play" className="hover:opacity-100">
+              Rules
+            </Link>
+          </div>
         </div>
       </footer>
 
