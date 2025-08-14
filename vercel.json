@@ -1,3 +1,4 @@
+cat > vercel.json <<'JSON'
 {
   "version": 2,
   "cleanUrls": true,
@@ -17,3 +18,4 @@
     { "src": "/.*", "dest": "/index.html" }
   ]
 }
+JSON
