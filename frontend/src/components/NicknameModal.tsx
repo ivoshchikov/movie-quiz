@@ -8,16 +8,22 @@ interface Props {
   open: boolean;
   onClose: () => void;
   prefill?: string;
+  onSaved?: (nick: string) => void;   /* ← NEW */
 }
 
-export default function NicknameModal({ open, onClose, prefill = "" }: Props) {
+export default function NicknameModal({
+  open,
+  onClose,
+  prefill = "",
+  onSaved,
+}: Props) {
   const { user } = useAuth();
   const [nick,  setNick]  = useState(prefill);
   const [busy,  setBusy]  = useState(false);
   const [taken, setTaken] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /* --- debounce check -------------------------------------------- */
+  /* debounce «занят?» ------------------------------------------------- */
   useEffect(() => {
     if (nick.length < 3) { setTaken(false); return; }
     const id = setTimeout(() => {
@@ -26,12 +32,14 @@ export default function NicknameModal({ open, onClose, prefill = "" }: Props) {
     return () => clearTimeout(id);
   }, [nick]);
 
+  /* save -------------------------------------------------------------- */
   const save = async () => {
     if (nick.length < 3 || taken) return;
     setBusy(true);
 
-    if (!user) {
+    if (!user) {                      // гость
       localStorage.setItem("pre_nickname", nick);
+      onSaved?.(nick);
       onClose();
       setBusy(false);
       return;
@@ -40,6 +48,7 @@ export default function NicknameModal({ open, onClose, prefill = "" }: Props) {
     try {
       await upsertProfile(user.id, nick);
       localStorage.removeItem("pre_nickname");
+      onSaved?.(nick);               /* ← уведомляем родителя */
       onClose();
     } catch (e: any) {
       if (e.code === "23505") setError("Nickname already taken.");
@@ -49,14 +58,13 @@ export default function NicknameModal({ open, onClose, prefill = "" }: Props) {
     }
   };
 
+  /* render ------------------------------------------------------------ */
   return (
     <Dialog open={open} onClose={() => !busy && onClose()} className="relative z-50">
       <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="w-80 space-y-4 rounded-xl bg-gray-900 p-6 text-center">
-          <Dialog.Title className="text-xl font-semibold">
-            Choose your nickname
-          </Dialog.Title>
+          <Dialog.Title className="text-xl font-semibold">Choose your nickname</Dialog.Title>
 
           <input
             className="w-full rounded-md p-2 text-black"

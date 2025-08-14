@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "npm run gen:seo:dist",
+    "gen:seo": "node scripts/generate-seo.cjs public",
+    "gen:seo:dist": "node scripts/generate-seo.cjs dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "test:e2e": "playwright test --reporter=line,html"
@@ -28,6 +31,7 @@
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
     "dotenv": "^16.5.0",
+    "esbuild": "^0.24.0",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
