@@ -13,10 +13,9 @@
     }
   ],
 
-  "rewrites": [
-    { "source": "/(sitemap\\.xml|feed\\.xml)", "destination": "/$1" },
-
-    /* Главный SPA-fallback: всё остальное отдаём через index.html */
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(sitemap\\.xml|feed\\.xml)", "dest": "/$1" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
