@@ -9,7 +9,7 @@ import {
   getDifficultyLevels,
 } from "../api";
 import type { Question, Category, DifficultyLevel } from "../api";
-import { supabase, getPublicUrl } from "../supabase";
+import { supabase } from "../supabase";
 import CircleTimer from "./CircleTimer";
 import LinearTimer from "./LinearTimer";
 import Seo from "./Seo";                            // ← NEW
@@ -305,11 +305,7 @@ export default function GameScreen() {
 
         {/* poster */}
         <div className="poster-container mt-6">
-          <img
-            src={getPublicUrl(q.image_url)}
-            alt="poster"
-            className="poster"
-          />
+          <img src={q.image_url} alt="poster" className="poster" />
         </div>
 
         {/* linear timer */}

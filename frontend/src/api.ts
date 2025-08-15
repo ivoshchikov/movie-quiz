@@ -1,5 +1,5 @@
 // frontend/src/api.ts
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabase";
 
 /* ────────────────────────────────────────────────────────────
    TYPES
@@ -69,12 +69,13 @@ export async function getDifficultyLevels(): Promise<DifficultyLevel[]> {
 /* ────────────────────────────────────────────────────────────
    USER BEST RESULTS  (NEW)
 ───────────────────────────────────────────────────────────── */
-export async function getMyBest(): Promise<UserBestRow[]> {
+export async function getMyBest(userId: string): Promise<UserBestRow[]> {
   const { data, error } = await supabase
     .from<UserBestRow>("user_best")
     .select(
       "user_id, category_id, difficulty_level_id, best_score, best_time, updated_at",
     )
+    .eq("user_id", userId)
     .order("best_score", { ascending: false });
 
   if (error) throw error;
