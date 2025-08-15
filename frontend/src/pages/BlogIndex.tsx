@@ -47,8 +47,8 @@ export default function BlogIndex() {
   return (
     <>
       <Seo
-        title="Hard Quiz Blog — Movie Poster Quizzes, Tips & New Releases"
-        description="Discoveries to watch now, behind-the-scenes facts, quick craft lessons, and curated lists — the Hard Quiz blog."
+        title="Hard Quiz Blog — Stills & Faces Quizzes, New Releases, Explainers"
+        description="Monthly new releases, frame/face guessing quizzes, and bite-size explainers for movie lovers."
         url={`${ORIGIN}/blog`}
         jsonLd={jsonLd}
       />
@@ -57,7 +57,7 @@ export default function BlogIndex() {
         <header className="mb-6 text-center">
           <h1 className="text-3xl font-bold">Blog</h1>
           <p className="opacity-75">
-            Discoveries to watch now, behind-the-scenes facts, quick craft lessons, and curated lists.
+            Monthly new releases, frame & face quizzes, and bite-size explainers.
           </p>
         </header>
 
