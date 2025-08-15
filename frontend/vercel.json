@@ -2,6 +2,7 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+
   "headers": [
     {
       "source": "/(sitemap\\.xml|feed\\.xml)",
@@ -11,9 +12,17 @@
       ]
     }
   ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(sitemap\\.xml|feed\\.xml)", "dest": "/$1" },
-    { "src": "/.*", "dest": "/index.html" }
+
+  "rewrites": [
+    { "source": "/(sitemap\\.xml|feed\\.xml)", "destination": "/$1" },
+
+    
+    {
+      "source": "/(.*)",
+      "destination": "/index.html",
+      "missing": [
+        { "type": "file", "value": "/$1" }
+      ]
+    }
   ]
 }
