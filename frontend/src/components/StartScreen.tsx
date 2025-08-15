@@ -91,7 +91,7 @@ export default function StartScreen() {
     getProfile(user.id).then(setProfile).catch(console.error);
 
     setBestLoading(true);
-    getMyBest()
+    getMyBest(user.id)
       .then(setBestRows)
       .catch(console.error)
       .finally(() => setBestLoading(false));

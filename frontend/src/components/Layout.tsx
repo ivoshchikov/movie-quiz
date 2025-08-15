@@ -93,13 +93,9 @@ export default function Layout() {
             >
               <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black/50 focus:outline-none">
                 {/* blog */}
-                <Menu.Item as={Fragment}>
-                  {({ close }) => (
-                    <Link to="/blog" onClick={() => close()} className={itemCls}>
-                      Blog
-                    </Link>
-                  )}
-                </Menu.Item>
+               <Menu.Item as={Link} to="/blog" className={itemCls}>
+                 Blog
+               </Menu.Item>
 
                 {/* rules */}
                 <Menu.Item as={Fragment}>

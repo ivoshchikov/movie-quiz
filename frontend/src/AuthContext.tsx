@@ -1,7 +1,7 @@
 // frontend/src/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { supabase, auth } from "./supabaseClient";
+import { supabase } from "./supabase";
 import type { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextValue {
@@ -10,6 +10,7 @@ interface AuthContextValue {
   loading: boolean;
 
   signInWithGoogle: () => Promise<void>;
+  signInWithEmail:  (email: string) => Promise<void>;
   signOut:          () => Promise<void>;
 }
 
@@ -20,33 +21,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user,    setUser]    = useState<User   | null>(null);
   const [loading, setLoading] = useState(true);
 
-  /* ── начальная сессия ───────────────────────────────── */
+  // начальная сессия
   useEffect(() => {
-    auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    /* ── подписка на изменения ───────────────────────── */
-    const { data: { subscription } } =
-      supabase.auth.onAuthStateChange((_event, sess) => {
-        setSession(sess);
-        setUser(sess?.user ?? null);
-        setLoading(false);
-      });
+    // подписка на изменения
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, sess) => {
+      setSession(sess);
+      setUser(sess?.user ?? null);
+      setLoading(false);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  /* ── методы ─────────────────────────────────────────── */
   const value: AuthContextValue = {
     user,
     session,
     loading,
 
-    signInWithGoogle: () => auth.signInWithGoogle(),
-    signOut:          () => auth.signOut({ scope: "local" }),
+    signInWithGoogle: async () => {
+      await supabase.auth.signInWithOAuth({ provider: "google" });
+    },
+    signInWithEmail: async (email: string) => {
+      await supabase.auth.signInWithOtp({ email });
+    },
+    // локальный logout (не трогаем refresh-ревок на сервере)
+    signOut: async () => {
+      await supabase.auth.signOut({ scope: "local" });
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
