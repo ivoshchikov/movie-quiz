@@ -31,8 +31,9 @@ export default function Layout() {
   "@type": "Organization",
   name: "Hard Quiz",
   url: CANON_BASE,
-  logo: `${CANON_BASE}/icons/icon-512.png`
+  logo: `${CANON_BASE}/vite.svg`
 };
+
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">

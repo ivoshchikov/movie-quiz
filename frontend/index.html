@@ -2,9 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <!-- Favicon (оставим vite.svg пока нет фирменного лого) -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="Hard Quiz Feed" href="/feed.xml" />
+
+    <!-- Perf: заранее коннектимся к Supabase CDN (изображения в блоге) -->
+    <link rel="preconnect" href="https://vgjfbcihppxbtrjcxoci.supabase.co" crossorigin />
+
+    <!-- Base SEO (дефолт для роутера; на страницах его переопределяет <Seo/>) -->
+    <title>Hard Quiz — Guess Movies from Stills & Faces</title>
+    <meta
+      name="description"
+      content="Play fast movie quizzes using still frames and faces. Explore monthly new releases and bite-size explainers."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0d0d0d" />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Hard Quiz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hard Quiz — Guess Movies from Stills & Faces" />
+    <meta property="og:description" content="Play fast movie quizzes using still frames and faces. Explore monthly new releases and bite-size explainers." />
+    <!-- Если позже добавите картинку в /public/og-default.jpg — раскомментируйте следующую строку -->
+    <!-- <meta property="og:image" content="https://hard-quiz.com/og-default.jpg" /> -->
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hard Quiz — Guess Movies from Stills & Faces" />
+    <meta name="twitter:description" content="Play fast movie quizzes using still frames and faces. Explore monthly new releases and bite-size explainers." />
+    <!-- <meta name="twitter:image" content="https://hard-quiz.com/og-default.jpg" /> -->
+
+    <!-- JSON-LD Organization (безопасно дублировать на всех страницах) -->
+    <script type="application/ld+json">
+      {
+        "@context":"https://schema.org",
+        "@type":"Organization",
+        "name":"Hard Quiz",
+        "url":"https://hard-quiz.com",
+        "logo":"https://hard-quiz.com/vite.svg"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
