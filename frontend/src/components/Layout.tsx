@@ -26,6 +26,13 @@ export default function Layout() {
 
   const year = new Date().getFullYear();
   const itemCls = "block px-4 py-2 text-sm hover:text-indigo-400";
+  const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Hard Quiz",
+  url: CANON_BASE,
+  logo: `${CANON_BASE}/icons/icon-512.png`
+};
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
@@ -33,6 +40,7 @@ export default function Layout() {
       <Helmet>
         <link rel="canonical" href={canonical} />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+        <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       </Helmet>
 
       {/* ── Header ───────────────────────────────────── */}

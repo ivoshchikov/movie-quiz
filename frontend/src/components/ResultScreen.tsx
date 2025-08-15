@@ -42,7 +42,9 @@ export default function ResultScreen() {
         description={`You scored ${score} point${
           score === 1 ? "" : "s"
         } in ${formatSecs(elapsedSecs)}. Can you beat it?`}
+        noindex
       />
+
 
       <div className="flex flex-col items-center justify-center h-full px-4 py-8 gap-8 bg-black text-white">
         <h1 className="text-4xl font-semibold">Your result</h1>

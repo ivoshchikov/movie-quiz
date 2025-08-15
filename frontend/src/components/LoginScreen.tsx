@@ -23,7 +23,9 @@ export default function LoginScreen() {
       <Seo
         title="Login | Hard Quiz"
         description="Sign in to save your best scores and compete on Hard Quiz."
+        noindex
       />
+
 
       <div className="flex flex-col items-center justify-center h-full gap-6 px-4">
         <h1 className="text-3xl font-bold">Sign in to Hard Quiz</h1>

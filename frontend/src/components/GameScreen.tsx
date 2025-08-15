@@ -267,6 +267,7 @@ export default function GameScreen() {
       <Seo
         title="Play | Hard Quiz"
         description="Guess the movie by its poster before the timer hits zero!"
+        noindex
       />
 
       <div className="game-screen">

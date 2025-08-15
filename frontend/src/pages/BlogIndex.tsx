@@ -6,6 +6,8 @@ import { posts } from "../blog";
 import { TOPICS, TopicKey, TopicLabels } from "../blog/topics";
 import CollageCover from "../blog/components/CollageCover";
 
+const ORIGIN = "https://hard-quiz.com";
+
 export default function BlogIndex() {
   const [topic, setTopic] = useState<"all" | TopicKey>("all");
 
@@ -27,11 +29,28 @@ export default function BlogIndex() {
         : "border-gray-600 hover:border-indigo-400",
     ].join(" ");
 
+  // JSON-LD: Blog/CollectionPage + ItemList
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Hard Quiz — Blog",
+    url: `${ORIGIN}/blog`,
+    hasPart: list.slice(0, 12).map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      datePublished: new Date(p.date).toISOString(),
+      image: p.coverUrl || (p.gallery?.[0] ?? undefined),
+      url: `${ORIGIN}/blog/${p.slug}`,
+    })),
+  };
+
   return (
     <>
       <Seo
-        title="Blog | Hard Quiz"
-        description="Updates, dev notes, and tips for movie quizzes."
+        title="Hard Quiz Blog — Movie Poster Quizzes, Tips & New Releases"
+        description="Discoveries to watch now, behind-the-scenes facts, quick craft lessons, and curated lists — the Hard Quiz blog."
+        url={`${ORIGIN}/blog`}
+        jsonLd={jsonLd}
       />
       <div className="mx-auto max-w-5xl">
         {/* Hero */}
@@ -77,6 +96,7 @@ export default function BlogIndex() {
                     alt={p.title}
                     className="aspect-video w-full object-cover"
                     loading="lazy"
+                    decoding="async"
                   />
                 ) : (
                   <div className="aspect-video w-full bg-gradient-to-br from-indigo-900/50 to-purple-900/40" />

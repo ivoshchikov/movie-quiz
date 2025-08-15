@@ -2,9 +2,11 @@
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import Seo from "../components/Seo";
-import { getPostBySlug, posts } from "../blog";
+import { getPostBySlug, posts, getRelatedPosts } from "../blog";
 import CollageCover from "../blog/components/CollageCover";
 import { GalleryProvider } from "../blog/components/GalleryCollector";
+
+const ORIGIN = "https://hard-quiz.com";
 
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
@@ -14,7 +16,7 @@ export default function BlogPostPage() {
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl">
-        <Seo title="Post not found | Hard Quiz" />
+        <Seo title="Post not found | Hard Quiz" noindex />
         <h1 className="mb-2 text-2xl font-bold">Post not found</h1>
         <p className="mb-4 opacity-80">
           We couldn't find that article. It may have been moved or renamed.
@@ -29,29 +31,70 @@ export default function BlogPostPage() {
     );
   }
 
-  const others = posts
-    .filter((p) => p.slug !== post.slug)
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date))
-    .slice(0, 3);
+  // Похожие — по тегам, фоллбек на последние
+  const others = getRelatedPosts(post, 3);
 
-  // приоритет: gallery-коллаж → coverUrl → градиент
+  // приоритет: gallery-коллаж → coverUrl → фоллбек
   const imagesForCollage =
     post.gallery && post.gallery.length > 0 ? post.gallery : autoGallery;
   const canCollage = imagesForCollage.length > 0;
 
+  // OG image и абсолютные URL
+  const ogImage = post.coverUrl || (post.gallery?.[0] ?? undefined);
+  const url = `${ORIGIN}/blog/${post.slug}`;
+
+  // JSON-LD: Article + BreadcrumbList
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt || "",
+    image: ogImage ? [ogImage] : undefined,
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.date).toISOString(),
+    author: { "@type": "Person", name: "Hard Quiz Team" },
+    publisher: {
+      "@type": "Organization",
+      name: "Hard Quiz",
+      logo: {
+        "@type": "ImageObject",
+        url: `${ORIGIN}/icons/icon-512.png`,
+      },
+    },
+    mainEntityOfPage: url,
+  };
+
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${ORIGIN}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${ORIGIN}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
+  };
+
   return (
     <>
-      <Seo title={`${post.title} | Hard Quiz`} description={post.excerpt} />
+      <Seo
+        title={`${post.title} | Hard Quiz`}
+        description={post.excerpt}
+        ogImage={ogImage}
+        type="article"
+        url={url}
+        jsonLd={[articleJsonLd, breadcrumbsJsonLd]}
+      />
+
       <article className="mx-auto max-w-3xl">
         {/* Top back button */}
-        <div className="mb-3">
+        <nav className="mb-3" aria-label="Back">
           <Link
             to="/blog"
             className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
           >
             ← Back to blog
           </Link>
-        </div>
+        </nav>
 
         <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
         <div className="mb-4 flex items-center gap-3 text-sm opacity-75">
@@ -89,6 +132,9 @@ export default function BlogPostPage() {
             src={post.coverUrl}
             alt={post.title}
             className="mb-6 aspect-video w-full rounded-2xl border border-white/10 object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
         ) : (
           <div className="mb-6 aspect-video w-full rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-900/50 to-purple-900/40" />
