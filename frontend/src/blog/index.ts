@@ -1,10 +1,14 @@
 // src/blog/index.ts
 import type { BlogPost } from "./types";
 
-// Единственный пост на сейчас
+// Посты
 import august2025Movies from "./entries/august-2025-new-movies";
+import why239 from "./entries/why-2-39-feels-more-cinematic"; // NEW
 
-export const posts: BlogPost[] = [august2025Movies];
+export const posts: BlogPost[] = [
+  august2025Movies,
+  why239, // NEW
+];
 
 export const allTags = Array.from(new Set(posts.flatMap((p) => p.tags))).sort();
 

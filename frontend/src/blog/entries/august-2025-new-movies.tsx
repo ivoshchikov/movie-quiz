@@ -24,7 +24,12 @@ const Post: BlogPost = buildNewReleasesPost({
     "From a big animated sequel to a nostalgic comedy comeback, a nerve-shredding thriller, and kinetic action — here are the must-see theatrical releases in August 2025 (US), spoiler-free.",
   date: "2025-08-13",
   monthLabel: "August 2025",
-  tags: ["Streaming & New Releases"],
+  tags: [
+    "New Releases",
+    "Movie Guide",
+    "In Theaters",
+    "Streaming & New Releases"
+  ],
   readingMinutes: 8,
 
   // Если cover.webp не загрузите — в посте и на листинге отрисуется коллаж из gallery.
