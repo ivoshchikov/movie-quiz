@@ -264,11 +264,11 @@ export default function GameScreen() {
   /* ---------- render ---------- */
   return (
     <>
-      <Seo
-        title="Play | Hard Quiz"
-        description="Guess the movie by its poster before the timer hits zero!"
-        noindex
-      />
+        <Seo
+          title="Play | Hard Quiz"
+          description="Guess the movie from a still frame — or the actor from a photo — before the timer hits zero!"
+          noindex
+        />
 
       <div className="game-screen">
         {/* header */}
@@ -306,7 +306,7 @@ export default function GameScreen() {
 
         {/* poster */}
         <div className="poster-container mt-6">
-          <img src={q.image_url} alt="poster" className="poster" />
+          <img src={q.image_url} alt="movie still" className="poster" />
         </div>
 
         {/* linear timer */}

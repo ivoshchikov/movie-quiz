@@ -18,7 +18,7 @@ export default function App() {
     <>
       {/* SEO defaults */}
       <Helmet>
-        <title>Hard Quiz – Guess the movie by its poster</title>
+        <title>Hard Quiz — Guess the movie from a single frame</title>
         <meta
           name="description"
           content="Play Hard Quiz: test your movie knowledge, beat the timer and climb the leaderboard!"

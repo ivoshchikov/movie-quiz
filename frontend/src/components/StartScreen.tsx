@@ -2,12 +2,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { RadioGroup } from "@headlessui/react";
+import { Helmet } from "react-helmet-async";
 import {
   getCategories,
   getDifficultyLevels,
   getMyBest,
   getProfile,
-  countQuestions,               // ← NEW
+  countQuestions,
   Category,
   DifficultyLevel,
   UserBestRow,
@@ -102,7 +103,7 @@ export default function StartScreen() {
     if (user && profile && !profile.nickname) setShowNick(true);
   }, [user, profile]);
 
-  /* ─── 5) считаем доступность вопросов для выбранной пары ─ */
+  /* ─── 5) считаем доступность вопросов ────────── */
   useEffect(() => {
     setQCount(null); // сбрасываем индикатор
     if (selectedCat && selectedDiff) {
@@ -167,13 +168,62 @@ export default function StartScreen() {
         : "border-gray-500 hover:border-indigo-400",
     ].join(" ");
 
+  /* ─── FAQPage JSON-LD ───────────────────────── */
+  const faqData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I play the movie poster quiz?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text":
+            "Pick a category and difficulty, then guess the movie by its poster before the timer runs out. Scores depend on accuracy and speed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Hard Quiz free to play?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text":
+            "Yes. You can play for free without signing in. If you sign in, we’ll save your best results per category and level."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What categories and levels are available?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text":
+            "Popular sets include Actors, Actresses, All movies and TV series. Each has multiple difficulty levels ranging from easy to expert."
+        }
+      }
+    ]
+  };
+
   /* ─── render ───────────────────────────────── */
   return (
     <>
       <Seo
         title="Start a new quiz | Hard Quiz"
-        description="Choose a category and difficulty level to start guessing movie posters!"
+        description="Choose a category and difficulty level to start guessing movie scenes and actors!"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqData)}</script>
+      </Helmet>
+
+      {/* Hero / intro */}
+      <section className="mb-6 text-center">
+        <h1 className="text-2xl sm:text-3xl font-extrabold">
+          Guess the Movie by Its Poster — play the Hard&nbsp;Quiz
+        </h1>
+        <p className="mt-2 text-sm sm:text-base opacity-80">
+          Pick a category and difficulty, then race the clock. Looking for tips and updates?
+          Read our <Link to="/blog" className="underline hover:opacity-100">blog</Link>.
+        </p>
+      </section>
 
       <div className="start-screen lg:flex-row lg:gap-10">
         {/* ---------- LEFT : best results ---------- */}
@@ -223,7 +273,7 @@ export default function StartScreen() {
           <div className="w-full max-w-md space-y-4 text-center">
             {/* категории — сегмент-кнопки */}
             <div className="flex flex-col items-center gap-2">
-              <span className="font-medium text-lg">Select category</span>
+              <h2 className="font-medium text-lg">Select category</h2>
               <RadioGroup value={selectedCat} onChange={setSelectedCat}>
                 <RadioGroup.Label className="sr-only">
                   Select category
@@ -244,7 +294,7 @@ export default function StartScreen() {
 
             {/* уровни сложности — сегмент-кнопки */}
             <div className="flex flex-col items-center gap-2">
-              <span className="font-medium text-lg">Select level</span>
+              <h2 className="font-medium text-lg">Select level</h2>
               <RadioGroup value={selectedDiff} onChange={setSelectedDiff}>
                 <RadioGroup.Label className="sr-only">
                   Select level
