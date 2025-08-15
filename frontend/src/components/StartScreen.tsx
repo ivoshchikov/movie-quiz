@@ -217,7 +217,7 @@ export default function StartScreen() {
       {/* Hero / intro */}
       <section className="mb-6 text-center">
         <h1 className="text-2xl sm:text-3xl font-extrabold">
-          Guess the Movie by Its Poster — play the Hard&nbsp;Quiz
+          Start a new quiz | Hard Quiz
         </h1>
         <p className="mt-2 text-sm sm:text-base opacity-80">
           Pick a category and difficulty, then race the clock. Looking for tips and updates?
