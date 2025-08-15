@@ -1,11 +1,13 @@
 // frontend/src/components/Layout.tsx
 import { Fragment, useEffect, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
 import { getProfile } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
+
+const CANON_BASE = "https://hard-quiz.com";
 
 export default function Layout() {
   /* ─── auth ─────────────────────────────── */
@@ -19,6 +21,9 @@ export default function Layout() {
     getProfile(user.id).then(setProfile).catch(console.error);
   }, [user]);
 
+  const { pathname, search } = useLocation();
+  const canonical = `${CANON_BASE}${pathname}${search || ""}`;
+
   const year = new Date().getFullYear();
   const itemCls = "block px-4 py-2 text-sm hover:text-indigo-400";
 
@@ -26,6 +31,7 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col bg-black text-white">
       {/* site-wide head bits */}
       <Helmet>
+        <link rel="canonical" href={canonical} />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </Helmet>
 
@@ -93,14 +99,18 @@ export default function Layout() {
             >
               <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black/50 focus:outline-none">
                 {/* blog */}
-               <Menu.Item as={Link} to="/blog" className={itemCls}>
-                 Blog
-               </Menu.Item>
+                <Menu.Item as={Link} to="/blog" className={itemCls}>
+                  Blog
+                </Menu.Item>
 
                 {/* rules */}
                 <Menu.Item as={Fragment}>
                   {({ close }) => (
-                    <Link to="/how-to-play" onClick={() => close()} className={itemCls}>
+                    <Link
+                      to="/how-to-play"
+                      onClick={() => close()}
+                      className={itemCls}
+                    >
                       Rules
                     </Link>
                   )}
@@ -140,7 +150,7 @@ export default function Layout() {
                           className={itemCls}
                         >
                           Log&nbsp;out
-                          </button>
+                        </button>
                       )}
                     </Menu.Item>
                   </>

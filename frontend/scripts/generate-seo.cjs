@@ -12,10 +12,9 @@ const CACHE_DIR = path.join(ROOT, ".cache");
 const BUNDLE = path.join(CACHE_DIR, "posts.cjs");
 const SRC_POSTS = path.resolve(ROOT, "src/blog/index.ts"); // ← ТУТ НОВЫЙ ПУТЬ
 
-const SITE_URL =
-  process.env.VITE_SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://hard-quiz.com");
-
+// Всегда генерим ссылки под apex-домен.
+// При необходимости можно переопределить через VITE_SITE_URL.
+const SITE_URL = process.env.VITE_SITE_URL || "https://hard-quiz.com";
 
 const ensureDir =
   (p) => fs.existsSync(p) || fs.mkdirSync(p, { recursive: true });
