@@ -14,34 +14,35 @@ import {
   UserBestRow,
 } from "../api";
 import { useAuth } from "../AuthContext";
-import Seo           from "./Seo";
+import Seo from "./Seo";
 import NicknameModal from "./NicknameModal";
+import Leaderboard from "./Leaderboard";
 
 const DEFAULT_CAT_ID = 1; // «General»
 const CATEGORY_ORDER = ["Actors", "Actresses", "All movies", "TV series"] as const;
 
 export default function StartScreen() {
   const { user } = useAuth();
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const catFromNav: number | undefined =
     (location.state as any)?.categoryId as number | undefined;
 
   /* ─── dictionaries ─────────────────────────── */
-  const [categories,   setCategories]   = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
-  const [loadingCats,  setLoadingCats]  = useState(true);
+  const [loadingCats, setLoadingCats] = useState(true);
   const [loadingDiffs, setLoadingDiffs] = useState(true);
 
   /* ─── best rows ────────────────────────────── */
-  const [bestRows,    setBestRows]    = useState<UserBestRow[]>([]);
+  const [bestRows, setBestRows] = useState<UserBestRow[]>([]);
   const [bestLoading, setBestLoading] = useState(false);
 
   /* ─── ui state ─────────────────────────────── */
-  const [selectedCat,  setSelectedCat]  = useState<number>(DEFAULT_CAT_ID);
+  const [selectedCat, setSelectedCat] = useState<number>(DEFAULT_CAT_ID);
   const [selectedDiff, setSelectedDiff] = useState<number>();
-  const [showNick,     setShowNick]     = useState(false);
-  const [profile,      setProfile]      =
+  const [showNick, setShowNick] = useState(false);
+  const [profile, setProfile] =
     useState<{ nickname: string | null } | null>(null);
 
   /* ─── availability ─────────────────────────── */
@@ -125,8 +126,8 @@ export default function StartScreen() {
       );
       return {
         diffName: diff.name,
-        score:    rec?.best_score ?? "—",
-        time:     rec
+        score: rec?.best_score ?? "—",
+        time: rec
           ? `${String(Math.floor(rec.best_time / 60)).padStart(2, "0")}:${String(
               rec.best_time % 60,
             ).padStart(2, "0")}`
@@ -159,6 +160,10 @@ export default function StartScreen() {
 
   const selectedCatName =
     categories.find((c) => c.id === selectedCat)?.name ?? "—";
+  const selectedDiffName =
+    selectedDiff != null
+      ? difficulties.find((d) => d.id === selectedDiff)?.name ?? "—"
+      : undefined;
 
   const pillCls = (checked: boolean) =>
     [
@@ -172,35 +177,35 @@ export default function StartScreen() {
   const faqData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
+    mainEntity: [
       {
         "@type": "Question",
-        "name": "How do I play the movie poster quiz?",
-        "acceptedAnswer": {
+        name: "How do I play the movie poster quiz?",
+        acceptedAnswer: {
           "@type": "Answer",
-          "text":
-            "Pick a category and difficulty, then guess the movie by its poster before the timer runs out. Scores depend on accuracy and speed."
-        }
+          text:
+            "Pick a category and difficulty, then guess the movie by its poster before the timer runs out. Scores depend on accuracy and speed.",
+        },
       },
       {
         "@type": "Question",
-        "name": "Is Hard Quiz free to play?",
-        "acceptedAnswer": {
+        name: "Is Hard Quiz free to play?",
+        acceptedAnswer: {
           "@type": "Answer",
-          "text":
-            "Yes. You can play for free without signing in. If you sign in, we’ll save your best results per category and level."
-        }
+          text:
+            "Yes. You can play for free without signing in. If you sign in, we’ll save your best results per category and level.",
+        },
       },
       {
         "@type": "Question",
-        "name": "What categories and levels are available?",
-        "acceptedAnswer": {
+        name: "What categories and levels are available?",
+        acceptedAnswer: {
           "@type": "Answer",
-          "text":
-            "Popular sets include Actors, Actresses, All movies and TV series. Each has multiple difficulty levels ranging from easy to expert."
-        }
-      }
-    ]
+          text:
+            "Popular sets include Actors, Actresses, All movies and TV series. Each has multiple difficulty levels ranging from easy to expert.",
+        },
+      },
+    ],
   };
 
   /* ─── render ───────────────────────────────── */
@@ -220,15 +225,20 @@ export default function StartScreen() {
           Start a new quiz | Hard Quiz
         </h1>
         <p className="mt-2 text-sm sm:text-base opacity-80">
-          Pick a category and difficulty, then race the clock. Looking for tips and updates?
-          Read our <Link to="/blog" className="underline hover:opacity-100">blog</Link>.
+          Pick a category and difficulty, then race the clock. Looking for tips and updates?{" "}
+          Read our{" "}
+          <Link to="/blog" className="underline hover:opacity-100">
+            blog
+          </Link>
+          .
         </p>
       </section>
 
-      <div className="start-screen lg:flex-row lg:gap-10">
-        {/* ---------- LEFT : best results ---------- */}
+      {/* Три колонки на xl: [Личные] [Центр: выбор] [Глобальный лидборд] */}
+      <div className="mx-auto w-full xl:grid xl:grid-cols-3 xl:gap-10">
+        {/* ---------- LEFT : best results (только для залогиненных) ---------- */}
         {user && (
-          <section className="w-full lg:w-1/3">
+          <section className="mb-8 xl:mb-0 xl:col-start-1">
             <h2 className="text-xl sm:text-2xl font-semibold mb-1">
               Your best results
             </h2>
@@ -268,8 +278,8 @@ export default function StartScreen() {
           </section>
         )}
 
-        {/* ---------- RIGHT : game setup ---------- */}
-        <section className="w-full lg:w-2/3 flex flex-col items-center">
+        {/* ---------- CENTER : game setup ---------- */}
+        <section className="mb-8 xl:mb-0 xl:col-start-2 flex flex-col items-center">
           <div className="w-full max-w-md space-y-4 text-center">
             {/* категории — сегмент-кнопки */}
             <div className="flex flex-col items-center gap-2">
@@ -319,7 +329,11 @@ export default function StartScreen() {
             className="btn-primary mt-6 disabled:opacity-70"
             onClick={startGame}
             disabled={!canPlay}
-            title={!isAvailable && selectedCat && selectedDiff ? "No questions yet" : undefined}
+            title={
+              !isAvailable && selectedCat && selectedDiff
+                ? "No questions yet"
+                : undefined
+            }
           >
             {playText}
           </button>
@@ -333,6 +347,16 @@ export default function StartScreen() {
               How&nbsp;to&nbsp;play
             </Link>
           </div>
+        </section>
+
+        {/* ---------- RIGHT : Global leaderboard для выбранной пары ---------- */}
+        <section className="mb-8 xl:mb-0 xl:col-start-3">
+          <Leaderboard
+            categoryId={selectedCat}
+            difficultyId={selectedDiff}
+            categoryLabel={selectedCatName}
+            difficultyLabel={selectedDiffName}
+          />
         </section>
       </div>
 

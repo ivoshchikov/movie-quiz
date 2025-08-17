@@ -38,6 +38,14 @@ export interface UserBestRow {
   updated_at: string;
 }
 
+/* ⬇⬇⬇  NEW: строка глобального лидерборда (RPC get_leaderboard) */
+export type LeaderboardRow = {
+  nickname: string;      // из profiles.nickname или 'Anonymous'
+  best_score: number;    // int
+  best_time: number;     // int (секунды)
+  updated_at: string;    // timestamptz → ISO строка
+};
+
 /* ────────────────────────────────────────────────────────────
    CATEGORIES
 ───────────────────────────────────────────────────────────── */
@@ -67,7 +75,7 @@ export async function getDifficultyLevels(): Promise<DifficultyLevel[]> {
 }
 
 /* ────────────────────────────────────────────────────────────
-   USER BEST RESULTS  (NEW)
+   USER BEST RESULTS
 ───────────────────────────────────────────────────────────── */
 export async function getMyBest(userId: string): Promise<UserBestRow[]> {
   const { data, error } = await supabase
@@ -80,6 +88,23 @@ export async function getMyBest(userId: string): Promise<UserBestRow[]> {
 
   if (error) throw error;
   return data ?? [];
+}
+
+/* ────────────────────────────────────────────────────────────
+   GLOBAL LEADERBOARD (RPC: public.get_leaderboard)
+───────────────────────────────────────────────────────────── */
+export async function getLeaderboard(
+  categoryId: number,
+  difficultyId: number,
+  limit = 5,
+): Promise<LeaderboardRow[]> {
+  const { data, error } = await supabase.rpc("get_leaderboard", {
+    p_category_id: categoryId,
+    p_difficulty_id: difficultyId,
+    p_limit: limit,
+  });
+  if (error) throw error;
+  return (data || []) as LeaderboardRow[];
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -171,7 +196,7 @@ export async function getProfile(userId: string) {
     .select("user_id, nickname, avatar_url, created_at")
     .eq("user_id", userId)
     .single();
-  if (error && error.code !== "PGRST116") throw error; // 116 = no rows
+  if (error && (error as any).code !== "PGRST116") throw error; // 116 = no rows
   return data;
 }
 
@@ -204,10 +229,10 @@ export async function countQuestions(
   difficultyId: number,
 ): Promise<number> {
   const { count, error } = await supabase
-    .from("question")
-    .select("id", { count: "exact", head: true })
-    .eq("category_id", categoryId)
-    .eq("difficulty_level_id", difficultyId);
+  .from("question")
+  .select("id", { count: "exact", head: true })
+  .eq("category_id", categoryId)
+  .eq("difficulty_level_id", difficultyId);
 
   if (error) throw error;
   return count ?? 0;
