@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet-async";
 import { getProfile } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
+import { loadGA, pageview } from "../analytics/ga"; // ← NEW
 
 const CANON_BASE = "https://hard-quiz.com";
 
@@ -24,16 +25,25 @@ export default function Layout() {
   const { pathname, search } = useLocation();
   const canonical = `${CANON_BASE}${pathname}${search || ""}`;
 
+  // GA4: инициализация один раз
+  useEffect(() => {
+    loadGA();
+  }, []);
+
+  // GA4: page_view на каждый переход
+  useEffect(() => {
+    pageview(`${pathname}${search || ""}`);
+  }, [pathname, search]);
+
   const year = new Date().getFullYear();
   const itemCls = "block px-4 py-2 text-sm hover:text-indigo-400";
   const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Hard Quiz",
-  url: CANON_BASE,
-  logo: `${CANON_BASE}/vite.svg`
-};
-
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Hard Quiz",
+    url: CANON_BASE,
+    logo: `${CANON_BASE}/vite.svg`,
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">

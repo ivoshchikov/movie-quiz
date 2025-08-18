@@ -12,7 +12,8 @@ import type { Question, Category, DifficultyLevel } from "../api";
 import { supabase } from "../supabase";
 import CircleTimer from "./CircleTimer";
 import LinearTimer from "./LinearTimer";
-import Seo from "./Seo";                            // ← NEW
+import Seo from "./Seo";
+import { gaEvent } from "../analytics/ga"; // ← NEW
 
 interface LocationState {
   categoryId?: number;
@@ -81,6 +82,14 @@ export default function GameScreen() {
     );
     const currentCatId = q?.category_id ?? categoryId;
 
+    // GA4: финал сессии
+    gaEvent("quiz_end", {
+      category_id: currentCatId ?? null,
+      difficulty_id: difficultyId ?? null,
+      score: scoreRef.current,
+      elapsed_secs: elapsedSecs,
+    });
+
     /* upsert best score */
     const {
       data: { user },
@@ -142,6 +151,15 @@ export default function GameScreen() {
         setSeconds(level.time_limit_secs);
       }
     }
+
+    // GA4: старт квиза
+    if (categoryId != null && difficultyId != null) {
+      gaEvent("quiz_start", {
+        category_id: categoryId,
+        difficulty_id: difficultyId,
+      });
+    }
+
     loadQuestion([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, difficultyId, playKey, loadingDiffs]);
@@ -206,6 +224,12 @@ export default function GameScreen() {
         setIsCorrect(res.correct);
         setAnswered(true);
 
+        // GA4: событие ответа (лёгкое ивентирование)
+        gaEvent("quiz_answer", {
+          question_id: q.id,
+          correct: res.correct,
+        });
+
         /* update question stats */
         await supabase.rpc("touch_question_stats", {
           p_question_id: q.id,
@@ -264,11 +288,11 @@ export default function GameScreen() {
   /* ---------- render ---------- */
   return (
     <>
-        <Seo
-          title="Play | Hard Quiz"
-          description="Guess the movie from a still frame — or the actor from a photo — before the timer hits zero!"
-          noindex
-        />
+      <Seo
+        title="Play | Hard Quiz"
+        description="Guess the movie from a still frame — or the actor from a photo — before the timer hits zero!"
+        noindex
+      />
 
       <div className="game-screen">
         {/* header */}
