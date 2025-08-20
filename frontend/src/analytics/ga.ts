@@ -69,3 +69,8 @@ export function event(name: string, params: Record<string, any> = {}) {
   window.gtag?.("event", name, { ...params, debug_mode: isDebug });
   if (isDebug) console.info("[GA] event", name, params);
 }
+
+/** ✅ Алиас под старое имя, чтобы не трогать импорты */
+export function gaEvent(name: string, params: Record<string, any> = {}) {
+  return event(name, params);
+}
