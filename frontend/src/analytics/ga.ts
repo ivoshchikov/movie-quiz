@@ -1,46 +1,61 @@
 // frontend/src/analytics/ga.ts
-// Lightweight GA4 helper for a Vite+React SPA
-
 declare global {
   interface Window {
-    dataLayer?: any[];
-    gtag?: (...args: any[]) => void;
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
   }
 }
 
-export const GA_ID = import.meta.env.VITE_GA_ID as string | undefined;
+const GA_ID = import.meta.env.VITE_GA_ID;
 
+/** One-time loader */
 export function loadGA() {
-  if (!GA_ID || typeof window === "undefined" || window.gtag) return;
+  if (!GA_ID || (window as any).gtag) return;
 
-  // gtag.js
-  const s = document.createElement("script");
+  // Stub + dataLayer
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  } as any;
+
+  // Init timestamp
+  window.gtag('js', new Date());
+
+  // (Опционально) даём явное разрешение на analytics storage
+  window.gtag('consent', 'default', {
+    analytics_storage: 'granted',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+  });
+
+  // Load script async
+  const s = document.createElement('script');
   s.async = true;
   s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
   document.head.appendChild(s);
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = (...args: any[]) => window.dataLayer!.push(args);
-
-  window.gtag("js", new Date());
-
-  // В SPA мы шлём page_view вручную, чтобы не было дублей
-  window.gtag("config", GA_ID, {
-    send_page_view: false,
-    debug_mode: import.meta.env.DEV,
-  });
+  // Не шлём авто page_view — отправим вручную в роутере
+  window.gtag('config', GA_ID, { send_page_view: false });
 }
 
+const isDebug =
+  /debug_mode=1/.test(location.search) ||
+  /localhost|127\.0\.0\.1/.test(location.hostname);
+
+/** SPA page_view */
 export function pageview(path: string) {
-  if (!GA_ID || !window.gtag) return;
-  window.gtag("event", "page_view", {
+  if (!GA_ID || !(window as any).gtag) return;
+  window.gtag('event', 'page_view', {
     page_title: document.title,
-    page_location: window.location.origin + path,
+    page_location: location.href,
     page_path: path,
+    send_to: GA_ID,
+    debug_mode: isDebug,
   });
 }
 
-export function gaEvent(name: string, params: Record<string, any> = {}) {
-  if (!GA_ID || !window.gtag) return;
-  window.gtag("event", name, params);
+/** Custom events helper */
+export function event(name: string, params: Record<string, any> = {}) {
+  if (!GA_ID || !(window as any).gtag) return;
+  window.gtag('event', name, { ...params, send_to: GA_ID, debug_mode: isDebug });
 }
