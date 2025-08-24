@@ -51,8 +51,7 @@ export default function DailyPage() {
   const sessionKickoffOnce = useRef(false);
 
   // ключ для localStorage
-  const lsKey =
-    user ? `daily:${dateStr}:answered:${user.id}` : null;
+  const lsKey = user ? `daily:${dateStr}:answered:${user.id}` : null;
 
   // ---------- load question ----------
   useEffect(() => {
@@ -137,7 +136,8 @@ export default function DailyPage() {
       navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
       return;
     }
-    if (!q || answered || !imgLoaded || alreadyAnswered) return;
+    // Доп. защита: не даём повторный старт, пока сохраняем
+    if (!q || answered || saving || !imgLoaded || alreadyAnswered) return;
 
     // Fresh re-check against server just in case (multi-tab/cleared LS)
     try {
@@ -152,9 +152,9 @@ export default function DailyPage() {
       console.error(e);
     }
 
-
+    // локально фиксируем выбор
     setSelected(answer);
-    const ok = answer.trim() === q.correct_answer.trim();
+    const ok = answer.trim() === (q?.correct_answer ?? "").trim();
     setIsCorrect(ok);
 
     const elapsed =
@@ -162,16 +162,23 @@ export default function DailyPage() {
         ? Math.max(1, Math.floor((Date.now() - startTsRef.current) / 1000))
         : 1;
 
+    // ⬇⬇⬇ Оптимистично фиксируем "ответил" до RPC (закрывает мультивкладки/перезагрузку)
+    if (lsKey) localStorage.setItem(lsKey, "1");
+    setLocalAnswered(true);
+    setSaving(true);
+
     try {
-      setSaving(true);
       await submitDailyResult(user.id, dateStr, ok, elapsed); // БД примет только первый ответ
+      // подтягиваем подтверждение с сервера
       const status = await getMyDailyResult(user.id, dateStr);
       setMyDaily(status);
       if (lsKey && status.is_answered) localStorage.setItem(lsKey, "1");
-      setLocalAnswered(true);
       refreshFastest();
     } catch (e) {
       console.error(e);
+      // откат оптимистичного флага, если RPC провалился
+      if (lsKey) localStorage.removeItem(lsKey);
+      setLocalAnswered(false);
     } finally {
       setSaving(false);
     }
@@ -231,7 +238,7 @@ export default function DailyPage() {
               state={{ redirectTo: loc.pathname + loc.search }}
               onClick={() =>
                 localStorage.setItem(
-                  "postLoginRedirect",
+                  "postLoginRedirectPath",
                   loc.pathname + loc.search,
                 )
               }
