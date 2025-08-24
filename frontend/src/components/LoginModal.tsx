@@ -1,3 +1,4 @@
+// frontend/src/components/LoginModal.tsx
 import { Dialog } from "@headlessui/react";
 import { useAuth } from "../AuthContext";
 
@@ -9,6 +10,16 @@ interface Props {
 export default function LoginModal({ open, onClose }: Props) {
   const { signInWithGoogle } = useAuth();
 
+  const handleGoogle = async () => {
+    // сохраняем относительный путь как фолбэк и передаём абсолютный в OAuth
+    const redirectPath =
+      window.location.pathname + (window.location.search || "");
+    localStorage.setItem("postLoginRedirectPath", redirectPath);
+    const absolute = window.location.origin + redirectPath;
+    await signInWithGoogle(absolute);
+    // дальше управление возьмёт провайдер (будет полный redirect)
+  };
+
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50">
       {/* полупрозрачный фон */}
@@ -19,7 +30,7 @@ export default function LoginModal({ open, onClose }: Props) {
         <Dialog.Panel className="w-80 space-y-4 rounded-xl bg-gray-900 p-6 text-center">
           <Dialog.Title className="text-xl font-semibold">Sign in</Dialog.Title>
 
-          <button onClick={signInWithGoogle} className="btn-primary w-full">
+          <button onClick={handleGoogle} className="btn-primary w-full">
             Sign in with Google
           </button>
 

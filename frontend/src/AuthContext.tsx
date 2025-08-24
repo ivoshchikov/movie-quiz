@@ -9,8 +9,10 @@ interface AuthContextValue {
   session: Session | null;
   loading: boolean;
 
-  signInWithGoogle: (redirectToAbsUrl?: string) => Promise<void>;
-  signInWithEmail:  (email: string) => Promise<void>;
+  /** OAuth (Google) с явным redirectTo (абсолютный URL). */
+  signInWithGoogle: (redirectTo?: string) => Promise<void>;
+  /** Email magic-link с явным redirectTo (абсолютный URL). */
+  signInWithEmail:  (email: string, redirectTo?: string) => Promise<void>;
   signOut:          () => Promise<void>;
 }
 
@@ -46,20 +48,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     session,
     loading,
 
-    // Можно передать абсолютный redirect URL, иначе Supabase вернёт на Site URL
-    signInWithGoogle: async (redirectToAbsUrl?: string) => {
+    // ВАЖНО: передаём redirectTo в OAuth, иначе Supabase вернёт на Site URL.
+    signInWithGoogle: async (redirectTo?: string) => {
       await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: redirectToAbsUrl ? { redirectTo: redirectToAbsUrl } : undefined,
+        options: redirectTo ? { redirectTo } : undefined,
       });
-      // Фактически произойдёт редирект вне SPA — дальше управление вернётся после логина.
     },
 
-    signInWithEmail: async (email: string) => {
-      await supabase.auth.signInWithOtp({ email });
+    // Для magic-link также прокидываем emailRedirectTo.
+    signInWithEmail: async (email: string, redirectTo?: string) => {
+      await supabase.auth.signInWithOtp({
+        email,
+        options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
+      });
     },
 
-    // локальный logout
+    // локальный logout (не трогаем refresh-ревок на сервере)
     signOut: async () => {
       await supabase.auth.signOut({ scope: "local" });
     },

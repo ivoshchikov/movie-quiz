@@ -1,6 +1,6 @@
 // frontend/src/components/LoginScreen.tsx
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Seo from "./Seo";
 
@@ -8,19 +8,24 @@ export default function LoginScreen() {
   const { signInWithGoogle, signInWithEmail } = useAuth();
   const [email, setEmail] = useState("");
 
+  const navigate = useNavigate();
   const location = useLocation();
-  const redirectTo =
+
+  // относительный путь, куда хотим вернуться
+  const redirectPath =
     (location.state as any)?.redirectTo ||
     new URLSearchParams(location.search).get("redirect") ||
     "/";
 
+  // абсолютный URL для провайдера
+  const redirectAbs = window.location.origin + redirectPath;
+
   const handleGoogle = async () => {
     try {
-      // сохраняем цель локально — Layout подхватит после возврата из OAuth
-      localStorage.setItem("postLoginRedirect", redirectTo);
-      const abs = new URL(redirectTo, window.location.origin).toString();
-      await signInWithGoogle(abs);
-      // дальше произойдёт редирект вне SPA
+      // фолбэк для случая, если провайдер вернёт на корень
+      localStorage.setItem("postLoginRedirectPath", redirectPath);
+      await signInWithGoogle(redirectAbs);
+      // далее будет полный redirect, navigate ниже уже не выполнится
     } catch (err) {
       console.error(err);
       alert("Sign-in failed");
@@ -30,8 +35,9 @@ export default function LoginScreen() {
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      localStorage.setItem("postLoginRedirect", redirectTo);
-      await signInWithEmail(email);
+      // тоже сохраняем фолбэк
+      localStorage.setItem("postLoginRedirectPath", redirectPath);
+      await signInWithEmail(email, redirectAbs);
       alert("Magic-link sent to your inbox ✉️");
     } catch (err) {
       console.error(err);

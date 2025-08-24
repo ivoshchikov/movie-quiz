@@ -14,7 +14,7 @@ export default function Layout() {
   /* ─── auth ─────────────────────────────── */
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const loc = useLocation();
 
   const [profile, setProfile] =
     useState<{ nickname: string | null } | null>(null);
@@ -25,6 +25,21 @@ export default function Layout() {
     getProfile(user.id).then(setProfile).catch(console.error);
   }, [user]);
 
+  // ФОЛБЭК-РЕДИРЕКТ ПОСЛЕ ВОЗВРАТА С ОАУТХ/МАГИК-ЛИНКА
+  useEffect(() => {
+    if (!user) return;
+    const saved = localStorage.getItem("postLoginRedirectPath");
+    if (saved) {
+      localStorage.removeItem("postLoginRedirectPath");
+      // если уже на нужной странице — ничего не делаем
+      const current = loc.pathname + (loc.search || "");
+      if (current !== saved) {
+        navigate(saved, { replace: true });
+      }
+    }
+  }, [user, navigate, loc.pathname, loc.search]);
+
+  const { pathname, search } = loc;
   const canonical = `${CANON_BASE}${pathname}${search || ""}`;
 
   // GA4: инициализация один раз
@@ -36,16 +51,6 @@ export default function Layout() {
   useEffect(() => {
     pageview(`${pathname}${search || ""}`);
   }, [pathname, search]);
-
-  // 🔁 Возврат после логина: читаем цель из localStorage и ведём туда
-  useEffect(() => {
-    if (!user) return;
-    const target = localStorage.getItem("postLoginRedirect");
-    if (target && target !== pathname + search) {
-      localStorage.removeItem("postLoginRedirect");
-      navigate(target, { replace: true });
-    }
-  }, [user, pathname, search, navigate]);
 
   const year = new Date().getFullYear();
   const itemCls = "block px-4 py-2 text-sm hover:text-indigo-400";
@@ -67,8 +72,8 @@ export default function Layout() {
       </Helmet>
 
       {/* ── Header ───────────────────────────────────── */}
-      <header className="sticky top-0 z-30 h-14 bg-[#0d0d0d]/95 backdrop-blur shadow-md">
-        <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between px-4">
+      <header className="sticky top-0 z-30 bg-[#0d0d0d]/95 backdrop-blur shadow-md">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
           {/* logo */}
           <Link to="/" className="text-xl font-bold whitespace-nowrap">
             Hard&nbsp;Quiz
@@ -92,8 +97,12 @@ export default function Layout() {
               </button>
             ) : (
               <>
-                {profile?.nickname && (
+                {profile?.nickname ? (
                   <span className="opacity-80">{profile.nickname}</span>
+                ) : (
+                  <Link to="/setup-profile" className="hover:text-indigo-400">
+                    Set&nbsp;nickname
+                  </Link>
                 )}
                 <button
                   onClick={() => signOut()}
@@ -166,10 +175,14 @@ export default function Layout() {
                   </Menu.Item>
                 ) : (
                   <>
-                    {profile?.nickname && (
+                    {profile?.nickname ? (
                       <div className="px-4 py-2 text-sm opacity-80">
                         {profile.nickname}
                       </div>
+                    ) : (
+                      <Menu.Item as={Link} to="/setup-profile" className={itemCls}>
+                        Set nickname
+                      </Menu.Item>
                     )}
                     <Menu.Item as={Fragment}>
                       {({ close }) => (
@@ -190,6 +203,19 @@ export default function Layout() {
             </Transition>
           </Menu>
         </div>
+
+        {/* Глобальный баннер-напоминание про ник (только когда залогинен и ника нет) */}
+        {user && profile && !profile.nickname && (
+          <div className="bg-yellow-600/15 border-t border-b border-yellow-600/30">
+            <div className="mx-auto max-w-6xl px-4 py-2 text-sm">
+              Pick a nickname to appear on leaderboards —{" "}
+              <Link to="/setup-profile" className="underline">
+                set nickname
+              </Link>
+              .
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ── Main ───────────────────────────── */}
