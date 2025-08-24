@@ -9,7 +9,7 @@ interface AuthContextValue {
   session: Session | null;
   loading: boolean;
 
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: (redirectToAbsUrl?: string) => Promise<void>;
   signInWithEmail:  (email: string) => Promise<void>;
   signOut:          () => Promise<void>;
 }
@@ -46,13 +46,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     session,
     loading,
 
-    signInWithGoogle: async () => {
-      await supabase.auth.signInWithOAuth({ provider: "google" });
+    // Можно передать абсолютный redirect URL, иначе Supabase вернёт на Site URL
+    signInWithGoogle: async (redirectToAbsUrl?: string) => {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: redirectToAbsUrl ? { redirectTo: redirectToAbsUrl } : undefined,
+      });
+      // Фактически произойдёт редирект вне SPA — дальше управление вернётся после логина.
     },
+
     signInWithEmail: async (email: string) => {
       await supabase.auth.signInWithOtp({ email });
     },
-    // локальный logout (не трогаем refresh-ревок на сервере)
+
+    // локальный logout
     signOut: async () => {
       await supabase.auth.signOut({ scope: "local" });
     },

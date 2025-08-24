@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet-async";
 import { getProfile } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
-import { loadGA, pageview } from "../analytics/ga"; // ← GA
+import { loadGA, pageview } from "../analytics/ga";
 
 const CANON_BASE = "https://hard-quiz.com";
 
@@ -14,6 +14,8 @@ export default function Layout() {
   /* ─── auth ─────────────────────────────── */
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { pathname, search } = useLocation();
+
   const [profile, setProfile] =
     useState<{ nickname: string | null } | null>(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -23,17 +25,6 @@ export default function Layout() {
     getProfile(user.id).then(setProfile).catch(console.error);
   }, [user]);
 
-  // ← NEW: безопасный редирект обратно после логина (магик-линк/SSO и т.п.)
-  useEffect(() => {
-    if (!user) return;
-    const target = localStorage.getItem("postLoginRedirect");
-    if (target) {
-      localStorage.removeItem("postLoginRedirect");
-      navigate(target, { replace: true });
-    }
-  }, [user, navigate]);
-
-  const { pathname, search } = useLocation();
   const canonical = `${CANON_BASE}${pathname}${search || ""}`;
 
   // GA4: инициализация один раз
@@ -45,6 +36,16 @@ export default function Layout() {
   useEffect(() => {
     pageview(`${pathname}${search || ""}`);
   }, [pathname, search]);
+
+  // 🔁 Возврат после логина: читаем цель из localStorage и ведём туда
+  useEffect(() => {
+    if (!user) return;
+    const target = localStorage.getItem("postLoginRedirect");
+    if (target && target !== pathname + search) {
+      localStorage.removeItem("postLoginRedirect");
+      navigate(target, { replace: true });
+    }
+  }, [user, pathname, search, navigate]);
 
   const year = new Date().getFullYear();
   const itemCls = "block px-4 py-2 text-sm hover:text-indigo-400";

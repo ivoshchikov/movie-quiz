@@ -53,7 +53,7 @@ export type DailyFastestRow = {
   answered_at: string;
 };
 
-/* мой статус по daily */
+/* my daily status */
 export type MyDailyResult = {
   is_answered: boolean;
   is_correct: boolean | null;
@@ -280,13 +280,13 @@ export async function getDailyQuestionPublic(
     id: raw.id,
     image_url: publicUrl,
     options: opts,
-    correct_answer: "", // намеренно пусто
+    correct_answer: "",
     category_id: raw.category_id,
     difficulty_level_id: raw.difficulty_level_id,
   };
 }
 
-/** Сохранить результат дня — первый ответ побеждает */
+/* отправка результата дня — первый ответ фиксируется, повторы игнорируются (БД) */
 export async function submitDailyResult(
   userId: string,
   date: string,
@@ -303,7 +303,27 @@ export async function submitDailyResult(
   return data;
 }
 
-/** Топ-5 самых быстрых */
+/* мой статус по дню (играл ли/результат) */
+export async function getMyDailyResult(
+  userId: string,
+  date?: string,
+): Promise<MyDailyResult> {
+  const { data, error } = await supabase.rpc("get_my_daily_result", {
+    p_user_id: userId,
+    p_date: date ?? getDailyDateUS(),
+  });
+  if (error) throw error;
+  const rows = Array.isArray(data) ? data : (data ? [data] : []);
+  const raw = rows[0] as Partial<MyDailyResult> | undefined;
+  return {
+    is_answered: !!raw?.is_answered,
+    is_correct: raw?.is_correct ?? null,
+    time_spent: raw?.time_spent ?? null,
+    answered_at: raw?.answered_at ?? null,
+  };
+}
+
+/* топ-5 самых быстрых */
 export async function getDailyFastest(
   date?: string,
   limit = 5,
@@ -314,30 +334,6 @@ export async function getDailyFastest(
   });
   if (error) throw error;
   return (data || []) as DailyFastestRow[];
-}
-
-/** Мой статус на сегодня (отвечал/нет) */
-export async function getMyDailyResult(
-  userId: string,
-  date?: string,
-): Promise<MyDailyResult> {
-  const { data, error } = await supabase.rpc("get_my_daily_result", {
-    p_user_id: userId,
-    p_date: date ?? getDailyDateUS(),
-  });
-  if (error) throw error;
-
-  const rows = Array.isArray(data) ? data : (data ? [data] : []);
-  if (rows.length === 0) {
-    return { is_answered: false, is_correct: null, time_spent: null, answered_at: null };
-  }
-  const r = rows[0] as any;
-  return {
-    is_answered: !!r.is_answered,
-    is_correct: r.is_correct ?? null,
-    time_spent: r.time_spent ?? null,
-    answered_at: r.answered_at ?? null,
-  };
 }
 
 /* ────────────────────────────────────────────────────────────

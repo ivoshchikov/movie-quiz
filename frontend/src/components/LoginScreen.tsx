@@ -1,6 +1,6 @@
 // frontend/src/components/LoginScreen.tsx
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Seo from "./Seo";
 
@@ -8,7 +8,6 @@ export default function LoginScreen() {
   const { signInWithGoogle, signInWithEmail } = useAuth();
   const [email, setEmail] = useState("");
 
-  const navigate = useNavigate();
   const location = useLocation();
   const redirectTo =
     (location.state as any)?.redirectTo ||
@@ -17,8 +16,11 @@ export default function LoginScreen() {
 
   const handleGoogle = async () => {
     try {
-      await signInWithGoogle();
-      navigate(redirectTo, { replace: true });
+      // сохраняем цель локально — Layout подхватит после возврата из OAuth
+      localStorage.setItem("postLoginRedirect", redirectTo);
+      const abs = new URL(redirectTo, window.location.origin).toString();
+      await signInWithGoogle(abs);
+      // дальше произойдёт редирект вне SPA
     } catch (err) {
       console.error(err);
       alert("Sign-in failed");
@@ -28,10 +30,8 @@ export default function LoginScreen() {
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // если ваш useAuth поддерживает редирект — прокиньте redirectTo внутрь
-      await signInWithEmail(email /*, { redirectTo } */);
-      // на магик-линке сработает после клика из почты; на всякий — сохраним цель
       localStorage.setItem("postLoginRedirect", redirectTo);
+      await signInWithEmail(email);
       alert("Magic-link sent to your inbox ✉️");
     } catch (err) {
       console.error(err);

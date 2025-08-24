@@ -48,10 +48,10 @@ export default function DailyPage() {
 
     const loader = user ? getDailyQuestion : getDailyQuestionPublic;
     loader()
-      .then((qq: any) => {
+      .then((qq) => {
         if (!mounted) return;
-        setQ(qq as Question);
-        setOpts(shuffle((qq as Question).options));
+        setQ(qq);
+        setOpts(shuffle(qq.options));
       })
       .catch(console.error)
       .finally(() => mounted && setLoading(false));
@@ -92,8 +92,9 @@ export default function DailyPage() {
 
   // ---------- answer ----------
   const handleAnswer = async (answer: string) => {
-    // Без входа — ведём на логин и возвращаемся обратно
+    // Без входа — сохраняем цель и ведём на логин
     if (!user) {
+      localStorage.setItem("postLoginRedirect", loc.pathname + loc.search);
       navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
       return;
     }
@@ -110,9 +111,8 @@ export default function DailyPage() {
 
     try {
       setSaving(true);
-      await submitDailyResult(user.id, dateStr, ok, elapsed); // первый ответ побеждает
-      // подтянем статус с сервера (на случай повторных кликов/обновлений)
-      const status = await getMyDailyResult(user.id, dateStr);
+      await submitDailyResult(user.id, dateStr, ok, elapsed); // первый ответ побеждает (БД)
+      const status = await getMyDailyResult(user.id, dateStr); // синхронизируем UI
       setMyDaily(status);
       refreshFastest();
     } catch (e) {
@@ -166,7 +166,12 @@ export default function DailyPage() {
           <div className="mb-4 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
             <b>Sign in to play the Daily.</b> We only accept answers from logged-in
             players to keep the competition fair.{" "}
-            <Link to="/login" state={{ redirectTo: "/daily" }} className="underline">
+            <Link
+              to="/login"
+              state={{ redirectTo: loc.pathname + loc.search }}
+              onClick={() => localStorage.setItem("postLoginRedirect", loc.pathname + loc.search)}
+              className="underline"
+            >
               Log in
             </Link>
             .
