@@ -49,11 +49,12 @@ export interface DailyFastestRow {
 /* ────────────────────────────────────────────────────────────
    SMALL UTILS
 ───────────────────────────────────────────────────────────── */
+/** Собираем public URL для объекта в бакете `movies` без правок пути. */
 function toPublicUrlFromMoviesBucket(raw: string): string {
-  if (/^https?:\/\//i.test(raw)) return raw;
+  if (/^https?:\/\//i.test(raw)) return raw; // уже абсолютный URL
   const base = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
   const bucket = import.meta.env.VITE_SUPABASE_BUCKET;
-  const clean = raw.replace(/^\/?posters\//, "").replace(/^\/+/, "");
+  const clean = String(raw || "").replace(/^\/+/, ""); // только убираем ведущие /
   return `${base}/storage/v1/object/public/${bucket}/${clean}`;
 }
 
@@ -85,11 +86,7 @@ export async function isNicknameTaken(
     .from("profiles")
     .select("user_id", { count: "exact", head: true })
     .ilike("nickname", nickname.trim());
-
-  if (excludeUserId) {
-    q = q.neq("user_id", excludeUserId);
-  }
-
+  if (excludeUserId) q = q.neq("user_id", excludeUserId);
   const { count, error } = await q;
   if (error) {
     console.warn("isNicknameTaken:", error.message);
@@ -109,13 +106,11 @@ export async function upsertProfile(
     nickname: nickname ?? null,
     avatar_url: avatarUrl ?? null,
   };
-
   const { data, error } = await supabase
     .from("profiles")
     .upsert(payload, { onConflict: "user_id" })
     .select("nickname,avatar_url")
     .single();
-
   if (error) throw error;
   return data as any;
 }
@@ -156,7 +151,6 @@ export async function countQuestions(
     .select("id", { count: "exact", head: true })
     .eq("category_id", categoryId)
     .eq("difficulty_level_id", difficultyId);
-
   if (error) throw error;
   return count ?? 0;
 }
@@ -176,7 +170,7 @@ export async function getQuestion(
   const row = (Array.isArray(data) ? data[0] : data) as any;
   if (!row) throw new Error("no-question");
 
-  const key = String(row.image_url ?? "").replace(/^\/?posters\//, "");
+  const key = String(row.image_url ?? "");
   const pub = toPublicUrlFromMoviesBucket(key);
   const options: string[] = Array.isArray(row.options_json)
     ? row.options_json
@@ -228,33 +222,8 @@ export async function getMyBest(userId: string): Promise<
     .select("category_id,difficulty_level_id,best_score,best_time,updated_at")
     .eq("user_id", userId)
     .order("updated_at", { ascending: false });
-
   if (error) throw error;
   return (data || []) as any[];
-}
-
-/* ────────────────────────────────────────────────────────────
-   LEADERBOARD (обычная игра)
-───────────────────────────────────────────────────────────── */
-export interface LeaderboardRow {
-  nickname: string | null;
-  best_score: number;
-  best_time: number;
-  updated_at: string;
-}
-
-export async function getLeaderboard(
-  categoryId: number,
-  difficultyId: number,
-  limit = 5,
-): Promise<LeaderboardRow[]> {
-  const { data, error } = await supabase.rpc("get_leaderboard", {
-    p_category_id: categoryId,
-    p_difficulty_id: difficultyId,
-    p_limit: limit,
-  });
-  if (error) throw error;
-  return (data || []) as LeaderboardRow[];
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -280,7 +249,6 @@ export interface QuestionRowFull {
 
 export async function getDailyQuestion(dateOverride?: string): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
-
   const { data, error } = await supabase.rpc("get_daily_question", {
     p_date: pDate,
   });
@@ -290,13 +258,11 @@ export async function getDailyQuestion(dateOverride?: string): Promise<Question>
   if (rows.length === 0) throw new Error("no-daily-question");
 
   const raw = rows[0] as QuestionRowFull;
-  const key = raw.image_url.replace(/^\/?posters\//, "");
-  const publicUrl = toPublicUrlFromMoviesBucket(key);
+  const publicUrl = toPublicUrlFromMoviesBucket(raw.image_url);
 
   let opts: string[] = [];
   if (Array.isArray(raw.options_json)) opts = raw.options_json as string[];
-  else if (typeof raw.options_json === "string")
-    opts = JSON.parse(raw.options_json);
+  else if (typeof raw.options_json === "string") opts = JSON.parse(raw.options_json);
 
   return {
     id: raw.id,
@@ -310,7 +276,6 @@ export async function getDailyQuestion(dateOverride?: string): Promise<Question>
 
 export async function getDailyQuestionPublic(dateOverride?: string): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
-
   const { data, error } = await supabase.rpc("get_daily_question_public", {
     p_date: pDate,
   });
@@ -327,13 +292,11 @@ export async function getDailyQuestionPublic(dateOverride?: string): Promise<Que
     difficulty_level_id: number;
   };
 
-  const key = raw.image_url.replace(/^\/?posters\//, "");
-  const publicUrl = toPublicUrlFromMoviesBucket(key);
+  const publicUrl = toPublicUrlFromMoviesBucket(raw.image_url);
 
   let opts: string[] = [];
   if (Array.isArray(raw.options_json)) opts = raw.options_json as string[];
-  else if (typeof raw.options_json === "string")
-    opts = JSON.parse(raw.options_json);
+  else if (typeof raw.options_json === "string") opts = JSON.parse(raw.options_json);
 
   return {
     id: raw.id,
@@ -402,7 +365,8 @@ export async function getDailyFastest(
   const { data, error } = await supabase.rpc("get_daily_fastest", {
     p_date: date ?? getDailyDateUS(),
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? ["Isildur"],
+    // показываем всех: по умолчанию НЕ скрываем никнеймы
+    p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
   return (data || []) as DailyFastestRow[];
@@ -434,7 +398,7 @@ export async function getDailyStreakLeaderboard(
   const { data, error } = await supabase.rpc("get_daily_streak_leaderboard", {
     p_active_only: activeOnly,
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? ["Isildur"],
+    p_hide_nicks: hideNicks ?? [], // не скрываем Isildur
   });
   if (error) throw error;
   return (data || []) as any[];
@@ -448,7 +412,7 @@ export async function getDailyBestTimeRecords(
 > {
   const { data, error } = await supabase.rpc("get_daily_best_time_records", {
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? ["Isildur"],
+    p_hide_nicks: hideNicks ?? [], // не скрываем Isildur
   });
   if (error) throw error;
   return (data || []) as any[];
@@ -460,7 +424,7 @@ export async function getDailyTotalCorrectLeaderboard(
 ): Promise<{ user_id: string; nickname: string | null; total_correct: number }[]> {
   const { data, error } = await supabase.rpc("get_daily_total_correct_leaderboard", {
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? ["Isildur"],
+    p_hide_nicks: hideNicks ?? [], // не скрываем Isildur
   });
   if (error) throw error;
   return (data || []) as any[];
@@ -507,8 +471,7 @@ export async function getDailyHistoryAdmin(
   const rows = (data || []) as any[];
   for (const r of rows) {
     if (r?.image_url) {
-      const key = String(r.image_url).replace(/^\/?posters\//, "");
-      r.image_url = toPublicUrlFromMoviesBucket(key);
+      r.image_url = toPublicUrlFromMoviesBucket(String(r.image_url));
     }
   }
   return rows;
