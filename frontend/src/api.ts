@@ -28,7 +28,7 @@ export interface Question {
   difficulty_level_id: number;
 }
 
-/* ⬇⬇⬇  NEW: строка из таблицы user_best  */
+/* user_best row */
 export interface UserBestRow {
   user_id: string;
   category_id: number;
@@ -38,15 +38,15 @@ export interface UserBestRow {
   updated_at: string;
 }
 
-/* ⬇⬇⬇  NEW: строка глобального лидерборда (RPC get_leaderboard) */
+/* leaderboard row */
 export type LeaderboardRow = {
-  nickname: string;      // из profiles.nickname или 'Anonymous'
-  best_score: number;    // int
-  best_time: number;     // int (секунды)
-  updated_at: string;    // timestamptz → ISO строка
+  nickname: string;
+  best_score: number;
+  best_time: number;
+  updated_at: string;
 };
 
-/* ⬇⬇⬇  NEW: строка «самые быстрые сегодня» для /daily */
+/* fastest today row */
 export type DailyFastestRow = {
   nickname: string;
   time_spent: number;
@@ -115,7 +115,7 @@ export async function getLeaderboard(
 }
 
 /* ────────────────────────────────────────────────────────────
-   QUESTIONS
+   QUESTIONS (обычная игра)
 ───────────────────────────────────────────────────────────── */
 export async function getQuestion(
   exclude: number[] = [],
@@ -176,13 +176,9 @@ export async function getQuestion(
 }
 
 /* ────────────────────────────────────────────────────────────
-   DAILY QUESTION (RPC: public.get_daily_question)
-   День начинается по US Central Time (America/Chicago)
+   DAILY (дата по US Central)
 ───────────────────────────────────────────────────────────── */
-
-/** YYYY-MM-DD в указанной таймзоне (по умолчанию America/Chicago) */
 export function getDailyDateUS(tz = "America/Chicago"): string {
-  // en-CA даёт ISO-подобный формат 'YYYY-MM-DD'
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: tz,
     year: "numeric",
@@ -191,16 +187,17 @@ export function getDailyDateUS(tz = "America/Chicago"): string {
   }).format(new Date());
 }
 
-/** Получить/зафиксировать «вопрос дня» на дату в US Central (или на переданную дату) */
+/** Авторизованный вариант — возвращает correct_answer */
 export async function getDailyQuestion(dateOverride?: string): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
 
-  const { data, error } = await supabase.rpc("get_daily_question", {
-    p_date: pDate,
-  });
+  const { data, error } = await supabase.rpc("get_daily_question", { p_date: pDate });
   if (error) throw error;
 
-  const raw = data as {
+  const rows = Array.isArray(data) ? data : (data ? [data] : []);
+  if (rows.length === 0) throw new Error("no-daily-question");
+
+  const raw = rows[0] as {
     id: number;
     image_url: string;
     options_json: unknown;
@@ -209,14 +206,20 @@ export async function getDailyQuestion(dateOverride?: string): Promise<Question>
     difficulty_level_id: number;
   };
 
-  // как и в getQuestion(): преобразуем путь к публичному URL из бакета
   const key = raw.image_url.replace(/^\/?posters\//, "");
   const { data: urlData } = supabase.storage.from("movies").getPublicUrl(key);
   const publicUrl = urlData?.publicUrl ?? raw.image_url;
 
-  const opts: string[] = Array.isArray(raw.options_json)
-    ? (raw.options_json as string[])
-    : JSON.parse(raw.options_json as string);
+  let opts: string[] = [];
+  if (Array.isArray(raw.options_json)) {
+    opts = raw.options_json as string[];
+  } else {
+    try {
+      opts = JSON.parse(raw.options_json as any);
+    } catch {
+      opts = [];
+    }
+  }
 
   return {
     id: raw.id,
@@ -228,10 +231,57 @@ export async function getDailyQuestion(dateOverride?: string): Promise<Question>
   };
 }
 
-/* ⬇⬇⬇ NEW: отправка результата дня */
+/** Публичный вариант — БЕЗ correct_answer (для анонимов) */
+export async function getDailyQuestionPublic(
+  dateOverride?: string,
+): Promise<Question> {
+  const pDate = dateOverride ?? getDailyDateUS();
+
+  const { data, error } = await supabase.rpc("get_daily_question_public", {
+    p_date: pDate,
+  });
+  if (error) throw error;
+
+  const rows = Array.isArray(data) ? data : (data ? [data] : []);
+  if (rows.length === 0) throw new Error("no-daily-question");
+
+  const raw = rows[0] as {
+    id: number;
+    image_url: string;
+    options_json: unknown;
+    category_id: number;
+    difficulty_level_id: number;
+  };
+
+  const key = raw.image_url.replace(/^\/?posters\//, "");
+  const { data: urlData } = supabase.storage.from("movies").getPublicUrl(key);
+  const publicUrl = urlData?.publicUrl ?? raw.image_url;
+
+  let opts: string[] = [];
+  if (Array.isArray(raw.options_json)) {
+    opts = raw.options_json as string[];
+  } else {
+    try {
+      opts = JSON.parse(raw.options_json as any);
+    } catch {
+      opts = [];
+    }
+  }
+
+  return {
+    id: raw.id,
+    image_url: publicUrl,
+    options: opts,
+    correct_answer: "", // ← намеренно пусто
+    category_id: raw.category_id,
+    difficulty_level_id: raw.difficulty_level_id,
+  };
+}
+
+/* отправка результата дня */
 export async function submitDailyResult(
   userId: string,
-  date: string,          // 'YYYY-MM-DD' — см. getDailyDateUS()
+  date: string,
   isCorrect: boolean,
   timeSpentSecs: number,
 ) {
@@ -245,8 +295,11 @@ export async function submitDailyResult(
   return data;
 }
 
-/* ⬇⬇⬇ NEW: топ-5 самых быстрых за сегодня (или указанную дату) */
-export async function getDailyFastest(date?: string, limit = 5): Promise<DailyFastestRow[]> {
+/* топ-5 самых быстрых */
+export async function getDailyFastest(
+  date?: string,
+  limit = 5,
+): Promise<DailyFastestRow[]> {
   const { data, error } = await supabase.rpc("get_daily_fastest", {
     p_date: date ?? getDailyDateUS(),
     p_limit: limit,
@@ -256,7 +309,7 @@ export async function getDailyFastest(date?: string, limit = 5): Promise<DailyFa
 }
 
 /* ────────────────────────────────────────────────────────────
-   ANSWER CHECK
+   ANSWER CHECK (для обычной игры)
 ───────────────────────────────────────────────────────────── */
 export async function checkAnswer(
   questionId: number,

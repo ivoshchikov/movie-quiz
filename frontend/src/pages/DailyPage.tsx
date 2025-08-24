@@ -1,230 +1,277 @@
 // frontend/src/pages/DailyPage.tsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import Seo from "../components/Seo";
 import {
   getDailyDateUS,
   getDailyFastest,
   getDailyQuestion,
+  getDailyQuestionPublic, // ← для анонимов (без correct_answer)
   submitDailyResult,
-  checkAnswer,
-  type DailyFastestRow,
   type Question,
+  type DailyFastestRow,
 } from "../api";
-import { useAuth } from "../AuthContext";
 import { shuffle } from "../utils/shuffle";
-import Seo from "../components/Seo";
-
-function fmtMMSS(t: number) {
-  const m = Math.floor(t / 60);
-  const s = t % 60;
-  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-}
 
 export default function DailyPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const dateStr = getDailyDateUS();
 
-  /* ---------- state ---------- */
+  // ---------- state ----------
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState<Question | null>(null);
+  const [opts, setOpts] = useState<string[]>([]);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
-  const [elapsed, setElapsed] = useState(0);
-  const [answered, setAnswered] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [lastAnswer, setLastAnswer] = useState<string | null>(null);
-
-  const [fastest, setFastest] = useState<DailyFastestRow[]>([]);
   const [saving, setSaving] = useState(false);
 
-  const tickRef = useRef<number | null>(null);
-  const startRef = useRef<number>(Date.now());
-  const submittedRef = useRef(false);
+  const [fastest, setFastest] = useState<DailyFastestRow[]>([]);
+  const [fastestLoading, setFastestLoading] = useState(true);
 
-  const dateUS = getDailyDateUS(); // для подписи и RPC по умолчанию
-  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    `I just played today's Hard Quiz Daily! ${isCorrect ? "✅ Correct" : "❌ Wrong"} in ${fmtMMSS(elapsed)}.`
-  )}&url=${encodeURIComponent(
-    `https://hard-quiz.com/daily?utm_source=x&utm_medium=social&utm_campaign=daily`
-  )}`;
+  const startTsRef = useRef<number | null>(null);
 
-  const shuffledOptions = useMemo(() => (q ? shuffle(q.options) : []), [q]);
-
-  /* ---------- load daily question ---------- */
+  // ---------- load question ----------
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    getDailyQuestion()
-      .then((dq) => {
+
+    const loader = user ? getDailyQuestion : getDailyQuestionPublic;
+    loader()
+      .then((qq) => {
         if (!mounted) return;
-        setQ(dq);
-        // старт таймера
-        startRef.current = Date.now();
-        tickRef.current = window.setInterval(() => {
-          setElapsed(Math.floor((Date.now() - startRef.current) / 1000));
-        }, 1000);
+        setQ(qq);
+        setOpts(shuffle(qq.options));
       })
       .catch(console.error)
-      .finally(() => setLoading(false));
-
-    // лидерборд
-    getDailyFastest().then(setFastest).catch(console.error);
+      .finally(() => mounted && setLoading(false));
 
     return () => {
       mounted = false;
-      if (tickRef.current) window.clearInterval(tickRef.current);
     };
-  }, []);
+  }, [dateStr, user]);
 
-  /* ---------- answer handler ---------- */
-  const onAnswer = (ans: string) => {
-    if (!q || answered) return;
-    if (tickRef.current) window.clearInterval(tickRef.current);
-
-    setLastAnswer(ans);
-
-    checkAnswer(q.id, ans)
-      .then(async (res) => {
-        setIsCorrect(res.correct);
-        setAnswered(true);
-
-        // если залогинен — сохраняем результат дня
-        if (user && !submittedRef.current) {
-          submittedRef.current = true;
-          setSaving(true);
-          try {
-            await submitDailyResult(user.id, dateUS, !!res.correct, elapsed);
-          } catch (e) {
-            console.error(e);
-            submittedRef.current = false; // на всякий случай
-          } finally {
-            setSaving(false);
-          }
-        }
-
-        // обновим топ-5 после ответа
-        getDailyFastest().then(setFastest).catch(console.error);
-      })
-      .catch(console.error);
+  // старт таймера после загрузки изображения
+  const onImageLoad = () => {
+    setImgLoaded(true);
+    if (!startTsRef.current) startTsRef.current = Date.now();
   };
 
-  /* ---------- render ---------- */
+  // ---------- load fastest ----------
+  const refreshFastest = () => {
+    setFastestLoading(true);
+    getDailyFastest(dateStr, 5)
+      .then(setFastest)
+      .catch(console.error)
+      .finally(() => setFastestLoading(false));
+  };
+  useEffect(() => {
+    refreshFastest();
+  }, [dateStr]);
+
+  // ---------- answer ----------
+  const canAnswer = !!user && imgLoaded;
+  const answered = selected !== null;
+
+  const handleAnswer = async (answer: string) => {
+    // Без входа — не отвечаем, ведём на логин
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    if (!q || answered || !imgLoaded) return;
+
+    setSelected(answer);
+    const ok = answer.trim() === q.correct_answer.trim();
+    setIsCorrect(ok);
+
+    const elapsed =
+      startTsRef.current != null
+        ? Math.max(1, Math.floor((Date.now() - startTsRef.current) / 1000))
+        : 1;
+
+    try {
+      setSaving(true);
+      await submitDailyResult(user.id, dateStr, ok, elapsed);
+      refreshFastest();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ---------- helpers ----------
+  const niceDate = useMemo(() => {
+    const [y, m, d] = dateStr.split("-");
+    return `${y}–${m}–${d}`;
+  }, [dateStr]);
+
   return (
     <>
       <Seo
         title="Daily Challenge | Hard Quiz"
-        description="One new movie/actor question every day. Can you answer it fast enough to make the Top-5?"
+        description="One new movie/actor image every day. Guess it fast and enter Today’s Fastest!"
       />
 
-      <section className="mb-6 text-center">
-        <h1 className="text-2xl sm:text-3xl font-extrabold">Daily Challenge</h1>
-        <p className="mt-2 text-sm sm:text-base opacity-80">
-          Date: <span className="font-mono">{dateUS}</span>
-        </p>
-      </section>
+      <section className="mx-auto max-w-5xl">
+        <header className="mb-6 flex items-baseline justify-between">
+          <div>
+            <h1 className="text-3xl font-extrabold">Daily Challenge</h1>
+            <p className="mt-1 text-sm opacity-80">Date: {niceDate}</p>
+          </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* ---------- LEFT+CENTER: основной блок ---------- */}
-        <section className="lg:col-span-2">
-          {loading && <p>Loading…</p>}
+          <aside className="hidden md:block w-72">
+            <h2 className="text-lg font-semibold">Today’s Fastest</h2>
+            {fastestLoading ? (
+              <p className="text-sm opacity-80 mt-2">Loading…</p>
+            ) : fastest.length === 0 ? (
+              <p className="text-sm opacity-80 mt-2">Be the first to set a time!</p>
+            ) : (
+              <ol className="mt-2 space-y-1 text-sm">
+                {fastest.map((r, i) => (
+                  <li key={i} className="flex justify-between border-b border-white/10 py-1">
+                    <span className="truncate">{r.nickname}</span>
+                    <span className="tabular-nums">{r.time_spent}s</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </aside>
+        </header>
 
-          {!loading && q && (
-            <div className="space-y-6">
-              {/* постер */}
-              <div className="poster-container">
-                <img src={q.image_url} alt="daily still" className="poster" />
-              </div>
+        {/* CTA для анонимов */}
+        {!user && (
+          <div className="mb-4 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
+            <b>Sign in to play the Daily.</b> We only accept answers from logged-in
+            players to keep the competition fair.{" "}
+            <Link to="/login" className="underline">
+              Log in
+            </Link>
+            .
+          </div>
+        )}
 
-              {/* таймер и статус */}
-              <div className="flex items-center justify-between text-sm">
-                <div className="opacity-80">Time: {fmtMMSS(elapsed)}</div>
-                {answered && (
-                  <div className={isCorrect ? "text-green-400" : "text-red-400"}>
-                    {isCorrect ? "Correct!" : "Wrong!"}
+        <div className="grid md:grid-cols-[1fr_280px] gap-8">
+          <div>
+            {loading || !q ? (
+              <div className="aspect-video w-full rounded-lg bg-white/5 animate-pulse" />
+            ) : (
+              <>
+                {/* постер */}
+                <div className="relative rounded-lg overflow-hidden bg-white/5">
+                  {!user && (
+                    <div className="absolute inset-0 z-10 bg-black/40 backdrop-blur-[1px] flex items-center justify-center text-sm">
+                      Log in to play
+                    </div>
+                  )}
+                  <img
+                    src={q.image_url}
+                    alt="daily still"
+                    className="w-full h-auto block"
+                    onLoad={onImageLoad}
+                  />
+                </div>
+
+                {/* варианты */}
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {opts.map((opt) => {
+                    const isSel = answered && selected === opt;
+                    const cls = [
+                      "answer-btn px-4 py-3 rounded-md border transition text-left",
+                      answered
+                        ? "opacity-90"
+                        : "hover:border-indigo-400 hover:bg-indigo-500/10",
+                      isSel &&
+                        (isCorrect
+                          ? "border-green-500 bg-green-500/10"
+                          : "border-red-500 bg-red-500/10"),
+                      !canAnswer && "cursor-not-allowed opacity-60",
+                    ]
+                      .filter(Boolean)
+                      .join(" ");
+                    return (
+                      <button
+                        key={opt}
+                        className={cls}
+                        disabled={!canAnswer || answered}
+                        onClick={() => handleAnswer(opt)}
+                        title={
+                          !user
+                            ? "Log in to answer the Daily"
+                            : !imgLoaded
+                            ? "Loading image…"
+                            : undefined
+                        }
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* результат (только для авторизованных) */}
+                {user && answered && (
+                  <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="text-sm">
+                      {isCorrect ? (
+                        <span className="text-green-400">
+                          Correct! {saving ? "Saving…" : "Your time is recorded."}
+                        </span>
+                      ) : (
+                        <span className="text-red-400">
+                          Not this time. The correct answer:{" "}
+                          <span className="font-semibold">{q?.correct_answer}</span>.
+                        </span>
+                      )}
+                    </div>
+
+                    <a
+                      className="btn-secondary text-sm"
+                      href={
+                        "https://twitter.com/intent/tweet?text=" +
+                        encodeURIComponent(
+                          isCorrect
+                            ? "I just solved today’s Hard Quiz Daily! 🎬"
+                            : "Tried today’s Hard Quiz Daily. Can you beat it?"
+                        ) +
+                        "&url=" +
+                        encodeURIComponent("https://hard-quiz.com/daily")
+                      }
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Share on X
+                    </a>
                   </div>
                 )}
-              </div>
+              </>
+            )}
+          </div>
 
-              {/* ответы */}
-              <div className="answers-grid">
-                {shuffledOptions.map((opt) => {
-                  const isSel = answered && lastAnswer === opt;
-                  const cls = [
-                    "answer-btn",
-                    isSel && (isCorrect ? "correct" : "wrong"),
-                    answered && !isSel ? "opacity-60" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ");
-                  return (
-                    <button
-                      key={opt}
-                      className={cls}
-                      onClick={() => onAnswer(opt)}
-                      disabled={answered}
-                    >
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* действия после ответа */}
-              {answered && (
-                <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-                  <a
-                    className="btn-primary inline-flex items-center justify-center"
-                    href={shareUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Share on X
-                  </a>
-                  <Link to="/" className="underline opacity-80 hover:opacity-100">
-                    Go to start
-                  </Link>
-                  {user ? (
-                    <span className="text-xs opacity-70">
-                      {saving ? "Saving result…" : "Result saved."}
-                    </span>
-                  ) : (
-                    <span className="text-xs opacity-70">
-                      Log in to save your Daily result.
-                    </span>
-                  )}
-                </div>
-              )}
-
-              {/* подсказка: один вопрос в день */}
-              <p className="text-xs opacity-60">
-                One Daily question per day. New challenge unlocks with the next US-Central day.
-              </p>
-            </div>
-          )}
-        </section>
-
-        {/* ---------- RIGHT: топ-5 самых быстрых на сегодня ---------- */}
-        <aside className="lg:col-span-1">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-2">
-            Today’s Fastest
-          </h2>
-          {fastest.length === 0 ? (
-            <p className="text-sm opacity-70">Be the first to set a time!</p>
-          ) : (
-            <ol className="space-y-1">
-              {fastest.map((row, i) => (
-                <li
-                  key={`${row.nickname}-${row.answered_at}-${i}`}
-                  className="flex items-center justify-between rounded border border-white/10 px-3 py-2"
-                >
-                  <span className="truncate max-w-[55%]">
-                    {i + 1}. {row.nickname}
-                  </span>
-                  <span className="font-mono">{fmtMMSS(row.time_spent)}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-        </aside>
-      </div>
+          {/* правый сайдбар на мобильных уезжает вниз */}
+          <aside className="md:hidden">
+            <h2 className="text-lg font-semibold">Today’s Fastest</h2>
+            {fastestLoading ? (
+              <p className="text-sm opacity-80 mt-2">Loading…</p>
+            ) : fastest.length === 0 ? (
+              <p className="text-sm opacity-80 mt-2">Be the first to set a time!</p>
+            ) : (
+              <ol className="mt-2 space-y-1 text-sm">
+                {fastest.map((r, i) => (
+                  <li key={i} className="flex justify-between border-b border-white/10 py-1">
+                    <span className="truncate">{r.nickname}</span>
+                    <span className="tabular-nums">{r.time_spent}s</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </aside>
+        </div>
+      </section>
     </>
   );
 }
