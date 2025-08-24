@@ -84,7 +84,6 @@ export async function isNicknameTaken(
   let q = supabase
     .from("profiles")
     .select("user_id", { count: "exact", head: true })
-    // ILIKE без % — это точное сравнение без учёта регистра
     .ilike("nickname", nickname.trim());
 
   if (excludeUserId) {
@@ -94,7 +93,6 @@ export async function isNicknameTaken(
   const { count, error } = await q;
   if (error) {
     console.warn("isNicknameTaken:", error.message);
-    // осторожный фолбэк: считаем «не занято», чтобы не ломать UX при временной ошибке
     return false;
   }
   return (count ?? 0) > 0;
@@ -141,6 +139,11 @@ export async function getDifficulties(): Promise<DifficultyLevel[]> {
     .order("sort_order", { ascending: true });
   if (error) throw error;
   return data ?? [];
+}
+
+/** Алиас для обратной совместимости со StartScreen.tsx */
+export function getDifficultyLevels(): Promise<DifficultyLevel[]> {
+  return getDifficulties();
 }
 
 /* --- COUNT QUESTIONS for category + difficulty ------------------------ */
@@ -206,6 +209,28 @@ export async function checkAnswer(
   const correct =
     correct_answer.trim().toLowerCase() === answer.trim().toLowerCase();
   return { correct, correct_answer };
+}
+
+/* ────────────────────────────────────────────────────────────
+   МОИ ЛУЧШИЕ РЕЗУЛЬТАТЫ (для StartScreen)
+───────────────────────────────────────────────────────────── */
+export async function getMyBest(userId: string): Promise<
+  Array<{
+    category_id: number;
+    difficulty_level_id: number;
+    best_score: number;
+    best_time: number;
+    updated_at: string;
+  }>
+> {
+  const { data, error } = await supabase
+    .from("user_best")
+    .select("category_id,difficulty_level_id,best_score,best_time,updated_at")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false });
+
+  if (error) throw error;
+  return (data || []) as any[];
 }
 
 /* ────────────────────────────────────────────────────────────
