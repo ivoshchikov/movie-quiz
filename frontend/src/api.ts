@@ -69,11 +69,57 @@ export async function getProfile(
     .eq("user_id", userId)
     .single();
   if (error) {
-    // если RLS не разрешил или записи нет — просто вернём null, UI и так это терпит
     console.warn("getProfile:", error.message);
     return null;
   }
   return (data as any) ?? null;
+}
+
+/** Проверка, занят ли ник (case-insensitive). Можно исключить своего пользователя. */
+export async function isNicknameTaken(
+  nickname: string,
+  excludeUserId?: string,
+): Promise<boolean> {
+  if (!nickname.trim()) return false;
+  let q = supabase
+    .from("profiles")
+    .select("user_id", { count: "exact", head: true })
+    // ILIKE без % — это точное сравнение без учёта регистра
+    .ilike("nickname", nickname.trim());
+
+  if (excludeUserId) {
+    q = q.neq("user_id", excludeUserId);
+  }
+
+  const { count, error } = await q;
+  if (error) {
+    console.warn("isNicknameTaken:", error.message);
+    // осторожный фолбэк: считаем «не занято», чтобы не ломать UX при временной ошибке
+    return false;
+  }
+  return (count ?? 0) > 0;
+}
+
+/** Создаёт/обновляет профиль по user_id. Возвращает актуальные поля. */
+export async function upsertProfile(
+  userId: string,
+  nickname: string | null,
+  avatarUrl?: string | null,
+): Promise<{ nickname: string | null; avatar_url: string | null }> {
+  const payload: any = {
+    user_id: userId,
+    nickname: nickname ?? null,
+    avatar_url: avatarUrl ?? null,
+  };
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .upsert(payload, { onConflict: "user_id" })
+    .select("nickname,avatar_url")
+    .single();
+
+  if (error) throw error;
+  return data as any;
 }
 
 /* ────────────────────────────────────────────────────────────
