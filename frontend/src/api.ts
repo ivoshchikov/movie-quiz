@@ -53,6 +53,14 @@ export type DailyFastestRow = {
   answered_at: string;
 };
 
+/* мой статус по daily */
+export type MyDailyResult = {
+  is_answered: boolean;
+  is_correct: boolean | null;
+  time_spent: number | null;
+  answered_at: string | null;
+};
+
 /* ────────────────────────────────────────────────────────────
    CATEGORIES
 ───────────────────────────────────────────────────────────── */
@@ -272,20 +280,20 @@ export async function getDailyQuestionPublic(
     id: raw.id,
     image_url: publicUrl,
     options: opts,
-    correct_answer: "", // ← намеренно пусто
+    correct_answer: "", // намеренно пусто
     category_id: raw.category_id,
     difficulty_level_id: raw.difficulty_level_id,
   };
 }
 
-/* отправка результата дня */
+/** Сохранить результат дня — первый ответ побеждает */
 export async function submitDailyResult(
   userId: string,
   date: string,
   isCorrect: boolean,
   timeSpentSecs: number,
 ) {
-  const { data, error } = await supabase.rpc("upsert_daily_result", {
+  const { data, error } = await supabase.rpc("submit_daily_result", {
     p_user_id: userId,
     p_date: date,
     p_is_correct: isCorrect,
@@ -295,7 +303,7 @@ export async function submitDailyResult(
   return data;
 }
 
-/* топ-5 самых быстрых */
+/** Топ-5 самых быстрых */
 export async function getDailyFastest(
   date?: string,
   limit = 5,
@@ -306,6 +314,30 @@ export async function getDailyFastest(
   });
   if (error) throw error;
   return (data || []) as DailyFastestRow[];
+}
+
+/** Мой статус на сегодня (отвечал/нет) */
+export async function getMyDailyResult(
+  userId: string,
+  date?: string,
+): Promise<MyDailyResult> {
+  const { data, error } = await supabase.rpc("get_my_daily_result", {
+    p_user_id: userId,
+    p_date: date ?? getDailyDateUS(),
+  });
+  if (error) throw error;
+
+  const rows = Array.isArray(data) ? data : (data ? [data] : []);
+  if (rows.length === 0) {
+    return { is_answered: false, is_correct: null, time_spent: null, answered_at: null };
+  }
+  const r = rows[0] as any;
+  return {
+    is_answered: !!r.is_answered,
+    is_correct: r.is_correct ?? null,
+    time_spent: r.time_spent ?? null,
+    answered_at: r.answered_at ?? null,
+  };
 }
 
 /* ────────────────────────────────────────────────────────────

@@ -1,22 +1,25 @@
 // frontend/src/pages/DailyPage.tsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Seo from "../components/Seo";
 import {
   getDailyDateUS,
   getDailyFastest,
   getDailyQuestion,
-  getDailyQuestionPublic, // ← для анонимов (без correct_answer)
+  getDailyQuestionPublic,
+  getMyDailyResult,
   submitDailyResult,
   type Question,
   type DailyFastestRow,
+  type MyDailyResult,
 } from "../api";
 import { shuffle } from "../utils/shuffle";
 
 export default function DailyPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const loc = useLocation();
   const dateStr = getDailyDateUS();
 
   // ---------- state ----------
@@ -32,6 +35,10 @@ export default function DailyPage() {
   const [fastest, setFastest] = useState<DailyFastestRow[]>([]);
   const [fastestLoading, setFastestLoading] = useState(true);
 
+  const [myDaily, setMyDaily] = useState<MyDailyResult>({
+    is_answered: false, is_correct: null, time_spent: null, answered_at: null,
+  });
+
   const startTsRef = useRef<number | null>(null);
 
   // ---------- load question ----------
@@ -41,17 +48,15 @@ export default function DailyPage() {
 
     const loader = user ? getDailyQuestion : getDailyQuestionPublic;
     loader()
-      .then((qq) => {
+      .then((qq: any) => {
         if (!mounted) return;
-        setQ(qq);
-        setOpts(shuffle(qq.options));
+        setQ(qq as Question);
+        setOpts(shuffle((qq as Question).options));
       })
       .catch(console.error)
       .finally(() => mounted && setLoading(false));
 
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, [dateStr, user]);
 
   // старт таймера после загрузки изображения
@@ -68,21 +73,31 @@ export default function DailyPage() {
       .catch(console.error)
       .finally(() => setFastestLoading(false));
   };
+  useEffect(() => { refreshFastest(); }, [dateStr]);
+
+  // ---------- мой статус по daily ----------
   useEffect(() => {
-    refreshFastest();
-  }, [dateStr]);
-
-  // ---------- answer ----------
-  const canAnswer = !!user && imgLoaded;
-  const answered = selected !== null;
-
-  const handleAnswer = async (answer: string) => {
-    // Без входа — не отвечаем, ведём на логин
     if (!user) {
-      navigate("/login");
+      setMyDaily({ is_answered: false, is_correct: null, time_spent: null, answered_at: null });
       return;
     }
-    if (!q || answered || !imgLoaded) return;
+    getMyDailyResult(user.id, dateStr)
+      .then(setMyDaily)
+      .catch(console.error);
+  }, [user, dateStr]);
+
+  const alreadyAnswered = !!user && myDaily.is_answered;
+  const canAnswer = !!user && imgLoaded && !alreadyAnswered;
+  const answered = selected !== null;
+
+  // ---------- answer ----------
+  const handleAnswer = async (answer: string) => {
+    // Без входа — ведём на логин и возвращаемся обратно
+    if (!user) {
+      navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
+      return;
+    }
+    if (!q || answered || !imgLoaded || alreadyAnswered) return;
 
     setSelected(answer);
     const ok = answer.trim() === q.correct_answer.trim();
@@ -95,7 +110,10 @@ export default function DailyPage() {
 
     try {
       setSaving(true);
-      await submitDailyResult(user.id, dateStr, ok, elapsed);
+      await submitDailyResult(user.id, dateStr, ok, elapsed); // первый ответ побеждает
+      // подтянем статус с сервера (на случай повторных кликов/обновлений)
+      const status = await getMyDailyResult(user.id, dateStr);
+      setMyDaily(status);
       refreshFastest();
     } catch (e) {
       console.error(e);
@@ -148,10 +166,25 @@ export default function DailyPage() {
           <div className="mb-4 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
             <b>Sign in to play the Daily.</b> We only accept answers from logged-in
             players to keep the competition fair.{" "}
-            <Link to="/login" className="underline">
+            <Link to="/login" state={{ redirectTo: "/daily" }} className="underline">
               Log in
             </Link>
             .
+          </div>
+        )}
+
+        {/* Сообщение, если уже отвечал */}
+        {alreadyAnswered && (
+          <div className="mb-4 rounded-md border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm">
+            You’ve already answered today’s Daily
+            {myDaily.is_correct != null && (
+              <>
+                {" — "}
+                {myDaily.is_correct ? "correct" : "not correct"}
+                {myDaily.time_spent ? ` in ${myDaily.time_spent}s` : ""}
+                .
+              </>
+            )}
           </div>
         )}
 
@@ -166,6 +199,11 @@ export default function DailyPage() {
                   {!user && (
                     <div className="absolute inset-0 z-10 bg-black/40 backdrop-blur-[1px] flex items-center justify-center text-sm">
                       Log in to play
+                    </div>
+                  )}
+                  {alreadyAnswered && (
+                    <div className="absolute inset-0 z-10 bg-black/30 backdrop-blur-[1px] flex items-center justify-center text-sm">
+                      You’ve already played today
                     </div>
                   )}
                   <img
@@ -202,6 +240,8 @@ export default function DailyPage() {
                         title={
                           !user
                             ? "Log in to answer the Daily"
+                            : alreadyAnswered
+                            ? "You’ve already answered today"
                             : !imgLoaded
                             ? "Loading image…"
                             : undefined

@@ -1,18 +1,19 @@
 // frontend/src/components/Layout.tsx
 import { Fragment, useEffect, useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
 import { getProfile } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
-import { loadGA, pageview } from "../analytics/ga"; // ← NEW
+import { loadGA, pageview } from "../analytics/ga"; // ← GA
 
 const CANON_BASE = "https://hard-quiz.com";
 
 export default function Layout() {
   /* ─── auth ─────────────────────────────── */
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] =
     useState<{ nickname: string | null } | null>(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -21,6 +22,16 @@ export default function Layout() {
     if (!user) return setProfile(null);
     getProfile(user.id).then(setProfile).catch(console.error);
   }, [user]);
+
+  // ← NEW: безопасный редирект обратно после логина (магик-линк/SSO и т.п.)
+  useEffect(() => {
+    if (!user) return;
+    const target = localStorage.getItem("postLoginRedirect");
+    if (target) {
+      localStorage.removeItem("postLoginRedirect");
+      navigate(target, { replace: true });
+    }
+  }, [user, navigate]);
 
   const { pathname, search } = useLocation();
   const canonical = `${CANON_BASE}${pathname}${search || ""}`;
