@@ -166,7 +166,9 @@ export async function getQuestion(
     .from("movies")
     .getPublicUrl(key);
 
-  if (urlError) console.error("Failed to get publicUrl for", raw.image_url, urlError);
+  if (urlError) {
+    console.error("Failed to get publicUrl for", raw.image_url, urlError);
+  }
   const publicUrl = urlData?.publicUrl ?? raw.image_url;
 
   const opts: string[] = Array.isArray(raw.options_json)
@@ -199,7 +201,9 @@ export function getDailyDateUS(tz = "America/Chicago"): string {
 export async function getDailyQuestion(dateOverride?: string): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
 
-  const { data, error } = await supabase.rpc("get_daily_question", { p_date: pDate });
+  const { data, error } = await supabase.rpc("get_daily_question", {
+    p_date: pDate,
+  });
   if (error) throw error;
 
   const rows = Array.isArray(data) ? data : (data ? [data] : []);
@@ -291,13 +295,16 @@ export async function getDailyQuestionPublic(
 ───────────────────────────────────────────────────────────── */
 
 /** фиксируем старт на сервере (для серверного таймера) */
-export async function startDailySession(userId: string, date?: string) {
+export async function startDailySession(
+  userId: string,
+  date?: string,
+): Promise<string | null> {
   const { data, error } = await supabase.rpc("start_daily_session", {
     p_user_id: userId,
     p_date: date ?? getDailyDateUS(),
   });
   if (error) throw error;
-  return data as string | null; // timestamptz в строке
+  return (data as any) ?? null; // timestamptz строкой или null
 }
 
 /** отправка результата дня (сервер сам посчитает time_spent) */
@@ -305,7 +312,7 @@ export async function submitDailyResult(
   userId: string,
   date: string,
   isCorrect: boolean,
-  timeSpentSecs: number, // оставим для бэкапа, но на сервере он игнорируется
+  timeSpentSecs: number, // передаём как бэкап; сервер использует свой таймер
 ) {
   const { data, error } = await supabase.rpc("submit_daily_result", {
     p_user_id: userId,

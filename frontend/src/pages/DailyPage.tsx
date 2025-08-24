@@ -9,8 +9,8 @@ import {
   getDailyQuestion,
   getDailyQuestionPublic,
   getMyDailyResult,
-  startDailySession,
   submitDailyResult,
+  startDailySession,
   type Question,
   type DailyFastestRow,
   type MyDailyResult,
@@ -36,20 +36,28 @@ export default function DailyPage() {
   const [fastest, setFastest] = useState<DailyFastestRow[]>([]);
   const [fastestLoading, setFastestLoading] = useState(true);
 
-  // null = статус ещё не получен (до этого момента отвечать нельзя)
-  const [myDaily, setMyDaily] = useState<MyDailyResult | null>(null);
+  const [myDaily, setMyDaily] = useState<MyDailyResult>({
+    is_answered: false,
+    is_correct: null,
+    time_spent: null,
+    answered_at: null,
+  });
   const [myDailyLoading, setMyDailyLoading] = useState(false);
 
-  const sessStartedRef = useRef(false);
+  // мгновенный локальный флаг (оптимистичный)
+  const [localAnswered, setLocalAnswered] = useState(false);
+
   const startTsRef = useRef<number | null>(null);
+  const sessionKickoffOnce = useRef(false);
+
+  // ключ для localStorage
+  const lsKey =
+    user ? `daily:${dateStr}:answered:${user.id}` : null;
 
   // ---------- load question ----------
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    setImgLoaded(false);
-    setSelected(null);
-    setIsCorrect(null);
 
     const loader = user ? getDailyQuestion : getDailyQuestionPublic;
     loader()
@@ -66,10 +74,26 @@ export default function DailyPage() {
     };
   }, [dateStr, user]);
 
-  // старт таймера после загрузки изображения (локально)
+  // при смене пользователя/даты — подтянем локальный флаг
+  useEffect(() => {
+    if (!user) {
+      setLocalAnswered(false);
+      return;
+    }
+    const v = lsKey ? localStorage.getItem(lsKey) === "1" : false;
+    setLocalAnswered(v);
+  }, [user, dateStr, lsKey]);
+
+  // старт таймера после загрузки изображения
   const onImageLoad = () => {
     setImgLoaded(true);
     if (!startTsRef.current) startTsRef.current = Date.now();
+
+    // неблокирующий старт серверной сессии
+    if (user && !sessionKickoffOnce.current) {
+      sessionKickoffOnce.current = true;
+      startDailySession(user.id, dateStr).catch(console.error);
+    }
   };
 
   // ---------- load fastest ----------
@@ -84,45 +108,36 @@ export default function DailyPage() {
     refreshFastest();
   }, [dateStr]);
 
-  // ---------- мой статус по daily ----------
+  // ---------- мой статус по daily (в фоне) ----------
   useEffect(() => {
     if (!user) {
-      setMyDaily(null);
+      setMyDaily({ is_answered: false, is_correct: null, time_spent: null, answered_at: null });
       setMyDailyLoading(false);
       return;
     }
-    setMyDaily(null);
     setMyDailyLoading(true);
     getMyDailyResult(user.id, dateStr)
-      .then((s) => setMyDaily(s))
+      .then((res) => {
+        setMyDaily(res);
+        if (lsKey && res.is_answered) localStorage.setItem(lsKey, "1");
+      })
       .catch(console.error)
       .finally(() => setMyDailyLoading(false));
-  }, [user, dateStr]);
+  }, [user, dateStr, lsKey]);
 
-  const alreadyAnswered = !!user && !!myDaily?.is_answered;
-  const canAnswer =
-    !!user && imgLoaded && !alreadyAnswered && !myDailyLoading && myDaily !== null;
+  const alreadyAnswered = !!user && (localAnswered || myDaily.is_answered);
+  const canAnswer = !!user && imgLoaded && !alreadyAnswered;
   const answered = selected !== null;
-
-  // ---------- серверная фиксация старта (один раз на сессию/день) ----------
-  useEffect(() => {
-    if (!user || !imgLoaded) return;
-    if (sessStartedRef.current) return;
-    sessStartedRef.current = true;
-    startDailySession(user.id, dateStr).catch((e) => {
-      console.error("startDailySession failed", e);
-    });
-  }, [user, imgLoaded, dateStr]);
 
   // ---------- answer ----------
   const handleAnswer = async (answer: string) => {
+    // Без входа — сохраняем цель и ведём на логин
     if (!user) {
       localStorage.setItem("postLoginRedirect", loc.pathname + loc.search);
       navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
       return;
     }
-    if (!q || answered || !imgLoaded || myDailyLoading || myDaily === null || alreadyAnswered)
-      return;
+    if (!q || answered || !imgLoaded || alreadyAnswered) return;
 
     setSelected(answer);
     const ok = answer.trim() === q.correct_answer.trim();
@@ -135,9 +150,11 @@ export default function DailyPage() {
 
     try {
       setSaving(true);
-      await submitDailyResult(user.id, dateStr, ok, elapsed);
+      await submitDailyResult(user.id, dateStr, ok, elapsed); // БД примет только первый ответ
       const status = await getMyDailyResult(user.id, dateStr);
       setMyDaily(status);
+      if (lsKey && status.is_answered) localStorage.setItem(lsKey, "1");
+      setLocalAnswered(true);
       refreshFastest();
     } catch (e) {
       console.error(e);
@@ -171,11 +188,16 @@ export default function DailyPage() {
             {fastestLoading ? (
               <p className="mt-2 text-sm opacity-80">Loading…</p>
             ) : fastest.length === 0 ? (
-              <p className="mt-2 text-sm opacity-80">Be the first to set a time!</p>
+              <p className="mt-2 text-sm opacity-80">
+                Be the first to set a time!
+              </p>
             ) : (
               <ol className="mt-2 space-y-1 text-sm">
                 {fastest.map((r, i) => (
-                  <li key={i} className="flex justify-between border-b border-white/10 py-1">
+                  <li
+                    key={i}
+                    className="flex justify-between border-b border-white/10 py-1"
+                  >
                     <span className="truncate">{r.nickname}</span>
                     <span className="tabular-nums">{r.time_spent}s</span>
                   </li>
@@ -185,55 +207,59 @@ export default function DailyPage() {
           </aside>
         </header>
 
-        {/* Блок уведомлений/CTA над контентом */}
-        {!user ? (
+        {/* CTA для анонимов */}
+        {!user && (
           <div className="mb-3 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
-            <b>Sign in to play the Daily.</b> We only accept answers from logged-in
-            players to keep the competition fair.{" "}
+            <b>Sign in to play the Daily.</b> We only accept answers from
+            logged-in players to keep the competition fair.{" "}
             <Link
               to="/login"
               state={{ redirectTo: loc.pathname + loc.search }}
-              onClick={() => localStorage.setItem("postLoginRedirect", loc.pathname + loc.search)}
+              onClick={() =>
+                localStorage.setItem(
+                  "postLoginRedirect",
+                  loc.pathname + loc.search,
+                )
+              }
               className="underline"
             >
               Log in
             </Link>
             .
           </div>
-        ) : myDailyLoading || myDaily === null ? (
-          <div className="mb-3 rounded-md border border-white/20 bg-white/5 px-4 py-3 text-sm">
-            Checking your daily status…
-          </div>
-        ) : alreadyAnswered ? (
+        )}
+
+        {/* Сообщение, если уже отвечал (локально мгновенно, детали догружаются) */}
+        {alreadyAnswered && (
           <div className="mb-3 rounded-md border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm">
             You’ve already answered today’s Daily
-            {myDaily.is_correct != null && (
+            {myDailyLoading ? (
+              <> — checking your result…</>
+            ) : myDaily.is_correct != null ? (
               <>
                 {" — "}
                 {myDaily.is_correct ? "correct" : "not correct"}
                 {myDaily.time_spent ? ` in ${myDaily.time_spent}s` : ""}
                 .
               </>
-            )}{" "}
-            Come back tomorrow!
+            ) : (
+              "."
+            )}
           </div>
-        ) : null}
+        )}
 
         <div className="grid gap-6 md:grid-cols-[1fr_280px]">
           <div>
             {loading || !q ? (
+              // Скелетон, который не займет больше первого экрана
               <div className="w-full rounded-lg bg-white/5 animate-pulse h-[42vh] sm:h-[48vh]" />
             ) : (
               <>
+                {/* Постер: ограничиваем высоту, чтобы варианты влезали в первый экран */}
                 <div className="relative rounded-lg bg-white/5 flex items-center justify-center overflow-hidden">
                   {!user && (
                     <div className="absolute inset-0 z-10 bg-black/40 backdrop-blur-[1px] flex items-center justify-center text-sm">
                       Log in to play
-                    </div>
-                  )}
-                  {myDailyLoading && user && (
-                    <div className="absolute inset-0 z-10 bg-black/20 flex items-center justify-center text-sm">
-                      Checking your daily status…
                     </div>
                   )}
                   {alreadyAnswered && (
@@ -241,14 +267,20 @@ export default function DailyPage() {
                       You’ve already played today
                     </div>
                   )}
+
                   <img
                     src={q.image_url}
                     alt="daily still"
                     onLoad={onImageLoad}
-                    className="max-h-[44vh] sm:max-h-[52vh] w-auto max-w-full object-contain block select-none"
+                    className="
+                      max-h-[44vh] sm:max-h-[52vh] 
+                      w-auto max-w-full object-contain 
+                      block select-none
+                    "
                   />
                 </div>
 
+                {/* варианты */}
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {opts.map((opt) => {
                     const isSel = answered && selected === opt;
@@ -276,8 +308,6 @@ export default function DailyPage() {
                             ? "Log in to answer the Daily"
                             : alreadyAnswered
                             ? "You’ve already answered today"
-                            : myDailyLoading || myDaily === null
-                            ? "Checking your status…"
                             : !imgLoaded
                             ? "Loading image…"
                             : undefined
@@ -289,26 +319,21 @@ export default function DailyPage() {
                   })}
                 </div>
 
-                {/* маленькая подсказка под вариантами, если второй клик запрещён */}
-                {user && !canAnswer && (alreadyAnswered || myDailyLoading) && (
-                  <p className="mt-2 text-xs opacity-70">
-                    {alreadyAnswered
-                      ? "You can only answer once per day. Come back tomorrow."
-                      : "Please wait — checking your Daily status…"}
-                  </p>
-                )}
-
-                {user && answered && (
+                {/* результат (только если это наша попытка; когда alreadyAnswered=true — баннер выше) */}
+                {user && answered && !alreadyAnswered && (
                   <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="text-sm">
                       {isCorrect ? (
                         <span className="text-green-400">
-                          Correct! {saving ? "Saving…" : "Your time is recorded."}
+                          {saving ? "Saving…" : "Correct! Your time is recorded."}
                         </span>
                       ) : (
                         <span className="text-red-400">
                           Not this time. The correct answer:{" "}
-                          <span className="font-semibold">{q?.correct_answer}</span>.
+                          <span className="font-semibold">
+                            {q?.correct_answer}
+                          </span>
+                          .
                         </span>
                       )}
                     </div>
@@ -342,11 +367,16 @@ export default function DailyPage() {
             {fastestLoading ? (
               <p className="mt-2 text-sm opacity-80">Loading…</p>
             ) : fastest.length === 0 ? (
-              <p className="mt-2 text-sm opacity-80">Be the first to set a time!</p>
+              <p className="mt-2 text-sm opacity-80">
+                Be the first to set a time!
+              </p>
             ) : (
               <ol className="mt-2 space-y-1 text-sm">
                 {fastest.map((r, i) => (
-                  <li key={i} className="flex justify-between border-b border-white/10 py-1">
+                  <li
+                    key={i}
+                    className="flex justify-between border-b border-white/10 py-1"
+                  >
                     <span className="truncate">{r.nickname}</span>
                     <span className="tabular-nums">{r.time_spent}s</span>
                   </li>
