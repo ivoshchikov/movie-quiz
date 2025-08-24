@@ -36,7 +36,10 @@ export default function DailyPage() {
   const [fastestLoading, setFastestLoading] = useState(true);
 
   const [myDaily, setMyDaily] = useState<MyDailyResult>({
-    is_answered: false, is_correct: null, time_spent: null, answered_at: null,
+    is_answered: false,
+    is_correct: null,
+    time_spent: null,
+    answered_at: null,
   });
 
   const startTsRef = useRef<number | null>(null);
@@ -56,7 +59,9 @@ export default function DailyPage() {
       .catch(console.error)
       .finally(() => mounted && setLoading(false));
 
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [dateStr, user]);
 
   // старт таймера после загрузки изображения
@@ -73,17 +78,22 @@ export default function DailyPage() {
       .catch(console.error)
       .finally(() => setFastestLoading(false));
   };
-  useEffect(() => { refreshFastest(); }, [dateStr]);
+  useEffect(() => {
+    refreshFastest();
+  }, [dateStr]);
 
   // ---------- мой статус по daily ----------
   useEffect(() => {
     if (!user) {
-      setMyDaily({ is_answered: false, is_correct: null, time_spent: null, answered_at: null });
+      setMyDaily({
+        is_answered: false,
+        is_correct: null,
+        time_spent: null,
+        answered_at: null,
+      });
       return;
     }
-    getMyDailyResult(user.id, dateStr)
-      .then(setMyDaily)
-      .catch(console.error);
+    getMyDailyResult(user.id, dateStr).then(setMyDaily).catch(console.error);
   }, [user, dateStr]);
 
   const alreadyAnswered = !!user && myDaily.is_answered;
@@ -136,7 +146,7 @@ export default function DailyPage() {
       />
 
       <section className="mx-auto max-w-5xl">
-        <header className="mb-6 flex items-baseline justify-between">
+        <header className="mb-4 flex items-baseline justify-between">
           <div>
             <h1 className="text-3xl font-extrabold">Daily Challenge</h1>
             <p className="mt-1 text-sm opacity-80">Date: {niceDate}</p>
@@ -145,13 +155,18 @@ export default function DailyPage() {
           <aside className="hidden md:block w-72">
             <h2 className="text-lg font-semibold">Today’s Fastest</h2>
             {fastestLoading ? (
-              <p className="text-sm opacity-80 mt-2">Loading…</p>
+              <p className="mt-2 text-sm opacity-80">Loading…</p>
             ) : fastest.length === 0 ? (
-              <p className="text-sm opacity-80 mt-2">Be the first to set a time!</p>
+              <p className="mt-2 text-sm opacity-80">
+                Be the first to set a time!
+              </p>
             ) : (
               <ol className="mt-2 space-y-1 text-sm">
                 {fastest.map((r, i) => (
-                  <li key={i} className="flex justify-between border-b border-white/10 py-1">
+                  <li
+                    key={i}
+                    className="flex justify-between border-b border-white/10 py-1"
+                  >
                     <span className="truncate">{r.nickname}</span>
                     <span className="tabular-nums">{r.time_spent}s</span>
                   </li>
@@ -163,13 +178,18 @@ export default function DailyPage() {
 
         {/* CTA для анонимов */}
         {!user && (
-          <div className="mb-4 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
-            <b>Sign in to play the Daily.</b> We only accept answers from logged-in
-            players to keep the competition fair.{" "}
+          <div className="mb-3 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
+            <b>Sign in to play the Daily.</b> We only accept answers from
+            logged-in players to keep the competition fair.{" "}
             <Link
               to="/login"
               state={{ redirectTo: loc.pathname + loc.search }}
-              onClick={() => localStorage.setItem("postLoginRedirect", loc.pathname + loc.search)}
+              onClick={() =>
+                localStorage.setItem(
+                  "postLoginRedirect",
+                  loc.pathname + loc.search,
+                )
+              }
               className="underline"
             >
               Log in
@@ -180,7 +200,7 @@ export default function DailyPage() {
 
         {/* Сообщение, если уже отвечал */}
         {alreadyAnswered && (
-          <div className="mb-4 rounded-md border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm">
+          <div className="mb-3 rounded-md border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm">
             You’ve already answered today’s Daily
             {myDaily.is_correct != null && (
               <>
@@ -193,14 +213,20 @@ export default function DailyPage() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-[1fr_280px] gap-8">
+        <div className="grid gap-6 md:grid-cols-[1fr_280px]">
           <div>
             {loading || !q ? (
-              <div className="aspect-video w-full rounded-lg bg-white/5 animate-pulse" />
+              // Скелетон, который не займет больше первого экрана
+              <div className="w-full rounded-lg bg-white/5 animate-pulse h-[42vh] sm:h-[48vh]" />
             ) : (
               <>
-                {/* постер */}
-                <div className="relative rounded-lg overflow-hidden bg-white/5">
+                {/* 
+                  Постер:
+                  - ограничиваем максимальную высоту, чтобы вместе с вариантами ответы влезали в первый экран;
+                  - object-contain, чтобы вертикальные фото не тянули контейнер;
+                  - центрируем, оставляем "letterbox".
+                */}
+                <div className="relative rounded-lg bg-white/5 flex items-center justify-center overflow-hidden">
                   {!user && (
                     <div className="absolute inset-0 z-10 bg-black/40 backdrop-blur-[1px] flex items-center justify-center text-sm">
                       Log in to play
@@ -211,16 +237,21 @@ export default function DailyPage() {
                       You’ve already played today
                     </div>
                   )}
+
                   <img
                     src={q.image_url}
                     alt="daily still"
-                    className="w-full h-auto block"
                     onLoad={onImageLoad}
+                    className="
+                      max-h-[44vh] sm:max-h-[52vh] 
+                      w-auto max-w-full object-contain 
+                      block select-none
+                    "
                   />
                 </div>
 
-                {/* варианты */}
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* варианты — чуть меньше отступы, чтобы всё помещалось */}
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {opts.map((opt) => {
                     const isSel = answered && selected === opt;
                     const cls = [
@@ -260,7 +291,7 @@ export default function DailyPage() {
 
                 {/* результат (только для авторизованных) */}
                 {user && answered && (
-                  <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="text-sm">
                       {isCorrect ? (
                         <span className="text-green-400">
@@ -269,7 +300,10 @@ export default function DailyPage() {
                       ) : (
                         <span className="text-red-400">
                           Not this time. The correct answer:{" "}
-                          <span className="font-semibold">{q?.correct_answer}</span>.
+                          <span className="font-semibold">
+                            {q?.correct_answer}
+                          </span>
+                          .
                         </span>
                       )}
                     </div>
@@ -281,7 +315,7 @@ export default function DailyPage() {
                         encodeURIComponent(
                           isCorrect
                             ? "I just solved today’s Hard Quiz Daily! 🎬"
-                            : "Tried today’s Hard Quiz Daily. Can you beat it?"
+                            : "Tried today’s Hard Quiz Daily. Can you beat it?",
                         ) +
                         "&url=" +
                         encodeURIComponent("https://hard-quiz.com/daily")
@@ -301,13 +335,18 @@ export default function DailyPage() {
           <aside className="md:hidden">
             <h2 className="text-lg font-semibold">Today’s Fastest</h2>
             {fastestLoading ? (
-              <p className="text-sm opacity-80 mt-2">Loading…</p>
+              <p className="mt-2 text-sm opacity-80">Loading…</p>
             ) : fastest.length === 0 ? (
-              <p className="text-sm opacity-80 mt-2">Be the first to set a time!</p>
+              <p className="mt-2 text-sm opacity-80">
+                Be the first to set a time!
+              </p>
             ) : (
               <ol className="mt-2 space-y-1 text-sm">
                 {fastest.map((r, i) => (
-                  <li key={i} className="flex justify-between border-b border-white/10 py-1">
+                  <li
+                    key={i}
+                    className="flex justify-between border-b border-white/10 py-1"
+                  >
                     <span className="truncate">{r.nickname}</span>
                     <span className="tabular-nums">{r.time_spent}s</span>
                   </li>
