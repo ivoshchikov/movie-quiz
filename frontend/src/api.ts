@@ -18,7 +18,7 @@ export interface DailyFastestRow { nickname: string | null; time_spent: number; 
 export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at: string; }
 
 /* ────────────────────────────────────────────────────────────
-   PUBLIC URL BUILDER (фикс путей)
+   PUBLIC URL BUILDER (фикс путей: general / actors / actresses)
 ───────────────────────────────────────────────────────────── */
 function toPublicUrlFromMoviesBucket(raw: string): string {
   if (!raw) return "";
@@ -26,14 +26,26 @@ function toPublicUrlFromMoviesBucket(raw: string): string {
 
   const base   = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
   const bucket = import.meta.env.VITE_SUPABASE_BUCKET;
-  // ⬇ важное изменение: дефолт "general" даже если VERCEL-ENV пустой
-  const defDir = (import.meta.env.VITE_SUPABASE_FOLDER_GENERAL || "general").replace(/^\/|\/$/g, "");
 
-  // 1) убираем ведущие слэши и возможный устаревший префикс posters/
+  const dirGeneral   = (import.meta.env.VITE_SUPABASE_FOLDER_GENERAL   || "general").trim().replace(/^\/|\/$/g, "");
+  const dirActors    = (import.meta.env.VITE_SUPABASE_FOLDER_ACTORS    || "actors").trim().replace(/^\/|\/$/g, "");
+  const dirActresses = (import.meta.env.VITE_SUPABASE_FOLDER_ACTRESSES || "actresses").trim().replace(/^\/|\/$/g, "");
+
+  // убираем ведущие / и старый префикс posters/
   let p = String(raw).replace(/^\/+/, "").replace(/^posters\//i, "");
-  // 2) если нет подпапки — добавляем дефолтную (general)
-  if (!p.includes("/") && defDir) p = `${defDir}/${p}`;
 
+  // если путь уже содержит подпапку — используем как есть
+  if (p.includes("/")) {
+    return `${base}/storage/v1/object/public/${bucket}/${p}`;
+  }
+
+  // эвристика по имени файла: g_* → general, a_* → actors, иначе general
+  const low = p.toLowerCase();
+  let folder = dirGeneral;
+  if (low.startsWith("a_") || low.startsWith("actor")) folder = dirActors;
+  else if (low.startsWith("actress"))                  folder = dirActresses;
+
+  p = `${folder}/${p}`;
   return `${base}/storage/v1/object/public/${bucket}/${p}`;
 }
 
