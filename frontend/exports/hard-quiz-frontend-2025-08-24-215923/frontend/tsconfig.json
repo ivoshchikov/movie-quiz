@@ -1,0 +1,40 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+
+  /*  ──────────────────────────────────────────────────────────────
+      Общие правила компилятора для всего frontend-проекта
+  ──────────────────────────────────────────────────────────────── */
+  "compilerOptions": {
+    /* целевая версия JS и способ сборки модулей (оптимально для Vite) */
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+
+    /* React */
+    "jsx": "react-jsx",
+
+    /* ───── включаем строгий режим TypeScript ───── */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* прочие удобные флаги */
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+
+    /* типы, которые подтягивает Vite */
+    "types": ["vite/client"]
+  },
+
+  /* какие файлы компилировать */
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

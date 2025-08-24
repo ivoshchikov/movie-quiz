@@ -133,11 +133,25 @@ export default function DailyPage() {
   const handleAnswer = async (answer: string) => {
     // Без входа — сохраняем цель и ведём на логин
     if (!user) {
-      localStorage.setItem("postLoginRedirect", loc.pathname + loc.search);
+      localStorage.setItem("postLoginRedirectPath", loc.pathname + loc.search);
       navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
       return;
     }
     if (!q || answered || !imgLoaded || alreadyAnswered) return;
+
+    // Fresh re-check against server just in case (multi-tab/cleared LS)
+    try {
+      const fresh = await getMyDailyResult(user.id, dateStr);
+      if (fresh.is_answered) {
+        setMyDaily(fresh);
+        if (lsKey) localStorage.setItem(lsKey, "1");
+        setLocalAnswered(true);
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
 
     setSelected(answer);
     const ok = answer.trim() === q.correct_answer.trim();

@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    /* Чуть новее цель – удобно для Node-скриптов/конфига */
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true
+  },
+
+  /* Сюда обычно кладут vite.config.(ts|js) или утилиты */
+  "include": ["vite.config.ts", "vite.config.js"]
+}
