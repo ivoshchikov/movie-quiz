@@ -46,15 +46,22 @@ export interface DailyFastestRow {
   answered_at: string;
 }
 
+export interface LeaderboardRow {
+  nickname: string | null;
+  best_score: number;
+  best_time: number;
+  updated_at: string;
+}
+
 /* ────────────────────────────────────────────────────────────
    SMALL UTILS
 ───────────────────────────────────────────────────────────── */
-/** Собираем public URL для объекта в бакете `movies` без правок пути. */
+/** Публичный URL для объекта в бакете `movies` — путь берём как есть. */
 function toPublicUrlFromMoviesBucket(raw: string): string {
-  if (/^https?:\/\//i.test(raw)) return raw; // уже абсолютный URL
+  if (/^https?:\/\//i.test(raw)) return raw;
   const base = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
   const bucket = import.meta.env.VITE_SUPABASE_BUCKET;
-  const clean = String(raw || "").replace(/^\/+/, ""); // только убираем ведущие /
+  const clean = String(raw || "").replace(/^\/+/, "");
   return `${base}/storage/v1/object/public/${bucket}/${clean}`;
 }
 
@@ -76,7 +83,7 @@ export async function getProfile(
   return (data as any) ?? null;
 }
 
-/** Проверка, занят ли ник (case-insensitive). Можно исключить своего пользователя. */
+/** Проверка ника (case-insensitive). Можно исключить своего пользователя. */
 export async function isNicknameTaken(
   nickname: string,
   excludeUserId?: string,
@@ -95,7 +102,7 @@ export async function isNicknameTaken(
   return (count ?? 0) > 0;
 }
 
-/** Создаёт/обновляет профиль по user_id. Возвращает актуальные поля. */
+/** Апсерт профиля. */
 export async function upsertProfile(
   userId: string,
   nickname: string | null,
@@ -136,7 +143,7 @@ export async function getDifficulties(): Promise<DifficultyLevel[]> {
   return data ?? [];
 }
 
-/** Алиас для обратной совместимости со StartScreen.tsx */
+/** Алиас для обратной совместимости. */
 export function getDifficultyLevels(): Promise<DifficultyLevel[]> {
   return getDifficulties();
 }
@@ -156,7 +163,7 @@ export async function countQuestions(
 }
 
 /* ────────────────────────────────────────────────────────────
-   NORMAL (не daily) GAME QUESTIONS
+   NORMAL GAME (не daily)
 ───────────────────────────────────────────────────────────── */
 export async function getQuestion(
   categoryId: number,
@@ -170,8 +177,7 @@ export async function getQuestion(
   const row = (Array.isArray(data) ? data[0] : data) as any;
   if (!row) throw new Error("no-question");
 
-  const key = String(row.image_url ?? "");
-  const pub = toPublicUrlFromMoviesBucket(key);
+  const pub = toPublicUrlFromMoviesBucket(String(row.image_url ?? ""));
   const options: string[] = Array.isArray(row.options_json)
     ? row.options_json
     : typeof row.options_json === "string"
@@ -188,7 +194,6 @@ export async function getQuestion(
   };
 }
 
-/** Проверка ответа в обычной игре */
 export async function checkAnswer(
   questionId: number,
   answer: string,
@@ -205,9 +210,7 @@ export async function checkAnswer(
   return { correct, correct_answer };
 }
 
-/* ────────────────────────────────────────────────────────────
-   МОИ ЛУЧШИЕ РЕЗУЛЬТАТЫ (для StartScreen)
-───────────────────────────────────────────────────────────── */
+/** Мои лучшие результаты (для StartScreen). */
 export async function getMyBest(userId: string): Promise<
   Array<{
     category_id: number;
@@ -227,7 +230,24 @@ export async function getMyBest(userId: string): Promise<
 }
 
 /* ────────────────────────────────────────────────────────────
-   DAILY (US Central)
+   PUBLIC LEADERBOARD (обычная игра)
+───────────────────────────────────────────────────────────── */
+export async function getLeaderboard(
+  categoryId: number,
+  difficultyId: number,
+  limit = 5,
+): Promise<LeaderboardRow[]> {
+  const { data, error } = await supabase.rpc("get_leaderboard", {
+    p_category_id: categoryId,
+    p_difficulty_id: difficultyId,
+    p_limit: limit,
+  });
+  if (error) throw error;
+  return (data || []) as LeaderboardRow[];
+}
+
+/* ────────────────────────────────────────────────────────────
+   DAILY (US Central для дат)
 ───────────────────────────────────────────────────────────── */
 export function getDailyDateUS(tz = "America/Chicago"): string {
   return new Intl.DateTimeFormat("en-CA", {
@@ -307,6 +327,7 @@ export async function getDailyQuestionPublic(dateOverride?: string): Promise<Que
   };
 }
 
+/** Зафиксировать старт сессии дня (не обязательно, но полезно). */
 export async function startDailySession(
   userId: string,
   date?: string,
@@ -319,6 +340,7 @@ export async function startDailySession(
   return (data as any) ?? null;
 }
 
+/** Отправка результата дня (сервер сам считает время). */
 export async function submitDailyResult(
   userId: string,
   date: string,
@@ -335,6 +357,7 @@ export async function submitDailyResult(
   return data;
 }
 
+/** Мой статус за день. */
 export async function getMyDailyResult(
   userId: string,
   date?: string,
@@ -365,8 +388,7 @@ export async function getDailyFastest(
   const { data, error } = await supabase.rpc("get_daily_fastest", {
     p_date: date ?? getDailyDateUS(),
     p_limit: limit,
-    // показываем всех: по умолчанию НЕ скрываем никнеймы
-    p_hide_nicks: hideNicks ?? [],
+    p_hide_nicks: hideNicks ?? [], // никого не скрываем по умолчанию
   });
   if (error) throw error;
   return (data || []) as DailyFastestRow[];
@@ -398,7 +420,7 @@ export async function getDailyStreakLeaderboard(
   const { data, error } = await supabase.rpc("get_daily_streak_leaderboard", {
     p_active_only: activeOnly,
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? [], // не скрываем Isildur
+    p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
   return (data || []) as any[];
@@ -412,7 +434,7 @@ export async function getDailyBestTimeRecords(
 > {
   const { data, error } = await supabase.rpc("get_daily_best_time_records", {
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? [], // не скрываем Isildur
+    p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
   return (data || []) as any[];
@@ -424,7 +446,7 @@ export async function getDailyTotalCorrectLeaderboard(
 ): Promise<{ user_id: string; nickname: string | null; total_correct: number }[]> {
   const { data, error } = await supabase.rpc("get_daily_total_correct_leaderboard", {
     p_limit: limit,
-    p_hide_nicks: hideNicks ?? [], // не скрываем Isildur
+    p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
   return (data || []) as any[];
@@ -470,9 +492,11 @@ export async function getDailyHistoryAdmin(
   if (error) throw error;
   const rows = (data || []) as any[];
   for (const r of rows) {
-    if (r?.image_url) {
-      r.image_url = toPublicUrlFromMoviesBucket(String(r.image_url));
-    }
+    if (r?.image_url) r.image_url = toPublicUrlFromMoviesBucket(String(r.image_url));
   }
   return rows;
 }
+
+/* Явные ре-экспорты — на случай странностей бандлера */
+export type { LeaderboardRow as _LeaderboardRowTypeGuard };
+export const api_has_getLeaderboard = true;
