@@ -106,7 +106,7 @@ export async function getMyBest(userId: string): Promise<UserBestRow[]> {
 }
 
 /* ────────────────────────────────────────────────────────────
-   GLOBAL LEADERBOARD (RPC: public.get_leaderboard)
+   GLOBAL LEADERBOARD (RPC)
 ───────────────────────────────────────────────────────────── */
 export async function getLeaderboard(
   categoryId: number,
@@ -286,12 +286,26 @@ export async function getDailyQuestionPublic(
   };
 }
 
-/* отправка результата дня — первый ответ фиксируется, повторы игнорируются (БД) */
+/* ────────────────────────────────────────────────────────────
+   DAILY: серверные RPC
+───────────────────────────────────────────────────────────── */
+
+/** фиксируем старт на сервере (для серверного таймера) */
+export async function startDailySession(userId: string, date?: string) {
+  const { data, error } = await supabase.rpc("start_daily_session", {
+    p_user_id: userId,
+    p_date: date ?? getDailyDateUS(),
+  });
+  if (error) throw error;
+  return data as string | null; // timestamptz в строке
+}
+
+/** отправка результата дня (сервер сам посчитает time_spent) */
 export async function submitDailyResult(
   userId: string,
   date: string,
   isCorrect: boolean,
-  timeSpentSecs: number,
+  timeSpentSecs: number, // оставим для бэкапа, но на сервере он игнорируется
 ) {
   const { data, error } = await supabase.rpc("submit_daily_result", {
     p_user_id: userId,
@@ -303,7 +317,7 @@ export async function submitDailyResult(
   return data;
 }
 
-/* мой статус по дню (играл ли/результат) */
+/** мой статус по дню (играл ли/результат) */
 export async function getMyDailyResult(
   userId: string,
   date?: string,
@@ -323,7 +337,9 @@ export async function getMyDailyResult(
   };
 }
 
-/* топ-5 самых быстрых */
+/* ────────────────────────────────────────────────────────────
+   FASTEST
+───────────────────────────────────────────────────────────── */
 export async function getDailyFastest(
   date?: string,
   limit = 5,
@@ -337,7 +353,7 @@ export async function getDailyFastest(
 }
 
 /* ────────────────────────────────────────────────────────────
-   ANSWER CHECK (для обычной игры)
+   ANSWER CHECK (обычная игра)
 ───────────────────────────────────────────────────────────── */
 export async function checkAnswer(
   questionId: number,
