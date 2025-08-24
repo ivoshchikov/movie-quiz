@@ -36,7 +36,7 @@ export default function DailyPage() {
   const [fastest, setFastest] = useState<DailyFastestRow[]>([]);
   const [fastestLoading, setFastestLoading] = useState(true);
 
-  // ВАЖНО: null = статус ещё не получен. Пока null — отвечать нельзя.
+  // null = статус ещё не получен (до этого момента отвечать нельзя)
   const [myDaily, setMyDaily] = useState<MyDailyResult | null>(null);
   const [myDailyLoading, setMyDailyLoading] = useState(false);
 
@@ -100,7 +100,8 @@ export default function DailyPage() {
   }, [user, dateStr]);
 
   const alreadyAnswered = !!user && !!myDaily?.is_answered;
-  const canAnswer = !!user && imgLoaded && !alreadyAnswered && !myDailyLoading && myDaily !== null;
+  const canAnswer =
+    !!user && imgLoaded && !alreadyAnswered && !myDailyLoading && myDaily !== null;
   const answered = selected !== null;
 
   // ---------- серверная фиксация старта (один раз на сессию/день) ----------
@@ -110,20 +111,18 @@ export default function DailyPage() {
     sessStartedRef.current = true;
     startDailySession(user.id, dateStr).catch((e) => {
       console.error("startDailySession failed", e);
-      // если не получилось — дадим клику с локальным временем, а сервер подстрахуется p_time
     });
   }, [user, imgLoaded, dateStr]);
 
   // ---------- answer ----------
   const handleAnswer = async (answer: string) => {
-    // Без входа — сохраняем цель и ведём на логин
     if (!user) {
       localStorage.setItem("postLoginRedirect", loc.pathname + loc.search);
       navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
       return;
     }
-    // Ждём статус и загрузку изображения
-    if (!q || answered || !imgLoaded || myDailyLoading || myDaily === null || alreadyAnswered) return;
+    if (!q || answered || !imgLoaded || myDailyLoading || myDaily === null || alreadyAnswered)
+      return;
 
     setSelected(answer);
     const ok = answer.trim() === q.correct_answer.trim();
@@ -136,8 +135,8 @@ export default function DailyPage() {
 
     try {
       setSaving(true);
-      await submitDailyResult(user.id, dateStr, ok, elapsed); // первый ответ побеждает (БД)
-      const status = await getMyDailyResult(user.id, dateStr); // синхронизируем UI
+      await submitDailyResult(user.id, dateStr, ok, elapsed);
+      const status = await getMyDailyResult(user.id, dateStr);
       setMyDaily(status);
       refreshFastest();
     } catch (e) {
@@ -186,8 +185,8 @@ export default function DailyPage() {
           </aside>
         </header>
 
-        {/* CTA для анонимов */}
-        {!user && (
+        {/* Блок уведомлений/CTA над контентом */}
+        {!user ? (
           <div className="mb-3 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
             <b>Sign in to play the Daily.</b> We only accept answers from logged-in
             players to keep the competition fair.{" "}
@@ -201,10 +200,11 @@ export default function DailyPage() {
             </Link>
             .
           </div>
-        )}
-
-        {/* Сообщение, если уже отвечал */}
-        {alreadyAnswered && myDaily && (
+        ) : myDailyLoading || myDaily === null ? (
+          <div className="mb-3 rounded-md border border-white/20 bg-white/5 px-4 py-3 text-sm">
+            Checking your daily status…
+          </div>
+        ) : alreadyAnswered ? (
           <div className="mb-3 rounded-md border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm">
             You’ve already answered today’s Daily
             {myDaily.is_correct != null && (
@@ -214,9 +214,10 @@ export default function DailyPage() {
                 {myDaily.time_spent ? ` in ${myDaily.time_spent}s` : ""}
                 .
               </>
-            )}
+            )}{" "}
+            Come back tomorrow!
           </div>
-        )}
+        ) : null}
 
         <div className="grid gap-6 md:grid-cols-[1fr_280px]">
           <div>
@@ -287,6 +288,15 @@ export default function DailyPage() {
                     );
                   })}
                 </div>
+
+                {/* маленькая подсказка под вариантами, если второй клик запрещён */}
+                {user && !canAnswer && (alreadyAnswered || myDailyLoading) && (
+                  <p className="mt-2 text-xs opacity-70">
+                    {alreadyAnswered
+                      ? "You can only answer once per day. Come back tomorrow."
+                      : "Please wait — checking your Daily status…"}
+                  </p>
+                )}
 
                 {user && answered && (
                   <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
