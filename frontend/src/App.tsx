@@ -10,8 +10,9 @@ import HowToPlay           from "./components/HowToPlay";
 import LoginScreen         from "./components/LoginScreen";
 import ProfileSetupScreen  from "./components/ProfileSetupScreen";
 import PrivateRoute        from "./PrivateRoute";
-import BlogIndex from "./pages/BlogIndex";
-import BlogPostPage from "./pages/BlogPost";
+import BlogIndex           from "./pages/BlogIndex";
+import BlogPostPage        from "./pages/BlogPost";
+import DailyPage           from "./pages/DailyPage"; // ← NEW
 
 export default function App() {
   return (
@@ -29,18 +30,18 @@ export default function App() {
         {/* всё под общим Layout */}
         <Route element={<Layout />}>
           {/* публичные экраны */}
-          <Route index            element={<StartScreen />} />
-          <Route path="how-to-play" element={<HowToPlay />} />
-          <Route path="login" element={<LoginScreen />} />
+          <Route index                element={<StartScreen />} />
+          <Route path="how-to-play"   element={<HowToPlay />} />
+          <Route path="login"         element={<LoginScreen />} />
           <Route path="setup-profile" element={<ProfileSetupScreen />} />
           <Route path="play"          element={<GameScreen />} />
           <Route path="result"        element={<ResultScreen />} />
-          <Route path="blog" element={<BlogIndex />} />
-          <Route path="blog/:slug" element={<BlogPostPage />} />
+          <Route path="blog"          element={<BlogIndex />} />
+          <Route path="blog/:slug"    element={<BlogPostPage />} />
+          <Route path="daily"         element={<DailyPage />} /> {/* ← NEW: публичная страница */}
 
-          {/* защищённые (добавим позже) */}
+          {/* защищённые (оставляем лидерборд как пример/на будущее) */}
           <Route element={<PrivateRoute />}>
-            <Route path="daily"       element={<div>Daily…</div>} />
             <Route path="leaderboard" element={<div>Leaderboard…</div>} />
           </Route>
 

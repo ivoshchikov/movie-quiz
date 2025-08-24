@@ -225,13 +225,26 @@ export default function StartScreen() {
           Start a new quiz | Hard Quiz
         </h1>
         <p className="mt-2 text-sm sm:text-base opacity-80">
-          Pick a category and difficulty, then race the clock. Looking for tips and updates?{" "}
-          Read our{" "}
+          Pick a category and difficulty, then race the clock. Looking for tips and updates{" "}
           <Link to="/blog" className="underline hover:opacity-100">
             blog
           </Link>
           .
         </p>
+      </section>
+
+      {/* ── Daily card (CTA на ежедневный челлендж) ───────────────── */}
+      <section className="mb-6 rounded-lg border border-white/10 p-4 text-center">
+        <h2 className="text-lg font-semibold">Today’s Daily Challenge</h2>
+        <p className="mt-1 text-sm opacity-80">
+          One new movie/actor question every day. Be fast to enter Top-5!
+        </p>
+        <Link
+          to="/daily"
+          className="btn-primary mt-3 inline-flex items-center justify-center"
+        >
+          Play Daily
+        </Link>
       </section>
 
       {/* Три колонки на xl: [Личные] [Центр: выбор] [Глобальный лидборд] */}
