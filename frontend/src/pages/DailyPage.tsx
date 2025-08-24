@@ -16,6 +16,7 @@ import {
   type MyDailyResult,
 } from "../api";
 import { shuffle } from "../utils/shuffle";
+import { gaEvent } from "../analytics/ga";   // ← GA events
 
 export default function DailyPage() {
   const { user } = useAuth();
@@ -52,6 +53,11 @@ export default function DailyPage() {
 
   // ключ для localStorage
   const lsKey = user ? `daily:${dateStr}:answered:${user.id}` : null;
+
+  // GA: просмотр страницы Daily (с датой US Central)
+  useEffect(() => {
+    gaEvent("daily_view", { d: dateStr, is_logged_in: !!user });
+  }, [dateStr, user]);
 
   // ---------- load question ----------
   useEffect(() => {
@@ -93,6 +99,9 @@ export default function DailyPage() {
       sessionKickoffOnce.current = true;
       startDailySession(user.id, dateStr).catch(console.error);
     }
+
+    // GA: фиксируем момент старта (когда постер реально показан)
+    gaEvent("daily_start", { d: dateStr, is_logged_in: !!user });
   };
 
   // ---------- load fastest ----------
@@ -169,6 +178,9 @@ export default function DailyPage() {
 
     try {
       await submitDailyResult(user.id, dateStr, ok, elapsed); // БД примет только первый ответ
+      // GA: событие попытки
+      gaEvent("daily_submit", { d: dateStr, ok, elapsed });
+
       // подтягиваем подтверждение с сервера
       const status = await getMyDailyResult(user.id, dateStr);
       setMyDaily(status);

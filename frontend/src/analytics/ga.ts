@@ -7,7 +7,10 @@ declare global {
   }
 }
 
-const GA_ID = import.meta.env.VITE_GA_ID as string | undefined;
+// поддерживаем и VITE_GA_ID, и VITE_GA_MEASUREMENT_ID
+const GA_ID =
+  (import.meta.env as any).VITE_GA_ID ||
+  (import.meta.env as any).VITE_GA_MEASUREMENT_ID;
 
 export function loadGA() {
   if (!GA_ID || window.__gaLoaded) return;

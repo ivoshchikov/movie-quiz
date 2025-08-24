@@ -12,7 +12,9 @@ import ProfileSetupScreen  from "./components/ProfileSetupScreen";
 import PrivateRoute        from "./PrivateRoute";
 import BlogIndex           from "./pages/BlogIndex";
 import BlogPostPage        from "./pages/BlogPost";
-import DailyPage           from "./pages/DailyPage"; // ← NEW
+import DailyPage           from "./pages/DailyPage";
+import DailyStatsPage      from "./pages/DailyStatsPage";   // ← NEW
+import AdminDailyPage      from "./pages/AdminDailyPage";   // ← NEW
 
 export default function App() {
   return (
@@ -38,7 +40,11 @@ export default function App() {
           <Route path="result"        element={<ResultScreen />} />
           <Route path="blog"          element={<BlogIndex />} />
           <Route path="blog/:slug"    element={<BlogPostPage />} />
-          <Route path="daily"         element={<DailyPage />} /> {/* ← NEW: публичная страница */}
+          <Route path="daily"         element={<DailyPage />} />
+
+          {/* ❗ новые маршруты */}
+          <Route path="daily/stats"   element={<DailyStatsPage />} />
+          <Route path="admin/daily"   element={<AdminDailyPage />} />
 
           {/* защищённые (оставляем лидерборд как пример/на будущее) */}
           <Route element={<PrivateRoute />}>
