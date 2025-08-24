@@ -1,5 +1,5 @@
 // frontend/src/api.ts
-import { supabase } from "./supabase";
+import { supabase, getPublicUrl } from "./supabase";
 
 /* ────────────────────────────────────────────────────────────
    TYPES
@@ -16,38 +16,6 @@ export interface Question {
 export interface MyDailyResult { is_answered: boolean; is_correct: boolean | null; time_spent: number | null; answered_at: string | null; }
 export interface DailyFastestRow { nickname: string | null; time_spent: number; answered_at: string; }
 export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at: string; }
-
-/* ────────────────────────────────────────────────────────────
-   PUBLIC URL BUILDER (фикс путей: general / actors / actresses)
-───────────────────────────────────────────────────────────── */
-function toPublicUrlFromMoviesBucket(raw: string): string {
-  if (!raw) return "";
-  if (/^https?:\/\//i.test(raw)) return raw;
-
-  const base   = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
-  const bucket = import.meta.env.VITE_SUPABASE_BUCKET;
-
-  const dirGeneral   = (import.meta.env.VITE_SUPABASE_FOLDER_GENERAL   || "general").trim().replace(/^\/|\/$/g, "");
-  const dirActors    = (import.meta.env.VITE_SUPABASE_FOLDER_ACTORS    || "actors").trim().replace(/^\/|\/$/g, "");
-  const dirActresses = (import.meta.env.VITE_SUPABASE_FOLDER_ACTRESSES || "actresses").trim().replace(/^\/|\/$/g, "");
-
-  // убираем ведущие / и старый префикс posters/
-  let p = String(raw).replace(/^\/+/, "").replace(/^posters\//i, "");
-
-  // если путь уже содержит подпапку — используем как есть
-  if (p.includes("/")) {
-    return `${base}/storage/v1/object/public/${bucket}/${p}`;
-  }
-
-  // эвристика по имени файла: g_* → general, a_* → actors, иначе general
-  const low = p.toLowerCase();
-  let folder = dirGeneral;
-  if (low.startsWith("a_") || low.startsWith("actor")) folder = dirActors;
-  else if (low.startsWith("actress"))                  folder = dirActresses;
-
-  p = `${folder}/${p}`;
-  return `${base}/storage/v1/object/public/${bucket}/${p}`;
-}
 
 /* ────────────────────────────────────────────────────────────
    PROFILES
@@ -103,20 +71,39 @@ export async function countQuestions(categoryId: number, difficultyId: number): 
 
 /* ────────────────────────────────────────────────────────────
    NORMAL GAME (не daily)
+   getQuestion: понимает 2 сигнатуры:
+   - getQuestion(categoryId, difficultyId)
+   - getQuestion(excludeIds[], categoryId, difficultyId)
 ───────────────────────────────────────────────────────────── */
-export async function getQuestion(categoryId: number, difficultyId: number): Promise<Question> {
-  const { data, error } = await supabase.rpc("get_question", { p_category_id: categoryId, p_difficulty_id: difficultyId });
+export async function getQuestion(arg1: any, arg2?: any, arg3?: any): Promise<Question> {
+  let payload: Record<string, any>;
+  if (Array.isArray(arg1)) {
+    // старая форма с exclude[]
+    payload = { p_exclude_ids: arg1 as number[], p_category_id: arg2 as number, p_difficulty_id: arg3 as number };
+  } else {
+    // новая форма
+    payload = { p_category_id: arg1 as number, p_difficulty_id: arg2 as number };
+  }
+
+  const { data, error } = await supabase.rpc("get_question", payload);
   if (error) throw error;
+
   const row = (Array.isArray(data) ? data[0] : data) as any;
   if (!row) throw new Error("no-question");
 
-  const pub = toPublicUrlFromMoviesBucket(String(row.image_url ?? ""));
+  const publicUrl = getPublicUrl(String(row.image_url ?? ""));
   const options: string[] =
     Array.isArray(row.options_json) ? row.options_json :
     typeof row.options_json === "string" ? JSON.parse(row.options_json) : [];
 
-  return { id: row.id, image_url: pub, options, correct_answer: row.correct_answer,
-           category_id: row.category_id, difficulty_level_id: row.difficulty_level_id };
+  return {
+    id: row.id,
+    image_url: publicUrl,
+    options,
+    correct_answer: row.correct_answer,
+    category_id: row.category_id,
+    difficulty_level_id: row.difficulty_level_id,
+  };
 }
 
 export async function checkAnswer(questionId: number, answer: string) {
@@ -152,10 +139,10 @@ export function getDailyDateUS(tz = "America/Chicago"): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 }
 
-export interface QuestionRowFull {
-  id: number; image_url: string; options_json: unknown; correct_answer: string;
+type DailyRowFull = {
+  id: number; image_url: string; options_json: unknown; correct_answer?: string;
   category_id: number; difficulty_level_id: number;
-}
+};
 
 export async function getDailyQuestion(dateOverride?: string): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
@@ -163,14 +150,14 @@ export async function getDailyQuestion(dateOverride?: string): Promise<Question>
   if (error) throw error;
   const rows = Array.isArray(data) ? data : (data ? [data] : []);
   if (rows.length === 0) throw new Error("no-daily-question");
-  const raw = rows[0] as QuestionRowFull;
+  const raw = rows[0] as DailyRowFull;
 
-  const publicUrl = toPublicUrlFromMoviesBucket(raw.image_url);
+  const publicUrl = getPublicUrl(raw.image_url);
   const opts: string[] =
     Array.isArray(raw.options_json) ? (raw.options_json as string[]) :
     typeof raw.options_json === "string" ? JSON.parse(raw.options_json) : [];
 
-  return { id: raw.id, image_url: publicUrl, options: opts, correct_answer: raw.correct_answer,
+  return { id: raw.id, image_url: publicUrl, options: opts, correct_answer: raw.correct_answer!,
            category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
 }
 
@@ -180,14 +167,15 @@ export async function getDailyQuestionPublic(dateOverride?: string): Promise<Que
   if (error) throw error;
   const rows = Array.isArray(data) ? data : (data ? [data] : []);
   if (rows.length === 0) throw new Error("no-daily-question");
-  const raw = rows[0] as { id: number; image_url: string; options_json: unknown; category_id: number; difficulty_level_id: number; };
+  const raw = rows[0] as DailyRowFull;
 
-  const publicUrl = toPublicUrlFromMoviesBucket(raw.image_url);
+  const publicUrl = getPublicUrl(raw.image_url);
   const opts: string[] =
     Array.isArray(raw.options_json) ? (raw.options_json as string[]) :
     typeof raw.options_json === "string" ? JSON.parse(raw.options_json) : [];
 
-  return { id: raw.id, image_url: publicUrl, options: opts, category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
+  return { id: raw.id, image_url: publicUrl, options: opts,
+           category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
 }
 
 export async function startDailySession(userId: string, date?: string) {
@@ -270,6 +258,6 @@ export async function getDailyHistoryAdmin(limit = 30, offset = 0) {
   const { data, error } = await supabase.rpc("get_daily_history_admin", { p_limit: limit, p_offset: offset });
   if (error) throw error;
   const rows = (data || []) as any[];
-  for (const r of rows) if (r?.image_url) r.image_url = toPublicUrlFromMoviesBucket(String(r.image_url));
+  for (const r of rows) if (r?.image_url) r.image_url = getPublicUrl(String(r.image_url));
   return rows;
 }
