@@ -13,7 +13,7 @@ import { supabase } from "../supabase";
 import CircleTimer from "./CircleTimer";
 import LinearTimer from "./LinearTimer";
 import Seo from "./Seo";
-import { gaEvent } from "../analytics/ga"; // ← NEW
+import { gaEvent } from "../analytics/ga";
 
 interface LocationState {
   categoryId?: number;
@@ -35,11 +35,8 @@ export default function GameScreen() {
 
   useEffect(() => {
     const id = window.setInterval(
-      () =>
-        setSessionSecs(
-          Math.floor((Date.now() - sessionStartRef.current) / 1000),
-        ),
-      1000,
+      () => setSessionSecs(Math.floor((Date.now() - sessionStartRef.current) / 1000)),
+      1000
     );
     return () => window.clearInterval(id);
   }, []);
@@ -68,21 +65,14 @@ export default function GameScreen() {
   const intervalRef = useRef<number>(0);
   const timeoutRef = useRef<number>(0);
 
-  /* ---------- helpers ---------- */
   const fmtTime = (t: number) =>
-    `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(
-      2,
-      "0",
-    )}`;
+    `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
 
   /** Завершаем сессию, апдейтим user_best и уходим на /result */
   const endGame = async () => {
-    const elapsedSecs = Math.floor(
-      (Date.now() - sessionStartRef.current) / 1000,
-    );
+    const elapsedSecs = Math.floor((Date.now() - sessionStartRef.current) / 1000);
     const currentCatId = q?.category_id ?? categoryId;
 
-    // GA4: финал сессии
     gaEvent("quiz_end", {
       category_id: currentCatId ?? null,
       difficulty_id: difficultyId ?? null,
@@ -90,7 +80,6 @@ export default function GameScreen() {
       elapsed_secs: elapsedSecs,
     });
 
-    /* upsert best score */
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -134,6 +123,7 @@ export default function GameScreen() {
 
   /* ---------- new round ---------- */
   useEffect(() => {
+    // сброс сессии
     sessionStartRef.current = Date.now();
     setSessionSecs(0);
     setExclude([]);
@@ -143,24 +133,20 @@ export default function GameScreen() {
     setLastAnswer(null);
     setIsCorrect(false);
 
+    // настройка по уровню
     if (!loadingDiffs && difficultyId != null) {
       const level = difficulties.find((d) => d.id === difficultyId);
       if (level) {
         setLives(level.lives);
-        setMistakesLeft(level.mistakes_allowed);
+        setMistakesLeft(Math.max(level.lives - 1, 0)); // ← вместо несуществующего mistakes_allowed
         setSeconds(level.time_limit_secs);
       }
     }
 
-    // GA4: старт квиза
     if (categoryId != null && difficultyId != null) {
-      gaEvent("quiz_start", {
-        category_id: categoryId,
-        difficulty_id: difficultyId,
-      });
+      gaEvent("quiz_start", { category_id: categoryId, difficulty_id: difficultyId });
+      loadQuestion([]); // загрузим первый вопрос
     }
-
-    loadQuestion([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, difficultyId, playKey, loadingDiffs]);
 
@@ -170,11 +156,13 @@ export default function GameScreen() {
     setLastAnswer(null);
     setIsCorrect(false);
     try {
-      const question = await getQuestion(
-        currentExclude,
-        categoryId,
-        difficultyId,
-      );
+      // ⬇ правильная сигнатура
+      const question = await getQuestion(categoryId as number, difficultyId as number);
+      // простой анти-повтор в рамках сессии
+      if (currentExclude.includes(question.id)) {
+        // редкий случай — просто запрашиваем снова
+        return loadQuestion(currentExclude);
+      }
       setQ(question);
 
       const level = difficulties.find((d) => d.id === difficultyId);
@@ -182,7 +170,8 @@ export default function GameScreen() {
 
       setExclude([...currentExclude, question.id]);
     } catch (e: any) {
-      if (e.message === "no-more-questions") endGame();
+      console.error(e);
+      if (e?.message === "no-more-questions") endGame();
     }
   }
 
@@ -191,15 +180,16 @@ export default function GameScreen() {
     if (!q) return;
     intervalRef.current = window.setInterval(() => {
       setSeconds((s) => {
-        if (s === 1) {
+        if (s <= 1) {
           window.clearInterval(intervalRef.current);
           if (mistakesLeft > 0) {
-            setMistakesLeft((m) => m - 1);
-            setLives((l) => l - 1);
+            setMistakesLeft((m) => Math.max(m - 1, 0));
+            setLives((l) => Math.max(l - 1, 0));
             loadQuestion(exclude);
           } else {
             endGame();
           }
+          return 0;
         }
         return s - 1;
       });
@@ -208,10 +198,7 @@ export default function GameScreen() {
   }, [q, mistakesLeft, exclude]);
 
   /* ---------- shuffle options ---------- */
-  const shuffledOptions = useMemo(
-    () => (q ? shuffle(q.options) : []),
-    [q],
-  );
+  const shuffledOptions = useMemo(() => (q ? shuffle(q.options) : []), [q]);
 
   /* ---------- answer handler ---------- */
   const handleAnswer = (answer: string) => {
@@ -224,13 +211,8 @@ export default function GameScreen() {
         setIsCorrect(res.correct);
         setAnswered(true);
 
-        // GA4: событие ответа (лёгкое ивентирование)
-        gaEvent("quiz_answer", {
-          question_id: q.id,
-          correct: res.correct,
-        });
+        gaEvent("quiz_answer", { question_id: q.id, correct: res.correct });
 
-        /* update question stats */
         await supabase.rpc("touch_question_stats", {
           p_question_id: q.id,
           p_is_correct: res.correct,
@@ -242,18 +224,12 @@ export default function GameScreen() {
             scoreRef.current = next;
             return next;
           });
-          timeoutRef.current = window.setTimeout(
-            () => loadQuestion(exclude),
-            500,
-          );
+          timeoutRef.current = window.setTimeout(() => loadQuestion(exclude), 500);
         } else {
           if (mistakesLeft > 0) {
-            setMistakesLeft((m) => m - 1);
-            setLives((l) => l - 1);
-            timeoutRef.current = window.setTimeout(
-              () => loadQuestion(exclude),
-              500,
-            );
+            setMistakesLeft((m) => Math.max(m - 1, 0));
+            setLives((l) => Math.max(l - 1, 0));
+            timeoutRef.current = window.setTimeout(() => loadQuestion(exclude), 500);
           } else {
             timeoutRef.current = window.setTimeout(endGame, 500);
           }
@@ -263,25 +239,18 @@ export default function GameScreen() {
   };
 
   /* ---------- cleanup ---------- */
-  useEffect(
-    () => () => {
-      window.clearTimeout(timeoutRef.current);
-      window.clearInterval(intervalRef.current);
-    },
-    [],
-  );
+  useEffect(() => () => {
+    window.clearTimeout(timeoutRef.current);
+    window.clearInterval(intervalRef.current);
+  }, []);
 
   if (!q) return <p className="loading">Loading…</p>;
 
   /* ---------- helpers for UI ---------- */
   const categoryLabel =
     loadingCats ? "…" : categories.find((c) => c.id === categoryId)?.name ?? "—";
-
   const difficultyLabel =
-    loadingDiffs
-      ? "…"
-      : difficulties.find((d) => d.id === difficultyId)?.name ?? "—";
-
+    loadingDiffs ? "…" : difficulties.find((d) => d.id === difficultyId)?.name ?? "—";
   const totalSecs =
     difficulties.find((d) => d.id === difficultyId)?.time_limit_secs ?? 20;
 
@@ -303,19 +272,14 @@ export default function GameScreen() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* lives */}
             <div className="flex space-x-1">
               {Array.from({ length: lives }).map((_, i) => (
-                <span key={i} className="text-xl">
-                  ❤️
-                </span>
+                <span key={i} className="text-xl">❤️</span>
               ))}
             </div>
 
-            {/* circle timer */}
             <CircleTimer seconds={seconds} total={totalSecs} />
 
-            {/* score + session timer */}
             <div className="game-score flex items-center space-x-2">
               <div className="flex items-center">
                 <svg viewBox="0 0 24 24" className="star-icon">
@@ -328,15 +292,12 @@ export default function GameScreen() {
           </div>
         </header>
 
-        {/* poster */}
         <div className="poster-container mt-6">
           <img src={q.image_url} alt="movie still" className="poster" />
         </div>
 
-        {/* linear timer */}
         <LinearTimer seconds={seconds} total={totalSecs} />
 
-        {/* answers */}
         <div className="answers-grid mt-6">
           {shuffledOptions.map((opt) => {
             const isSel = answered && lastAnswer === opt;

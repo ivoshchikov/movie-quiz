@@ -26,7 +26,8 @@ function toPublicUrlFromMoviesBucket(raw: string): string {
 
   const base   = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
   const bucket = import.meta.env.VITE_SUPABASE_BUCKET;
-  const defDir = (import.meta.env.VITE_SUPABASE_FOLDER_GENERAL || "").replace(/^\/|\/$/g, "");
+  // ⬇ важное изменение: дефолт "general" даже если VERCEL-ENV пустой
+  const defDir = (import.meta.env.VITE_SUPABASE_FOLDER_GENERAL || "general").replace(/^\/|\/$/g, "");
 
   // 1) убираем ведущие слэши и возможный устаревший префикс posters/
   let p = String(raw).replace(/^\/+/, "").replace(/^posters\//i, "");
