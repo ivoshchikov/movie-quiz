@@ -13,8 +13,8 @@ import PrivateRoute        from "./PrivateRoute";
 import BlogIndex           from "./pages/BlogIndex";
 import BlogPostPage        from "./pages/BlogPost";
 import DailyPage           from "./pages/DailyPage";
-import DailyStatsPage      from "./pages/DailyStatsPage";   // ← NEW
-import AdminDailyPage      from "./pages/AdminDailyPage";   // ← NEW
+// ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
+import AdminDailyPage      from "./pages/AdminDailyPage";
 
 export default function App() {
   return (
@@ -42,11 +42,10 @@ export default function App() {
           <Route path="blog/:slug"    element={<BlogPostPage />} />
           <Route path="daily"         element={<DailyPage />} />
 
-          {/* ❗ новые маршруты */}
-          <Route path="daily/stats"   element={<DailyStatsPage />} />
+          {/* админка */}
           <Route path="admin/daily"   element={<AdminDailyPage />} />
 
-          {/* защищённые (оставляем лидерборд как пример/на будущее) */}
+          {/* защищённые (пример/на будущее) */}
           <Route element={<PrivateRoute />}>
             <Route path="leaderboard" element={<div>Leaderboard…</div>} />
           </Route>
