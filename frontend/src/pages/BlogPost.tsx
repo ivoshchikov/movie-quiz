@@ -39,8 +39,8 @@ export default function BlogPostPage() {
     post.gallery && post.gallery.length > 0 ? post.gallery : autoGallery;
   const canCollage = imagesForCollage.length > 0;
 
-  // full-bleed hero only for this explainer
-  const isFullBleedHero = post.slug === "why-2-39-1-feels-more-cinematic";
+  // Исправлено: правильный slug для полноэкранного хиро
+  const isFullBleedHero = post.slug === "why-2-39-feels-more-cinematic";
   const fullBleedCls =
     "w-screen max-w-none ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]";
 
@@ -101,9 +101,10 @@ export default function BlogPostPage() {
           <img
             src={post.coverUrl}
             alt={post.title}
-            className={isFullBleedHero
-              ? `mb-6 aspect-video ${fullBleedCls} object-cover`
-              : "mb-6 aspect-video w-full rounded-2xl border border-white/10 object-cover"
+            className={
+              isFullBleedHero
+                ? `mb-6 aspect-video ${fullBleedCls} object-cover`
+                : "mb-6 aspect-video w-full rounded-2xl border border-white/10 object-cover"
             }
           />
         ) : (
