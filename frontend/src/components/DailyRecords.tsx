@@ -1,100 +1,72 @@
 // frontend/src/components/DailyRecords.tsx
 import { useEffect, useState } from "react";
-import {
-  getDailyBestTimeRecords,
-  getDailyTotalCorrectLeaderboard,
-} from "../api";
+import { Link } from "react-router-dom";
+import { getDailyStreakLeaderboard } from "../api";
 
-type BestTime = {
+type Row = {
   user_id: string;
   nickname: string | null;
-  best_time: number;
-  d: string;
-  answered_at: string;
+  streak: number;
+  start_d: string; // из RPC, но тут не используем
+  end_d: string;   // из RPC, но тут не используем
 };
 
-type TotalCorrect = {
-  user_id: string;
-  nickname: string | null;
-  total_correct: number;
-};
+function medal(i: number) {
+  return i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}.`;
+}
 
 export default function DailyRecords() {
-  const [bestTimes, setBestTimes] = useState<BestTime[]>([]);
-  const [totals, setTotals] = useState<TotalCorrect[]>([]);
-  const [loadingA, setLoadingA] = useState(true);
-  const [loadingB, setLoadingB] = useState(true);
+  const [rows, setRows] = useState<Row[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        setLoadingA(true);
-        const a = await getDailyBestTimeRecords(20);
-        setBestTimes(a);
+        setLoading(true);
+        // all-time best streaks per user
+        const data = await getDailyStreakLeaderboard(false, 50);
+        setRows(data);
       } catch (e) {
         console.error(e);
+        setRows([]);
       } finally {
-        setLoadingA(false);
-      }
-    })();
-
-    (async () => {
-      try {
-        setLoadingB(true);
-        const b = await getDailyTotalCorrectLeaderboard(20);
-        setTotals(b);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoadingB(false);
+        setLoading(false);
       }
     })();
   }, []);
 
   return (
-    <section className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
-      <div>
-        <h2 className="mb-2 text-xl font-bold">All-time Best Times</h2>
-        {loadingA ? (
-          <p className="text-sm opacity-80">Loading…</p>
-        ) : bestTimes.length === 0 ? (
-          <p className="text-sm opacity-80">No records yet.</p>
-        ) : (
-          <ol className="divide-y divide-white/10 rounded-md border border-white/10">
-            {bestTimes.map((r, i) => (
-              <li key={`${r.user_id}-${r.answered_at}`} className="flex items-center p-3 gap-4">
-                <div className="w-6 text-right tabular-nums opacity-70">{i + 1}.</div>
-                <div className="flex-1">
-                  <div className="font-medium">{r.nickname ?? "Anonymous"}</div>
-                  <div className="text-xs opacity-70">{r.d}</div>
-                </div>
-                <div className="text-lg font-bold tabular-nums">{r.best_time}s</div>
-              </li>
-            ))}
-          </ol>
-        )}
-      </div>
+    <section className="mx-auto max-w-3xl">
+      <h2 className="mb-1 text-xl font-bold">All-time Best Streaks</h2>
+      <p className="mb-2 text-xs opacity-60">
+        Longest consecutive days with correct answers (per player).
+      </p>
 
-      <div>
-        <h2 className="mb-2 text-xl font-bold">All-time Total Correct</h2>
-        {loadingB ? (
-          <p className="text-sm opacity-80">Loading…</p>
-        ) : totals.length === 0 ? (
-          <p className="text-sm opacity-80">No data yet.</p>
-        ) : (
-          <ol className="divide-y divide-white/10 rounded-md border border-white/10">
-            {totals.map((r, i) => (
-              <li key={`${r.user_id}-${r.total_correct}`} className="flex items-center p-3 gap-4">
-                <div className="w-6 text-right tabular-nums opacity-70">{i + 1}.</div>
-                <div className="flex-1">
-                  <div className="font-medium">{r.nickname ?? "Anonymous"}</div>
-                </div>
-                <div className="text-lg font-bold tabular-nums">{r.total_correct}</div>
-              </li>
-            ))}
-          </ol>
-        )}
-      </div>
+      {loading ? (
+        <p className="text-sm opacity-80">Loading…</p>
+      ) : rows.length === 0 ? (
+        <div className="rounded-md border border-white/10 bg-white/5 p-4 text-sm">
+          No data yet.{" "}
+          <Link to="/daily" className="underline">
+            Play today’s Daily
+          </Link>{" "}
+          and start a streak!
+        </div>
+      ) : (
+        <ol className="divide-y divide-white/10 rounded-md border border-white/10">
+          {rows.map((r, i) => (
+            <li key={`${r.user_id}-${i}`} className="flex items-center gap-4 p-3">
+              <div className="w-8 text-right tabular-nums">{medal(i)}</div>
+              <div className="flex-1">
+                <div className="font-medium">{r.nickname ?? "Anonymous"}</div>
+              </div>
+              <div className="text-lg font-bold tabular-nums">
+                {r.streak} <span className="text-sm opacity-70">days</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }
