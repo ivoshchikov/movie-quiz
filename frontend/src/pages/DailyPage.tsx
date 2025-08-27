@@ -16,7 +16,7 @@ import {
   type MyDailyResult,
 } from "../api";
 import { shuffle } from "../utils/shuffle";
-import { gaEvent } from "../analytics/ga";   // ← GA events
+import { gaEvent } from "../analytics/ga";
 
 export default function DailyPage() {
   const { user } = useAuth();
@@ -178,7 +178,6 @@ export default function DailyPage() {
 
     try {
       await submitDailyResult(user.id, dateStr, ok, elapsed); // БД примет только первый ответ
-      // GA: событие попытки
       gaEvent("daily_submit", { d: dateStr, ok, elapsed });
 
       // подтягиваем подтверждение с сервера
@@ -221,18 +220,15 @@ export default function DailyPage() {
             {fastestLoading ? (
               <p className="mt-2 text-sm opacity-80">Loading…</p>
             ) : fastest.length === 0 ? (
-              <p className="mt-2 text-sm opacity-80">
-                Be the first to set a time!
-              </p>
+              <p className="mt-2 text-sm opacity-80">Be the first to solve it today!</p>
             ) : (
               <ol className="mt-2 space-y-1 text-sm">
                 {fastest.map((r, i) => (
                   <li
                     key={i}
-                    className="flex justify-between border-b border-white/10 py-1"
+                    className="flex justify-start border-b border-white/10 py-1"
                   >
-                    <span className="truncate">{r.nickname}</span>
-                    <span className="tabular-nums">{r.time_spent}s</span>
+                    <span className="truncate">{r.nickname ?? "Anonymous"}</span>
                   </li>
                 ))}
               </ol>
@@ -272,7 +268,7 @@ export default function DailyPage() {
               <>
                 {" — "}
                 {myDaily.is_correct ? "correct" : "not correct"}
-                {myDaily.time_spent ? ` in ${myDaily.time_spent}s` : ""}
+                {/* время скрыли намеренно */}
                 .
               </>
             ) : (
@@ -284,11 +280,9 @@ export default function DailyPage() {
         <div className="grid gap-6 md:grid-cols-[1fr_280px]">
           <div>
             {loading || !q ? (
-              // Скелетон, который не займет больше первого экрана
               <div className="w-full rounded-lg bg-white/5 animate-pulse h-[42vh] sm:h-[48vh]" />
             ) : (
               <>
-                {/* Постер: ограничиваем высоту, чтобы варианты влезали в первый экран */}
                 <div className="relative rounded-lg bg-white/5 flex items-center justify-center overflow-hidden">
                   {!user && (
                     <div className="absolute inset-0 z-10 bg-black/40 backdrop-blur-[1px] flex items-center justify-center text-sm">
@@ -358,7 +352,7 @@ export default function DailyPage() {
                     <div className="text-sm">
                       {isCorrect ? (
                         <span className="text-green-400">
-                          {saving ? "Saving…" : "Correct! Your time is recorded."}
+                          {saving ? "Saving…" : "Correct! Your answer is recorded."}
                         </span>
                       ) : (
                         <span className="text-red-400">
@@ -400,18 +394,15 @@ export default function DailyPage() {
             {fastestLoading ? (
               <p className="mt-2 text-sm opacity-80">Loading…</p>
             ) : fastest.length === 0 ? (
-              <p className="mt-2 text-sm opacity-80">
-                Be the first to set a time!
-              </p>
+              <p className="mt-2 text-sm opacity-80">Be the first to solve it today!</p>
             ) : (
               <ol className="mt-2 space-y-1 text-sm">
                 {fastest.map((r, i) => (
                   <li
                     key={i}
-                    className="flex justify-between border-b border-white/10 py-1"
+                    className="flex justify-start border-b border-white/10 py-1"
                   >
-                    <span className="truncate">{r.nickname}</span>
-                    <span className="tabular-nums">{r.time_spent}s</span>
+                    <span className="truncate">{r.nickname ?? "Anonymous"}</span>
                   </li>
                 ))}
               </ol>
