@@ -17,6 +17,7 @@ import { shuffle } from "../utils/shuffle";
 import { gaEvent } from "../analytics/ga";
 import StreakLeaderboard from "../components/StreakLeaderboard";
 import BestStreaksList from "../components/BestStreaksList";
+import YourDailyCard from "../components/YourDailyCard";
 
 export default function DailyPage() {
   const { user } = useAuth();
@@ -209,7 +210,7 @@ export default function DailyPage() {
         {/* Основная двухколоночная сетка */}
         <div className="grid gap-6 md:grid-cols-[1fr_420px]">
           {/* Левая колонка — игра */}
-          <div>
+          <div id="puzzle">
             {loading || !q ? (
               <div className="w-full rounded-lg bg-white/5 animate-pulse h-[42vh] sm:h-[48vh]" />
             ) : (
@@ -316,8 +317,10 @@ export default function DailyPage() {
             )}
           </div>
 
-          {/* Правая колонка — компактные статы */}
+          {/* Правая колонка — карточка + статы */}
           <aside className="md:sticky md:top-4 h-max">
+            <YourDailyCard className="mb-4" />
+
             <div className="rounded-xl border border-white/10 bg-white/5 p-4">
               <h2 className="mb-1 text-xl font-semibold">Daily Stats</h2>
               <p className="mb-4 text-xs opacity-70">
