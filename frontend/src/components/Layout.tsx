@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
-import { getProfile, isAdmin } from "../api";          // ← добавили isAdmin
+import { getProfile, isAdmin } from "../api";
 import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
 import { loadGA, pageview } from "../analytics/ga";
@@ -19,7 +19,7 @@ export default function Layout() {
   const [profile, setProfile] =
     useState<{ nickname: string | null } | null>(null);
   const [showLogin, setShowLogin] = useState(false);
-  const [amIAdmin, setAmIAdmin] = useState(false);     // ← флаг админа
+  const [amIAdmin, setAmIAdmin] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -28,33 +28,28 @@ export default function Layout() {
       return;
     }
     getProfile(user.id).then(setProfile).catch(console.error);
-    // проверяем админство
     isAdmin().then(setAmIAdmin).catch(() => setAmIAdmin(false));
   }, [user]);
 
-  // ФОЛБЭК-РЕДИРЕКТ ПОСЛЕ ВОЗВРАТА С ОАУТХ/МАГИК-ЛИНКА
+  // Фолбэк-редирект после логина
   useEffect(() => {
     if (!user) return;
     const saved = localStorage.getItem("postLoginRedirectPath");
     if (saved) {
       localStorage.removeItem("postLoginRedirectPath");
-      // если уже на нужной странице — ничего не делаем
       const current = loc.pathname + (loc.search || "");
-      if (current !== saved) {
-        navigate(saved, { replace: true });
-      }
+      if (current !== saved) navigate(saved, { replace: true });
     }
   }, [user, navigate, loc.pathname, loc.search]);
 
   const { pathname, search } = loc;
   const canonical = `${CANON_BASE}${pathname}${search || ""}`;
 
-  // GA4: инициализация один раз
+  // GA4: init once
   useEffect(() => {
     loadGA();
   }, []);
-
-  // GA4: page_view на каждый переход
+  // GA4: page_view on route change
   useEffect(() => {
     pageview(`${pathname}${search || ""}`);
   }, [pathname, search]);
@@ -90,9 +85,6 @@ export default function Layout() {
           <nav className="hidden items-center space-x-6 text-sm md:flex">
             <Link to="/daily" className="hover:text-indigo-400">
               Daily
-            </Link>
-            <Link to="/daily/stats" className="hover:text-indigo-400">
-              Stats
             </Link>
             <Link to="/blog" className="hover:text-indigo-400">
               Blog
@@ -159,9 +151,6 @@ export default function Layout() {
               <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-black/50 focus:outline-none">
                 <Menu.Item as={Link} to="/daily" className={itemCls}>
                   Daily
-                </Menu.Item>
-                <Menu.Item as={Link} to="/daily/stats" className={itemCls}>
-                  Stats
                 </Menu.Item>
                 <Menu.Item as={Link} to="/blog" className={itemCls}>
                   Blog
@@ -259,9 +248,6 @@ export default function Layout() {
           <div className="flex items-center gap-4">
             <Link to="/daily" className="hover:opacity-100">
               Daily
-            </Link>
-            <Link to="/daily/stats" className="hover:opacity-100">
-              Stats
             </Link>
             <Link to="/blog" className="hover:opacity-100">
               Blog
