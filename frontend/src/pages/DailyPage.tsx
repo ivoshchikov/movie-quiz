@@ -5,18 +5,18 @@ import { useAuth } from "../AuthContext";
 import Seo from "../components/Seo";
 import {
   getDailyDateUS,
-  getDailyFastest,
   getDailyQuestion,
   getDailyQuestionPublic,
   getMyDailyResult,
   submitDailyResult,
   startDailySession,
   type Question,
-  type DailyFastestRow,
   type MyDailyResult,
 } from "../api";
 import { shuffle } from "../utils/shuffle";
 import { gaEvent } from "../analytics/ga";
+import StreakLeaderboard from "../components/StreakLeaderboard";
+import BestStreaksList from "../components/BestStreaksList";
 
 export default function DailyPage() {
   const { user } = useAuth();
@@ -34,9 +34,6 @@ export default function DailyPage() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [saving, setSaving] = useState(false);
 
-  const [fastest, setFastest] = useState<DailyFastestRow[]>([]);
-  const [fastestLoading, setFastestLoading] = useState(true);
-
   const [myDaily, setMyDaily] = useState<MyDailyResult>({
     is_answered: false,
     is_correct: null,
@@ -45,16 +42,13 @@ export default function DailyPage() {
   });
   const [myDailyLoading, setMyDailyLoading] = useState(false);
 
-  // мгновенный локальный флаг (оптимистичный)
   const [localAnswered, setLocalAnswered] = useState(false);
 
   const startTsRef = useRef<number | null>(null);
   const sessionKickoffOnce = useRef(false);
 
-  // ключ для localStorage
   const lsKey = user ? `daily:${dateStr}:answered:${user.id}` : null;
 
-  // GA: просмотр страницы Daily (с датой US Central)
   useEffect(() => {
     gaEvent("daily_view", { d: dateStr, is_logged_in: !!user });
   }, [dateStr, user]);
@@ -79,7 +73,7 @@ export default function DailyPage() {
     };
   }, [dateStr, user]);
 
-  // при смене пользователя/даты — подтянем локальный флаг
+  // подтянуть локальный флаг
   useEffect(() => {
     if (!user) {
       setLocalAnswered(false);
@@ -94,29 +88,15 @@ export default function DailyPage() {
     setImgLoaded(true);
     if (!startTsRef.current) startTsRef.current = Date.now();
 
-    // неблокирующий старт серверной сессии
     if (user && !sessionKickoffOnce.current) {
       sessionKickoffOnce.current = true;
       startDailySession(user.id, dateStr).catch(console.error);
     }
 
-    // GA: фиксируем момент старта (когда постер реально показан)
     gaEvent("daily_start", { d: dateStr, is_logged_in: !!user });
   };
 
-  // ---------- load fastest ----------
-  const refreshFastest = () => {
-    setFastestLoading(true);
-    getDailyFastest(dateStr, 5)
-      .then(setFastest)
-      .catch(console.error)
-      .finally(() => setFastestLoading(false));
-  };
-  useEffect(() => {
-    refreshFastest();
-  }, [dateStr]);
-
-  // ---------- мой статус по daily (в фоне) ----------
+  // мой статус по daily
   useEffect(() => {
     if (!user) {
       setMyDaily({ is_answered: false, is_correct: null, time_spent: null, answered_at: null });
@@ -139,16 +119,13 @@ export default function DailyPage() {
 
   // ---------- answer ----------
   const handleAnswer = async (answer: string) => {
-    // Без входа — сохраняем цель и ведём на логин
     if (!user) {
       localStorage.setItem("postLoginRedirectPath", loc.pathname + loc.search);
       navigate("/login", { state: { redirectTo: loc.pathname + loc.search } });
       return;
     }
-    // Доп. защита: не даём повторный старт, пока сохраняем
     if (!q || answered || saving || !imgLoaded || alreadyAnswered) return;
 
-    // Fresh re-check against server just in case (multi-tab/cleared LS)
     try {
       const fresh = await getMyDailyResult(user.id, dateStr);
       if (fresh.is_answered) {
@@ -161,7 +138,6 @@ export default function DailyPage() {
       console.error(e);
     }
 
-    // локально фиксируем выбор
     setSelected(answer);
     const ok = answer.trim() === (q?.correct_answer ?? "").trim();
     setIsCorrect(ok);
@@ -171,23 +147,19 @@ export default function DailyPage() {
         ? Math.max(1, Math.floor((Date.now() - startTsRef.current) / 1000))
         : 1;
 
-    // ⬇⬇⬇ Оптимистично фиксируем "ответил" до RPC (закрывает мультивкладки/перезагрузку)
     if (lsKey) localStorage.setItem(lsKey, "1");
     setLocalAnswered(true);
     setSaving(true);
 
     try {
-      await submitDailyResult(user.id, dateStr, ok, elapsed); // БД примет только первый ответ
+      await submitDailyResult(user.id, dateStr, ok, elapsed);
       gaEvent("daily_submit", { d: dateStr, ok, elapsed });
 
-      // подтягиваем подтверждение с сервера
       const status = await getMyDailyResult(user.id, dateStr);
       setMyDaily(status);
       if (lsKey && status.is_answered) localStorage.setItem(lsKey, "1");
-      refreshFastest();
     } catch (e) {
       console.error(e);
-      // откат оптимистичного флага, если RPC провалился
       if (lsKey) localStorage.removeItem(lsKey);
       setLocalAnswered(false);
     } finally {
@@ -205,60 +177,18 @@ export default function DailyPage() {
     <>
       <Seo
         title="Daily Challenge | Hard Quiz"
-        description="One new movie/actor image every day. Guess it fast and enter Today’s Fastest!"
+        description="One new movie/actor image every day — plus leaderboards and streaks."
       />
 
-      <section className="mx-auto max-w-5xl">
+      <section className="mx-auto max-w-6xl">
         <header className="mb-4 flex items-baseline justify-between">
           <div>
             <h1 className="text-3xl font-extrabold">Daily Challenge</h1>
             <p className="mt-1 text-sm opacity-80">Date: {niceDate}</p>
           </div>
-
-          <aside className="hidden md:block w-72">
-            <h2 className="text-lg font-semibold">Today’s Fastest</h2>
-            {fastestLoading ? (
-              <p className="mt-2 text-sm opacity-80">Loading…</p>
-            ) : fastest.length === 0 ? (
-              <p className="mt-2 text-sm opacity-80">Be the first to solve it today!</p>
-            ) : (
-              <ol className="mt-2 space-y-1 text-sm">
-                {fastest.map((r, i) => (
-                  <li
-                    key={i}
-                    className="flex justify-start border-b border-white/10 py-1"
-                  >
-                    <span className="truncate">{r.nickname ?? "Anonymous"}</span>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </aside>
         </header>
 
-        {/* CTA для анонимов */}
-        {!user && (
-          <div className="mb-3 rounded-md border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm">
-            <b>Sign in to play the Daily.</b> We only accept answers from
-            logged-in players to keep the competition fair.{" "}
-            <Link
-              to="/login"
-              state={{ redirectTo: loc.pathname + loc.search }}
-              onClick={() =>
-                localStorage.setItem(
-                  "postLoginRedirectPath",
-                  loc.pathname + loc.search,
-                )
-              }
-              className="underline"
-            >
-              Log in
-            </Link>
-            .
-          </div>
-        )}
-
-        {/* Сообщение, если уже отвечал (локально мгновенно, детали догружаются) */}
+        {/* Сообщение, если уже отвечал */}
         {alreadyAnswered && (
           <div className="mb-3 rounded-md border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm">
             You’ve already answered today’s Daily
@@ -268,7 +198,6 @@ export default function DailyPage() {
               <>
                 {" — "}
                 {myDaily.is_correct ? "correct" : "not correct"}
-                {/* время скрыли намеренно */}
                 .
               </>
             ) : (
@@ -277,7 +206,9 @@ export default function DailyPage() {
           </div>
         )}
 
-        <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+        {/* Основная двухколоночная сетка */}
+        <div className="grid gap-6 md:grid-cols-[1fr_420px]">
+          {/* Левая колонка — игра */}
           <div>
             {loading || !q ? (
               <div className="w-full rounded-lg bg-white/5 animate-pulse h-[42vh] sm:h-[48vh]" />
@@ -299,11 +230,7 @@ export default function DailyPage() {
                     src={q.image_url}
                     alt="daily still"
                     onLoad={onImageLoad}
-                    className="
-                      max-h-[44vh] sm:max-h-[52vh] 
-                      w-auto max-w-full object-contain 
-                      block select-none
-                    "
+                    className="max-h-[44vh] sm:max-h-[52vh] w-auto max-w-full object-contain block select-none"
                   />
                 </div>
 
@@ -320,7 +247,8 @@ export default function DailyPage() {
                         (isCorrect
                           ? "border-green-500 bg-green-500/10"
                           : "border-red-500 bg-red-500/10"),
-                      !canAnswer && "cursor-not-allowed opacity-60",
+                      (!user || !imgLoaded || alreadyAnswered || answered) &&
+                        "cursor-not-allowed opacity-60",
                     ]
                       .filter(Boolean)
                       .join(" ");
@@ -328,7 +256,7 @@ export default function DailyPage() {
                       <button
                         key={opt}
                         className={cls}
-                        disabled={!canAnswer || answered}
+                        disabled={!user || !imgLoaded || alreadyAnswered || answered}
                         onClick={() => handleAnswer(opt)}
                         title={
                           !user
@@ -346,7 +274,7 @@ export default function DailyPage() {
                   })}
                 </div>
 
-                {/* результат (только если это наша попытка; когда alreadyAnswered=true — баннер выше) */}
+                {/* результат для своей попытки */}
                 {user && answered && !alreadyAnswered && (
                   <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="text-sm">
@@ -388,25 +316,20 @@ export default function DailyPage() {
             )}
           </div>
 
-          {/* правый сайдбар на мобильных уезжает вниз */}
-          <aside className="md:hidden">
-            <h2 className="text-lg font-semibold">Today’s Fastest</h2>
-            {fastestLoading ? (
-              <p className="mt-2 text-sm opacity-80">Loading…</p>
-            ) : fastest.length === 0 ? (
-              <p className="mt-2 text-sm opacity-80">Be the first to solve it today!</p>
-            ) : (
-              <ol className="mt-2 space-y-1 text-sm">
-                {fastest.map((r, i) => (
-                  <li
-                    key={i}
-                    className="flex justify-start border-b border-white/10 py-1"
-                  >
-                    <span className="truncate">{r.nickname ?? "Anonymous"}</span>
-                  </li>
-                ))}
-              </ol>
-            )}
+          {/* Правая колонка — компактные статы */}
+          <aside className="md:sticky md:top-4 h-max">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <h2 className="mb-1 text-xl font-semibold">Daily Stats</h2>
+              <p className="mb-4 text-xs opacity-70">
+                Streaks use US Central date. Only correct answers count.
+              </p>
+
+              {/* Лидерборд по стрикам (вкладки: Active / All-time) */}
+              <StreakLeaderboard />
+
+              {/* Лучшие стрики за всё время */}
+              <BestStreaksList className="mt-6" limit={10} />
+            </div>
           </aside>
         </div>
       </section>
