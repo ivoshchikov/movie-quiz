@@ -16,7 +16,6 @@ import {
 import { shuffle } from "../utils/shuffle";
 import { gaEvent } from "../analytics/ga";
 import StreakLeaderboard from "../components/StreakLeaderboard";
-import BestStreaksList from "../components/BestStreaksList";
 import YourDailyCard from "../components/YourDailyCard";
 
 export default function DailyPage() {
@@ -317,7 +316,7 @@ export default function DailyPage() {
             )}
           </div>
 
-          {/* Правая колонка — карточка + статы */}
+          {/* Правая колонка — карточка + компактный лидерборд */}
           <aside className="md:sticky md:top-4 h-max">
             <YourDailyCard className="mb-4" />
 
@@ -327,11 +326,8 @@ export default function DailyPage() {
                 Streaks use US Central date. Only correct answers count.
               </p>
 
-              {/* Лидерборд по стрикам (вкладки: Active / All-time) */}
-              <StreakLeaderboard />
-
-              {/* Лучшие стрики за всё время */}
-              <BestStreaksList className="mt-6" limit={10} />
+              {/* Лидерборд по стрикам (табы: Active / All-time), компактный вид, Top-5 по умолчанию */}
+              <StreakLeaderboard initialTab="active" limit={5} compact />
             </div>
           </aside>
         </div>
