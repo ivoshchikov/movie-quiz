@@ -24,7 +24,7 @@ export default function Seo({
   jsonLd,
 }: Props) {
   const siteName = "Hard Quiz";
-  const defaultOg = "https://hard-quiz.com/og/logo.png";
+  const defaultOg = "https://hard-quiz.com/og/logo.webp";
   const img = ogImage || defaultOg;
 
   const renderJsonLd = () => {
