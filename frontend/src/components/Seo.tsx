@@ -5,19 +5,12 @@ import { Helmet } from "react-helmet-async";
  * Унифицированная обёртка для SEO-мета-данных.
  */
 interface Props {
-  /** Текст тега <title>. Если не передать, останутся дефолты из App.tsx */
   title?: string;
-  /** Содержимое <meta name="description"> */
   description?: string;
-  /** Open Graph изображение (absolute URL) */
   ogImage?: string;
-  /** OG type: 'website' | 'article' */
   type?: "website" | "article";
-  /** Указать canonical/og:url (absolute URL), если нужно */
   url?: string;
-  /** Запретить индексацию страницы */
   noindex?: boolean;
-  /** Вставка JSON-LD: объект или массив объектов */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -31,6 +24,8 @@ export default function Seo({
   jsonLd,
 }: Props) {
   const siteName = "Hard Quiz";
+  const defaultOg = "https://hard-quiz.com/og/logo.png";
+  const img = ogImage || defaultOg;
 
   const renderJsonLd = () => {
     if (!jsonLd) return null;
@@ -53,13 +48,16 @@ export default function Seo({
       {description && <meta property="og:description" content={description} />}
       <meta property="og:site_name" content={siteName} />
       <meta property="og:type" content={type} />
-      {ogImage && <meta property="og:image" content={ogImage} />}
+      {/* ✅ всегда есть картинка */}
+      <meta property="og:image" content={img} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       {url && <meta property="og:url" content={url} />}
 
       {/* Twitter Card */}
       {title && <meta name="twitter:title" content={title} />}
       {description && <meta name="twitter:description" content={description} />}
-      {ogImage && <meta name="twitter:image" content={ogImage} />}
+      <meta name="twitter:image" content={img} />
       <meta name="twitter:card" content="summary_large_image" />
 
       {renderJsonLd()}
