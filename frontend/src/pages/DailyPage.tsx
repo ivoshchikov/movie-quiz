@@ -18,6 +18,10 @@ import { gaEvent } from "../analytics/ga";
 import StreakLeaderboard from "../components/StreakLeaderboard";
 import YourDailyCard from "../components/YourDailyCard";
 
+const ORIGIN =
+  (import.meta.env.VITE_SITE_URL as string) ||
+  (typeof window !== "undefined" ? window.location.origin : "https://hard-quiz.com");
+
 export default function DailyPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -173,11 +177,16 @@ export default function DailyPage() {
     return `${y}–${m}–${d}`;
   }, [dateStr]);
 
+  // Build dynamic OG URL
+  const ogUrl = `${ORIGIN}/api/og/daily?d=${encodeURIComponent(dateStr)}`;
+
   return (
     <>
       <Seo
         title="Daily Challenge | Hard Quiz"
         description="One new movie/actor image every day — plus leaderboards and streaks."
+        ogImage={ogUrl}
+        url={`${ORIGIN}/daily`}
       />
 
       <section className="mx-auto max-w-6xl">

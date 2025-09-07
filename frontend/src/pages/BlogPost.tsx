@@ -6,6 +6,10 @@ import { getPostBySlug, posts } from "../blog";
 import CollageCover from "../blog/components/CollageCover";
 import { GalleryProvider } from "../blog/components/GalleryCollector";
 
+const ORIGIN =
+  (import.meta.env.VITE_SITE_URL as string) ||
+  (typeof window !== "undefined" ? window.location.origin : "https://hard-quiz.com");
+
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
   const post = getPostBySlug(slug);
@@ -34,23 +38,30 @@ export default function BlogPostPage() {
     .sort((a, b) => +new Date(b.date) - +new Date(a.date))
     .slice(0, 3);
 
-  // priority: collage → explicit cover → gradient
   const imagesForCollage =
     post.gallery && post.gallery.length > 0 ? post.gallery : autoGallery;
   const canCollage = imagesForCollage.length > 0;
 
-  // Исправлено: правильный slug для полноэкранного хиро
   const isFullBleedHero = post.slug === "why-2-39-feels-more-cinematic";
   const fullBleedCls =
     "w-screen max-w-none ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]";
+
+  // Build dynamic OG URL via edge function
+  const ogParams = new URLSearchParams({
+    title: post.title,
+    date: post.date,
+  });
+  if (post.coverUrl) ogParams.set("cover", post.coverUrl);
+  const ogUrl = `${ORIGIN}/api/og/post?${ogParams.toString()}`;
 
   return (
     <>
       <Seo
         title={`${post.title} | Hard Quiz`}
         description={post.excerpt}
-        // OG/Twitter preview
-        ogImage={post.coverUrl ?? post.gallery?.[0]}
+        ogImage={ogUrl}
+        type="article"
+        url={`${ORIGIN}/blog/${post.slug}`}
       />
       <article className="mx-auto max-w-3xl">
         {/* Top back button */}
