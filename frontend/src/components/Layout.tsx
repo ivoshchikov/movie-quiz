@@ -9,6 +9,10 @@ import LoginModal from "./LoginModal";
 import { loadGA, pageview } from "../analytics/ga";
 
 const CANON_BASE = "https://hard-quiz.com";
+// Site-wide fallback OG image (pages can override via <Seo ogImage=.../>)
+const DEFAULT_OG = `${CANON_BASE}/api/og/post?title=${encodeURIComponent(
+  "Hard Quiz — Guess Movies from Stills & Faces"
+)}&tags=${encodeURIComponent("Play now,Daily Challenge")}`;
 
 export default function Layout() {
   /* ─── auth ─────────────────────────────── */
@@ -71,6 +75,11 @@ export default function Layout() {
         <link rel="canonical" href={canonical} />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
         <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
+
+        {/* Site-wide default social preview (can be overridden per page) */}
+        <meta property="og:image" content={DEFAULT_OG} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={DEFAULT_OG} />
       </Helmet>
 
       {/* ── Header ───────────────────────────────────── */}
