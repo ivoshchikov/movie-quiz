@@ -15,6 +15,8 @@ import BlogPostPage        from "./pages/BlogPost";
 import DailyPage           from "./pages/DailyPage";
 // ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
 import AdminDailyPage      from "./pages/AdminDailyPage";
+import LeaderboardPage     from "./pages/LeaderboardPage";
+import ProfilePage         from "./pages/ProfilePage";
 
 export default function App() {
   return (
@@ -41,13 +43,14 @@ export default function App() {
           <Route path="blog"          element={<BlogIndex />} />
           <Route path="blog/:slug"    element={<BlogPostPage />} />
           <Route path="daily"         element={<DailyPage />} />
+          <Route path="leaderboard"   element={<LeaderboardPage />} />
 
           {/* админка */}
           <Route path="admin/daily"   element={<AdminDailyPage />} />
 
-          {/* защищённые (пример/на будущее) */}
+          {/* личные результаты */}
           <Route element={<PrivateRoute />}>
-            <Route path="leaderboard" element={<div>Leaderboard…</div>} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
 
           {/* fallback */}

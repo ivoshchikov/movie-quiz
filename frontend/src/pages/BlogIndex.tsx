@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import { posts } from "../blog";
-import { TOPICS, TopicKey, TopicLabels } from "../blog/topics";
+import { TOPICS, TopicLabels } from "../blog/topics";
+import type { TopicKey } from "../blog/topics";
 import CollageCover from "../blog/components/CollageCover";
 
 const ORIGIN = "https://hard-quiz.com";

@@ -26,6 +26,10 @@ export default defineConfig({
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',
+    env: {
+      VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL || 'https://quiz-fixture.supabase.co',
+      VITE_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_ANON_KEY || 'local-test-placeholder',
+    },
     // если хотите, на CI можно не переиспользовать уже запущенный сервер
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',

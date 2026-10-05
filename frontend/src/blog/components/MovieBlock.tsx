@@ -1,5 +1,6 @@
 // src/blog/components/MovieBlock.tsx
-import React, { ReactNode } from "react";
+import React from "react";
+import type { ReactNode } from "react";
 import { useRegisterPoster } from "./GalleryCollector";
 
 type Props = {

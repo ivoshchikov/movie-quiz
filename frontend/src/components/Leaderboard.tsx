@@ -1,84 +1,35 @@
-// src/components/Leaderboard.tsx
 import { useEffect, useState } from "react";
-import { getLeaderboard, LeaderboardRow } from "../api";
+import { getLeaderboard } from "../api";
+import type { LeaderboardRow } from "../api";
 
-interface Props {
-  categoryId?: number;
-  difficultyId?: number;
-  categoryLabel?: string;
-  difficultyLabel?: string;
+interface Props { categoryId?: number; difficultyId?: number; categoryLabel?: string; difficultyLabel?: string; }
+function formatTime(time: number) {
+  return `${Math.floor(time / 60).toString().padStart(2, "0")}:${Math.floor(time % 60).toString().padStart(2, "0")}`;
 }
-
-function fmt(t: number) {
-  const m = String(Math.floor(t / 60)).padStart(2, "0");
-  const s = String(t % 60).padStart(2, "0");
-  return `${m}:${s}`;
-}
-
-export default function Leaderboard({
-  categoryId,
-  difficultyId,
-  categoryLabel,
-  difficultyLabel,
-}: Props) {
-  const [rows, setRows] = useState<LeaderboardRow[]>([]);
-  const [loading, setLoading] = useState(false);
+export default function Leaderboard({ categoryId, difficultyId, categoryLabel, difficultyLabel }: Props) {
+  const [result, setResult] = useState<{ key: string; rows?: LeaderboardRow[]; error?: boolean } | null>(null);
+  const [attempt, setAttempt] = useState(0);
   const ready = categoryId != null && difficultyId != null;
-
+  const key = `${categoryId}:${difficultyId}`;
+  const current = result?.key === key ? result : null;
   useEffect(() => {
-    if (!ready) {
-      setRows([]);
-      return;
-    }
-    setLoading(true);
-    getLeaderboard(categoryId!, difficultyId!, 5)
-      .then(setRows)
-      .catch((e) => {
-        console.error(e);
-        setRows([]);
-      })
-      .finally(() => setLoading(false));
-  }, [categoryId, difficultyId, ready]);
-
-  return (
-    <section>
-      <h2 className="text-xl sm:text-2xl font-semibold mb-1">
-        Global leaderboard
-      </h2>
-      <p className="mb-3 text-sm opacity-70">
-        {categoryLabel && difficultyLabel
-          ? `${categoryLabel} — ${difficultyLabel}`
-          : "Pick a category and level to see top scores"}
-      </p>
-
-      {!ready ? (
-        <p className="opacity-75 text-sm">Select both category and level.</p>
-      ) : loading ? (
-        <p>Loading…</p>
-      ) : rows.length === 0 ? (
-        <p className="opacity-75 text-sm">Be the first to set a score!</p>
-      ) : (
-        <table className="w-full text-left text-xs sm:text-sm border-collapse">
-          <thead className="border-b border-gray-600">
-            <tr>
-              <th className="py-1 px-2">#</th>
-              <th className="py-1 px-2">Nickname</th>
-              <th className="py-1 px-2">Score</th>
-              <th className="py-1 px-2">Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r, i) => (
-              <tr key={`${r.nickname}-${i}`}>
-                <td className="py-1 px-2">{i + 1}</td>
-                <td className="py-1 px-2">{r.nickname || "Anonymous"}</td>
-                <td className="py-1 px-2">{r.best_score}</td>
-                <td className="py-1 px-2">{fmt(r.best_time)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </section>
-  );
+    let active = true;
+    setResult(null);
+    if (categoryId == null || difficultyId == null) return;
+    getLeaderboard(categoryId, difficultyId, 5)
+      .then(rows => { if (active) setResult({ key, rows }); })
+      .catch(() => { if (active) setResult({ key, error: true }); });
+    return () => { active = false; };
+  }, [categoryId, difficultyId, key, attempt]);
+  return <section>
+    <h2 className="hq-section-heading" style={{ marginBottom: 6 }}>Global leaderboard</h2>
+    <p className="hq-status">{categoryLabel && difficultyLabel ? `${categoryLabel} — ${difficultyLabel}` : "Pick a category and level to see top scores"}</p>
+    {!ready ? <p className="hq-status">Select both category and level.</p>
+      : !current ? <p role="status" className="hq-status">Loading scores…</p>
+      : current.error ? <p role="alert" className="hq-status">Scores could not be loaded. <button className="hq-inline-action" onClick={() => setAttempt(value => value + 1)}>Try again</button></p>
+      : !current.rows?.length ? <p className="hq-status">Be the first to set a score!</p>
+      : <div className="hq-table-wrapper"><table className="hq-table"><thead><tr><th>#</th><th>Nickname</th><th className="hq-numeric">Score</th><th className="hq-numeric">Time</th></tr></thead><tbody>
+        {current.rows.map((row, index) => <tr key={`${row.nickname}:${index}`}><td>{index + 1}</td><td>{row.nickname || "Anonymous"}</td><td className="hq-numeric">{row.best_score}</td><td className="hq-numeric">{formatTime(row.best_time)}</td></tr>)}
+      </tbody></table></div>}
+  </section>;
 }
