@@ -87,7 +87,7 @@ const ensureDir =
   fs.writeFileSync(path.join(DEST_DIR, "feed.xml"), rss, "utf8");
 
   // Sitemap
-  const staticPaths = ["/", "/how-to-play", "/blog", "/play", "/result"];
+  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/play", "/result"];
   const postPaths = sorted.map((p) => `/blog/${p.slug}`);
   const urls = [...staticPaths, ...postPaths]
     .map(

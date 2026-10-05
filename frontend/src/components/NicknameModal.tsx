@@ -23,18 +23,24 @@ export default function NicknameModal({
   const [taken, setTaken] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (open) { setNick(prefill); setTaken(false); setError(null); }
+  }, [open, prefill]);
+
   /* debounce «занят?» ------------------------------------------------- */
   useEffect(() => {
-    if (nick.length < 3) { setTaken(false); return; }
+    let active = true;
+    if (!open || nick.length < 3) { setTaken(false); return; }
     const id = setTimeout(() => {
-      isNicknameTaken(nick).then(setTaken).catch(console.error);
+      isNicknameTaken(nick, user?.id).then(value => { if (active) setTaken(value); }).catch(console.error);
     }, 300);
-    return () => clearTimeout(id);
-  }, [nick]);
+    return () => { active = false; clearTimeout(id); };
+  }, [nick, open, user?.id]);
 
   /* save -------------------------------------------------------------- */
   const save = async () => {
-    if (nick.length < 3 || taken) return;
+    if (busy || nick.length < 3 || taken) return;
+    setError(null);
     setBusy(true);
 
     if (!user) {                      // гость
@@ -50,8 +56,8 @@ export default function NicknameModal({
       localStorage.removeItem("pre_nickname");
       onSaved?.(nick);               /* ← уведомляем родителя */
       onClose();
-    } catch (e: any) {
-      if (e.code === "23505") setError("Nickname already taken.");
+    } catch (e: unknown) {
+      if (typeof e === "object" && e !== null && "code" in e && e.code === "23505") setError("Nickname already taken.");
       else setError("Error saving nickname.");
     } finally {
       setBusy(false);
@@ -67,6 +73,7 @@ export default function NicknameModal({
           <Dialog.Title className="text-xl font-semibold">Choose your nickname</Dialog.Title>
 
           <input
+            aria-label="Nickname"
             className="w-full rounded-md p-2 text-black"
             placeholder="3–20 chars, a–z 0–9 _ -"
             value={nick}

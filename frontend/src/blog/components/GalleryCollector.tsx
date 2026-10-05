@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 // src/blog/components/GalleryCollector.tsx
 import React, {
   createContext,
@@ -5,7 +6,6 @@ import React, {
   useEffect,
   useMemo,
   useState,
-  ReactNode,
 } from "react";
 
 type GalleryCtx = {

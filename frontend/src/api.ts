@@ -16,6 +16,7 @@ export interface Question {
 export interface MyDailyResult { is_answered: boolean; is_correct: boolean | null; time_spent: number | null; answered_at: string | null; }
 export interface DailyFastestRow { nickname: string | null; time_spent: number; answered_at: string; }
 export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at: string; }
+export interface UserBestRow { category_id: number; difficulty_level_id: number; best_score: number; best_time: number; updated_at: string; }
 
 /* ────────────────────────────────────────────────────────────
    PROFILES
@@ -50,21 +51,22 @@ export async function upsertProfile(userId: string, nickname: string | null, ava
    CATEGORIES / DIFFICULTIES
 ───────────────────────────────────────────────────────────── */
 export async function getCategories(): Promise<Category[]> {
-  const { data, error } = await supabase.from<Category>("category").select("id,name").order("name");
+  const { data, error } = await supabase.from("category").select("id,name").order("name");
   if (error) throw error;
   return data ?? [];
 }
 export async function getDifficulties(): Promise<DifficultyLevel[]> {
-  const { data, error } = await supabase.from<DifficultyLevel>("difficulty_level")
+  const { data, error } = await supabase.from("difficulty_level")
     .select("id,key,name,time_limit_secs,lives,sort_order").order("sort_order", { ascending: true });
   if (error) throw error;
   return data ?? [];
 }
 export function getDifficultyLevels(): Promise<DifficultyLevel[]> { return getDifficulties(); }
 
-export async function countQuestions(categoryId: number, difficultyId: number): Promise<number> {
-  const { count, error } = await supabase.from("question").select("id", { count: "exact", head: true })
-    .eq("category_id", categoryId).eq("difficulty_level_id", difficultyId);
+export async function countQuestions(categoryId: number, difficultyId?: number): Promise<number> {
+  let query = supabase.from("question").select("id", { count: "exact", head: true }).eq("category_id", categoryId);
+  if (difficultyId != null) query = query.eq("difficulty_level_id", difficultyId);
+  const { count, error } = await query;
   if (error) throw error;
   return count ?? 0;
 }
@@ -107,7 +109,7 @@ export async function getQuestion(arg1: any, arg2?: any, arg3?: any): Promise<Qu
 }
 
 export async function checkAnswer(questionId: number, answer: string) {
-  const { data, error } = await supabase.from<{ correct_answer: string }>("question").select("correct_answer").eq("id", questionId).single();
+  const { data, error } = await supabase.from("question").select("correct_answer").eq("id", questionId).single();
   if (error) throw error;
   const correct_answer = data?.correct_answer ?? "";
   const correct = correct_answer.trim().toLowerCase() === answer.trim().toLowerCase();
@@ -120,7 +122,7 @@ export async function getMyBest(userId: string) {
     .select("category_id,difficulty_level_id,best_score,best_time,updated_at")
     .eq("user_id", userId).order("updated_at", { ascending: false });
   if (error) throw error;
-  return (data || []) as any[];
+  return (data || []) as UserBestRow[];
 }
 
 /* ────────────────────────────────────────────────────────────
