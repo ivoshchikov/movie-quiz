@@ -14,7 +14,7 @@ interface Props {
 
 export default function QuizFilters({ categories, difficulties, categoryId, difficultyId, onCategoryChange, onDifficultyChange }: Props) {
   return <div className="hq-filters">
-    <RadioGroup value={categoryId} onChange={onCategoryChange} aria-label="Select category" className="hq-fieldset">
+    <RadioGroup value={categoryId ?? null} onChange={onCategoryChange} aria-label="Select category" className="hq-fieldset">
       <RadioGroup.Label className="hq-legend">Category</RadioGroup.Label>
       <div className="hq-category-grid">
         {categories.map(category => <RadioGroup.Option as="button" type="button" key={category.id} value={category.id} className="hq-category-option">
@@ -23,7 +23,7 @@ export default function QuizFilters({ categories, difficulties, categoryId, diff
         </RadioGroup.Option>)}
       </div>
     </RadioGroup>
-    <RadioGroup value={difficultyId} onChange={onDifficultyChange} aria-label="Select level" className="hq-fieldset">
+    <RadioGroup value={difficultyId ?? null} onChange={onDifficultyChange} aria-label="Select level" className="hq-fieldset">
       <RadioGroup.Label className="hq-legend">Difficulty</RadioGroup.Label>
       <div className="hq-level-grid" style={{ gridTemplateColumns: `repeat(${Math.max(difficulties.length, 1)}, minmax(0, 1fr))` }}>
         {difficulties.map(level => <RadioGroup.Option as="button" type="button" key={level.id} value={level.id} className="hq-difficulty-option">{level.name}</RadioGroup.Option>)}
