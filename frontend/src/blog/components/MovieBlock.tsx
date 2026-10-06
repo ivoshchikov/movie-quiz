@@ -1,7 +1,7 @@
 // src/blog/components/MovieBlock.tsx
 import React from "react";
 import type { ReactNode } from "react";
-import { useRegisterPoster } from "./GalleryCollector";
+import { useRegisterPoster } from "./galleryContext";
 
 type Props = {
   title: string;

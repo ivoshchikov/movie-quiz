@@ -9,9 +9,10 @@
     "postbuild": "npm run gen:seo:dist",
     "gen:seo": "node scripts/generate-seo.cjs public",
     "gen:seo:dist": "node scripts/generate-seo.cjs dist",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "preview": "vite preview",
-    "test:e2e": "playwright test --reporter=line,html"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",

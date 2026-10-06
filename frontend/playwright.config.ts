@@ -31,6 +31,8 @@ export default defineConfig({
       // Always use an isolated fixture origin, including CI with production secrets.
       VITE_SUPABASE_URL: 'https://quiz-fixture.supabase.co',
       VITE_SUPABASE_ANON_KEY: 'local-test-placeholder',
+      VITE_GA_ID: 'G-QUIZFIXTURE',
+      VITE_GA_MEASUREMENT_ID: '',
     },
     // если хотите, на CI можно не переиспользовать уже запущенный сервер
     reuseExistingServer: false,
@@ -38,5 +40,5 @@ export default defineConfig({
     stderr: 'pipe',
   },
 
-  reporter: [['html', { open: 'never' }]],
+  reporter: [['line'], ['html', { open: 'never' }]],
 });

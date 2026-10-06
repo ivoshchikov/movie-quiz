@@ -103,7 +103,7 @@ export default async function handler(req: Request) {
         headers: { "cache-control": "public, max-age=31536000, immutable" },
       }
     );
-  } catch (err) {
+  } catch {
     // На всякий случай отдаём простую картинку «заглушку», чтобы не было 500
     return new ImageResponse(
       (

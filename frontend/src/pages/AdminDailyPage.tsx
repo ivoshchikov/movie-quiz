@@ -1,12 +1,12 @@
 // frontend/src/pages/AdminDailyPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import Seo from "../components/Seo";
-import { useAuth } from "../AuthContext";
 import {
   getDailyDateUS,
   getDailyHistoryAdmin,
   isAdmin,
   setDailyQuestion,
+  type DailyHistoryRow,
 } from "../api";
 import { supabase } from "../supabase";
 
@@ -20,18 +20,6 @@ function toPublicUrl(raw: string): string {
   return `${base}/storage/v1/object/public/${bucket}/${key}`;
 }
 
-type HistoryRow = {
-  d: string;
-  question_id: number;
-  image_url: string;
-  correct_answer: string;
-  category_id: number;
-  difficulty_level_id: number;
-  total_answers: number;
-  correct_answers: number;
-  created_at: string;
-};
-
 type SearchRow = {
   id: number;
   image_url: string;
@@ -41,7 +29,6 @@ type SearchRow = {
 };
 
 export default function AdminDailyPage() {
-  const { user } = useAuth();
   const [amIAdmin, setAmIAdmin] = useState<boolean | null>(null);
 
   const [today] = useState(getDailyDateUS());
@@ -50,7 +37,7 @@ export default function AdminDailyPage() {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const [hist, setHist] = useState<HistoryRow[]>([]);
+  const [hist, setHist] = useState<DailyHistoryRow[]>([]);
   const [loadingHist, setLoadingHist] = useState(true);
 
   const [search, setSearch] = useState("");
@@ -107,7 +94,7 @@ export default function AdminDailyPage() {
         .order("id", { ascending: false })
         .limit(30);
       if (error) throw error;
-      const rows = (data || []) as any[];
+      const rows = (data || []) as SearchRow[];
       setSearchRows(
         rows.map((r) => ({
           id: r.id,

@@ -43,7 +43,6 @@ export default function StreakLeaderboard({
 
   useEffect(() => {
     fetchRows(tab === "active", expanded ? 20 : limit);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab, expanded, limit]);
 
   const rowCls = compact
