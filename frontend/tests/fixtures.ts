@@ -51,7 +51,7 @@ export async function mockQuizApi(page: Page) {
 }
 
 export async function mockSignedIn(page: Page) {
-  const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://quiz-fixture.supabase.co';
+  const supabaseUrl = 'https://quiz-fixture.supabase.co';
   const storageKey = `sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`;
   const session = {
     access_token: `e30.${Buffer.from(JSON.stringify({ sub: 'fixture-user', role: 'authenticated', exp: 4102444800 })).toString('base64url')}.fixture`,

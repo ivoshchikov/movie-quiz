@@ -77,11 +77,13 @@ export async function countQuestions(categoryId: number, difficultyId?: number):
    - getQuestion(categoryId, difficultyId)
    - getQuestion(excludeIds[], categoryId, difficultyId)
 ───────────────────────────────────────────────────────────── */
-export async function getQuestion(arg1: any, arg2?: any, arg3?: any): Promise<Question> {
-  let payload: Record<string, any>;
+export function getQuestion(categoryId: number, difficultyId: number): Promise<Question>;
+export function getQuestion(excludeIds: number[], categoryId: number, difficultyId: number): Promise<Question>;
+export async function getQuestion(arg1: number | number[], arg2: number, arg3?: number): Promise<Question> {
+  let payload: Record<string, number | number[]>;
   if (Array.isArray(arg1)) {
-    // старая форма с exclude[]
-    payload = { p_exclude_ids: arg1 as number[], p_category_id: arg2 as number, p_difficulty_id: arg3 as number };
+    if (arg3 == null) throw new Error("invalid-settings");
+    payload = { p_exclude_ids: arg1, p_category_id: arg2, p_difficulty_id: arg3 };
   } else {
     // новая форма
     payload = { p_category_id: arg1 as number, p_difficulty_id: arg2 as number };
@@ -90,19 +92,23 @@ export async function getQuestion(arg1: any, arg2?: any, arg3?: any): Promise<Qu
   const { data, error } = await supabase.rpc("get_question", payload);
   if (error) throw error;
 
-  const row = (Array.isArray(data) ? data[0] : data) as any;
+  const row = (Array.isArray(data) ? data[0] : data) as Record<string, unknown> | null;
   if (!row) throw new Error("no-question");
-
-  const publicUrl = getPublicUrl(String(row.image_url ?? ""));
-  const options: string[] =
+  if (typeof row.id !== "number" || !Number.isInteger(row.id) || typeof row.category_id !== "number" ||
+    typeof row.difficulty_level_id !== "number" || typeof row.image_url !== "string" || !row.image_url.trim()) throw new Error("invalid-question");
+  const publicUrl = getPublicUrl(row.image_url);
+  const options: unknown =
     Array.isArray(row.options_json) ? row.options_json :
     typeof row.options_json === "string" ? JSON.parse(row.options_json) : [];
 
+  if (!Array.isArray(options) || options.length !== 4 || !options.every((option): option is string => typeof option === "string" && !!option.trim()) || new Set(options).size !== 4) {
+    throw new Error("invalid-question");
+  }
   return {
     id: row.id,
     image_url: publicUrl,
     options,
-    correct_answer: row.correct_answer,
+    correct_answer: typeof row.correct_answer === "string" ? row.correct_answer : undefined,
     category_id: row.category_id,
     difficulty_level_id: row.difficulty_level_id,
   };
