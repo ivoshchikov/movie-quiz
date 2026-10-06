@@ -251,6 +251,9 @@ test("signing out replaces the account result with the guest's own result", asyn
 });
 
 test("the leaderboard link preserves category and difficulty through reload and allows changing them", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
+  page.on("pageerror", error => errors.push(error.message));
   const calls = await mockQuizApi(page);
   await seedResult(page, storedResult({ categoryId: 2, difficultyId: 3 }));
   await page.goto("/result");
@@ -264,6 +267,7 @@ test("the leaderboard link preserves category and difficulty through reload and 
   await expect(page.getByRole("radio", { name: "Hard", exact: true })).toHaveAttribute("aria-checked", "true");
   await page.getByRole("radio", { name: "Easy", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Easy", exact: true })).toHaveAttribute("aria-checked", "true");
+  expect(errors).toEqual([]);
 });
 
 test("invalid leaderboard parameters fall back to real options", async ({ page }) => {
