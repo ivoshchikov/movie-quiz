@@ -8,6 +8,7 @@ import LoginModal from "./LoginModal";
 import NicknameModal from "./NicknameModal";
 import SiteIcon from "./SiteIcon";
 import { loadGA, pageview } from "../analytics/ga";
+import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import "../homepage.css";
 
 const CANON_BASE = "https://hard-quiz.com";
@@ -15,7 +16,7 @@ const DEFAULT_OG = `${CANON_BASE}/api/og/post?title=${encodeURIComponent("Hard Q
 export interface SiteOutletContext { editNickname: () => void; }
 
 export default function Layout() {
-  const { user, signOut } = useAuth();
+  const { user, session, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const loc = useLocation();
   const [profile, setProfile] = useState<{ nickname: string | null } | null>(null);
@@ -23,6 +24,18 @@ export default function Layout() {
   const [showNickname, setShowNickname] = useState(false);
   const [amIAdmin, setAmIAdmin] = useState(false);
   const isProfileSetup = loc.pathname === "/setup-profile";
+  const isPlaying = loc.pathname === "/play";
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!isPlaying) recoverInterruptedGame();
+    const flush = () => { void flushPendingGameResults(session); };
+    flush();
+    window.addEventListener("online", flush);
+    const visible = () => { if (document.visibilityState === "visible") flush(); };
+    document.addEventListener("visibilitychange", visible);
+    return () => { window.removeEventListener("online", flush); document.removeEventListener("visibilitychange", visible); };
+  }, [session, authLoading, isPlaying]);
 
   useEffect(() => {
     let active = true;
@@ -53,7 +66,7 @@ export default function Layout() {
   useEffect(() => { pageview(`${pathname}${search || ""}`); }, [pathname, search]);
   const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/vite.svg` };
 
-  return <div className="hq-site">
+  return <div className={`hq-site${isPlaying ? " hq-site-playing" : ""}`}>
     <Helmet>
       <link rel="canonical" href={`${CANON_BASE}${pathname}${search || ""}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
@@ -62,7 +75,7 @@ export default function Layout() {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:image" content={DEFAULT_OG} />
     </Helmet>
-    <header className="hq-header">
+    {!isPlaying && <header className="hq-header">
       <div className="hq-shell hq-header-inner">
         <Link to="/" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>
         <nav className="hq-nav" aria-label="Main navigation">
@@ -88,12 +101,12 @@ export default function Layout() {
             </Transition>
           </Menu>}
       </div>
-    </header>
-    <main className={pathname === "/" ? "hq-shell hq-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
+    </header>}
+    <main className={isPlaying ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
       <Outlet context={{ editNickname: () => setShowNickname(true) } satisfies SiteOutletContext} />
     </main>
-    <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>
+    {!isPlaying && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
-    <NicknameModal open={showNickname && !!user} onClose={() => setShowNickname(false)} prefill={profile?.nickname || localStorage.getItem("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
+    <NicknameModal open={showNickname && !!user && !isPlaying} onClose={() => setShowNickname(false)} prefill={profile?.nickname || localStorage.getItem("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
   </div>;
 }

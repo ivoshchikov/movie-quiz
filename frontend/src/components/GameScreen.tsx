@@ -1,322 +1,99 @@
-// frontend/src/components/GameScreen.tsx
-import { useEffect, useState, useMemo, useRef } from "react";
-import { shuffle } from "../utils/shuffle";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  getQuestion,
-  checkAnswer,
-  getCategories,
-  getDifficultyLevels,
-} from "../api";
-import type { Question, Category, DifficultyLevel } from "../api";
-import { supabase } from "../supabase";
-import CircleTimer from "./CircleTimer";
-import LinearTimer from "./LinearTimer";
+import { useEffect, useState } from "react";
+import { Dialog } from "@headlessui/react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import { categoryLabel } from "../hooks/useQuizCatalog";
+import { useNormalGame } from "../game/useNormalGame";
 import Seo from "./Seo";
-import { gaEvent } from "../analytics/ga";
+import SiteIcon from "./SiteIcon";
+import "../game.css";
 
-interface LocationState {
-  categoryId?: number;
-  difficultyId?: number;
-}
-
+interface LocationState { categoryId?: number; difficultyId?: number; }
 export default function GameScreen() {
-  /* ---------- router state ---------- */
+  const location = useLocation();
   const navigate = useNavigate();
-  const { state, key: playKey } = useLocation() as {
-    state?: LocationState;
-    key: string;
-  };
-  const { categoryId, difficultyId } = state || {};
-
-  /* ---------- timers & session ---------- */
-  const sessionStartRef = useRef(Date.now());
-  const [sessionSecs, setSessionSecs] = useState(0);
-
-  useEffect(() => {
-    const id = window.setInterval(
-      () => setSessionSecs(Math.floor((Date.now() - sessionStartRef.current) / 1000)),
-      1000
-    );
-    return () => window.clearInterval(id);
-  }, []);
-
-  /* ---------- dictionaries ---------- */
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCats, setLoadingCats] = useState(true);
-  const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([]);
-  const [loadingDiffs, setLoadingDiffs] = useState(true);
-
-  /* ---------- game state ---------- */
-  const [exclude, setExclude] = useState<number[]>([]);
-  const [q, setQ] = useState<Question | null>(null);
-
-  const [score, setScore] = useState(0);
-  const scoreRef = useRef(0);
-
-  const [seconds, setSeconds] = useState(0);
-  const [lives, setLives] = useState(0);
-  const [mistakesLeft, setMistakesLeft] = useState(0);
-
-  const [answered, setAnswered] = useState(false);
-  const [lastAnswer, setLastAnswer] = useState<string | null>(null);
-  const [isCorrect, setIsCorrect] = useState(false);
-
-  const intervalRef = useRef<number>(0);
-  const timeoutRef = useRef<number>(0);
-
-  const fmtTime = (t: number) =>
-    `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
-
-  /** Завершаем сессию, апдейтим user_best и уходим на /result */
-  const endGame = async () => {
-    const elapsedSecs = Math.floor((Date.now() - sessionStartRef.current) / 1000);
-    const currentCatId = q?.category_id ?? categoryId;
-
-    gaEvent("quiz_end", {
-      category_id: currentCatId ?? null,
-      difficulty_id: difficultyId ?? null,
-      score: scoreRef.current,
-      elapsed_secs: elapsedSecs,
-    });
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    await supabase.rpc("upsert_user_best", {
-      p_user_id: user?.id ?? null,
-      p_category_id: currentCatId,
-      p_difficulty_id: difficultyId ?? null,
-      p_score: scoreRef.current,
-      p_time: elapsedSecs,
-    });
-
-    navigate("/result", {
-      state: {
-        score: scoreRef.current,
-        categoryId: currentCatId,
-        difficultyId,
-        elapsedSecs,
-      },
-    });
-  };
-
-  /* ---------- load dictionaries ---------- */
-  useEffect(() => {
-    if (categoryId == null) return setLoadingCats(false);
-    setLoadingCats(true);
-    getCategories()
-      .then(setCategories)
-      .catch(console.error)
-      .finally(() => setLoadingCats(false));
-  }, [categoryId]);
+  const { categoryId, difficultyId } = (location.state as LocationState | null) ?? {};
+  const validSelection = Number.isInteger(categoryId) && Number.isInteger(difficultyId);
+  const game = useNormalGame(validSelection ? categoryId : undefined, validSelection ? difficultyId : undefined, location.key);
+  const { user } = useAuth();
+  const [exitOpen, setExitOpen] = useState(false);
+  const ready = game.phase === "playing", busyImage = game.phase === "image-loading";
+  const error = ["setup-error", "question-error", "image-error", "answer-error"].includes(game.phase);
+  const label = game.category ? categoryLabel(game.category) : "Quiz", question = game.question;
+  const feedbackText = game.feedback === "correct" ? "Correct! +1 point" : game.feedback === "wrong" ? "Incorrect. 1 life lost." : "Time’s up. 1 life lost.";
+  const elapsed = `${String(Math.floor(game.elapsed / 60)).padStart(2, "0")}:${String(game.elapsed % 60).padStart(2, "0")}`;
 
   useEffect(() => {
-    if (difficultyId == null) return setLoadingDiffs(false);
-    setLoadingDiffs(true);
-    getDifficultyLevels()
-      .then(setDifficulties)
-      .catch(console.error)
-      .finally(() => setLoadingDiffs(false));
-  }, [difficultyId]);
-
-  /* ---------- new round ---------- */
-  useEffect(() => {
-    // сброс сессии
-    sessionStartRef.current = Date.now();
-    setSessionSecs(0);
-    setExclude([]);
-    setScore(0);
-    scoreRef.current = 0;
-    setAnswered(false);
-    setLastAnswer(null);
-    setIsCorrect(false);
-
-    // настройка по уровню
-    if (!loadingDiffs && difficultyId != null) {
-      const level = difficulties.find((d) => d.id === difficultyId);
-      if (level) {
-        setLives(level.lives);
-        setMistakesLeft(Math.max(level.lives - 1, 0)); // ← вместо несуществующего mistakes_allowed
-        setSeconds(level.time_limit_secs);
+    function keyDown(event: KeyboardEvent) {
+      if (exitOpen || event.repeat || event.ctrlKey || event.altKey || event.metaKey || !ready) return;
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      if (target?.isContentEditable || target?.matches("input, textarea, select")) return;
+      const index = Number(event.key) - 1;
+      if (index >= 0 && index < game.options.length && /^[1-4]$/.test(event.key)) {
+        event.preventDefault(); game.actions.current?.answer(game.options[index]);
       }
     }
+    window.addEventListener("keydown", keyDown);
+    return () => window.removeEventListener("keydown", keyDown);
+  }, [exitOpen, ready, game.actions, game.options]);
 
-    if (categoryId != null && difficultyId != null) {
-      gaEvent("quiz_start", { category_id: categoryId, difficulty_id: difficultyId });
-      loadQuestion([]); // загрузим первый вопрос
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId, difficultyId, playKey, loadingDiffs]);
+  const instructions = !validSelection ? "Choose a category and difficulty to start a quiz." : game.phase === "empty" ?
+    "No questions for this difficulty yet." : error ? (
+      game.phase === "image-error" ? "The image couldn’t load. Your timer hasn’t started." :
+      game.phase === "answer-error" ? "Your answer couldn’t be checked. Your timer is paused." : "The quiz couldn’t load. No life lost."
+    ) : "Loading your quiz…";
 
-  /* ---------- question loader ---------- */
-  async function loadQuestion(currentExclude: number[]) {
-    setAnswered(false);
-    setLastAnswer(null);
-    setIsCorrect(false);
-    try {
-      // ⬇ правильная сигнатура
-      const question = await getQuestion(categoryId as number, difficultyId as number);
-      // простой анти-повтор в рамках сессии
-      if (currentExclude.includes(question.id)) {
-        // редкий случай — просто запрашиваем снова
-        return loadQuestion(currentExclude);
-      }
-      setQ(question);
-
-      const level = difficulties.find((d) => d.id === difficultyId);
-      if (level) setSeconds(level.time_limit_secs);
-
-      setExclude([...currentExclude, question.id]);
-    } catch (e: any) {
-      console.error(e);
-      if (e?.message === "no-more-questions") endGame();
-    }
-  }
-
-  /* ---------- per-question timer ---------- */
-  useEffect(() => {
-    if (!q) return;
-    intervalRef.current = window.setInterval(() => {
-      setSeconds((s) => {
-        if (s <= 1) {
-          window.clearInterval(intervalRef.current);
-          if (mistakesLeft > 0) {
-            setMistakesLeft((m) => Math.max(m - 1, 0));
-            setLives((l) => Math.max(l - 1, 0));
-            loadQuestion(exclude);
-          } else {
-            endGame();
-          }
-          return 0;
-        }
-        return s - 1;
-      });
-    }, 1000);
-    return () => window.clearInterval(intervalRef.current);
-  }, [q, mistakesLeft, exclude]);
-
-  /* ---------- shuffle options ---------- */
-  const shuffledOptions = useMemo(() => (q ? shuffle(q.options) : []), [q]);
-
-  /* ---------- answer handler ---------- */
-  const handleAnswer = (answer: string) => {
-    if (!q || answered) return;
-    window.clearInterval(intervalRef.current);
-    setLastAnswer(answer);
-
-    checkAnswer(q.id, answer)
-      .then(async (res) => {
-        setIsCorrect(res.correct);
-        setAnswered(true);
-
-        gaEvent("quiz_answer", { question_id: q.id, correct: res.correct });
-
-        await supabase.rpc("touch_question_stats", {
-          p_question_id: q.id,
-          p_is_correct: res.correct,
-        });
-
-        if (res.correct) {
-          setScore((s) => {
-            const next = s + 1;
-            scoreRef.current = next;
-            return next;
-          });
-          timeoutRef.current = window.setTimeout(() => loadQuestion(exclude), 500);
-        } else {
-          if (mistakesLeft > 0) {
-            setMistakesLeft((m) => Math.max(m - 1, 0));
-            setLives((l) => Math.max(l - 1, 0));
-            timeoutRef.current = window.setTimeout(() => loadQuestion(exclude), 500);
-          } else {
-            timeoutRef.current = window.setTimeout(endGame, 500);
-          }
-        }
-      })
-      .catch(console.error);
-  };
-
-  /* ---------- cleanup ---------- */
-  useEffect(() => () => {
-    window.clearTimeout(timeoutRef.current);
-    window.clearInterval(intervalRef.current);
-  }, []);
-
-  if (!q) return <p className="loading">Loading…</p>;
-
-  /* ---------- helpers for UI ---------- */
-  const categoryLabel =
-    loadingCats ? "…" : categories.find((c) => c.id === categoryId)?.name ?? "—";
-  const difficultyLabel =
-    loadingDiffs ? "…" : difficulties.find((d) => d.id === difficultyId)?.name ?? "—";
-  const totalSecs =
-    difficulties.find((d) => d.id === difficultyId)?.time_limit_secs ?? 20;
-
-  /* ---------- render ---------- */
-  return (
-    <>
-      <Seo
-        title="Play | Hard Quiz"
-        description="Guess the movie from a still frame — or the actor from a photo — before the timer hits zero!"
-        noindex
-      />
-
-      <div className="game-screen">
-        {/* header */}
-        <header className="game-header gap-2">
-          <div className="flex flex-col sm:flex-row sm:space-x-4 text-sm sm:text-base">
-            <span>{categoryLabel}</span>
-            <span>{difficultyLabel}</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex space-x-1">
-              {Array.from({ length: lives }).map((_, i) => (
-                <span key={i} className="text-xl">❤️</span>
-              ))}
-            </div>
-
-            <CircleTimer seconds={seconds} total={totalSecs} />
-
-            <div className="game-score flex items-center space-x-2">
-              <div className="flex items-center">
-                <svg viewBox="0 0 24 24" className="star-icon">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                </svg>
-                <span className="ml-1 text-lg">{score}</span>
-              </div>
-              <span className="text-sm opacity-80">{fmtTime(sessionSecs)}</span>
-            </div>
-          </div>
-        </header>
-
-        <div className="poster-container mt-6">
-          <img src={q.image_url} alt="movie still" className="poster" />
+  return <>
+    <Seo title="Play | Hard Quiz" description="Guess the movie or actor, beat the timer and score as many points as you can." noindex />
+    <header className="hq-play-header">
+      {validSelection ? <button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — exit quiz"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</button> :
+        <Link className="hq-brand" to="/"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>}
+      {validSelection ? <button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Exit quiz</button> : <Link className="hq-play-exit" to="/">Back to home</Link>}
+    </header>
+    {(!validSelection || game.phase === "setup" || game.phase === "setup-error" || game.phase === "empty") ?
+      <section className="hq-game-placeholder" aria-live="polite"><SiteIcon name="film" />
+        <h1>{!validSelection ? "Ready to play?" : game.phase === "empty" ? "More questions are on the way" : error ? "Let’s try that again" : "Getting your quiz ready"}</h1>
+        <p role={error ? "alert" : undefined}>{instructions}</p>
+        {game.phase === "setup-error" && <button className="hq-secondary" onClick={() => game.actions.current?.retry()}>Try again</button>}
+        {(!validSelection || game.phase === "empty") && <Link className="hq-primary" to="/">Choose a quiz</Link>}
+      </section> :
+      <section className="hq-game" aria-label="Quiz">
+        <div className="hq-game-heading"><div><h1>{label}</h1><span>{game.level?.name}</span></div><span className="hq-question-number">Question {game.number || "…"}</span></div>
+        <div className="hq-game-image" aria-busy={busyImage || game.phase === "loading"}>
+          {question && game.phase !== "image-error" && <img key={`${question.id}:${game.imageAttempt}`} src={game.imageAttempt ? `${question.image_url}${question.image_url.includes("?") ? "&" : "?"}hq_retry=${game.imageAttempt}` : question.image_url}
+            alt={label === "Actors" || label === "Actresses" ? "Actor photograph to identify" : "Movie still to identify"}
+            className={busyImage ? "hq-image-loading" : ""} draggable={false}
+            onLoad={event => event.currentTarget.naturalWidth > 0 ? game.actions.current?.imageReady(question.id, game.imageAttempt) : game.actions.current?.imageFailed(question.id, game.imageAttempt)} onError={() => game.actions.current?.imageFailed(question.id, game.imageAttempt)} />}
+          {(busyImage || game.phase === "loading") && <div className="hq-game-image-message" role="status"><span className="hq-game-spinner" /><span>{busyImage ? "Loading image…" : "Loading next question…"}</span></div>}
+          {(game.phase === "image-error" || game.phase === "question-error") && <div className="hq-game-image-message"><p role="alert">{game.phase === "image-error" ? "The image couldn’t load." : "The next question couldn’t load."}</p><button className="hq-secondary" onClick={() => game.actions.current?.retry()}>Try again</button></div>}
         </div>
-
-        <LinearTimer seconds={seconds} total={totalSecs} />
-
-        <div className="answers-grid mt-6">
-          {shuffledOptions.map((opt) => {
-            const isSel = answered && lastAnswer === opt;
-            const cls = ["answer-btn", isSel && (isCorrect ? "correct" : "wrong")]
-              .filter(Boolean)
-              .join(" ");
-            return (
-              <button
-                key={opt}
-                className={cls}
-                onClick={() => handleAnswer(opt)}
-                disabled={answered}
-              >
-                {opt}
-              </button>
-            );
+        <div className="hq-game-timer" aria-label={ready || game.phase === "feedback" ? `${game.seconds} seconds left` : "Timer waits until the question is ready"}>
+          <div className="hq-game-timer-label"><span><SiteIcon name="timer" />Time left</span><strong className={game.seconds <= 5 && ready ? "hq-time-low" : ""}>{game.seconds}<small> s</small></strong></div>
+          <div className="hq-game-time-track"><div className={`hq-game-time-fill${game.seconds <= 5 && ready ? " hq-time-low" : ""}`} style={{ width: `${Math.max(0, Math.min(1, game.remaining)) * 100}%` }} /></div>
+        </div>
+        <div className="hq-game-answers" aria-label="Answer choices" aria-busy={game.phase === "checking"}>
+          {(game.options.length ? game.options : ["…", "…", "…", "…"]).map((option, index) => {
+            const selected = game.selected === option, outcome = selected && game.phase === "feedback" ? game.feedback : null;
+            return <button key={`${question?.id}:${index}`} className={`hq-game-answer${outcome ? ` hq-answer-${outcome}` : ""}${selected && game.phase === "checking" ? " hq-answer-checking" : ""}`}
+              onClick={() => game.actions.current?.answer(option)} disabled={!ready || exitOpen} aria-label={option} aria-keyshortcuts={String(index + 1)}>
+              <span className="hq-answer-key" aria-hidden="true">{index + 1}</span><span className="hq-answer-text">{option}</span>
+            </button>;
           })}
         </div>
-      </div>
-    </>
-  );
+        <div className={`hq-game-feedback${game.feedback ? ` hq-feedback-${game.feedback}` : ""}${game.phase === "answer-error" ? " hq-feedback-error" : ""}`} role={game.phase === "answer-error" ? "alert" : "status"} aria-live="polite">
+          {game.phase === "feedback" ? <><strong>{feedbackText}</strong><span>{game.lives === 0 ? "Your result is next" : "Next question coming up…"}</span></> :
+            game.phase === "checking" ? <span>Checking your answer…</span> : game.phase === "answer-error" ? <><span>{instructions}</span><button className="hq-inline-action" onClick={() => game.actions.current?.retry()}>Try again</button></> :
+              ready ? <span>{label === "Actors" || label === "Actresses" ? "Who is in the picture?" : "Which title matches the image?"} Choose one answer.</span> : <span>Answers unlock when the image is ready.</span>}
+        </div>
+        <div className="hq-game-stats"><span className="hq-game-stat">Score <strong>{game.score}</strong></span><span className="hq-game-lives"><SiteIcon name="heart" /><span>Lives <strong>{game.lives}<small> / {game.level?.lives}</small></strong></span></span></div>
+        <div className="hq-game-footer"><span>Elapsed <strong>{elapsed}</strong></span><span className="hq-game-shortcuts">Use keys <kbd>1</kbd>–<kbd>4</kbd> to answer</span></div>
+      </section>}
+    <Dialog open={exitOpen} onClose={() => setExitOpen(false)} className="hq-game-dialog-root"><div className="hq-game-dialog-backdrop" aria-hidden="true" />
+      <div className="hq-game-dialog-wrap"><Dialog.Panel className="hq-game-dialog"><Dialog.Title>End this quiz?</Dialog.Title>
+        <Dialog.Description>Your current score ({game.score}) and elapsed time will be saved on this device. This quiz will end and cannot be resumed. {user && "We’ll also submit it for your personal best. If you’re offline, saving will retry when you’re back online."}</Dialog.Description>
+        <p>The timer keeps running until you end the quiz.</p><div><button className="hq-secondary" autoFocus onClick={() => setExitOpen(false)}>Keep playing</button>
+          <button className="hq-primary" onClick={() => { setExitOpen(false); if (game.actions.current) game.actions.current.finish(); else navigate("/"); }}>End quiz & save</button></div>
+      </Dialog.Panel></div>
+    </Dialog>
+  </>;
 }
