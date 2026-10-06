@@ -53,10 +53,10 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     function finish(reason: FinishReason, showResult = true, keepalive = false) {
       if (ended || !game) return;
       ended = true; requestId++;
-      const result: GameResult = { id: game.id, playKey, userId: game.userId, categoryId: catId, difficultyId: diffId,
+      const result: GameResult = retainGameResult({ id: game.id, playKey, userId: game.userId, categoryId: catId, difficultyId: diffId,
         score: state.score, elapsedSecs: Math.max(0, Math.floor((Date.now() - game.startedAt) / 1000)),
-        finishReason: reason, saveStatus: game.userId ? "pending" : "device" };
-      retainGameResult(result);
+        categoryName: game.categoryName, difficultyName: game.difficultyName, finishedAt: Date.now(),
+        finishReason: reason, saveStatus: game.userId ? "pending" : "device" });
       void saveGameResult(result, sessionRef.current, keepalive);
       gaEvent("quiz_end", { category_id: catId, difficulty_id: diffId, score: result.score,
         elapsed_secs: result.elapsedSecs, finish_reason: reason });
@@ -91,6 +91,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
         const category = categories.find(item => item.id === catId), level = levels.find(item => item.id === diffId);
         if (!category || !level || !Number.isFinite(level.time_limit_secs) || level.time_limit_secs <= 0 || !Number.isInteger(level.lives) || level.lives < 1) throw new Error("invalid-settings");
         game = { id: crypto.randomUUID(), playKey, userId: sessionRef.current?.user.id ?? null, categoryId: catId, difficultyId: diffId,
+          categoryName: category.name, difficultyName: level.name,
           score: 0, startedAt: Date.now(), elapsedSecs: 0 };
         checkpointGame(game);
         update({ category, level, lives: level.lives, seconds: level.time_limit_secs });

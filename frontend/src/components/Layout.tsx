@@ -13,7 +13,10 @@ import "../homepage.css";
 
 const CANON_BASE = "https://hard-quiz.com";
 const DEFAULT_OG = `${CANON_BASE}/api/og/post?title=${encodeURIComponent("Hard Quiz — Guess Movies from Stills & Faces")}&tags=${encodeURIComponent("Play now,Daily Challenge")}`;
-export interface SiteOutletContext { editNickname: () => void; }
+export interface SiteOutletContext { editNickname: () => void; openLogin: () => void; }
+function storedValue(key: string) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
 
 export default function Layout() {
   const { user, session, loading: authLoading, signOut } = useAuth();
@@ -54,9 +57,9 @@ export default function Layout() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem("postLoginRedirectPath");
+    const saved = storedValue("postLoginRedirectPath");
     if (saved) {
-      localStorage.removeItem("postLoginRedirectPath");
+      try { localStorage.removeItem("postLoginRedirectPath"); } catch { /* OAuth also carries the return URL. */ }
       if (loc.pathname + (loc.search || "") !== saved) navigate(saved, { replace: true });
     }
   }, [user, navigate, loc.pathname, loc.search]);
@@ -102,11 +105,11 @@ export default function Layout() {
           </Menu>}
       </div>
     </header>}
-    <main className={isPlaying ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
-      <Outlet context={{ editNickname: () => setShowNickname(true) } satisfies SiteOutletContext} />
+    <main className={isPlaying ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
+      <Outlet context={{ editNickname: () => setShowNickname(true), openLogin: () => setShowLogin(true) } satisfies SiteOutletContext} />
     </main>
     {!isPlaying && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
-    <NicknameModal open={showNickname && !!user && !isPlaying} onClose={() => setShowNickname(false)} prefill={profile?.nickname || localStorage.getItem("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
+    <NicknameModal open={showNickname && !!user && !isPlaying} onClose={() => setShowNickname(false)} prefill={profile?.nickname || storedValue("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
   </div>;
 }

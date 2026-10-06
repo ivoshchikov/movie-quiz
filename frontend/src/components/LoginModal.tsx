@@ -14,7 +14,7 @@ export default function LoginModal({ open, onClose }: Props) {
     // сохраняем относительный путь как фолбэк и передаём абсолютный в OAuth
     const redirectPath =
       window.location.pathname + (window.location.search || "");
-    localStorage.setItem("postLoginRedirectPath", redirectPath);
+    try { localStorage.setItem("postLoginRedirectPath", redirectPath); } catch { /* The absolute OAuth return URL remains available. */ }
     const absolute = window.location.origin + redirectPath;
     await signInWithGoogle(absolute);
     // дальше управление возьмёт провайдер (будет полный redirect)

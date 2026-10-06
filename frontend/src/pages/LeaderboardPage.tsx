@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import Leaderboard from "../components/Leaderboard";
 import QuizFilters from "../components/QuizFilters";
@@ -6,10 +7,13 @@ import Seo from "../components/Seo";
 
 export default function LeaderboardPage() {
   const { categories, difficulties, loading, error, reload } = useQuizCatalog();
+  const [params] = useSearchParams();
+  const requestedCategory = Number(params.get("category"));
+  const requestedDifficulty = Number(params.get("difficulty"));
   const [categoryId, setCategoryId] = useState<number>();
   const [difficultyId, setDifficultyId] = useState<number>();
-  useEffect(() => { setCategoryId(current => categories.some(cat => cat.id === current) ? current : categories[0]?.id); }, [categories]);
-  useEffect(() => { setDifficultyId(current => difficulties.some(level => level.id === current) ? current : difficulties[0]?.id); }, [difficulties]);
+  useEffect(() => { setCategoryId(current => categories.some(cat => cat.id === requestedCategory) ? requestedCategory : categories.some(cat => cat.id === current) ? current : categories[0]?.id); }, [categories, requestedCategory]);
+  useEffect(() => { setDifficultyId(current => difficulties.some(level => level.id === requestedDifficulty) ? requestedDifficulty : difficulties.some(level => level.id === current) ? current : difficulties[0]?.id); }, [difficulties, requestedDifficulty]);
   const category = categories.find(cat => cat.id === categoryId);
   const difficulty = difficulties.find(level => level.id === difficultyId);
 
