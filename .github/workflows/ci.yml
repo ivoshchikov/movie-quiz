@@ -27,6 +27,18 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Lint (zero warnings)
+        run: npm run lint
+
+      - name: Check TypeScript
+        run: npm run typecheck
+
+      - name: Build frontend and SEO files
+        env:
+          VITE_SUPABASE_URL: https://quiz-fixture.supabase.co
+          VITE_SUPABASE_ANON_KEY: local-test-placeholder
+        run: npm run build
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 

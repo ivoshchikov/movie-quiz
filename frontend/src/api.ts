@@ -9,6 +9,7 @@ export interface DifficultyLevel {
   id: number; key: string; name: string; time_limit_secs: number; lives: number; sort_order?: number;
 }
 export interface Profile { user_id: string; nickname: string | null; avatar_url: string | null; }
+export type ProfileDetails = Pick<Profile, "nickname" | "avatar_url">;
 export interface Question {
   id: number; image_url: string; options: string[]; correct_answer?: string;
   category_id: number; difficulty_level_id: number;
@@ -17,18 +18,30 @@ export interface MyDailyResult { is_answered: boolean; is_correct: boolean | nul
 export interface DailyFastestRow { nickname: string | null; time_spent: number; answered_at: string; }
 export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at: string; }
 export interface UserBestRow { category_id: number; difficulty_level_id: number; best_score: number; best_time: number; updated_at: string; }
+export interface DailyUserStreak {
+  current_streak: number; longest_streak: number; total_correct: number;
+  last_played?: string | null; last_correct?: string | null;
+}
+export interface DailyStreakRow {
+  user_id: string; nickname: string | null; streak: number; start_d: string; end_d: string;
+}
+export interface DailyHistoryRow {
+  d: string; question_id: number; image_url: string; correct_answer: string;
+  category_id: number; difficulty_level_id: number; total_answers: number;
+  correct_answers: number; created_at: string;
+}
 
 /* ────────────────────────────────────────────────────────────
    PROFILES
 ───────────────────────────────────────────────────────────── */
-export async function getProfile(userId: string) {
+export async function getProfile(userId: string): Promise<ProfileDetails | null> {
   const { data, error } = await supabase
     .from("profiles")
     .select("nickname,avatar_url")
     .eq("user_id", userId)
     .single();
   if (error) { console.warn("getProfile:", error.message); return null; }
-  return (data as any) ?? null;
+  return (data as ProfileDetails | null) ?? null;
 }
 
 export async function isNicknameTaken(nickname: string, excludeUserId?: string): Promise<boolean> {
@@ -40,11 +53,11 @@ export async function isNicknameTaken(nickname: string, excludeUserId?: string):
   return (count ?? 0) > 0;
 }
 
-export async function upsertProfile(userId: string, nickname: string | null, avatarUrl?: string | null) {
-  const payload: any = { user_id: userId, nickname: nickname ?? null, avatar_url: avatarUrl ?? null };
+export async function upsertProfile(userId: string, nickname: string | null, avatarUrl?: string | null): Promise<ProfileDetails | null> {
+  const payload: Profile = { user_id: userId, nickname: nickname ?? null, avatar_url: avatarUrl ?? null };
   const { data, error } = await supabase.from("profiles").upsert(payload, { onConflict: "user_id" }).select("nickname,avatar_url").single();
   if (error) throw error;
-  return data as any;
+  return data as ProfileDetails | null;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -186,10 +199,10 @@ export async function getDailyQuestionPublic(dateOverride?: string): Promise<Que
            category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
 }
 
-export async function startDailySession(userId: string, date?: string) {
+export async function startDailySession(userId: string, date?: string): Promise<unknown> {
   const { data, error } = await supabase.rpc("start_daily_session", { p_user_id: userId, p_date: date ?? getDailyDateUS() });
   if (error) throw error;
-  return (data as any) ?? null;
+  return (data as unknown) ?? null;
 }
 
 export async function submitDailyResult(userId: string, date: string, isCorrect: boolean, timeSpentSecs: number) {
@@ -219,35 +232,35 @@ export async function getDailyFastest(date?: string, limit = 5, hideNicks?: stri
   return (data || []) as DailyFastestRow[];
 }
 
-export async function getDailyUserStreak(userId: string) {
+export async function getDailyUserStreak(userId: string): Promise<DailyUserStreak | null | undefined> {
   const { data, error } = await supabase.rpc("get_daily_user_streak", { p_user_id: userId });
   if (error) throw error;
   const row = Array.isArray(data) ? data[0] : data;
-  return row as any;
+  return row as DailyUserStreak | null | undefined;
 }
 
-export async function getDailyStreakLeaderboard(activeOnly = false, limit = 20, hideNicks?: string[]) {
+export async function getDailyStreakLeaderboard(activeOnly = false, limit = 20, hideNicks?: string[]): Promise<DailyStreakRow[]> {
   const { data, error } = await supabase.rpc("get_daily_streak_leaderboard", {
     p_active_only: activeOnly, p_limit: limit, p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
-  return (data || []) as any[];
+  return (data || []) as DailyStreakRow[];
 }
 
-export async function getDailyBestTimeRecords(limit = 20, hideNicks?: string[]) {
+export async function getDailyBestTimeRecords(limit = 20, hideNicks?: string[]): Promise<unknown[]> {
   const { data, error } = await supabase.rpc("get_daily_best_time_records", {
     p_limit: limit, p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
-  return (data || []) as any[];
+  return (data || []) as unknown[];
 }
 
-export async function getDailyTotalCorrectLeaderboard(limit = 20, hideNicks?: string[]) {
+export async function getDailyTotalCorrectLeaderboard(limit = 20, hideNicks?: string[]): Promise<unknown[]> {
   const { data, error } = await supabase.rpc("get_daily_total_correct_leaderboard", {
     p_limit: limit, p_hide_nicks: hideNicks ?? [],
   });
   if (error) throw error;
-  return (data || []) as any[];
+  return (data || []) as unknown[];
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -262,10 +275,10 @@ export async function setDailyQuestion(pDate: string, questionId: number): Promi
   const { error } = await supabase.rpc("set_daily_question", { p_date: pDate, p_question_id: questionId });
   if (error) throw error;
 }
-export async function getDailyHistoryAdmin(limit = 30, offset = 0) {
+export async function getDailyHistoryAdmin(limit = 30, offset = 0): Promise<DailyHistoryRow[]> {
   const { data, error } = await supabase.rpc("get_daily_history_admin", { p_limit: limit, p_offset: offset });
   if (error) throw error;
-  const rows = (data || []) as any[];
+  const rows = (data || []) as DailyHistoryRow[];
   for (const r of rows) if (r?.image_url) r.image_url = getPublicUrl(String(r.image_url));
   return rows;
 }

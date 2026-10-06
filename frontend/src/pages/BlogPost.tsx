@@ -123,7 +123,7 @@ export default function BlogPostPage() {
         )}
 
         {/* Content wrapped in GalleryProvider to auto-collect poster URLs */}
-        <GalleryProvider onChange={setAutoGallery}>
+        <GalleryProvider key={post.slug} onChange={setAutoGallery}>
           <div className="prose prose-invert max-w-none">{post.content()}</div>
         </GalleryProvider>
 

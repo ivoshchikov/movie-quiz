@@ -30,7 +30,7 @@ jobs:
       # Запускаем E2E-тесты и собираем HTML-отчёт
       - name: Run Playwright tests
         working-directory: frontend
-        run: npx playwright test --reporter=line,html
+        run: npm run test:e2e
 
       # Debug: выводим структуру папки frontend
       - name: "Debug: вывести структуру папки frontend"

@@ -12,6 +12,9 @@ export const difficulties = [
 
 export async function mockQuizApi(page: Page) {
   const calls: { name: string; payload: Record<string, unknown> }[] = [];
+  // Keep analytics in its local command queue; never send test events to Google.
+  await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'text/javascript', body: '' }));
+  await page.route('**/storage/v1/object/public/**', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900"><rect width="600" height="900" fill="#22232d"/></svg>' }));
   await page.route('**/rest/v1/**', async route => {
     const url = new URL(route.request().url());
     const name = url.pathname.split('/').pop() || '';

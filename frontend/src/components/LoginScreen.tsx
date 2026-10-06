@@ -1,6 +1,6 @@
 // frontend/src/components/LoginScreen.tsx
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Seo from "./Seo";
 
@@ -8,12 +8,11 @@ export default function LoginScreen() {
   const { signInWithGoogle, signInWithEmail } = useAuth();
   const [email, setEmail] = useState("");
 
-  const navigate = useNavigate();
   const location = useLocation();
 
   // относительный путь, куда хотим вернуться
   const redirectPath =
-    (location.state as any)?.redirectTo ||
+    (location.state as { redirectTo?: string } | null)?.redirectTo ||
     new URLSearchParams(location.search).get("redirect") ||
     "/";
 

@@ -1,6 +1,6 @@
 // frontend/src/pages/DailyPage.tsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Seo from "../components/Seo";
 import {
@@ -118,7 +118,6 @@ export default function DailyPage() {
   }, [user, dateStr, lsKey]);
 
   const alreadyAnswered = !!user && (localAnswered || myDaily.is_answered);
-  const canAnswer = !!user && imgLoaded && !alreadyAnswered;
   const answered = selected !== null;
 
   // ---------- answer ----------
