@@ -1,0 +1,58 @@
+.hq-result-main {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  min-width: 0; padding: 36px 20px 48px;
+}
+.hq-result-card {
+  width: min(100%, 560px); padding: 25px 32px 18px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.hq-result-heading { width: 100%; }
+.hq-result-mode { color: var(--hq-purple); font-size: 13px; font-weight: 500; overflow-wrap: anywhere; margin-bottom: 8px; }
+.hq-result-heading h1 { font-size: clamp(24px, 4vw, 30px); line-height: 1.2; letter-spacing: -.7px; font-weight: 650; }
+.hq-result-explanation { font-size: 13px; color: var(--hq-muted); margin-top: 8px; line-height: 1.6; }
+.hq-result-date { display: block; color: var(--hq-muted); font-size: 11px; margin-top: 7px; }
+.hq-result-achievement { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--hq-tint); color: var(--hq-purple); margin: 0 auto 10px; }
+.hq-result-achievement .hq-icon { width: 24px; height: 24px; }
+.hq-result-score { display: flex; flex-direction: column; gap: 4px; margin: 20px 0; }
+.hq-result-score strong { font-size: clamp(58px, 10vw, 76px); line-height: 1; font-weight: 750; letter-spacing: -2px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.hq-result-score span { color: var(--hq-muted); font-size: 13px; }
+.hq-result-record { display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--hq-purple); padding: 7px 13px; border-radius: 20px; background: var(--hq-tint); margin: -5px 0 19px; }
+.hq-result-record .hq-icon { width: 16px; height: 16px; }
+.hq-result-stats { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px 0; border-block: 1px solid var(--hq-border); margin-bottom: 18px; }
+.hq-result-stats > div { min-width: 0; }
+.hq-result-stats > div + div { border-left: 1px solid var(--hq-border); }
+.hq-result-stats-guest { grid-template-columns: 1fr; }
+.hq-result-stats dt { font-size: 12px; color: var(--hq-muted); margin-bottom: 4px; }
+.hq-result-stats dd { font-size: 21px; font-weight: 600; font-variant-numeric: tabular-nums; min-height: 32px; overflow-wrap: anywhere; }
+.hq-result-best-value > span { font-size: 12px; font-weight: 400; color: var(--hq-muted); }
+.hq-result-stats dd .hq-result-stat-note { font-size: 12px; font-weight: 400; color: var(--hq-muted); }
+.hq-result-stats .hq-inline-action { min-height: 32px; font-size: 12px; font-weight: 400; }
+.hq-result-actions { display: flex; gap: 10px; width: 100%; }
+.hq-result-actions > a { flex: 1; width: auto; min-width: 0; display: flex; align-items: center; justify-content: center; text-wrap: balance; }
+.hq-result-save { font-size: 12px; color: var(--hq-muted); margin-top: 12px; width: 100%; overflow-wrap: anywhere; }
+.hq-result-save .hq-inline-action { margin-left: 9px; }
+.hq-result-save-note { font-size: 11px; margin-top: 6px; }
+.hq-result-leaderboard { font-size: 12px; margin-top: 2px; }
+.hq-result-details-error { color: var(--hq-muted); font-size: 12px; }
+.hq-result-guest { width: 100%; border-top: 1px solid var(--hq-border); padding-top: 12px; margin-top: 8px; }
+.hq-result-guest > p { font-size: 13px; font-weight: 600; }
+.hq-result-guest > span { display: block; margin-top: 5px; font-size: 12px; color: var(--hq-muted); line-height: 1.6; }
+.hq-result-guest .hq-inline-action { font-size: 13px; font-weight: 500; margin-top: 2px; }
+.hq-result-empty { padding: 36px 32px; gap: 15px; }
+.hq-result-empty > .hq-icon { width: 32px; height: 32px; color: var(--hq-purple); }
+.hq-result-empty h1 { font-size: 26px; font-weight: 600; letter-spacing: -.5px; }
+.hq-result-empty p { color: var(--hq-muted); font-size: 14px; }
+.hq-result-empty .hq-primary { margin-top: 9px; }
+@media (max-width: 620px) {
+  .hq-result-main { padding: 24px 16px; }
+  .hq-result-card { padding: 25px 20px 18px; }
+  .hq-result-actions { flex-direction: column; }
+  .hq-result-actions > a { flex: auto; min-height: 48px; }
+  .hq-result-score { margin-block: 22px; }
+  .hq-result-mode { font-size: 12px; }
+}
+@media (max-height: 700px) and (min-width: 621px) {
+  .hq-result-main { padding-block: 24px; }
+  .hq-result-card { padding-block: 24px 18px; }
+  .hq-result-score { margin-block: 18px; }
+}

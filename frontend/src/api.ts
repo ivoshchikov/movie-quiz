@@ -18,6 +18,7 @@ export interface MyDailyResult { is_answered: boolean; is_correct: boolean | nul
 export interface DailyFastestRow { nickname: string | null; time_spent: number; answered_at: string; }
 export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at: string; }
 export interface UserBestRow { category_id: number; difficulty_level_id: number; best_score: number; best_time: number; updated_at: string; }
+export interface PersonalBest { score: number; time: number; }
 export interface DailyUserStreak {
   current_streak: number; longest_streak: number; total_correct: number;
   last_played?: string | null; last_correct?: string | null;
@@ -142,6 +143,18 @@ export async function getMyBest(userId: string) {
     .eq("user_id", userId).order("updated_at", { ascending: false });
   if (error) throw error;
   return (data || []) as UserBestRow[];
+}
+
+export async function getPersonalBest(userId: string, categoryId: number, difficultyId: number, signal: AbortSignal): Promise<PersonalBest | null> {
+  const { data, error } = await supabase.from("user_best")
+    .select("category_id,difficulty_level_id,best_score,best_time")
+    .eq("user_id", userId).eq("category_id", categoryId).eq("difficulty_level_id", difficultyId)
+    .limit(1).abortSignal(signal);
+  if (error) throw error;
+  const row = data?.find(item => item.category_id === categoryId && item.difficulty_level_id === difficultyId);
+  if (!row) return null;
+  if (!Number.isInteger(row.best_score) || row.best_score < 0 || !Number.isFinite(row.best_time) || row.best_time < 0) throw new Error("invalid-personal-best");
+  return { score: row.best_score, time: row.best_time };
 }
 
 /* ────────────────────────────────────────────────────────────

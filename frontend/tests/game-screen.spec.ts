@@ -116,7 +116,7 @@ test("the last life is shown as lost and the result records the actual elapsed t
   await expect(page).toHaveURL(/\/result$/);
   await expect.poll(() => data.calls.filter(call => call.name === "upsert_user_best").length).toBe(1);
   expect(data.calls.find(call => call.name === "upsert_user_best")?.payload).toMatchObject({ p_score: 0, p_time: 11, p_user_id: "fixture-user" });
-  await expect(page.getByRole("status")).toContainText("Result saved.");
+  await expect(page.getByRole("status")).toContainText("Synced with your account");
 });
 
 test("clearing the question bank congratulates the player; play again starts a fresh run", async ({ page }) => {
@@ -125,9 +125,9 @@ test("clearing the question bank congratulates the player; play again starts a f
   await page.getByRole("button", { name: answers[0], exact: true }).click();
   await expect(page.getByText("Correct! +1 point", { exact: true })).toBeVisible();
   await page.clock.runFor(1000);
-  await expect(page.getByRole("heading", { name: "You cleared the whole quiz!" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "All questions completed!" })).toBeVisible();
   await expect(page.getByText(/Every question played, and lives still left/)).toBeVisible();
-  await page.getByRole("button", { name: "Play again", exact: true }).click();
+  await page.getByRole("link", { name: "Play again", exact: true }).click();
   await expect(page.getByRole("button", { name: answers[0], exact: true })).toBeEnabled();
   await expect(page.locator(".hq-game-stat strong")).toHaveText("0");
   await expect(page.getByText("Question 1", { exact: true })).toBeVisible();
@@ -174,7 +174,7 @@ test("exit confirmation keeps the timer running and saves one final result", asy
   expect(data.calls.find(call => call.name === "upsert_user_best")?.payload).toMatchObject({ p_score: 1, p_time: 6 });
   await expect(page.getByRole("heading", { name: "Quiz ended" })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Quiz ended" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Last quiz result" })).toBeVisible();
 });
 
 test("failed saves survive reload and retry with the same final score and elapsed time", async ({ page }) => {
@@ -188,11 +188,11 @@ test("failed saves survive reload and retry with the same final score and elapse
   await start(page);
   await page.clock.runFor(7000);
   await end(page);
-  await expect(page.getByRole("status")).toContainText("Saving to your account will retry");
+  await expect(page.getByRole("status")).toContainText("Couldn’t sync with your account");
   const first = saves[0];
   fail = false;
   await page.reload();
-  await expect(page.getByRole("status")).toContainText("Result saved.");
+  await expect(page.getByRole("status")).toContainText("Synced with your account");
   expect(saves.length).toBeGreaterThan(1);
   expect(saves.every(item => JSON.stringify(item) === JSON.stringify(first))).toBeTruthy();
   expect(await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith("hq:quiz:pending:")).length)).toBe(0);
@@ -209,7 +209,7 @@ test("browser back can be cancelled and reload ends the session instead of resum
   page.once("dialog", dialog => { void dialog.accept(); });
   await page.reload();
   await expect(page).toHaveURL(/\/result$/);
-  await expect(page.getByRole("heading", { name: "Quiz ended" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Last quiz result" })).toBeVisible();
   await expect(page.getByText("00:03", { exact: true })).toBeVisible();
 });
 
@@ -220,7 +220,7 @@ test("opening play directly gives a usable start action, and an empty bank is no
   await page.getByRole("link", { name: "Choose a quiz" }).click();
   await page.getByRole("button", { name: "Play Movie Stills" }).click();
   await expect(page.getByRole("heading", { name: "More questions are on the way" })).toBeVisible();
-  await expect(page.getByText("You cleared the whole quiz!", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("All questions completed!", { exact: true })).toHaveCount(0);
 });
 
 test("keyboard shortcuts match the visible order and cannot submit twice", async ({ page }) => {
@@ -266,11 +266,11 @@ test("closing a tab keeps its final result and reopening never resumes the game"
   const reopened = await context.newPage();
   await fixture(reopened, { signedIn: true });
   await reopened.goto("/result");
-  await expect(reopened.getByRole("heading", { name: "Quiz ended" })).toBeVisible();
+  await expect(reopened.getByRole("heading", { name: "Last quiz result" })).toBeVisible();
   await expect(reopened.getByText("00:07", { exact: true })).toBeVisible();
   const result = await reopened.evaluate(() => JSON.parse(localStorage.getItem("hq:quiz:last:fixture-user")!));
   expect(result).toMatchObject({ score: 1, elapsedSecs: 7, finishReason: "exit" });
-  await expect(reopened.getByRole("status")).toContainText("Result saved.");
+  await expect(reopened.getByRole("status")).toContainText("Synced with your account");
   await reopened.goto("/play");
   await expect(reopened.getByRole("heading", { name: "Ready to play?" })).toBeVisible();
   await reopened.close();
