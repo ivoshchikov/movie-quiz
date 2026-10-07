@@ -66,14 +66,17 @@ test('a new profile loads an empty nickname and saves the existing profile field
   await mockSignedIn(page);
   let nickname: string | null = null;
   await page.route('**/rest/v1/profiles?**', route => {
-    if (route.request().method() === 'POST') nickname = route.request().postDataJSON().nickname;
-    return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ nickname, avatar_url: null }) });
+    if (route.request().method() === 'PATCH') nickname = route.request().postDataJSON().nickname;
+    return route.fulfill({ contentType: 'application/json', headers: { 'content-range': '0-0/0', 'access-control-expose-headers': 'content-range' }, body: route.request().method() === 'HEAD' ? '' : JSON.stringify({ nickname, avatar_url: null }) });
   });
   await page.goto('/setup-profile');
-  await page.getByPlaceholder('Ваш ник').fill('NewFilmFan');
-  const request = page.waitForRequest(item => item.url().includes('/rest/v1/profiles') && item.method() === 'POST');
+  await page.getByRole('textbox', { name: 'Nickname', exact: true }).fill('NewFilmFan');
+  const request = page.waitForRequest(item => item.url().includes('/rest/v1/profiles') && item.method() === 'PATCH');
   await page.getByRole('button', { name: 'Save', exact: true }).click();
-  expect((await request).postDataJSON()).toEqual({ user_id: 'fixture-user', nickname: 'NewFilmFan', avatar_url: null });
+  const saved = await request;
+  expect(saved.postDataJSON()).toEqual({ nickname: 'NewFilmFan' });
+  expect(new URL(saved.url()).searchParams.get('nickname')).toBe('is.null');
+  expect(new URL(saved.url()).searchParams.get('user_id')).toBe('eq.fixture-user');
   await expect(page).toHaveURL('http://localhost:5173/');
   await expect(page.locator('.hq-account-name')).toHaveText('NewFilmFan');
 });

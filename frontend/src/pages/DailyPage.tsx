@@ -19,7 +19,7 @@ import "../daily.css";
 const ORIGIN = (import.meta.env.VITE_SITE_URL as string) || "https://hard-quiz.com";
 export default function DailyPage() {
   const { user, loading: authLoading } = useAuth();
-  const { openLogin, editNickname, setDailyPlaying, profileReady, hasNickname } = useOutletContext<SiteOutletContext>();
+  const { openLogin, chooseNickname, setDailyPlaying, profileReady, hasNickname, profileError, retryProfile } = useOutletContext<SiteOutletContext>();
   const game = useDailyGame(user?.id ?? null, authLoading);
   const navigate = useNavigate(), location = useLocation();
   const [exitOpen, setExitOpen] = useState(false), [rankingOpen, setRankingOpen] = useState(false);
@@ -70,7 +70,7 @@ export default function DailyPage() {
     return () => window.removeEventListener("keydown", keyDown);
   }, [ready, exitOpen, game.actions, game.options]);
 
-  const start = () => { if (!profileReady) return; if (!hasNickname) { editNickname(); return; } game.actions.current?.start(); };
+  const start = () => { if (!profileReady) return; if (!hasNickname) { chooseNickname(); return; } game.actions.current?.start(); };
   const question = game.question;
   const result = game.result;
   const correct = result?.is_correct;
@@ -117,7 +117,7 @@ export default function DailyPage() {
           </> : game.phase === "load-error" || game.phase === "empty" ? <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.phase === "empty" ? "Today’s challenge is on its way" : "Daily couldn’t load"}</h1><p role="alert">{game.phase === "empty" ? "No question is available for this Daily yet. You can still play a regular quiz." : "We couldn’t check your Daily or load the question. Please try again."}</p><button className="hq-primary" onClick={() => game.actions.current?.retry()}>Try again</button><Link className="hq-inline-action" to="/">Back to home</Link>{next}</div> : <>
             <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.run ? "Your Daily is waiting" : "One image. One daily challenge."}</h1><p>{game.run ? "Continue your attempt on this device. Your answer timer has kept running." : "Identify the movie or actor. Get it right and build your streak, one day at a time."}</p>
               <div className="hq-daily-rules"><span>One answer per day</span><span>No time limit</span></div>
-              {game.phase === "guest" ? <><button className="hq-primary" onClick={openLogin}>Log in to play <SiteIcon name="arrow" /></button><p className="hq-daily-login-note">Daily requires an account to save your answer and track your streak.</p><Link className="hq-inline-action" to="/">Play a regular quiz as a guest</Link></> : <button className="hq-primary" disabled={!profileReady} onClick={start}>{!profileReady ? "Checking your profile…" : !hasNickname ? "Choose a nickname to play" : game.run ? "Continue Daily" : "Start Daily"}<SiteIcon name="arrow" /></button>}
+              {game.phase === "guest" ? <><button className="hq-primary" onClick={openLogin}>Log in to play <SiteIcon name="arrow" /></button><p className="hq-daily-login-note">Daily requires an account to save your answer and track your streak.</p><Link className="hq-inline-action" to="/">Play a regular quiz as a guest</Link></> : profileError ? <p role="alert" className="hq-status">Your account could not be checked. <button className="hq-inline-action" onClick={retryProfile}>Retry profile</button></p> : <button className="hq-primary" disabled={!profileReady} onClick={start}>{!profileReady ? "Checking your profile…" : !hasNickname ? "Choose a nickname to play" : game.run ? "Continue Daily" : "Start Daily"}<SiteIcon name="arrow" /></button>}
             </div>
             {user && <YourDailyCard date={game.today} refreshKey={game.refreshKey} />}{next}
           </>}
