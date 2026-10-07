@@ -17,6 +17,9 @@ test("guest sees clear rules and sign-in, without loading an answer or starting 
   await expect(page.getByText("Next challenge in", { exact: false })).toContainText("12:00:00");
   await expect(page.locator(".hq-game-answer")).toHaveCount(0);
   expect(data.calls).toHaveLength(0);
+  const views = await page.evaluate(() => window.dataLayer.map(entry => Array.from(entry as IArguments)).filter(entry => entry[0] === "event" && entry[1] === "daily_view"));
+  expect(views).toHaveLength(1);
+  expect(views[0][2]).toMatchObject({ d: today, is_logged_in: false });
   await page.getByRole("button", { name: "Log in to play", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Sign in", exact: true })).toBeVisible();
   const request = page.waitForRequest(item => item.url().includes("/auth/v1/authorize"));

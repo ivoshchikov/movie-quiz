@@ -36,6 +36,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
     let mounted = true, revision = 0, heldPreviousResult = false;
     let state = initial(userId);
     let resetAt = nextDailyReset();
+    let viewedDate: string | null = null;
     const lifetime = new AbortController();
     function update(patch: Partial<DailyView>) { state = { ...state, ...patch }; if (mounted) setView(state); }
     function valid(id: number) { return mounted && !lifetime.signal.aborted && id === revision; }
@@ -61,8 +62,8 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
       heldPreviousResult = !!recovered?.pending && date !== dailyDate();
       update({ ...initial(userId), date, today: dailyDate(), run: recovered, refreshKey: state.refreshKey });
       if (authLoading) return;
+      if (viewedDate !== date) { gaEvent("daily_view", { d: date, is_logged_in: !!userId }); viewedDate = date; }
       if (!userId) { update({ phase: "guest" }); return; }
-      gaEvent("daily_view", { d: date, is_logged_in: true });
       try {
         const status = await request(signal => getMyDailyResult(userId, date, signal));
         if (!valid(id)) return;
