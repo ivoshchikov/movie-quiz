@@ -1,106 +1,20 @@
-// frontend/src/components/NicknameModal.tsx
-import { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
+import { useState } from "react";
 import { useAuth } from "../AuthContext";
-import { isNicknameTaken, upsertProfile } from "../api";
+import NicknameForm from "./NicknameForm";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  prefill?: string;
-  onSaved?: (nick: string) => void;   /* ← NEW */
-}
+interface Props { open: boolean; onClose: () => void; prefill?: string; onSaved: (nick: string) => void; }
 
-export default function NicknameModal({
-  open,
-  onClose,
-  prefill = "",
-  onSaved,
-}: Props) {
+export default function NicknameModal({ open, onClose, prefill = "", onSaved }: Props) {
   const { user } = useAuth();
-  const [nick,  setNick]  = useState(prefill);
-  const [busy,  setBusy]  = useState(false);
-  const [taken, setTaken] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (open) { setNick(prefill); setTaken(false); setError(null); }
-  }, [open, prefill]);
-
-  /* debounce «занят?» ------------------------------------------------- */
-  useEffect(() => {
-    let active = true;
-    if (!open || nick.length < 3) { setTaken(false); return; }
-    const id = setTimeout(() => {
-      isNicknameTaken(nick, user?.id).then(value => { if (active) setTaken(value); }).catch(console.error);
-    }, 300);
-    return () => { active = false; clearTimeout(id); };
-  }, [nick, open, user?.id]);
-
-  /* save -------------------------------------------------------------- */
-  const save = async () => {
-    if (busy || nick.length < 3 || taken) return;
-    setError(null);
-    setBusy(true);
-
-    if (!user) {                      // гость
-      try { localStorage.setItem("pre_nickname", nick); } catch { /* The current document can still use the chosen nickname. */ }
-      onSaved?.(nick);
-      onClose();
-      setBusy(false);
-      return;
-    }
-
-    try {
-      await upsertProfile(user.id, nick);
-      try { localStorage.removeItem("pre_nickname"); } catch { /* The account nickname was already saved successfully. */ }
-      onSaved?.(nick);               /* ← уведомляем родителя */
-      onClose();
-    } catch (e: unknown) {
-      if (typeof e === "object" && e !== null && "code" in e && e.code === "23505") setError("Nickname already taken.");
-      else setError("Error saving nickname.");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  /* render ------------------------------------------------------------ */
-  return (
-    <Dialog open={open} onClose={() => !busy && onClose()} className="relative z-50">
-      <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-80 space-y-4 rounded-xl bg-gray-900 p-6 text-center">
-          <Dialog.Title className="text-xl font-semibold">Choose your nickname</Dialog.Title>
-
-          <input
-            aria-label="Nickname"
-            className="w-full rounded-md p-2 text-black"
-            placeholder="3–20 chars, a–z 0–9 _ -"
-            value={nick}
-            maxLength={20}
-            onChange={(e) => setNick(e.target.value)}
-            disabled={busy}
-          />
-
-          {taken && <p className="text-red-500 text-sm">This nickname is taken.</p>}
-          {error &&  <p className="text-red-500 text-sm">{error}</p>}
-
-          <button
-            className="btn-primary w-full disabled:opacity-60"
-            onClick={save}
-            disabled={busy || nick.length < 3 || taken}
-          >
-            {busy ? "Saving…" : "Save"}
-          </button>
-
-          <button
-            onClick={() => !busy && onClose()}
-            className="text-sm opacity-70 hover:opacity-100"
-          >
-            Cancel
-          </button>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
-  );
+  const [busy, setBusy] = useState(false);
+  return <Dialog open={open} onClose={() => { if (!busy) onClose(); }} className="relative z-50">
+    <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
+    <div className="fixed inset-0 flex items-center justify-center p-4">
+      <Dialog.Panel className="hq-panel w-full max-w-sm p-6">
+        <Dialog.Title className="text-xl font-semibold mb-3">Choose your nickname</Dialog.Title>
+        {open && user && <NicknameForm key={user.id} userId={user.id} prefill={prefill} onSaved={nick => { onSaved(nick); onClose(); }} onCancel={onClose} onBusyChange={setBusy} />}
+      </Dialog.Panel>
+    </div>
+  </Dialog>;
 }

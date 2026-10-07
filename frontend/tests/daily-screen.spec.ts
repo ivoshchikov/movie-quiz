@@ -392,8 +392,8 @@ test("new players finish nickname setup before any Daily session starts", async 
   const data = await dailyFixture(page);
   let nickname: string | null = null;
   await page.route("**/rest/v1/profiles?**", route => {
-    if (route.request().method() === "POST") nickname = route.request().postDataJSON().nickname;
-    return route.fulfill({ contentType: "application/json", headers: { "content-range": "0-0/0" }, body: JSON.stringify({ nickname, avatar_url: null }) });
+    if (route.request().method() === "PATCH") nickname = route.request().postDataJSON().nickname;
+    return route.fulfill({ contentType: "application/json", headers: { "content-range": "0-0/0", "access-control-expose-headers": "content-range" }, body: JSON.stringify({ nickname, avatar_url: null }) });
   });
   await page.addInitScript(() => {
     const remove = Storage.prototype.removeItem;

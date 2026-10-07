@@ -35,30 +35,49 @@ export interface DailyHistoryRow {
 /* ────────────────────────────────────────────────────────────
    PROFILES
 ───────────────────────────────────────────────────────────── */
-export async function getProfile(userId: string): Promise<ProfileDetails | null> {
-  const { data, error } = await supabase
+export async function getProfile(userId: string, signal?: AbortSignal): Promise<ProfileDetails | null> {
+  const query = supabase
     .from("profiles")
     .select("nickname,avatar_url")
-    .eq("user_id", userId)
-    .single();
-  if (error) { console.warn("getProfile:", error.message); return null; }
-  return (data as ProfileDetails | null) ?? null;
-}
-
-export async function isNicknameTaken(nickname: string, excludeUserId?: string): Promise<boolean> {
-  if (!nickname.trim()) return false;
-  let q = supabase.from("profiles").select("user_id", { count: "exact", head: true }).ilike("nickname", nickname.trim());
-  if (excludeUserId) q = q.neq("user_id", excludeUserId);
-  const { count, error } = await q;
-  if (error) { console.warn("isNicknameTaken:", error.message); return false; }
-  return (count ?? 0) > 0;
-}
-
-export async function upsertProfile(userId: string, nickname: string | null, avatarUrl?: string | null): Promise<ProfileDetails | null> {
-  const payload: Profile = { user_id: userId, nickname: nickname ?? null, avatar_url: avatarUrl ?? null };
-  const { data, error } = await supabase.from("profiles").upsert(payload, { onConflict: "user_id" }).select("nickname,avatar_url").single();
+    .eq("user_id", userId);
+  const { data, error } = await (signal ? query.abortSignal(signal) : query).maybeSingle();
   if (error) throw error;
-  return data as ProfileDetails | null;
+  if (data == null) return null;
+  if ((data.nickname !== null && (typeof data.nickname !== "string" || !data.nickname.trim())) ||
+    (data.avatar_url !== null && typeof data.avatar_url !== "string")) throw new Error("invalid-profile");
+  return data as ProfileDetails;
+}
+
+export async function isNicknameTaken(nickname: string, excludeUserId?: string, signal?: AbortSignal): Promise<boolean> {
+  if (!nickname.trim()) return false;
+  const pattern = nickname.trim().replace(/[\\%_]/g, "\\$&");
+  let q = supabase.from("profiles").select("user_id", { count: "exact", head: true }).ilike("nickname", pattern);
+  if (excludeUserId) q = q.neq("user_id", excludeUserId);
+  const { count, error } = await (signal ? q.abortSignal(signal) : q);
+  if (error) throw error;
+  if (count == null || !Number.isInteger(count) || count < 0) throw new Error("invalid-nickname-count");
+  return count > 0;
+}
+
+// Only initial selection is exposed. Server-side immutability still requires a DB policy/trigger.
+export async function chooseInitialNickname(userId: string, nickname: string, signal: AbortSignal): Promise<ProfileDetails> {
+  const nick = nickname.trim();
+  if (nick.length < 3 || nick.length > 20) throw new Error("invalid-nickname");
+  const profile = await getProfile(userId, signal);
+  if (profile?.nickname) return profile;
+  if (await isNicknameTaken(nick, userId, signal)) throw new Error("nickname-taken");
+  const payload: Profile = { user_id: userId, nickname: nick, avatar_url: null };
+  // A concurrent initial selection must not overwrite a name already saved by another tab.
+  const query = profile ? supabase.from("profiles").update({ nickname: nick }).eq("user_id", userId).is("nickname", null)
+    : supabase.from("profiles").insert(payload);
+  const { data, error } = await query.select("nickname,avatar_url").abortSignal(signal).maybeSingle();
+  if (error && error.code !== "23505") throw error;
+  if (!error && data && typeof data.nickname === "string" && data.nickname.trim()) return data as ProfileDetails;
+  const confirmed = await getProfile(userId, signal);
+  if (confirmed?.nickname) return confirmed;
+  if (confirmed) throw new Error("nickname-not-confirmed");
+  if (error) throw error;
+  throw new Error("nickname-not-confirmed");
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -140,12 +159,19 @@ export async function checkAnswer(questionId: number, answer: string) {
 }
 
 /* МОИ ЛУЧШИЕ */
-export async function getMyBest(userId: string) {
-  const { data, error } = await supabase.from("user_best")
+export async function getMyBest(userId: string, signal?: AbortSignal): Promise<UserBestRow[]> {
+  const query = supabase.from("user_best")
     .select("category_id,difficulty_level_id,best_score,best_time,updated_at")
     .eq("user_id", userId).order("updated_at", { ascending: false });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
-  return (data || []) as UserBestRow[];
+  if (!Array.isArray(data) || !data.every(row => row && Number.isInteger(row.category_id) && row.category_id > 0 &&
+    Number.isInteger(row.difficulty_level_id) && row.difficulty_level_id > 0 && Number.isInteger(row.best_score) && row.best_score >= 0 &&
+    Number.isFinite(row.best_time) && row.best_time >= 0) || new Set(data.map(row => `${row.category_id}:${row.difficulty_level_id}`)).size !== data.length) {
+    throw new Error("invalid-personal-bests");
+  }
+  return data.map(row => ({ category_id: row.category_id, difficulty_level_id: row.difficulty_level_id,
+    best_score: row.best_score, best_time: row.best_time, updated_at: typeof row.updated_at === "string" ? row.updated_at : "" }));
 }
 
 export async function getPersonalBest(userId: string, categoryId: number, difficultyId: number, signal: AbortSignal): Promise<PersonalBest | null> {
@@ -275,7 +301,7 @@ export async function getDailyUserStreak(userId: string, signal?: AbortSignal): 
   const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   const row = Array.isArray(data) ? data[0] : data;
-  if (row && ![row.current_streak, row.longest_streak, row.total_correct].every(value => Number.isInteger(value) && value >= 0)) throw new Error("invalid-daily-streak");
+  if (row != null && (typeof row !== "object" || ![row.current_streak, row.longest_streak, row.total_correct].every(value => Number.isInteger(value) && value >= 0))) throw new Error("invalid-daily-streak");
   return row as DailyUserStreak | null | undefined;
 }
 

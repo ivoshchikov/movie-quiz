@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
@@ -9,13 +9,15 @@ import NicknameModal from "./NicknameModal";
 import SiteIcon from "./SiteIcon";
 import { loadGA, pageview } from "../analytics/ga";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
+import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
 
 const CANON_BASE = "https://hard-quiz.com";
 const DEFAULT_OG = `${CANON_BASE}/api/og/post?title=${encodeURIComponent("Hard Quiz — Guess Movies from Stills & Faces")}&tags=${encodeURIComponent("Play now,Daily Challenge")}`;
 export interface SiteOutletContext {
-  editNickname: () => void; openLogin: () => void; setDailyPlaying: (value: boolean) => void;
-  profileReady: boolean; hasNickname: boolean;
+  chooseNickname: () => void; openLogin: () => void; setDailyPlaying: (value: boolean) => void;
+  profileReady: boolean; hasNickname: boolean; nickname: string | null;
+  profileError: boolean; retryProfile: () => void;
 }
 function storedValue(key: string) {
   try { return localStorage.getItem(key); } catch { return null; }
@@ -25,15 +27,18 @@ export default function Layout() {
   const { user, session, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const loc = useLocation();
-  const [profile, setProfile] = useState<{ nickname: string | null } | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showNickname, setShowNickname] = useState(false);
-  const [amIAdmin, setAmIAdmin] = useState(false);
-  const [profileUserId, setProfileUserId] = useState<string | null>(null);
+  const [admin, setAdmin] = useState<{ owner: string; value: boolean } | null>(null);
   const [dailyPlaying, setDailyPlaying] = useState(false);
   const isProfileSetup = loc.pathname === "/setup-profile";
   const isPlaying = loc.pathname === "/play";
   const isGameView = isPlaying || (loc.pathname === "/daily" && dailyPlaying);
+  const owner = user?.id ?? "";
+  const loadProfile = useCallback((signal: AbortSignal) => getProfile(owner, signal), [owner]);
+  const account = useReadRequest(owner, loadProfile, !authLoading && !!owner);
+  const nickname = account.value?.nickname ?? null;
+  const profileReady = !user || (!account.loading && !account.error && account.value !== undefined);
 
   useEffect(() => {
     if (authLoading) return;
@@ -48,20 +53,16 @@ export default function Layout() {
 
   useEffect(() => {
     let active = true;
-    setProfile(null);
-    setProfileUserId(null);
-    setAmIAdmin(false);
+    setAdmin(null);
     setShowNickname(false);
-    if (!user) return;
-    getProfile(user.id).then(value => {
-      if (!active) return;
-      setProfile(value);
-      setProfileUserId(user.id);
-      if (!value?.nickname && !isProfileSetup) setShowNickname(true);
-    }).catch(() => { if (active) { setProfileUserId(user.id); if (!isProfileSetup) setShowNickname(true); } });
-    isAdmin().then(value => { if (active) setAmIAdmin(value); }).catch(() => { if (active) setAmIAdmin(false); });
+    if (!owner) return;
+    isAdmin().then(value => { if (active) setAdmin({ owner, value }); }).catch(() => {});
     return () => { active = false; };
-  }, [user, isProfileSetup]);
+  }, [owner]);
+
+  useEffect(() => {
+    if (owner && profileReady && !nickname && !isProfileSetup) setShowNickname(true);
+  }, [owner, profileReady, nickname, isProfileSetup]);
 
   useEffect(() => {
     if (!user) return;
@@ -98,14 +99,13 @@ export default function Layout() {
         {!user ? <button className="hq-account-button hq-account" onClick={() => setShowLogin(true)}>Log in</button>
           : <Menu as="div" className="hq-account">
             <Menu.Button className="hq-account-button" aria-label="Account menu">
-              <span className="hq-avatar">{(profile?.nickname || user.email || "U").slice(0, 1).toUpperCase()}</span>
-              <span className="hq-account-name">{profile?.nickname || "My account"}</span><SiteIcon name="chevron" />
+              <span className="hq-avatar">{(nickname || "U").slice(0, 1).toUpperCase()}</span>
+              <span className="hq-account-name">{nickname || "My account"}</span><SiteIcon name="chevron" />
             </Menu.Button>
             <Transition as={Fragment} enter="transition duration-100 ease-out" enterFrom="opacity-0" enterTo="opacity-100" leave="transition duration-75 ease-in" leaveFrom="opacity-100" leaveTo="opacity-0">
               <Menu.Items className="hq-account-menu">
                 <Menu.Item><Link className="hq-menu-item" to="/profile"><SiteIcon name="chart" />My results</Link></Menu.Item>
-                <Menu.Item><button className="hq-menu-item" onClick={() => setShowNickname(true)}><SiteIcon name="user" />Change nickname</button></Menu.Item>
-                {amIAdmin && <Menu.Item><Link className="hq-menu-item" to="/admin/daily"><SiteIcon name="settings" />Admin</Link></Menu.Item>}
+                {admin?.owner === owner && admin.value && <Menu.Item><Link className="hq-menu-item" to="/admin/daily"><SiteIcon name="settings" />Admin</Link></Menu.Item>}
                 <div className="hq-menu-divider" />
                 <Menu.Item><button className="hq-menu-item" onClick={() => signOut()}><SiteIcon name="logout" />Log out</button></Menu.Item>
               </Menu.Items>
@@ -114,11 +114,11 @@ export default function Layout() {
       </div>
     </header>}
     <main className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
-      <Outlet context={{ editNickname: () => setShowNickname(true), openLogin: () => setShowLogin(true), setDailyPlaying,
-        profileReady: !user || profileUserId === user.id, hasNickname: !!profile?.nickname } satisfies SiteOutletContext} />
+      <Outlet context={{ chooseNickname: () => { if (profileReady && !nickname) setShowNickname(true); }, openLogin: () => setShowLogin(true), setDailyPlaying,
+        profileReady, hasNickname: !!nickname, nickname, profileError: account.error, retryProfile: account.retry } satisfies SiteOutletContext} />
     </main>
     {!isGameView && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
-    <NicknameModal open={showNickname && !!user && !isGameView} onClose={() => setShowNickname(false)} prefill={profile?.nickname || storedValue("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
+    <NicknameModal key={owner} open={showNickname && !!user && profileReady && !nickname && !isProfileSetup && !isGameView} onClose={() => setShowNickname(false)} prefill={storedValue("pre_nickname") || ""} onSaved={account.retry} />
   </div>;
 }

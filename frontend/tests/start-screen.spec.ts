@@ -97,29 +97,22 @@ test('leaderboard is public and its filters use the selected ids', async ({ page
   await expect(page.getByRole('cell', { name: 'FilmExpert' })).toBeVisible();
   await page.getByRole('radio', { name: /Actors/ }).click();
   await page.getByRole('radio', { name: 'Medium', exact: true }).click();
-  await expect(page.getByText('Actors — Medium')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Actors — Medium', exact: true })).toBeVisible();
   await expect.poll(() => calls.filter(call => call.name === 'get_leaderboard').at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 2, p_limit: 11 });
 });
 
-test('signed-in users can view personal bests and edit their own nickname', async ({ page }) => {
+test('signed-in users can view personal bests with a fixed nickname', async ({ page }) => {
   await mockQuizApi(page);
   await mockSignedIn(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Account menu' }).click();
+  await expect(page.getByRole('menuitem', { name: 'Change nickname' })).toHaveCount(0);
   await page.getByRole('menuitem', { name: 'My results' }).click();
   await expect(page).toHaveURL(/\/profile$/);
-  await expect(page.getByRole('cell', { name: 'Movie Stills' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Movie Stills', exact: true })).toBeVisible();
   await expect(page.getByRole('cell', { name: '01:05' })).toBeVisible();
-  await page.getByRole('button', { name: 'Change nickname' }).click();
-  const nickname = page.getByRole('textbox', { name: 'Nickname' });
-  await expect(nickname).toHaveValue('MovieFan');
-  await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeEnabled();
-  const update = page.waitForRequest(request => request.url().includes('/rest/v1/profiles') && request.method() === 'POST');
-  await nickname.fill('NewMovieFan');
-  await page.getByRole('button', { name: 'Save', exact: true }).click();
-  expect((await update).postDataJSON()).toMatchObject({ nickname: 'NewMovieFan', user_id: 'fixture-user' });
-  await expect(page.getByRole('dialog')).toHaveCount(0);
-  await expect(page.locator('.hq-account-name')).toHaveText('NewMovieFan');
+  await expect(page.getByRole('heading', { name: 'MovieFan', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Change nickname' })).toHaveCount(0);
 });
 
 test('profile requires sign-in while homepage login remains available', async ({ page }) => {
