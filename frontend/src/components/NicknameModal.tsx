@@ -44,7 +44,7 @@ export default function NicknameModal({
     setBusy(true);
 
     if (!user) {                      // гость
-      localStorage.setItem("pre_nickname", nick);
+      try { localStorage.setItem("pre_nickname", nick); } catch { /* The current document can still use the chosen nickname. */ }
       onSaved?.(nick);
       onClose();
       setBusy(false);
@@ -53,7 +53,7 @@ export default function NicknameModal({
 
     try {
       await upsertProfile(user.id, nick);
-      localStorage.removeItem("pre_nickname");
+      try { localStorage.removeItem("pre_nickname"); } catch { /* The account nickname was already saved successfully. */ }
       onSaved?.(nick);               /* ← уведомляем родителя */
       onClose();
     } catch (e: unknown) {

@@ -178,18 +178,26 @@ type DailyRowFull = {
   category_id: number; difficulty_level_id: number;
 };
 
-export async function getDailyQuestion(dateOverride?: string): Promise<Question> {
+export async function getDailyQuestion(dateOverride?: string, signal?: AbortSignal): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
-  const { data, error } = await supabase.rpc("get_daily_question", { p_date: pDate });
+  const query = supabase.rpc("get_daily_question", { p_date: pDate });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   const rows = Array.isArray(data) ? data : (data ? [data] : []);
   if (rows.length === 0) throw new Error("no-daily-question");
   const raw = rows[0] as DailyRowFull;
 
+  if (!Number.isInteger(raw.id) || typeof raw.image_url !== "string" || !raw.image_url.trim() ||
+    !Number.isInteger(raw.category_id) || !Number.isInteger(raw.difficulty_level_id)) throw new Error("invalid-daily-question");
+
   const publicUrl = getPublicUrl(raw.image_url);
   const opts: string[] =
     Array.isArray(raw.options_json) ? (raw.options_json as string[]) :
     typeof raw.options_json === "string" ? JSON.parse(raw.options_json) : [];
+
+  if (opts.length !== 4 || !opts.every(option => typeof option === "string" && !!option.trim()) ||
+    new Set(opts.map(option => option.trim())).size !== 4 || typeof raw.correct_answer !== "string" ||
+    !opts.some(option => option.trim() === raw.correct_answer?.trim())) throw new Error("invalid-daily-question");
 
   return { id: raw.id, image_url: publicUrl, options: opts, correct_answer: raw.correct_answer!,
            category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
@@ -212,26 +220,32 @@ export async function getDailyQuestionPublic(dateOverride?: string): Promise<Que
            category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
 }
 
-export async function startDailySession(userId: string, date?: string): Promise<unknown> {
-  const { data, error } = await supabase.rpc("start_daily_session", { p_user_id: userId, p_date: date ?? getDailyDateUS() });
+export async function startDailySession(userId: string, date?: string, signal?: AbortSignal): Promise<unknown> {
+  const query = supabase.rpc("start_daily_session", { p_user_id: userId, p_date: date ?? getDailyDateUS() });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   return (data as unknown) ?? null;
 }
 
-export async function submitDailyResult(userId: string, date: string, isCorrect: boolean, timeSpentSecs: number) {
-  const { data, error } = await supabase.rpc("submit_daily_result", {
+export async function submitDailyResult(userId: string, date: string, isCorrect: boolean, timeSpentSecs: number, signal?: AbortSignal) {
+  const query = supabase.rpc("submit_daily_result", {
     p_user_id: userId, p_date: date, p_is_correct: isCorrect, p_time: timeSpentSecs,
   });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   return data;
 }
 
-export async function getMyDailyResult(userId: string, date?: string): Promise<MyDailyResult> {
-  const { data, error } = await supabase.rpc("get_my_daily_result", { p_user_id: userId, p_date: date ?? getDailyDateUS() });
+export async function getMyDailyResult(userId: string, date?: string, signal?: AbortSignal): Promise<MyDailyResult> {
+  const query = supabase.rpc("get_my_daily_result", { p_user_id: userId, p_date: date ?? getDailyDateUS() });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   const rows = Array.isArray(data) ? data : (data ? [data] : []);
   const raw = rows[0] as Partial<MyDailyResult> | undefined;
-  return { is_answered: !!raw?.is_answered, is_correct: raw?.is_correct ?? null, time_spent: raw?.time_spent ?? null, answered_at: raw?.answered_at ?? null };
+  if (raw && (typeof raw.is_answered !== "boolean" || (raw.is_correct != null && typeof raw.is_correct !== "boolean") ||
+    (raw.time_spent != null && (!Number.isFinite(raw.time_spent) || raw.time_spent < 0)) ||
+    (raw.answered_at != null && typeof raw.answered_at !== "string"))) throw new Error("invalid-daily-result");
+  return { is_answered: raw?.is_answered ?? false, is_correct: raw?.is_correct ?? null, time_spent: raw?.time_spent ?? null, answered_at: raw?.answered_at ?? null };
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -245,18 +259,24 @@ export async function getDailyFastest(date?: string, limit = 5, hideNicks?: stri
   return (data || []) as DailyFastestRow[];
 }
 
-export async function getDailyUserStreak(userId: string): Promise<DailyUserStreak | null | undefined> {
-  const { data, error } = await supabase.rpc("get_daily_user_streak", { p_user_id: userId });
+export async function getDailyUserStreak(userId: string, signal?: AbortSignal): Promise<DailyUserStreak | null | undefined> {
+  const query = supabase.rpc("get_daily_user_streak", { p_user_id: userId });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   const row = Array.isArray(data) ? data[0] : data;
+  if (row && ![row.current_streak, row.longest_streak, row.total_correct].every(value => Number.isInteger(value) && value >= 0)) throw new Error("invalid-daily-streak");
   return row as DailyUserStreak | null | undefined;
 }
 
-export async function getDailyStreakLeaderboard(activeOnly = false, limit = 20, hideNicks?: string[]): Promise<DailyStreakRow[]> {
-  const { data, error } = await supabase.rpc("get_daily_streak_leaderboard", {
+export async function getDailyStreakLeaderboard(activeOnly = false, limit = 20, hideNicks?: string[], signal?: AbortSignal): Promise<DailyStreakRow[]> {
+  const query = supabase.rpc("get_daily_streak_leaderboard", {
     p_active_only: activeOnly, p_limit: limit, p_hide_nicks: hideNicks ?? [],
   });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
+  if (data != null && (!Array.isArray(data) || !data.every(row => typeof row.user_id === "string" &&
+    (row.nickname == null || typeof row.nickname === "string") && Number.isInteger(row.streak) && row.streak >= 0 &&
+    typeof row.start_d === "string" && typeof row.end_d === "string"))) throw new Error("invalid-daily-leaderboard");
   return (data || []) as DailyStreakRow[];
 }
 

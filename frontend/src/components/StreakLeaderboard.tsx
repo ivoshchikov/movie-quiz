@@ -1,130 +1,25 @@
-// frontend/src/components/StreakLeaderboard.tsx
 import { useEffect, useState } from "react";
+import { useAuth } from "../AuthContext";
 import { getDailyStreakLeaderboard } from "../api";
+import type { DailyStreakRow } from "../api";
 
-type Row = {
-  user_id: string;
-  nickname: string | null;
-  streak: number;
-  start_d: string;
-  end_d: string;
-};
-
-interface Props {
-  /** какая вкладка по умолчанию */
-  initialTab?: "active" | "all";
-  /** сколько строк показывать в сжатом режиме */
-  limit?: number;
-  /** компактная верстка (уменьшаем отступы, делаем ряд в одну строку) */
-  compact?: boolean;
-}
-
-export default function StreakLeaderboard({
-  initialTab = "active",
-  limit = 5,
-  compact = true,
-}: Props) {
-  const [tab, setTab] = useState<"active" | "all">(initialTab);
-  const [rows, setRows] = useState<Row[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [expanded, setExpanded] = useState(false);
-
-  const fetchRows = async (active: boolean, lim: number) => {
-    setLoading(true);
-    try {
-      const data = await getDailyStreakLeaderboard(active, lim);
-      setRows(data);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function StreakLeaderboard({ refreshKey }: { refreshKey: string }) {
+  const { user } = useAuth();
+  const [tab, setTab] = useState<"active" | "all">("active"), [expanded, setExpanded] = useState(false), [retry, setRetry] = useState(0);
+  const [view, setView] = useState<{ loading: boolean; error: boolean; rows: DailyStreakRow[] }>({ loading: true, error: false, rows: [] });
   useEffect(() => {
-    fetchRows(tab === "active", expanded ? 20 : limit);
-  }, [tab, expanded, limit]);
-
-  const rowCls = compact
-    ? "flex items-center gap-3 px-3 py-2"
-    : "flex items-center gap-4 p-3";
-
-  const medal = (i: number) =>
-    i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : null;
-
-  return (
-    <section className="rounded-2xl border border-white/10 bg-white/5 p-3">
-      <header className="mb-2 flex flex-wrap items-center gap-2">
-        <div className="text-lg font-semibold leading-none">
-          Streak <span className="opacity-80">Leaderboard</span>
-        </div>
-
-        <div className="ml-auto inline-flex overflow-hidden rounded-md border border-white/10">
-          <button
-            className={`px-3 py-1 text-sm ${
-              tab === "active" ? "bg-white/10" : "hover:bg-white/5"
-            }`}
-            onClick={() => setTab("active")}
-            title='Shows streaks that end today (US Central).'
-          >
-            Active <span className="hidden sm:inline">today</span>
-          </button>
-          <button
-            className={`px-3 py-1 text-sm ${
-              tab === "all" ? "bg-white/10" : "hover:bg-white/5"
-            }`}
-            onClick={() => setTab("all")}
-            title="Best streak per player over all time."
-          >
-            All-time <span className="hidden sm:inline">best</span>
-          </button>
-        </div>
-
-        {/* Show all / Top-5 */}
-        <button
-          className="ml-2 text-xs opacity-80 underline-offset-2 hover:underline"
-          onClick={() => setExpanded((v) => !v)}
-        >
-          {expanded ? "Top-5" : "Show all"}
-        </button>
-      </header>
-
-      <p className="mb-2 text-xs opacity-70">
-        Consecutive correct days. “Active today” uses US Central date.
-      </p>
-
-      {loading ? (
-        <p className="text-sm opacity-80">Loading…</p>
-      ) : rows.length === 0 ? (
-        <p className="text-sm opacity-80">
-          No data yet for today. Play today’s Daily to start a streak.
-        </p>
-      ) : (
-        <ol className="divide-y divide-white/10 rounded-md border border-white/10">
-          {rows.map((r, i) => {
-            const m = medal(i);
-            return (
-              <li
-                key={`${r.user_id}-${r.end_d}`}
-                className={rowCls}
-                title={`${r.start_d} → ${r.end_d}`}
-              >
-                <div className="w-6 text-right tabular-nums opacity-70">
-                  {m ? <span aria-hidden>{m}</span> : <span>{i + 1}.</span>}
-                </div>
-                <div className="min-w-0 flex-1 truncate">
-                  <span className="truncate font-medium">
-                    {r.nickname ?? "Anonymous"}
-                  </span>
-                </div>
-                <div className="text-base font-semibold tabular-nums">
-                  {r.streak}
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      )}
-    </section>
-  );
+    let active = true;
+    const controller = new AbortController(), timeout = window.setTimeout(() => controller.abort(), 20000);
+    setView({ loading: true, error: false, rows: [] });
+    getDailyStreakLeaderboard(tab === "active", expanded ? 20 : 5, undefined, controller.signal).then(rows => {
+      if (active) setView({ loading: false, error: false, rows });
+    }).catch(() => { if (active) setView({ loading: false, error: true, rows: [] }); }).finally(() => window.clearTimeout(timeout));
+    return () => { active = false; controller.abort(); window.clearTimeout(timeout); };
+  }, [tab, expanded, retry, refreshKey]);
+  return <section className="hq-daily-streak-list" aria-label="Daily streak leaderboard">
+    <div className="hq-daily-streak-tabs" aria-label="Streak list"><button aria-pressed={tab === "active"} onClick={() => setTab("active")}>Active today</button><button aria-pressed={tab === "all"} onClick={() => setTab("all")}>All-time best</button></div>
+    <p>{tab === "active" ? "Correct-day streaks ending today, US Central." : "Each player’s longest streak of correct days."}</p>
+    {view.loading ? <p role="status">Loading streaks…</p> : view.error ? <div className="hq-daily-stats-error" role="alert"><span>Streaks couldn’t load.</span><button className="hq-inline-action" onClick={() => setRetry(value => value + 1)}>Retry leaderboard</button></div> : view.rows.length ? <ol>{view.rows.map((row, index) => <li key={row.user_id} className={row.user_id === user?.id ? "hq-daily-own-row" : ""}><span className="hq-daily-rank" aria-label={`Rank ${index + 1}`}>{index + 1}</span><span className="hq-daily-nickname">{row.nickname || "Anonymous"}{row.user_id === user?.id && <small> (you)</small>}</span><strong>{row.streak}<small> days</small></strong></li>)}</ol> : <p>{tab === "active" ? "No correct-day streaks yet today." : "No streak records yet."}</p>}
+    {!view.loading && !view.error && (view.rows.length >= 5 || expanded) && <button className="hq-inline-action" onClick={() => setExpanded(value => !value)}>{expanded ? "Show top 5" : "Show top 20"}</button>}
+  </section>;
 }
