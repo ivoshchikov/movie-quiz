@@ -13,7 +13,10 @@ import "../homepage.css";
 
 const CANON_BASE = "https://hard-quiz.com";
 const DEFAULT_OG = `${CANON_BASE}/api/og/post?title=${encodeURIComponent("Hard Quiz — Guess Movies from Stills & Faces")}&tags=${encodeURIComponent("Play now,Daily Challenge")}`;
-export interface SiteOutletContext { editNickname: () => void; openLogin: () => void; }
+export interface SiteOutletContext {
+  editNickname: () => void; openLogin: () => void; setDailyPlaying: (value: boolean) => void;
+  profileReady: boolean; hasNickname: boolean;
+}
 function storedValue(key: string) {
   try { return localStorage.getItem(key); } catch { return null; }
 }
@@ -26,8 +29,11 @@ export default function Layout() {
   const [showLogin, setShowLogin] = useState(false);
   const [showNickname, setShowNickname] = useState(false);
   const [amIAdmin, setAmIAdmin] = useState(false);
+  const [profileUserId, setProfileUserId] = useState<string | null>(null);
+  const [dailyPlaying, setDailyPlaying] = useState(false);
   const isProfileSetup = loc.pathname === "/setup-profile";
   const isPlaying = loc.pathname === "/play";
+  const isGameView = isPlaying || (loc.pathname === "/daily" && dailyPlaying);
 
   useEffect(() => {
     if (authLoading) return;
@@ -43,14 +49,16 @@ export default function Layout() {
   useEffect(() => {
     let active = true;
     setProfile(null);
+    setProfileUserId(null);
     setAmIAdmin(false);
     setShowNickname(false);
     if (!user) return;
     getProfile(user.id).then(value => {
       if (!active) return;
       setProfile(value);
+      setProfileUserId(user.id);
       if (!value?.nickname && !isProfileSetup) setShowNickname(true);
-    }).catch(console.error);
+    }).catch(() => { if (active) { setProfileUserId(user.id); if (!isProfileSetup) setShowNickname(true); } });
     isAdmin().then(value => { if (active) setAmIAdmin(value); }).catch(() => { if (active) setAmIAdmin(false); });
     return () => { active = false; };
   }, [user, isProfileSetup]);
@@ -69,7 +77,7 @@ export default function Layout() {
   useEffect(() => { pageview(`${pathname}${search || ""}`); }, [pathname, search]);
   const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/vite.svg` };
 
-  return <div className={`hq-site${isPlaying ? " hq-site-playing" : ""}`}>
+  return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>
     <Helmet>
       <link rel="canonical" href={`${CANON_BASE}${pathname}${search || ""}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
@@ -78,7 +86,7 @@ export default function Layout() {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:image" content={DEFAULT_OG} />
     </Helmet>
-    {!isPlaying && <header className="hq-header">
+    {!isGameView && <header className="hq-header">
       <div className="hq-shell hq-header-inner">
         <Link to="/" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>
         <nav className="hq-nav" aria-label="Main navigation">
@@ -105,11 +113,12 @@ export default function Layout() {
           </Menu>}
       </div>
     </header>}
-    <main className={isPlaying ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
-      <Outlet context={{ editNickname: () => setShowNickname(true), openLogin: () => setShowLogin(true) } satisfies SiteOutletContext} />
+    <main className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
+      <Outlet context={{ editNickname: () => setShowNickname(true), openLogin: () => setShowLogin(true), setDailyPlaying,
+        profileReady: !user || profileUserId === user.id, hasNickname: !!profile?.nickname } satisfies SiteOutletContext} />
     </main>
-    {!isPlaying && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
+    {!isGameView && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
-    <NicknameModal open={showNickname && !!user && !isPlaying} onClose={() => setShowNickname(false)} prefill={profile?.nickname || storedValue("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
+    <NicknameModal open={showNickname && !!user && !isGameView} onClose={() => setShowNickname(false)} prefill={profile?.nickname || storedValue("pre_nickname") || ""} onSaved={nickname => setProfile({ nickname })} />
   </div>;
 }
