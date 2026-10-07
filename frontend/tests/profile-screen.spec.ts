@@ -452,7 +452,7 @@ test("all record actions are keyboard reachable with visible focus", async ({ pa
   await expect(page).toHaveURL(/\/leaderboard\?category=2&difficulty=3$/);
 });
 
-for (const [width, height] of [[320, 480], [320, 568], [375, 812], [430, 932], [568, 320], [768, 1024], [1366, 900]]) test(`profile fits ${width}×${height} with long names and accessible actions`, async ({ page }) => {
+for (const [width, height] of [[320, 480], [320, 568], [375, 812], [430, 932], [568, 320], [768, 1024], [1366, 900]]) test(`profile fits ${width}×${height} with long names and accessible actions`, async ({ page }, testInfo) => {
   await page.setViewportSize({ width, height });
   const { data } = await fixture(page); data.profile!.nickname = "VeryLongFilmFanName20";
   await page.route("**/rest/v1/category?**", async route => {
@@ -471,5 +471,5 @@ for (const [width, height] of [[320, 480], [320, 568], [375, 812], [430, 932], [
     expect(rect!.x).toBeGreaterThanOrEqual(0);
     expect(rect!.x + rect!.width).toBeLessThanOrEqual(width);
   }
-  if (width === 1366 || width === 375) await page.screenshot({ path: `/workspace/scratch/59230fe180a2/profile-verification/profile-${width}.png`, fullPage: true });
+  if (width === 1366 || width === 375) await page.screenshot({ path: testInfo.outputPath(`profile-${width}.png`), fullPage: true });
 });
