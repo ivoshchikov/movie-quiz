@@ -260,7 +260,7 @@ test("the leaderboard link preserves category and difficulty through reload and 
   await expect(page.locator(".hq-result-mode")).toHaveText("Actors · Hard");
   await page.getByRole("link", { name: "View leaderboard" }).click();
   await expect(page).toHaveURL(/\/leaderboard\?category=2&difficulty=3$/);
-  await expect(page.getByRole("radio", { name: /^Actors / })).toHaveAttribute("aria-checked", "true");
+  await expect(page.getByRole("radio", { name: "Actors", exact: true })).toHaveAttribute("aria-checked", "true");
   await expect(page.getByRole("radio", { name: "Hard", exact: true })).toHaveAttribute("aria-checked", "true");
   await expect.poll(() => calls.filter(call => call.name === "get_leaderboard").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
   await page.reload();
@@ -273,7 +273,7 @@ test("the leaderboard link preserves category and difficulty through reload and 
 test("invalid leaderboard parameters fall back to real options", async ({ page }) => {
   const calls = await mockQuizApi(page);
   await page.goto("/leaderboard?category=999&difficulty=oops");
-  await expect(page.getByRole("radio", { name: /^Movie Stills / })).toHaveAttribute("aria-checked", "true");
+  await expect(page.getByRole("radio", { name: "Movie Stills", exact: true })).toHaveAttribute("aria-checked", "true");
   await expect(page.getByRole("radio", { name: "Easy", exact: true })).toHaveAttribute("aria-checked", "true");
   await expect(page.getByRole("cell", { name: "FilmExpert" })).toBeVisible();
   expect(calls.filter(call => call.name === "get_leaderboard").every(call => call.payload.p_category_id !== 999)).toBeTruthy();

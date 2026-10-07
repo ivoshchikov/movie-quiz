@@ -98,7 +98,7 @@ test('leaderboard is public and its filters use the selected ids', async ({ page
   await page.getByRole('radio', { name: /Actors/ }).click();
   await page.getByRole('radio', { name: 'Medium', exact: true }).click();
   await expect(page.getByText('Actors — Medium')).toBeVisible();
-  await expect.poll(() => calls.filter(call => call.name === 'get_leaderboard').at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 2, p_limit: 5 });
+  await expect.poll(() => calls.filter(call => call.name === 'get_leaderboard').at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 2, p_limit: 11 });
 });
 
 test('signed-in users can view personal bests and edit their own nickname', async ({ page }) => {

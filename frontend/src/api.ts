@@ -16,7 +16,7 @@ export interface Question {
 }
 export interface MyDailyResult { is_answered: boolean; is_correct: boolean | null; time_spent: number | null; answered_at: string | null; }
 export interface DailyFastestRow { nickname: string | null; time_spent: number; answered_at: string; }
-export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at: string; }
+export interface LeaderboardRow { nickname: string | null; best_score: number; best_time: number; updated_at?: string; user_id?: string; }
 export interface UserBestRow { category_id: number; difficulty_level_id: number; best_score: number; best_time: number; updated_at: string; }
 export interface PersonalBest { score: number; time: number; }
 export interface DailyUserStreak {
@@ -64,25 +64,28 @@ export async function upsertProfile(userId: string, nickname: string | null, ava
 /* ────────────────────────────────────────────────────────────
    CATEGORIES / DIFFICULTIES
 ───────────────────────────────────────────────────────────── */
-export async function getCategories(): Promise<Category[]> {
-  const { data, error } = await supabase.from("category").select("id,name").order("name");
+export async function getCategories(signal?: AbortSignal): Promise<Category[]> {
+  const query = supabase.from("category").select("id,name").order("name");
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   return data ?? [];
 }
-export async function getDifficulties(): Promise<DifficultyLevel[]> {
-  const { data, error } = await supabase.from("difficulty_level")
+export async function getDifficulties(signal?: AbortSignal): Promise<DifficultyLevel[]> {
+  const query = supabase.from("difficulty_level")
     .select("id,key,name,time_limit_secs,lives,sort_order").order("sort_order", { ascending: true });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   return data ?? [];
 }
-export function getDifficultyLevels(): Promise<DifficultyLevel[]> { return getDifficulties(); }
+export function getDifficultyLevels(signal?: AbortSignal): Promise<DifficultyLevel[]> { return getDifficulties(signal); }
 
-export async function countQuestions(categoryId: number, difficultyId?: number): Promise<number> {
+export async function countQuestions(categoryId: number, difficultyId?: number, signal?: AbortSignal): Promise<number> {
   let query = supabase.from("question").select("id", { count: "exact", head: true }).eq("category_id", categoryId);
   if (difficultyId != null) query = query.eq("difficulty_level_id", difficultyId);
-  const { count, error } = await query;
+  const { count, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
-  return count ?? 0;
+  if (count == null || !Number.isInteger(count) || count < 0) throw new Error("invalid-question-count");
+  return count;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -160,10 +163,18 @@ export async function getPersonalBest(userId: string, categoryId: number, diffic
 /* ────────────────────────────────────────────────────────────
    PUBLIC LEADERBOARD (обычная игра)
 ───────────────────────────────────────────────────────────── */
-export async function getLeaderboard(categoryId: number, difficultyId: number, limit = 5): Promise<LeaderboardRow[]> {
-  const { data, error } = await supabase.rpc("get_leaderboard", { p_category_id: categoryId, p_difficulty_id: difficultyId, p_limit: limit });
+export async function getLeaderboard(categoryId: number, difficultyId: number, limit = 5, signal?: AbortSignal): Promise<LeaderboardRow[]> {
+  const query = supabase.rpc("get_leaderboard", { p_category_id: categoryId, p_difficulty_id: difficultyId, p_limit: limit });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
-  return (data || []) as LeaderboardRow[];
+  if (!Array.isArray(data) || !data.every(row => row && (row.nickname === null || typeof row.nickname === "string") &&
+    Number.isInteger(row.best_score) && row.best_score >= 0 && Number.isFinite(row.best_time) && row.best_time >= 0)) {
+    throw new Error("invalid-leaderboard");
+  }
+  // Keep the server's order, including ties. Identity is optional in the existing RPC.
+  return data.map(row => ({ nickname: row.nickname, best_score: row.best_score, best_time: row.best_time,
+    ...(typeof row.updated_at === "string" ? { updated_at: row.updated_at } : {}),
+    ...(typeof row.user_id === "string" && row.user_id.trim() ? { user_id: row.user_id } : {}) }));
 }
 
 /* ────────────────────────────────────────────────────────────
