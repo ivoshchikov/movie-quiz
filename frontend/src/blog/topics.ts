@@ -6,9 +6,9 @@
  * Поэтому label темы = канонический тег, который ОБЯЗАТЕЛЬНО должен стоять у постов этой темы.
  */
 export const TOPICS = [
-  { key: "quizzes",    label: "Stills & Faces" },            // Квизы по кадрам/лицам
-  { key: "streaming",  label: "Streaming & New Releases" },  // Ежемесячные новинки (кино + при желании стриминг)
-  { key: "explainers", label: "Explainers & Trivia" },       // Объяснялки/разборы/факты
+  { key: "quizzes",    label: "Stills & Faces", shortLabel: "Stills & Faces" },
+  { key: "streaming",  label: "Streaming & New Releases", shortLabel: "Movie guides" },
+  { key: "explainers", label: "Explainers & Trivia", shortLabel: "Explainers" },
 ] as const;
 
 export type TopicKey = typeof TOPICS[number]["key"];

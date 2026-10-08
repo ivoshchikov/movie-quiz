@@ -30,7 +30,9 @@ const Post: BlogPost = buildNewReleasesPost({
   readingMinutes: 9,
 
   // обложка: можно заменить на коллаж или любой из постеров
-  coverUrl: urls.cover,
+  coverUrl: urls.conjuring4,
+  listingCoverUrl: urls.conjuring4,
+  archiveYear: 2025,
 
   // порядок превью на листинге
   gallery: [

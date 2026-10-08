@@ -22,6 +22,8 @@ export type NewReleaseConfig = {
   monthLabel: string;    // "August 2025"
   tags?: string[];       // по умолчанию ["Streaming & New Releases"]
   coverUrl?: string;     // можно не задавать — коллаж соберётся из gallery
+  listingCoverUrl?: string;
+  archiveYear?: number;
   gallery?: string[];    // если не задано — возьмём постеры из films
   readingMinutes?: number;
 
@@ -102,6 +104,8 @@ export function buildNewReleasesPost(cfg: NewReleaseConfig): BlogPost {
     date: cfg.date,
     tags: cfg.tags ?? ["Streaming & New Releases"],
     coverUrl: cfg.coverUrl,
+    listingCoverUrl: cfg.listingCoverUrl,
+    archiveYear: cfg.archiveYear,
     gallery,
     readingMinutes: cfg.readingMinutes ?? 7,
     content: () => (

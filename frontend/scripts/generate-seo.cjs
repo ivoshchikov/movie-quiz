@@ -11,6 +11,7 @@ const DEST_DIR = path.join(ROOT, DEST);
 const CACHE_DIR = path.join(ROOT, ".cache");
 const BUNDLE = path.join(CACHE_DIR, "posts.cjs");
 const SRC_POSTS = path.resolve(ROOT, "src/blog/index.ts"); // ← ТУТ НОВЫЙ ПУТЬ
+const PRESENTATION_BUNDLE = path.join(CACHE_DIR, "blog-presentation.cjs");
 
 // Всегда генерим ссылки под apex-домен.
 // При необходимости можно переопределить через VITE_SITE_URL.
@@ -41,10 +42,13 @@ const ensureDir =
 
   const { posts } = require(BUNDLE);
   if (!Array.isArray(posts)) throw new Error("posts export not found");
-
-  const sorted = [...posts].sort(
-    (a, b) => +new Date(b.date) - +new Date(a.date),
-  );
+  await esbuild.build({
+    entryPoints: [path.resolve(ROOT, "src/blog/presentation.ts")], outfile: PRESENTATION_BUNDLE,
+    platform: "node", format: "cjs", bundle: true, logLevel: "silent",
+  });
+  const { validateBlogPosts, sortBlogPosts, blogCollectionJsonLd } = require(PRESENTATION_BUNDLE);
+  validateBlogPosts(posts);
+  const sorted = sortBlogPosts(posts);
 
   const escape = (s = "") =>
     String(s)
@@ -78,7 +82,7 @@ const ensureDir =
 <channel>
   <title>Hard Quiz — Blog</title>
   <link>${SITE_URL}/blog</link>
-  <description>Updates, dev notes, and tips for movie quizzes.</description>
+  <description>Movie guides and stories behind the screen.</description>
   <language>en</language>
   ${items}
 </channel>
@@ -106,7 +110,7 @@ ${urls}
 
   // Serve page metadata in the first HTTP response, before React.
   if (DEST === "dist") {
-    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true]]) {
+    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
       let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
       html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(metadata.title)}</title>`);
@@ -124,6 +128,18 @@ ${urls}
       html = html.replace("</head>", `  <link data-rh="true" rel="canonical" href="${escape(metadata.url)}" />
       <meta data-rh="true" property="og:url" content="${escape(metadata.url)}" />
     </head>`);
+      if (name === "blog") {
+        const prerenderBundle = path.join(CACHE_DIR, "blog-prerender.cjs");
+        await esbuild.build({
+          entryPoints: [path.resolve(ROOT, "src/blog/prerender.tsx")], outfile: prerenderBundle,
+          platform: "node", format: "cjs", bundle: true, packages: "external", jsx: "automatic",
+          loader: { ".css": "empty" }, logLevel: "silent",
+        });
+        const { renderBlogCollection } = require(prerenderBundle);
+        html = html.replace('<div id="root"></div>', `<div id="root">${renderBlogCollection()}</div>`);
+        const jsonLd = JSON.stringify(blogCollectionJsonLd(posts)).replace(/</g, "\\u003c");
+        html = html.replace("</head>", `  <script data-rh="true" type="application/ld+json">${jsonLd}</script>\n</head>`);
+      }
       fs.writeFileSync(path.join(DEST_DIR, `${name}.html`), html, "utf8");
     }
   }
