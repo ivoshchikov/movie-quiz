@@ -88,8 +88,8 @@ test("a fresh guest result shows the mode, duration, local status and contextual
   await expect(page.getByText("Personal best", { exact: true })).toHaveCount(0);
   expect(calls.filter(call => call.name === "upsert_user_best")).toHaveLength(0);
   await page.getByRole("complementary", { name: "Guest account" }).getByRole("button", { name: "Log in", exact: true }).click();
-  await expect(page.getByRole("dialog").getByRole("heading", { name: "Sign in", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Sign in with Google" })).toBeVisible();
+  await expect(page.getByRole("dialog").getByRole("heading", { name: "Log in to Hard Quiz", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Continue with Google" })).toBeVisible();
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await expect(page).toHaveURL(/\/result$/);
   await expect(page.locator(".hq-result-score strong")).toHaveText("1");

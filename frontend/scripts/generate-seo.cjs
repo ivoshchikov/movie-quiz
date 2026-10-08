@@ -104,26 +104,28 @@ ${urls}
 
   fs.writeFileSync(path.join(DEST_DIR, "sitemap.xml"), sitemap, "utf8");
 
-  // Serve the rules page's metadata in the first HTTP response, before React.
-  // The page and build share the same values; difficulty settings stay live.
+  // Serve the rules/login metadata in the first HTTP response, before React.
   if (DEST === "dist") {
-    const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src/howToPlayMetadata.json"), "utf8"));
-    let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
-    html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(metadata.title)}</title>`);
-    for (const [attribute, key, value] of [
-      ["name", "description", metadata.description],
-      ["property", "og:title", metadata.title],
-      ["property", "og:description", metadata.description],
-      ["name", "twitter:title", metadata.title],
-      ["name", "twitter:description", metadata.description],
-    ]) {
-      const tag = new RegExp(`<meta\\b[^>]*\\b${attribute}="${key}"[^>]*>`, "g");
-      html = html.replace(tag, `<meta data-rh="true" ${attribute}="${key}" content="${escape(value)}" />`);
+    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true]]) {
+      const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
+      let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
+      html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(metadata.title)}</title>`);
+      for (const [attribute, key, value] of [
+        ["name", "description", metadata.description],
+        ["property", "og:title", metadata.title],
+        ["property", "og:description", metadata.description],
+        ["name", "twitter:title", metadata.title],
+        ["name", "twitter:description", metadata.description],
+        ["name", "robots", noindex ? "noindex, nofollow" : "index, follow"],
+      ]) {
+        const tag = new RegExp(`<meta\\b[^>]*\\b${attribute}="${key}"[^>]*>`, "g");
+        html = html.replace(tag, `<meta data-rh="true" ${attribute}="${key}" content="${escape(value)}" />`);
+      }
+      html = html.replace("</head>", `  <link data-rh="true" rel="canonical" href="${escape(metadata.url)}" />
+      <meta data-rh="true" property="og:url" content="${escape(metadata.url)}" />
+    </head>`);
+      fs.writeFileSync(path.join(DEST_DIR, `${name}.html`), html, "utf8");
     }
-    html = html.replace("</head>", `  <link data-rh="true" rel="canonical" href="${escape(metadata.url)}" />
-    <meta data-rh="true" property="og:url" content="${escape(metadata.url)}" />
-  </head>`);
-    fs.writeFileSync(path.join(DEST_DIR, "how-to-play.html"), html, "utf8");
   }
 
   console.log(`✓ Generated in ${DEST}/: feed.xml, sitemap.xml`);

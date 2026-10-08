@@ -118,11 +118,11 @@ test('signed-in users can view personal bests with a fixed nickname', async ({ p
 test('profile requires sign-in while homepage login remains available', async ({ page }) => {
   await mockQuizApi(page);
   await page.goto('/profile');
-  await expect(page).toHaveURL(/\/login$/);
-  await expect.poll(() => page.evaluate(() => window.history.state.usr.redirectTo)).toBe('/profile');
+  await expect(page).toHaveURL(/\/login(?:\?redirect=[^#]+)?$/);
+  expect(new URL(page.url()).searchParams.get('redirect')).toBe('/profile');
   await page.goto('/');
   await page.getByRole('button', { name: 'Log in', exact: true }).click();
-  await expect(page.getByRole('dialog')).toContainText('Sign in with Google');
+  await expect(page.getByRole('dialog')).toContainText('Continue with Google');
 });
 
 test('mobile homepage has no overflow and all primary navigation is reachable', async ({ page }) => {

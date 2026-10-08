@@ -1,78 +1,26 @@
-// frontend/src/components/LoginScreen.tsx
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { loginReturnPath } from "../auth/redirect";
+import metadata from "../loginMetadata.json";
+import LoginForm from "./LoginForm";
 import Seo from "./Seo";
 
 export default function LoginScreen() {
-  const { signInWithGoogle, signInWithEmail } = useAuth();
-  const [email, setEmail] = useState("");
-
-  const location = useLocation();
-
-  // относительный путь, куда хотим вернуться
-  const redirectPath =
-    (location.state as { redirectTo?: string } | null)?.redirectTo ||
-    new URLSearchParams(location.search).get("redirect") ||
-    "/";
-
-  // абсолютный URL для провайдера
-  const redirectAbs = window.location.origin + redirectPath;
-
-  const handleGoogle = async () => {
-    try {
-      // фолбэк для случая, если провайдер вернёт на корень
-      localStorage.setItem("postLoginRedirectPath", redirectPath);
-      await signInWithGoogle(redirectAbs);
-      // далее будет полный redirect, navigate ниже уже не выполнится
-    } catch (err) {
-      console.error(err);
-      alert("Sign-in failed");
-    }
-  };
-
-  const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      // тоже сохраняем фолбэк
-      localStorage.setItem("postLoginRedirectPath", redirectPath);
-      await signInWithEmail(email, redirectAbs);
-      alert("Magic-link sent to your inbox ✉️");
-    } catch (err) {
-      console.error(err);
-      alert("Error sending the link");
-    }
-  };
-
-  return (
-    <>
-      <Seo
-        title="Login | Hard Quiz"
-        description="Sign in to save your best scores and compete on Hard Quiz."
-        noindex
-      />
-
-      <div className="flex flex-col items-center justify-center h-full gap-6 px-4">
-        <h1 className="text-3xl font-bold">Sign in to Hard Quiz</h1>
-
-        <button onClick={handleGoogle} className="btn-primary">
-          Sign in with Google
-        </button>
-
-        <form onSubmit={handleEmailSignIn} className="flex flex-col gap-2 w-full max-w-sm">
-          <input
-            type="email"
-            placeholder="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded bg-white text-black"
-          />
-          <button type="submit" className="btn-primary">
-            Send magic-link
-          </button>
-        </form>
-      </div>
-    </>
-  );
+  const location = useLocation(), navigate = useNavigate();
+  const { user, loading, error } = useAuth();
+  const destination = loginReturnPath(location);
+  useEffect(() => {
+    if (loading) return;
+    const search = destination === "/" ? "" : `?redirect=${encodeURIComponent(destination)}`;
+    if (location.search !== search) navigate({ pathname: "/login", search, hash: /[=&]/.test(location.hash) ? "" : location.hash }, { replace: true, state: null });
+  }, [destination, location.search, location.hash, navigate, loading]);
+  if (user && !loading && !error) return <Navigate to={destination} replace />;
+  return <>
+    <Seo title={metadata.title} description={metadata.description} url={metadata.url} noindex />
+    <div className="hq-login-page"><section className="hq-login-card hq-panel" aria-labelledby="login-title">
+      <div className="hq-login-intro"><h1 className="hq-page-heading" id="login-title">Log in to Hard Quiz</h1><p>Save your personal bests and play Daily Challenge.</p></div>
+      <LoginForm returnPath={destination} />
+    </section></div>
+  </>;
 }

@@ -1,47 +1,18 @@
-// frontend/src/components/LoginModal.tsx
 import { Dialog } from "@headlessui/react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { loginReturnPath, safeReturnPath } from "../auth/redirect";
+import LoginForm from "./LoginForm";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-}
-
-export default function LoginModal({ open, onClose }: Props) {
-  const { signInWithGoogle } = useAuth();
-
-  const handleGoogle = async () => {
-    // сохраняем относительный путь как фолбэк и передаём абсолютный в OAuth
-    const redirectPath =
-      window.location.pathname + (window.location.search || "");
-    try { localStorage.setItem("postLoginRedirectPath", redirectPath); } catch { /* The absolute OAuth return URL remains available. */ }
-    const absolute = window.location.origin + redirectPath;
-    await signInWithGoogle(absolute);
-    // дальше управление возьмёт провайдер (будет полный redirect)
-  };
-
-  return (
-    <Dialog open={open} onClose={onClose} className="relative z-50">
-      {/* полупрозрачный фон */}
-      <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
-
-      {/* центрируем контент */}
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-80 space-y-4 rounded-xl bg-gray-900 p-6 text-center">
-          <Dialog.Title className="text-xl font-semibold">Sign in</Dialog.Title>
-
-          <button onClick={handleGoogle} className="btn-primary w-full">
-            Sign in with Google
-          </button>
-
-          <button
-            onClick={onClose}
-            className="text-sm opacity-70 hover:opacity-100"
-          >
-            Cancel
-          </button>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
-  );
+export default function LoginModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const location = useLocation(), { user } = useAuth();
+  const destination = location.pathname === "/login" ? loginReturnPath(location) : safeReturnPath(location.pathname + location.search + location.hash);
+  return <Dialog open={open && !user} onClose={onClose} className="hq-login-dialog fixed inset-0 z-50">
+    <div className="hq-login-backdrop" aria-hidden="true" />
+    <div className="hq-login-overlay"><Dialog.Panel className="hq-login-card hq-panel">
+      <div className="hq-login-intro"><Dialog.Title className="hq-page-heading">Log in to Hard Quiz</Dialog.Title>
+        <Dialog.Description>Save your personal bests and play Daily Challenge.</Dialog.Description></div>
+      {open && <LoginForm returnPath={destination} onClose={onClose} />}
+    </Dialog.Panel></div>
+  </Dialog>;
 }

@@ -1,6 +1,8 @@
 {
   "version": 2,
   "routes": [
+    { "src": "^/login\\.html$", "status": 301, "headers": { "Location": "/login" } },
+    { "src": "^/login/?$", "dest": "/login.html" },
     { "src": "^/how-to-play\\.html$", "status": 301, "headers": { "Location": "/how-to-play" } },
     { "src": "^/how-to-play/?$", "dest": "/how-to-play.html" },
     { "src": "/(sitemap\\.xml|feed\\.xml|robots\\.txt)", "dest": "/$1" },

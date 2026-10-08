@@ -392,7 +392,7 @@ test("late private reads stay hidden after sign-out", async ({ page }) => {
   await page.getByRole("button", { name: "Account menu" }).click();
   await page.getByRole("menuitem", { name: "Log out", exact: true }).click();
   release();
-  await expect(page).toHaveURL(/\/login$/);
+  await expect(page).toHaveURL(/\/login(?:\?redirect=[^#]+)?$/);
   await expect(page.locator(".hq-profile-panel")).toHaveCount(0);
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
