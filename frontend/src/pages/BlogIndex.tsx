@@ -1,147 +1,57 @@
-// src/pages/BlogIndex.tsx
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import { posts } from "../blog";
-import { TOPICS, TopicLabels } from "../blog/topics";
-import type { TopicKey } from "../blog/topics";
-import CollageCover from "../blog/components/CollageCover";
-
-const ORIGIN = "https://hard-quiz.com";
+import { TOPICS } from "../blog/topics";
+import { blogCollectionJsonLd, blogTopicUrl, formatBlogDate, getBlogTopic, listingImages, primaryTopic, readingEstimate, sortBlogPosts, type BlogTopic } from "../blog/presentation";
+import ListingCover from "../blog/components/ListingCover";
+import metadata from "../blogMetadata.json";
+import "../blog-index.css";
 
 export default function BlogIndex() {
-  const [topic, setTopic] = useState<"all" | TopicKey>("all");
-
-  const list = useMemo(() => {
-    const sorted = [...posts].sort(
-      (a, b) => +new Date(b.date) - +new Date(a.date),
-    );
-    if (topic === "all") return sorted;
-
-    const label = TopicLabels[topic];
-    return sorted.filter((p) => p.tags?.includes(label));
-  }, [topic]);
-
-  const chipCls = (active: boolean) =>
-    [
-      "px-3 py-1.5 rounded-full text-sm border transition",
-      active
-        ? "bg-indigo-600 border-indigo-600 text-white"
-        : "border-gray-600 hover:border-indigo-400",
-    ].join(" ");
-
-  // JSON-LD: Blog/CollectionPage + ItemList
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "Hard Quiz — Blog",
-    url: `${ORIGIN}/blog`,
-    hasPart: list.slice(0, 12).map((p) => ({
-      "@type": "BlogPosting",
-      headline: p.title,
-      datePublished: new Date(p.date).toISOString(),
-      image: p.coverUrl || (p.gallery?.[0] ?? undefined),
-      url: `${ORIGIN}/blog/${p.slug}`,
-    })),
+  const [params, setParams] = useSearchParams();
+  const topic = getBlogTopic(params.toString());
+  const sorted = sortBlogPosts(posts);
+  const available = TOPICS.map(item => ({ ...item, count: posts.filter(post => post.tags.includes(item.label)).length })).filter(item => item.count > 0);
+  const selected = TOPICS.find(item => item.key === topic);
+  const list = selected ? sorted.filter(post => post.tags.includes(selected.label)) : sorted;
+  const chooseTopic = (value: BlogTopic) => {
+    if (value === topic && params.get("topic") === (value === "all" ? null : value)) return;
+    const next = new URLSearchParams(params);
+    if (value === "all") next.delete("topic"); else next.set("topic", value);
+    setParams(next);
   };
 
-  return (
-    <>
-      <Seo
-        title="Hard Quiz Blog — Stills & Faces Quizzes, New Releases, Explainers"
-        description="Monthly new releases, frame/face guessing quizzes, and bite-size explainers for movie lovers."
-        url={`${ORIGIN}/blog`}
-        jsonLd={jsonLd}
-      />
-      <div className="mx-auto max-w-5xl">
-        {/* Hero */}
-        <header className="mb-6 text-center">
-          <h1 className="text-3xl font-bold">Blog</h1>
-          <p className="opacity-75">
-            Monthly new releases, frame & face quizzes, and bite-size explainers.
-          </p>
-        </header>
-
-        {/* Fixed topic filter */}
-        <div className="mb-6 flex flex-wrap items-center justify-center gap-2">
-          <button className={chipCls(topic === "all")} onClick={() => setTopic("all")}>
-            All
-          </button>
-          {TOPICS.map((t) => (
-            <button
-              key={t.key}
-              className={chipCls(topic === t.key)}
-              onClick={() => setTopic(t.key)}
-              title={t.label}
-            >
-              {t.label}
-            </button>
-          ))}
+  return <>
+    <Seo title={metadata.title} description={metadata.description} ogImage={metadata.image} url={metadata.url} jsonLd={blogCollectionJsonLd(posts)} />
+    <div className="hq-blog">
+      <header className="hq-blog-intro"><h1>Blog</h1><p>{metadata.intro}</p></header>
+      <div className="hq-blog-toolbar">
+        <div className="hq-blog-topics" role="group" aria-label="Article topics">
+          <button type="button" className="hq-blog-topic" aria-label={`All, ${posts.length} articles`} aria-pressed={topic === "all"} onClick={() => chooseTopic("all")}>All <span aria-hidden="true">{posts.length}</span><span className="sr-only">, {posts.length} articles</span></button>
+          {available.map(item => <button type="button" key={item.key} className="hq-blog-topic" aria-label={`${item.shortLabel}, ${item.count} ${item.count === 1 ? "article" : "articles"}`} aria-pressed={topic === item.key} onClick={() => chooseTopic(item.key)}>{item.shortLabel} <span aria-hidden="true">{item.count}</span><span className="sr-only">, {item.count} {item.count === 1 ? "article" : "articles"}</span></button>)}
         </div>
-
-        {/* Grid */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((p) => {
-            const canCollage = Array.isArray(p.gallery) && p.gallery.length > 0;
-            return (
-              <article
-                key={p.slug}
-                className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-sm transition-shadow hover:bg-white/10 hover:shadow-md"
-              >
-                {/* cover priority: gallery-collage → explicit cover → gradient */}
-                {canCollage ? (
-                  <CollageCover images={p.gallery!} variant="plain" />
-                ) : p.coverUrl ? (
-                  <img
-                    src={p.coverUrl}
-                    alt={p.title}
-                    className="aspect-video w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <div className="aspect-video w-full bg-gradient-to-br from-indigo-900/50 to-purple-900/40" />
-                )}
-
-                <div className="p-4">
-                  {p.tags?.length > 0 && (
-                    <div className="mb-2 flex flex-wrap gap-2">
-                      {p.tags.slice(0, 3).map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-full border border-white/10 px-2 py-0.5 text-xs opacity-80"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <h2 className="mb-1 line-clamp-2 text-lg font-semibold">
-                    <Link to={`/blog/${p.slug}`}>{p.title}</Link>
-                  </h2>
-                  <p className="line-clamp-3 text-sm opacity-80">{p.excerpt}</p>
-                  <div className="mt-3 flex items-center justify-between text-xs opacity-70">
-                    <time dateTime={p.date}>
-                      {new Date(p.date).toLocaleDateString()}
-                    </time>
-                    {p.readingMinutes ? (
-                      <span>{p.readingMinutes} min read</span>
-                    ) : (
-                      <span />
-                    )}
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        {list.length === 0 && (
-          <p className="mt-10 text-center opacity-70">
-            No posts in this topic yet — check back soon.
-          </p>
-        )}
+        <p className="hq-blog-count" role="status" aria-live="polite" aria-atomic="true">{list.length} {list.length === 1 ? "article" : "articles"}{selected ? ` · ${selected.shortLabel}` : ""}</p>
       </div>
-    </>
-  );
+      {list.length ? <div className="hq-blog-grid">
+        {list.map((post, index) => <article className="hq-blog-card" key={post.slug}>
+          <Link to={`/blog/${post.slug}`} state={{ blogReturn: blogTopicUrl(topic) }} className="hq-blog-card-link" aria-labelledby={`title-${post.slug}`}>
+            <ListingCover images={listingImages(post)} priority={index === 0} />
+            <div className="hq-blog-card-body">
+              <p className="hq-blog-card-topic">{primaryTopic(post)?.shortLabel ?? "Article"}</p>
+              <h2 id={`title-${post.slug}`}>{post.title}</h2>
+              <p className="hq-blog-excerpt">{post.excerpt}</p>
+              <div className="hq-blog-card-footer">
+                {post.archiveYear && <span className="hq-blog-archive">{post.archiveYear} archive</span>}
+                <div className="hq-blog-card-meta"><time dateTime={post.date}>{formatBlogDate(post.date)}</time>{readingEstimate(post.readingMinutes) && <span>{readingEstimate(post.readingMinutes)}</span>}</div>
+              </div>
+            </div>
+          </Link>
+        </article>)}
+      </div> : <section className="hq-blog-empty" aria-labelledby="blog-empty-title"><h2 id="blog-empty-title">No articles in this topic yet</h2><p>Explore the other movie guides and film explainers.</p><button type="button" className="hq-primary" onClick={() => chooseTopic("all")}>Show all articles</button></section>}
+      <section className="hq-blog-play" aria-labelledby="blog-play-title">
+        <div><h2 id="blog-play-title">Put your movie knowledge to the test</h2><p>Choose a quiz, or try today’s Daily Challenge.</p></div>
+        <div className="hq-blog-play-actions"><Link to="/" className="hq-primary">Play a movie quiz</Link><Link to="/daily" className="hq-secondary">Daily Challenge</Link></div>
+      </section>
+    </div>
+  </>;
 }

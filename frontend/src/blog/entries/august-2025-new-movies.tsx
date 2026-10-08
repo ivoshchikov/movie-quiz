@@ -33,7 +33,9 @@ const Post: BlogPost = buildNewReleasesPost({
   readingMinutes: 8,
 
   // Если cover.webp не загрузите — в посте и на листинге отрисуется коллаж из gallery.
-  coverUrl: urls.cover,
+  coverUrl: urls.badGuys2,
+  listingCoverUrl: urls.badGuys2,
+  archiveYear: 2025,
 
   // Можно не указывать: соберётся из films.*posterUrl; оставляем для явной фиксации порядка.
   gallery: [

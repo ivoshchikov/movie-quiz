@@ -1,10 +1,11 @@
 // src/pages/BlogPost.tsx
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import Seo from "../components/Seo";
 import { getPostBySlug, posts } from "../blog";
 import CollageCover from "../blog/components/CollageCover";
 import { GalleryProvider } from "../blog/components/GalleryCollector";
+import { blogReturnUrl, formatBlogDate } from "../blog/presentation";
 
 const ORIGIN =
   (import.meta.env.VITE_SITE_URL as string) ||
@@ -12,6 +13,8 @@ const ORIGIN =
 
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
+  const { state } = useLocation();
+  const backToBlog = blogReturnUrl(state);
   const post = getPostBySlug(slug);
   const [autoGallery, setAutoGallery] = useState<string[]>([]);
 
@@ -24,7 +27,7 @@ export default function BlogPostPage() {
           We couldn't find that article. It may have been moved or renamed.
         </p>
         <Link
-          to="/blog"
+          to={backToBlog}
           className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
         >
           ← Back to blog
@@ -67,7 +70,7 @@ export default function BlogPostPage() {
         {/* Top back button */}
         <div className="mb-3">
           <Link
-            to="/blog"
+            to={backToBlog}
             className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
           >
             ← Back to blog
@@ -77,7 +80,7 @@ export default function BlogPostPage() {
         <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
         <div className="mb-4 flex items-center gap-3 text-sm opacity-75">
           <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString()}
+            {formatBlogDate(post.date)}
           </time>
           <span>•</span>
           {post.readingMinutes ? (
@@ -141,7 +144,7 @@ export default function BlogPostPage() {
         {/* Bottom back button */}
         <div className="mt-6">
           <Link
-            to="/blog"
+            to={backToBlog}
             className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
           >
             ← Back to blog
@@ -157,10 +160,11 @@ export default function BlogPostPage() {
                 <Link
                   key={o.slug}
                   to={`/blog/${o.slug}`}
+                  state={{ blogReturn: backToBlog }}
                   className="rounded-xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
                 >
                   <div className="mb-2 text-xs opacity-70">
-                    {new Date(o.date).toLocaleDateString()}
+                    {formatBlogDate(o.date)}
                     {o.readingMinutes ? ` • ${o.readingMinutes} min` : null}
                   </div>
                   <div className="font-medium">{o.title}</div>
