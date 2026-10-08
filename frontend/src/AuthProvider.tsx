@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { authReturnAtBoot, callbackErrorAtBoot, callbackMessage, cleanCallbackErrorUrl } from "./auth/redirect";
 import { withAuthTimeout } from "./auth/requests";
+import { cancelAuthRequests } from "./auth/fetch";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
 import { supabase } from "./supabase";
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [retry, setRetry] = useState(0);
   const [callbackError, setCallbackError] = useState(callbackErrorAtBoot);
   const [authReturned, setAuthReturned] = useState(authReturnAtBoot);
-  const retrySession = useCallback(() => setRetry(value => value + 1), []);
+  const retrySession = useCallback(() => { cancelAuthRequests(); setRetry(value => value + 1); }, []);
   const clearCallbackError = useCallback(() => setCallbackError(null), []);
   const finishAuthReturn = useCallback(() => setAuthReturned(false), []);
 
@@ -38,14 +39,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else if (initialized.error && !callbackErrorAtBoot && retry === 0) throw initialized.error;
       const result = await supabase.auth.getSession();
       if (result.error) throw result.error;
+      reading = false;
       return result.data.session;
     };
     void withAuthTimeout(read()).then(session => {
       if (active && revision === initialRevision) { lastUserId = session?.user.id ?? null; setState({ session, pending: false, error: null }); }
     }).catch(() => {
-      if (active && revision === initialRevision) setState(previous => ({ ...previous, pending: false, error: "Your sign-in status could not be checked. Try checking again." }));
+      if (active && revision === initialRevision) {
+        cancelAuthRequests();
+        setState(previous => ({ ...previous, pending: false, error: "Your sign-in status could not be checked. Try checking again." }));
+      }
     }).finally(() => {
-      reading = false;
       if (active && callbackErrorAtBoot) cleanCallbackErrorUrl();
     });
     return () => { active = false; subscription.unsubscribe(); };

@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { authFetch } from "./auth/fetch";
 
 /*  ─── конфигурация из .env ─────────────────────────────── */
 const SUPABASE_URL  = import.meta.env.VITE_SUPABASE_URL as string;
@@ -9,7 +10,7 @@ let BUCKET = (import.meta.env.VITE_SUPABASE_BUCKET as string | undefined)?.trim(
 BUCKET = (BUCKET && BUCKET.replace(/^\/+|\/+$/g, "")) || "movies"; // <-- fallback
 
 /*  ─── клиент ────────────────────────────────────────────── */
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, { global: { fetch: authFetch } });
 
 /**
  * Собирает публичный URL для объекта в бакете.

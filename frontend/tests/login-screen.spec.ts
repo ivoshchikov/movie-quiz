@@ -264,6 +264,23 @@ test("return destinations keep filters and remove authentication parameters", as
   const request = page.waitForRequest(item => new URL(item.url()).pathname === "/auth/v1/otp");
   await send(page);
   expect(new URL((await request).url()).searchParams.get("redirect_to")).toBe("http://localhost:5173/leaderboard?category=2&difficulty=3#details");
+  const views = await page.evaluate(() => window.dataLayer.map(entry => Array.from(entry as IArguments)).filter(args => args[0] === "event" && args[1] === "page_view"));
+  expect(views.length).toBeGreaterThan(0);
+  for (const view of views) {
+    expect(JSON.stringify(view[2])).not.toMatch(/fixture-token|fixture-refresh|fixture-access|fixture-code|fixture-error|redirect=/);
+  }
+});
+
+test("analytics excludes callback credentials and fragments from every pageview", async ({ page }) => {
+  await mockQuizApi(page);
+  await page.goto("/leaderboard?category=2&difficulty=3&code=fixture-code&provider_token=fixture-provider#access_token=fixture-access&refresh_token=fixture-refresh&error_description=fixture-private");
+  await expect(page.getByRole("heading", { name: "Leaderboard", exact: true })).toBeVisible();
+  const views = await page.evaluate(() => window.dataLayer.map(entry => Array.from(entry as IArguments)).filter(args => args[0] === "event" && args[1] === "page_view"));
+  expect(views.length).toBeGreaterThan(0);
+  for (const view of views) {
+    expect(view[2]).toMatchObject({ page_path: "/leaderboard?category=2&difficulty=3", page_location: "http://localhost:5173/leaderboard?category=2&difficulty=3" });
+    expect(JSON.stringify(view[2])).not.toMatch(/fixture-code|fixture-provider|fixture-access|fixture-refresh|fixture-private/);
+  }
 });
 
 test("invalid email is rejected and whitespace is trimmed before sending", async ({ page }) => {
@@ -361,6 +378,45 @@ test("session read timeout is recoverable and does not leave an endless loading 
   await page.evaluate(() => { Object.assign(window, { fixtureReadStalls: false }); });
   await page.getByRole("button", { name: "Retry sign-in check" }).click();
   await expect(page.getByRole("button", { name: "Continue with Google" })).toBeEnabled();
+});
+
+test("a stalled SDK initialization refresh is cancelled and can recover on retry", async ({ page }) => {
+  await page.clock.install();
+  await mockQuizApi(page);
+  await mockSignedIn(page);
+  await page.addInitScript(() => {
+    const key = "sb-quiz-fixture-auth-token";
+    const session = JSON.parse(localStorage.getItem(key) || "{}");
+    session.expires_at = 1;
+    localStorage.setItem(key, JSON.stringify(session));
+    localStorage.setItem("hq_auth_return_v1", JSON.stringify({ path: "/daily", createdAt: Date.now() }));
+  });
+  let restored = false, requests = 0;
+  let release: () => void = () => {};
+  const held = new Promise<void>(resolve => { release = resolve; });
+  await page.route("**/auth/v1/token?**", async route => {
+    requests++;
+    if (!restored) await held;
+    await route.fulfill({ contentType: "application/json", body: JSON.stringify({
+      access_token: `e30.${Buffer.from(JSON.stringify({ sub: "fixture-user", role: "authenticated", exp: 4102444800 })).toString("base64url")}.fixture`,
+      refresh_token: "fixture-refresh-token", token_type: "bearer", expires_in: 3600, expires_at: 4102444800,
+      user: { id: "fixture-user", aud: "authenticated", role: "authenticated", email: address, app_metadata: {}, user_metadata: {}, created_at: "2026-01-01T00:00:00Z" },
+    }) }).catch(() => {});
+  });
+  await page.goto("/");
+  await expect.poll(() => requests).toBe(1);
+  await page.clock.runFor(10_100);
+  await expect(page.getByRole("alert")).toContainText("could not be checked");
+  // Let the SDK retry once on the same memoized initialization before recovery.
+  await page.clock.runFor(500);
+  await expect.poll(() => requests).toBeGreaterThan(1);
+  restored = true;
+  await page.getByRole("button", { name: "Retry sign-in check" }).click();
+  await page.clock.runFor(1000);
+  await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
+  await expect(page).toHaveURL("http://localhost:5173/");
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sb-quiz-fixture-auth-token") || "{}").user.id)).toBe("fixture-user");
+  release();
 });
 
 test("nickname setup keeps its return page and never permits renaming", async ({ page }) => {

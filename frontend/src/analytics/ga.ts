@@ -50,7 +50,8 @@ export function pageview(path: string) {
   if (!GA_ID) return;
   window.gtag?.('event', 'page_view', {
     page_title: document.title,
-    page_location: location.href,
+    // Layout supplies the public path without callback credentials or fragments.
+    page_location: location.origin + path,
     page_path: path,
     debug_mode: isDebug,
   });

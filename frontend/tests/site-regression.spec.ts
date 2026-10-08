@@ -51,6 +51,7 @@ test('Google sign-in retains the provider and requested return path', async ({ p
 test('local sign-out updates the account and protects personal results', async ({ page }) => {
   await mockQuizApi(page);
   await mockSignedIn(page);
+  await page.route('**/auth/v1/logout?**', route => route.fulfill({ status: 204, body: '' }));
   await page.goto('/profile');
   await expect(page.locator('.hq-account-name')).toHaveText('MovieFan');
   await page.getByRole('button', { name: 'Account menu' }).click();

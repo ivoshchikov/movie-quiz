@@ -6,7 +6,7 @@ let lastConsumed: string | null = null;
 
 export function publicSearch(search: string): string {
   const params = new URLSearchParams(search);
-  for (const name of authParameters) params.delete(name);
+  for (const name of [...authParameters, "redirect"]) params.delete(name);
   const result = params.toString();
   return result ? `?${result}` : "";
 }
