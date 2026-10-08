@@ -104,9 +104,9 @@ ${urls}
 
   fs.writeFileSync(path.join(DEST_DIR, "sitemap.xml"), sitemap, "utf8");
 
-  // Serve the rules/login metadata in the first HTTP response, before React.
+  // Serve page metadata in the first HTTP response, before React.
   if (DEST === "dist") {
-    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true]]) {
+    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
       let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
       html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(metadata.title)}</title>`);

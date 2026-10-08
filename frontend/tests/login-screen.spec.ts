@@ -429,7 +429,7 @@ test("nickname setup keeps its return page and never permits renaming", async ({
   });
   await page.goto("/setup-profile?redirect=%2Fdaily");
   await page.getByRole("textbox", { name: "Nickname" }).fill("NewFilmFan");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   await expect(page).toHaveURL(/\/daily$/);
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeVisible();
   await page.goto("/setup-profile?redirect=%2Fdaily");

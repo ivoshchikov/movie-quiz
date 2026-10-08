@@ -244,7 +244,7 @@ test("initial creation trims a nickname and creates a genuinely missing profile"
   const { data } = await fixture(page); data.profile = null;
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("  NewFilmFan  ");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   await expect(page.locator(".hq-account-name")).toHaveText("NewFilmFan");
   expect(data.writes).toHaveLength(1);
   expect(data.writes[0]).toMatchObject({ method: "POST", body: { user_id: "fixture-user", nickname: "NewFilmFan", avatar_url: null } });
@@ -255,7 +255,7 @@ test("a nickname chosen in another tab is confirmed instead of overwritten", asy
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("SecondName");
   data.profile.nickname = "FirstName";
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   await expect(page.locator(".hq-account-name")).toHaveText("FirstName");
   expect(data.writes).toEqual([]);
 });
@@ -265,7 +265,7 @@ test("initial selection preserves an existing avatar and updates only an empty n
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("Film_Fan");
   const check = page.waitForRequest(request => request.url().includes("/profiles?") && request.method() === "HEAD");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   expect(new URL((await check).url()).searchParams.get("nickname")).toBe("ilike.Film\\_Fan");
   await expect(page.locator(".hq-account-name")).toHaveText("Film_Fan");
   expect(data.writes).toHaveLength(1);
@@ -280,11 +280,11 @@ test("nickname availability errors block writes and permit retry", async ({ page
   await page.route("**/rest/v1/profiles?**", route => route.request().method() === "HEAD" && fail ? route.fulfill({ status: 503, body: "" }) : route.fallback());
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("NewName");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("could not be confirmed");
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText("availability could not be checked");
   expect(data.writes).toEqual([]);
   fail = false;
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   await expect(page.locator(".hq-account-name")).toHaveText("NewName");
   expect(data.writes).toHaveLength(1);
 });
@@ -294,8 +294,8 @@ test("a taken nickname stays in the form without a write", async ({ page }) => {
   await page.route("**/rest/v1/profiles?**", route => route.request().method() === "HEAD" ? route.fulfill({ headers: { "content-range": "0-0/1", "access-control-expose-headers": "content-range" }, body: "" }) : route.fallback());
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("ExistingName");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("This nickname is taken");
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
+  await expect(page.locator(".hq-nickname-availability")).toContainText("This nickname is taken");
   expect(data.writes).toEqual([]);
 });
 
@@ -311,7 +311,7 @@ test("a concurrent conditional update never replaces a previously chosen nicknam
   });
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("SecondChoice");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   await expect(page.locator(".hq-account-name")).toHaveText("FirstChoice");
   expect(attempted).toBe(1);
   expect(data.writes).toEqual([]);
