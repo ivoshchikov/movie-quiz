@@ -5,7 +5,13 @@ export interface AuthContextValue {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signInWithGoogle: (redirectTo?: string) => Promise<void>;
+  error: string | null;
+  retrySession: () => void;
+  callbackError: string | null;
+  clearCallbackError: () => void;
+  authReturned: boolean;
+  finishAuthReturn: () => void;
+  signInWithGoogle: (redirectTo?: string) => Promise<string>;
   signInWithEmail: (email: string, redirectTo?: string) => Promise<void>;
   signOut: () => Promise<void>;
 }

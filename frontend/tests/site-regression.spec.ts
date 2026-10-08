@@ -28,21 +28,21 @@ test('email sign-in retains the destination and sends the same OTP request', asy
   await mockQuizApi(page);
   page.on('dialog', dialog => dialog.accept());
   await page.goto('/profile');
-  await expect(page).toHaveURL(/\/login$/);
-  await page.getByPlaceholder('Email').fill('fixture@example.test');
+  await expect(page).toHaveURL(/\/login(?:\?redirect=[^#]+)?$/);
+  await page.getByRole('textbox', { name: 'Email', exact: true }).fill('fixture@example.test');
   const request = page.waitForRequest(item => new URL(item.url()).pathname === '/auth/v1/otp');
-  await page.getByRole('button', { name: 'Send magic-link' }).click();
+  await page.getByRole('button', { name: 'Send sign-in link' }).click();
   const sent = await request;
   expect(sent.postDataJSON()).toMatchObject({ email: 'fixture@example.test' });
   expect(new URL(sent.url()).searchParams.get('redirect_to')).toBe('http://localhost:5173/profile');
-  expect(await page.evaluate(() => localStorage.getItem('postLoginRedirectPath'))).toBe('/profile');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hq_auth_return_v1') || '{}').path)).toBe('/profile');
 });
 
 test('Google sign-in retains the provider and requested return path', async ({ page }) => {
   await mockQuizApi(page);
   await page.goto('/login?redirect=%2Fdaily');
   const request = page.waitForRequest(item => new URL(item.url()).pathname === '/auth/v1/authorize');
-  await page.getByRole('button', { name: 'Sign in with Google', exact: true }).click();
+  await page.getByRole('button', { name: 'Continue with Google', exact: true }).click();
   const target = new URL((await request).url());
   expect(target.searchParams.get('provider')).toBe('google');
   expect(target.searchParams.get('redirect_to')).toBe('http://localhost:5173/daily');
@@ -58,7 +58,7 @@ test('local sign-out updates the account and protects personal results', async (
   await page.getByRole('menuitem', { name: 'Log out', exact: true }).click();
   expect(new URL((await request).url()).searchParams.get('scope')).toBe('local');
   await expect(page.getByRole('button', { name: 'Log in', exact: true })).toBeVisible();
-  await expect(page).toHaveURL(/\/login$/);
+  await expect(page).toHaveURL(/\/login(?:\?redirect=[^#]+)?$/);
 });
 
 test('a new profile loads an empty nickname and saves the existing profile fields', async ({ page }) => {

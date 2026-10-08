@@ -45,7 +45,7 @@ test("slow settings do not block the rules or primary actions", async ({ page })
   const held = new Promise<void>(resolve => { release = resolve; });
   await page.route("**/rest/v1/difficulty_level?**", async route => { await held; await route.fallback(); });
   await page.goto("/how-to-play");
-  await expect(page.getByRole("status")).toHaveText("Loading difficulty settings…");
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("status")).toHaveText("Loading difficulty settings…");
   await expect(page.getByRole("heading", { name: "Points & lives" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Start a quiz", exact: true }).first()).toBeVisible();
   await expect(page.getByRole("table")).toHaveCount(0);
@@ -60,13 +60,13 @@ test("a failed read has an independent retry without made-up numbers", async ({ 
     ? route.fulfill({ status: 503, contentType: "application/json", body: '{"message":"unavailable"}' })
     : route.fallback());
   await page.goto("/how-to-play");
-  await expect(page.getByRole("alert")).toContainText("Difficulty settings couldn’t load");
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toContainText("Difficulty settings couldn’t load");
   await expect(page.getByRole("table")).toHaveCount(0);
   await expect(page.locator(".hq-howto-daily")).toBeVisible();
   failed = false;
   await page.getByRole("button", { name: "Try again" }).click();
   await expect(page.getByRole("table")).toBeVisible();
-  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toHaveCount(0);
 });
 
 test("a stalled read times out and a later retry can recover", async ({ page }) => {
@@ -77,9 +77,9 @@ test("a stalled read times out and a later retry can recover", async ({ page }) 
   const held = new Promise<void>(resolve => { release = resolve; });
   await page.route("**/rest/v1/difficulty_level?**", async route => { if (stalled) await held; await route.fallback(); });
   await page.goto("/how-to-play");
-  await expect(page.getByRole("status")).toBeVisible();
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("status")).toBeVisible();
   await page.clock.runFor(10100);
-  await expect(page.getByRole("alert")).toContainText("couldn’t load");
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toContainText("couldn’t load");
   stalled = false;
   await page.getByRole("button", { name: "Try again" }).click();
   await expect(page.getByRole("table")).toBeVisible();
@@ -99,7 +99,7 @@ for (const [name, body] of invalidSets) test(`invalid difficulty data is rejecte
   await mockQuizApi(page);
   await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(body) }));
   await page.goto("/how-to-play");
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toBeVisible();
   await expect(page.getByRole("table")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Start a quiz", exact: true }).first()).toBeVisible();
 });
@@ -111,7 +111,7 @@ test("empty settings are distinct from a failed request and can be retried", asy
     ? route.fulfill({ contentType: "application/json", body: "[]" }) : route.fallback());
   await page.goto("/how-to-play");
   await expect(page.getByText("No difficulty settings are available right now.")).toBeVisible();
-  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toHaveCount(0);
   empty = false;
   await page.getByRole("button", { name: "Try again" }).click();
   await expect(page.getByRole("table")).toBeVisible();

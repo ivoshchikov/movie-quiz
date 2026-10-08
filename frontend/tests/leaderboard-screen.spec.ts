@@ -99,7 +99,7 @@ test("the login invitation preserves the selected leaderboard and does not publi
   const { data } = await fixture(page);
   await loaded(page, "/leaderboard?category=2&difficulty=3");
   await page.getByRole("complementary", { name: "Leaderboard account" }).getByRole("button", { name: "Log in", exact: true }).click();
-  await expect(page.getByRole("dialog").getByRole("heading", { name: "Sign in", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog").getByRole("heading", { name: "Log in to Hard Quiz", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await expect(page).toHaveURL(/category=2&difficulty=3$/);
   expect(data.saves).toEqual([]);

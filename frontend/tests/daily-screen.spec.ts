@@ -21,9 +21,9 @@ test("guest sees clear rules and sign-in, without loading an answer or starting 
   expect(views).toHaveLength(1);
   expect(views[0][2]).toMatchObject({ d: today, is_logged_in: false });
   await page.getByRole("button", { name: "Log in to play", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Sign in", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Log in to Hard Quiz", exact: true })).toBeVisible();
   const request = page.waitForRequest(item => item.url().includes("/auth/v1/authorize"));
-  await page.getByRole("button", { name: "Sign in with Google", exact: true }).click();
+  await page.getByRole("button", { name: "Continue with Google", exact: true }).click();
   expect(new URL((await request).url()).searchParams.get("redirect_to")).toBe("http://localhost:5173/daily");
 });
 
