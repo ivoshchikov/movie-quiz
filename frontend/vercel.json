@@ -1,6 +1,8 @@
 {
   "version": 2,
   "routes": [
+    { "src": "^/how-to-play\\.html$", "status": 301, "headers": { "Location": "/how-to-play" } },
+    { "src": "^/how-to-play/?$", "dest": "/how-to-play.html" },
     { "src": "/(sitemap\\.xml|feed\\.xml|robots\\.txt)", "dest": "/$1" },
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }

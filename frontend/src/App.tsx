@@ -28,6 +28,7 @@ export default function App() {
           name="description"
           content="Play Hard Quiz: test your movie knowledge, beat the timer and climb the leaderboard!"
         />
+        <meta name="robots" content="index, follow" />
       </Helmet>
 
       <Routes>
