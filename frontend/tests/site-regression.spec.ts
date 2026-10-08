@@ -73,7 +73,7 @@ test('a new profile loads an empty nickname and saves the existing profile field
   await page.goto('/setup-profile');
   await page.getByRole('textbox', { name: 'Nickname', exact: true }).fill('NewFilmFan');
   const request = page.waitForRequest(item => item.url().includes('/rest/v1/profiles') && item.method() === 'PATCH');
-  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  await page.getByRole('button', { name: 'Save and continue', exact: true }).click();
   const saved = await request;
   expect(saved.postDataJSON()).toEqual({ nickname: 'NewFilmFan' });
   expect(new URL(saved.url()).searchParams.get('nickname')).toBe('is.null');

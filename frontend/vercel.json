@@ -1,6 +1,8 @@
 {
   "version": 2,
   "routes": [
+    { "src": "^/setup-profile\\.html$", "status": 301, "headers": { "Location": "/setup-profile" } },
+    { "src": "^/setup-profile/?$", "dest": "/setup-profile.html" },
     { "src": "^/login\\.html$", "status": 301, "headers": { "Location": "/login" } },
     { "src": "^/login/?$", "dest": "/login.html" },
     { "src": "^/how-to-play\\.html$", "status": 301, "headers": { "Location": "/how-to-play" } },

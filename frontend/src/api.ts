@@ -59,25 +59,42 @@ export async function isNicknameTaken(nickname: string, excludeUserId?: string, 
   return count > 0;
 }
 
+export class NicknameSelectionError extends Error {
+  constructor(public readonly kind: "profile" | "availability" | "taken" | "write" | "unconfirmed") {
+    super(`nickname-${kind}`);
+  }
+}
+
 // Only initial selection is exposed. Server-side immutability still requires a DB policy/trigger.
-export async function chooseInitialNickname(userId: string, nickname: string, signal: AbortSignal): Promise<ProfileDetails> {
+export async function chooseInitialNickname(userId: string, nickname: string, signal: AbortSignal,
+  onWriting?: () => void): Promise<ProfileDetails> {
   const nick = nickname.trim();
   if (nick.length < 3 || nick.length > 20) throw new Error("invalid-nickname");
-  const profile = await getProfile(userId, signal);
+  let profile: ProfileDetails | null;
+  try { profile = await getProfile(userId, signal); }
+  catch { throw new NicknameSelectionError("profile"); }
+  signal.throwIfAborted();
   if (profile?.nickname) return profile;
-  if (await isNicknameTaken(nick, userId, signal)) throw new Error("nickname-taken");
+  let taken: boolean;
+  try { taken = await isNicknameTaken(nick, userId, signal); }
+  catch { throw new NicknameSelectionError("availability"); }
+  signal.throwIfAborted();
+  if (taken) throw new NicknameSelectionError("taken");
   const payload: Profile = { user_id: userId, nickname: nick, avatar_url: null };
   // A concurrent initial selection must not overwrite a name already saved by another tab.
   const query = profile ? supabase.from("profiles").update({ nickname: nick }).eq("user_id", userId).is("nickname", null)
     : supabase.from("profiles").insert(payload);
+  onWriting?.();
   const { data, error } = await query.select("nickname,avatar_url").abortSignal(signal).maybeSingle();
-  if (error && error.code !== "23505") throw error;
-  if (!error && data && typeof data.nickname === "string" && data.nickname.trim()) return data as ProfileDetails;
-  const confirmed = await getProfile(userId, signal);
+  if (error && error.code !== "23505") throw new NicknameSelectionError("write");
+  if (!error && data && typeof data.nickname === "string" && data.nickname.trim() &&
+    (data.avatar_url === null || typeof data.avatar_url === "string")) return data as ProfileDetails;
+  let confirmed: ProfileDetails | null;
+  try { confirmed = await getProfile(userId, signal); }
+  catch { throw new NicknameSelectionError("unconfirmed"); }
   if (confirmed?.nickname) return confirmed;
-  if (confirmed) throw new Error("nickname-not-confirmed");
-  if (error) throw error;
-  throw new Error("nickname-not-confirmed");
+  if (error?.code === "23505") throw new NicknameSelectionError("taken");
+  throw new NicknameSelectionError("unconfirmed");
 }
 
 /* ────────────────────────────────────────────────────────────

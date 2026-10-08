@@ -403,7 +403,7 @@ test("new players finish nickname setup before any Daily session starts", async 
   await expect(page.getByRole("heading", { name: "Choose your nickname", exact: true })).toBeVisible();
   expect(data.calls.filter(call => call.name === "start_daily_session")).toHaveLength(0);
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("NewDailyFan");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save and continue", exact: true }).click();
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeEnabled();
   await page.getByRole("button", { name: "Start Daily", exact: true }).click();
   await expect(page.getByRole("button", { name: dailyChoices[0], exact: true })).toBeEnabled();
