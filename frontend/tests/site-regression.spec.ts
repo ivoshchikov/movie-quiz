@@ -144,7 +144,7 @@ test('admin history and answer search retain their typed fields and image URLs',
   await expect(page.locator('input[type="number"]')).toHaveValue('801');
 });
 
-test('blog posters still register an automatic cover without an explicit gallery', async ({ page }) => {
+test('article posters remain available without gallery data and reset on navigation', async ({ page }) => {
   await mockQuizApi(page);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -154,13 +154,13 @@ test('blog posters still register an automatic cover without an explicit gallery
     const { posts } = await import(moduleUrl) as { posts: { gallery?: string[] }[] };
     for (const post of posts) post.gallery = [];
   });
-  await page.getByRole('link', { name: 'New Movies in August 2025: The Only Guide You Need', exact: true }).click();
-  await expect(page.locator('article > div .bg-cover')).toHaveCount(4);
-  const cover = page.locator('article > div .bg-cover').first();
-  await expect(cover).toHaveAttribute('style', /bad-guys-2\.webp/);
-  await page.getByRole('link', { name: /New Movies in September 2025: 9 Biggest Theatrical Releases/ }).click();
-  await expect(page.locator('article > div .bg-cover')).toHaveCount(8);
-  await expect(cover).toHaveAttribute('style', /the-conjuring-last-rites\.webp/);
+  await page.getByRole('link', { name: 'August 2025 Movie Releases: 7 Picks (US)', exact: true }).click();
+  await expect(page.locator('.hq-movie-poster img')).toHaveCount(7);
+  const poster = page.locator('.hq-movie-poster img').first();
+  await expect(poster).toHaveAttribute('src', /bad-guys-2\.webp/);
+  await page.getByRole('link', { name: /September 2025 Movie Releases: 9 Picks/ }).click();
+  await expect(page.locator('.hq-movie-poster img')).toHaveCount(9);
+  await expect(poster).toHaveAttribute('src', /the-conjuring-last-rites\.webp/);
   expect(errors).toEqual([]);
 });
 

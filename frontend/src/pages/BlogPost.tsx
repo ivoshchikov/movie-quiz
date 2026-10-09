@@ -1,182 +1,86 @@
-// src/pages/BlogPost.tsx
+import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useState } from "react";
 import Seo from "../components/Seo";
-import { getPostBySlug, posts } from "../blog";
-import CollageCover from "../blog/components/CollageCover";
+import { getPostBySlug, getRelatedPosts, posts } from "../blog";
 import { GalleryProvider } from "../blog/components/GalleryCollector";
-import { blogReturnUrl, formatBlogDate } from "../blog/presentation";
-
-const ORIGIN =
-  (import.meta.env.VITE_SITE_URL as string) ||
-  (typeof window !== "undefined" ? window.location.origin : "https://hard-quiz.com");
+import { articleJsonLd, articleMetadata, blogReturnUrl, blogTopicUrl, formatBlogDate, primaryTopic, readingEstimate, sortBlogPosts, validBlogDate } from "../blog/presentation";
+import "../blog-article.css";
 
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
-  const { state } = useLocation();
+  const { state, hash } = useLocation();
   const backToBlog = blogReturnUrl(state);
   const post = getPostBySlug(slug);
-  const [autoGallery, setAutoGallery] = useState<string[]>([]);
 
-  if (!post) {
-    return (
-      <div className="mx-auto max-w-3xl">
-        <Seo title="Post not found | Hard Quiz" />
-        <h1 className="mb-2 text-2xl font-bold">Post not found</h1>
-        <p className="mb-4 opacity-80">
-          We couldn't find that article. It may have been moved or renamed.
-        </p>
-        <Link
-          to={backToBlog}
-          className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
-        >
-          ← Back to blog
-        </Link>
-      </div>
-    );
-  }
+  // Native links keep sections shareable and make Back/Forward restore a section.
+  useEffect(() => {
+    if (!hash) { window.scrollTo(0, 0); return; }
+    let id: string;
+    try { id = decodeURIComponent(hash.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    // Let the browser finish its history scroll restoration before aligning focus.
+    const frame = requestAnimationFrame(() => {
+      target?.scrollIntoView();
+      target?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [slug, hash]);
 
-  const others = posts
-    .filter((p) => p.slug !== post.slug)
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date))
-    .slice(0, 3);
+  if (!post) return <section className="hq-article hq-article-empty">
+    <Seo title="Article not found | Hard Quiz" description="This article is unavailable. Browse movie guides and film explainers on the Hard Quiz blog." noindex />
+    <p className="hq-article-eyebrow">Hard Quiz Blog</p>
+    <h1>Article not found</h1>
+    <p>We couldn't find an article at this address. Explore our movie guides and film explainers instead.</p>
+    <Link to={backToBlog} className="hq-button-primary">Back to blog</Link>
+  </section>;
 
-  const imagesForCollage =
-    post.gallery && post.gallery.length > 0 ? post.gallery : autoGallery;
-  const canCollage = imagesForCollage.length > 0;
+  const meta = articleMetadata(post);
+  const topic = primaryTopic(post);
+  const related = getRelatedPosts(post, 2);
+  const others = related.length ? related : sortBlogPosts(posts.filter(item => item.slug !== slug)).slice(0, 2);
+  const tags = post.tags.filter(tag => tag !== topic?.label);
 
-  const isFullBleedHero = post.slug === "why-2-39-feels-more-cinematic";
-  const fullBleedCls =
-    "w-screen max-w-none ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]";
-
-  // Build dynamic OG URL via edge function
-  const ogParams = new URLSearchParams({
-    title: post.title,
-    date: post.date,
-  });
-  if (post.coverUrl) ogParams.set("cover", post.coverUrl);
-  const ogUrl = `${ORIGIN}/api/og/post?${ogParams.toString()}`;
-
-  return (
-    <>
-      <Seo
-        title={`${post.title} | Hard Quiz`}
-        description={post.excerpt}
-        ogImage={ogUrl}
-        type="article"
-        url={`${ORIGIN}/blog/${post.slug}`}
-      />
-      <article className="mx-auto max-w-3xl">
-        {/* Top back button */}
-        <div className="mb-3">
-          <Link
-            to={backToBlog}
-            className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
-          >
-            ← Back to blog
-          </Link>
+  return <>
+    <Seo title={meta.title} description={meta.description} ogImage={meta.image} type="article" url={meta.url} jsonLd={articleJsonLd(post)} />
+    <article className="hq-article" key={post.slug}>
+      <Link to={backToBlog} className="hq-article-back">← Back to blog</Link>
+      <header className="hq-article-header">
+        {topic && <Link to={blogTopicUrl(topic.key)} className="hq-article-topic">{topic.shortLabel}</Link>}
+        <h1>{post.title}</h1>
+        <div className="hq-article-meta">
+          <span>Published <time dateTime={validBlogDate(post.date) ? post.date : undefined}>{formatBlogDate(post.date)}</time></span>
+          {readingEstimate(post.readingMinutes) && <span>{readingEstimate(post.readingMinutes)}</span>}
+          {post.modified && <span>Updated <time dateTime={post.modified}>{formatBlogDate(post.modified)}</time></span>}
         </div>
-
-        <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
-        <div className="mb-4 flex items-center gap-3 text-sm opacity-75">
-          <time dateTime={post.date}>
-            {formatBlogDate(post.date)}
-          </time>
-          <span>•</span>
-          {post.readingMinutes ? (
-            <span>{post.readingMinutes} min read</span>
-          ) : (
-            <span>Article</span>
-          )}
-          {post.tags?.length ? (
-            <>
-              <span>•</span>
-              <div className="flex gap-2">
-                {post.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-white/15 px-2 py-0.5 text-xs"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </>
-          ) : null}
-        </div>
-
-        {/* HERO cover: collage → explicit cover → fallback */}
-        {canCollage ? (
-          <CollageCover
-            images={imagesForCollage}
-            className={isFullBleedHero ? `mb-6 ${fullBleedCls}` : "mb-6"}
-          />
-        ) : post.coverUrl ? (
-          <img
-            src={post.coverUrl}
-            alt={post.title}
-            className={
-              isFullBleedHero
-                ? `mb-6 aspect-video ${fullBleedCls} object-cover`
-                : "mb-6 aspect-video w-full rounded-2xl border border-white/10 object-cover"
-            }
-          />
-        ) : (
-          <div className="mb-6 aspect-video w-full rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-900/50 to-purple-900/40" />
-        )}
-
-        {/* Content wrapped in GalleryProvider to auto-collect poster URLs */}
-        <GalleryProvider key={post.slug} onChange={setAutoGallery}>
-          <div className="prose prose-invert max-w-none">{post.content()}</div>
-        </GalleryProvider>
-
-        {/* CTA */}
-        <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-4">
-          <h3 className="mb-2 font-semibold">Try a quick round</h3>
-          <p className="mb-3 opacity-80">
-            Pick any category and difficulty on the homepage and hit Play. Good luck!
-          </p>
-          <Link to="/" className="btn-primary inline-block">
-            Play now
-          </Link>
-        </div>
-
-        {/* Bottom back button */}
-        <div className="mt-6">
-          <Link
-            to={backToBlog}
-            className="inline-flex items-center gap-1 rounded-md border border-white/15 px-3 py-1.5 text-sm hover:bg-white/10"
-          >
-            ← Back to blog
-          </Link>
-        </div>
-
-        {/* More */}
-        {others.length > 0 && (
-          <section className="mt-10">
-            <h3 className="mb-3 text-lg font-semibold">More like this</h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {others.map((o) => (
-                <Link
-                  key={o.slug}
-                  to={`/blog/${o.slug}`}
-                  state={{ blogReturn: backToBlog }}
-                  className="rounded-xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
-                >
-                  <div className="mb-2 text-xs opacity-70">
-                    {formatBlogDate(o.date)}
-                    {o.readingMinutes ? ` • ${o.readingMinutes} min` : null}
-                  </div>
-                  <div className="font-medium">{o.title}</div>
-                  <div className="text-sm opacity-75 line-clamp-2">
-                    {o.excerpt}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-      </article>
-    </>
-  );
+      </header>
+      {post.archiveYear && <aside className="hq-article-archive" aria-label="Archive notice">
+        <strong>{post.archiveYear} archive · US theatrical releases</strong>
+        <p>This guide covers selected releases from {post.archiveYear}. Dates are historical; current cinema and streaming availability may differ by country.</p>
+      </aside>}
+      {!!post.contents?.length && <nav className="hq-article-contents" aria-label="Article contents">
+        <details><summary>On this page</summary><ol>{post.contents.map(item => <li key={item.id}><a href={`#${item.id}`}>{item.label}</a></li>)}</ol></details>
+      </nav>}
+      <GalleryProvider key={post.slug}>
+        <div className="hq-article-prose">{post.content()}</div>
+      </GalleryProvider>
+      {!!post.sources?.length && <section className="hq-article-sources" aria-labelledby="sources">
+        <h2 id="sources" tabIndex={-1}>Sources</h2>
+        <p>Official film and technical references used for this article.</p>
+        <ul>{post.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
+      </section>}
+      {!!tags.length && <div className="hq-article-tags" aria-label="Article tags">{tags.map(tag => <span key={tag}>{tag}</span>)}</div>}
+      {!!others.length && <section className="hq-article-more" aria-labelledby="more-articles">
+        <h2 id="more-articles">{related.length ? "Related articles" : "More articles"}</h2>
+        <div className="hq-article-more-grid">{others.map(item => <Link key={item.slug} to={`/blog/${item.slug}`} state={{ blogReturn: backToBlog }} className="hq-article-card">
+          <span className="hq-article-card-meta">{primaryTopic(item)?.shortLabel} · {formatBlogDate(item.date)}{readingEstimate(item.readingMinutes) ? ` · ${readingEstimate(item.readingMinutes)}` : ""}</span>
+          <h3>{item.title}</h3><p>{item.excerpt}</p>
+        </Link>)}</div>
+      </section>}
+      <section className="hq-article-cta" aria-labelledby="quiz-next">
+        <div><h2 id="quiz-next">Put your movie knowledge to the test</h2><p>Choose a quiz and difficulty, or explore today's Daily challenge. Movie quizzes are open to guests. Daily requires an account.</p></div>
+        <div className="hq-article-actions"><Link to="/" className="hq-button-primary">Choose a quiz</Link><Link to="/daily" className="hq-button-secondary">Try Daily</Link></div>
+      </section>
+      <Link to={backToBlog} className="hq-article-back">← Back to blog</Link>
+    </article>
+  </>;
 }

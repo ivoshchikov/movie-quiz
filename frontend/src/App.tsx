@@ -43,6 +43,7 @@ export default function App() {
           <Route path="result"        element={<ResultScreen />} />
           <Route path="blog"          element={<BlogIndex />} />
           <Route path="blog/:slug"    element={<BlogPostPage />} />
+          <Route path="blog/*"        element={<BlogPostPage />} />
           <Route path="daily"         element={<DailyPage />} />
           <Route path="leaderboard"   element={<LeaderboardPage />} />
 

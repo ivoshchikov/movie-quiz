@@ -1,223 +1,76 @@
-// src/blog/entries/august-2025-new-movies.tsx
-import React from "react";
 import { buildNewReleasesPost } from "../kits/new-release";
-import type { BlogPost } from "../types";
+const CDN = "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025";
+const poster = (name: string) => CDN + "/" + name + ".webp";
 
-const CDN_BASE =
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025";
-
-const urls = {
-  cover:     `${CDN_BASE}/cover.webp`,
-  badGuys2:  `${CDN_BASE}/bad-guys-2.webp`,
-  nakedGun:  `${CDN_BASE}/naked-gun-2025.webp`,
-  freaky2:   `${CDN_BASE}/freaky-friday-2.webp`,
-  weapons:   `${CDN_BASE}/weapons-2025.webp`,
-  nobody2:   `${CDN_BASE}/nobody-2.webp`,
-  honeyDont: `${CDN_BASE}/honey-dont.webp`,
-  neZha2:    `${CDN_BASE}/ne-zha-2.webp`,
-};
-
-const Post: BlogPost = buildNewReleasesPost({
+const post = buildNewReleasesPost({
   slug: "august-2025-new-movies-guide",
-  title: "New Movies in August 2025: The Only Guide You Need",
-  excerpt:
-    "From a big animated sequel to a nostalgic comedy comeback, a nerve-shredding thriller, and kinetic action — here are the must-see theatrical releases in August 2025 (US), spoiler-free.",
-  date: "2025-08-13",
+  title: "August 2025 Movie Releases: 7 Picks (US)",
+  excerpt: "Seven August 2025 US theatrical picks, from The Bad Guys 2 and Freakier Friday to Weapons and Nobody 2, with release dates and spoiler-free summaries.",
+  date: "2025-08-13", modified: "2026-10-09", archiveYear: 2025,
   monthLabel: "August 2025",
-  tags: [
-    "New Releases",
-    "Movie Guide",
-    "In Theaters",
-    "Streaming & New Releases"
+  tags: ["New Releases", "Movie Guide", "In Theaters", "Streaming & New Releases"],
+  coverUrl: poster("bad-guys-2"), listingCoverUrl: poster("bad-guys-2"),
+  intro: "August 2025 brought animated adventures, two very different comedy revivals and several darker alternatives to US theaters. This selection covers seven releases, including the English-language version of Ne Zha II. Use the dates below to explore the lineup; the summaries avoid major plot reveals.",
+  sources: [
+    { label: "Universal Pictures — The Bad Guys 2", url: "https://www.universalpictures.com/movies/the-bad-guys-2" },
+    { label: "Paramount Pictures — The Naked Gun", url: "https://www.paramountpictures.com/movies/the-naked-gun" },
+    { label: "Disney — Freakier Friday", url: "https://movies.disney.com/freakier-friday" },
+    { label: "Warner Bros. Discovery — Weapons", url: "https://press.wbd.com/na/media-release/weapons-begins-streaming-exclusively-hbo-max-october-24?language_content_entity=en" },
+    { label: "Universal Pictures — Nobody 2 production credits", url: "https://www.universalpicturesathome.com/press-release/nobody-2-press-release" },
+    { label: "Focus Features — Honey Don't!", url: "https://www.focusfeatures.com/honey-dont" },
+    { label: "A24 — Ne Zha II", url: "https://a24films.com/films/ne-zha-2" },
+    { label: "A24 — Ne Zha II English-language release trailer", url: "https://www.youtube.com/watch?v=ETlOSBR92Fs" },
   ],
-  readingMinutes: 8,
-
-  // Если cover.webp не загрузите — в посте и на листинге отрисуется коллаж из gallery.
-  coverUrl: urls.badGuys2,
-  listingCoverUrl: urls.badGuys2,
-  archiveYear: 2025,
-
-  // Можно не указывать: соберётся из films.*posterUrl; оставляем для явной фиксации порядка.
-  gallery: [
-    urls.badGuys2,
-    urls.nakedGun,
-    urls.freaky2,
-    urls.weapons,
-    urls.nobody2,
-    urls.honeyDont,
-    urls.neZha2,
-  ],
-
   films: [
     {
-      title: "The Bad Guys 2",
-      posterUrl: urls.badGuys2,
-      release: "August 1, 2025 (US)",
-      director: "Pierre Perifel",
-      cast: ["Sam Rockwell", "Marc Maron", "Awkwafina"],
-      body: (
-        <>
-          <p>
-            DreamWorks’ slick animal-heist crew returns with brighter set pieces,
-            sharper timing, and a tone between caper and cartoon chaos. Expect brisk
-            pacing and punchline-dense dialogue engineered for a crowd.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> animated August openers can dominate
-            family moviegoing; this brand already proved strong four-quadrant legs.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> families, animation fans, and anyone who
-            likes kinetic action that stays kid-friendly.
-          </p>
-        </>
-      ),
+      id: "the-bad-guys-2", title: "The Bad Guys 2", posterUrl: poster("bad-guys-2"),
+      releaseDate: "2025-08-01", genre: "Animated adventure", director: "Pierre Perifel",
+      castLabel: "Voices", cast: ["Sam Rockwell", "Marc Maron", "Awkwafina"],
+      body: <><p>Wolf and his former criminal crew are trying to make an honest living when a new group of thieves draws them into another heist. The sequel continues DreamWorks' animated adaptation of Aaron Blabey's books.</p><p><strong>Consider it for:</strong> an animated caper with an ensemble of animal characters. The first film introduces the crew and their change of heart.</p></>,
     },
     {
-      title: "The Naked Gun",
-      posterUrl: urls.nakedGun,
-      release: "August 1, 2025 (US)",
-      director: "Akiva Schaffer",
+      id: "the-naked-gun", title: "The Naked Gun", posterUrl: poster("naked-gun-2025"),
+      releaseDate: "2025-08-01", genre: "Comedy", director: "Akiva Schaffer",
       cast: ["Liam Neeson", "Pamela Anderson"],
-      body: (
-        <>
-          <p>
-            A reboot that revives the anything-for-a-gag police spoof: rapid-fire
-            sight jokes, deadpan deliveries, and gleeful set-piece escalation —
-            aimed squarely at Friday-night laughers.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> theatrical slapstick is rare; a
-            crowd-pleasing entry can travel on word of mouth.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> fans of high-density joke machines and
-            legacy comedy brands.
-          </p>
-        </>
-      ),
+      body: <><p>Liam Neeson plays Frank Drebin Jr., the next generation of Police Squad's remarkably accident-prone law enforcement. Akiva Schaffer's revival brings the franchise's police spoof premise to a new lead, alongside Pamela Anderson.</p><p><strong>Consider it for:</strong> absurd detective comedy and visual gags. It follows the original Police Squad stories with Frank Drebin's son.</p></>,
     },
     {
-      title: 'Freaky Friday 2 ("Freakier Friday")',
-      posterUrl: urls.freaky2,
-      release: "August 8, 2025 (US)",
-      director: "Nisha Ganatra",
-      cast: ["Jamie Lee Curtis", "Lindsay Lohan"],
-      body: (
-        <>
-          <p>
-            Disney’s body-swap comedy returns, updated for the messiness of
-            adulthood — calendars, careers, and the awkward empathy of literally
-            living in someone else’s shoes.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> the 2003 film became a sleepover-era
-            classic; the sequel plays to families and nostalgia fans without
-            alienating newcomers.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> family outings, feel-good-comedy seekers,
-            and anyone who grew up quoting the original.
-          </p>
-        </>
-      ),
+      id: "freakier-friday", title: "Freakier Friday", posterUrl: poster("freaky-friday-2"),
+      releaseDate: "2025-08-08", genre: "Comedy", director: "Nisha Ganatra",
+      cast: ["Jamie Lee Curtis", "Lindsay Lohan", "Julia Butters", "Sophia Hammons"],
+      body: <><p>Tess and Anna Coleman return years after their original body swap. Anna now has a daughter and a soon-to-be stepdaughter, bringing another generation into the family's identity mix-ups.</p><p><strong>Consider it for:</strong> family comedy and a return to the characters of Disney's 2003 Freaky Friday.</p></>,
     },
     {
-      title: "Weapons",
-      posterUrl: urls.weapons,
-      release: "August 8, 2025 (US)",
-      director: "Zach Cregger",
+      id: "weapons", title: "Weapons", posterUrl: poster("weapons-2025"),
+      releaseDate: "2025-08-08", genre: "Horror", director: "Zach Cregger",
       cast: ["Josh Brolin", "Julia Garner"],
-      body: (
-        <>
-          <p>
-            An original thriller that leans into grounded dread, sharp turns, and
-            theater-grade sound that ratchets tension without cheap jump scares.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> August rarely gets prestige-leaning
-            horror at scale; expect this to be the month’s conversation piece.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> horror fans and date-night thrill-seekers
-            who enjoy puzzle-box narratives.
-          </p>
-        </>
-      ),
+      body: <><p>When almost an entire class of children disappears on the same night, the people left behind struggle to understand what happened. Zach Cregger's original horror story approaches that mystery through the surrounding community.</p><p><strong>Consider it for:</strong> a standalone horror mystery. There is no earlier installment to catch up on, and the less you know about its reveals, the better.</p></>,
     },
     {
-      title: "Nobody 2",
-      posterUrl: urls.nobody2,
-      release: "August 15, 2025 (US)",
-      director: "Ilya Naishuller",
-      cast: ["Bob Odenkirk"],
-      body: (
-        <>
-          <p>
-            The lean, bruising action saga returns with readable choreography,
-            crunchy impacts, Hong Kong–inflected fight craft, and a streak of black
-            humor intact.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> the first film became a word-of-mouth
-            favorite on home release; the sequel arrives to a hungrier fanbase.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> action die-hards and anyone who wants
-            practical-forward, stunt-driven set pieces.
-          </p>
-        </>
-      ),
+      id: "nobody-2", title: "Nobody 2", posterUrl: poster("nobody-2"),
+      releaseDate: "2025-08-15", genre: "Action comedy", director: "Timo Tjahjanto",
+      cast: ["Bob Odenkirk", "Connie Nielsen", "Sharon Stone"],
+      body: <><p>Hutch takes his family on vacation, but an encounter with local troublemakers puts them in the path of a crime boss. Bob Odenkirk returns to the role, with Timo Tjahjanto directing this sequel.</p><p><strong>Consider it for:</strong> action with a darkly comic premise. Nobody (2021) introduces Hutch and his family.</p></>,
     },
     {
-      title: "Honey Don’t!",
-      posterUrl: urls.honeyDont,
-      release: "August 22, 2025 (US)",
-      director: "Ethan Coen",
-      cast: ["Margaret Qualley", "Geraldine Viswanathan", "Aubrey Plaza"],
-      body: (
-        <>
-          <p>
-            A crime-tinged caper with neon-noir snap: quick reversals, tight scenes,
-            and performances that play comedy and danger in equal measure.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> late-summer originals can surprise if
-            they’re pacey and fun — this aims to be a fizzy crowd-pleaser.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> fans of stylish capers and twisty
-            relationship dynamics.
-          </p>
-        </>
-      ),
+      id: "honey-dont", title: "Honey Don't!", posterUrl: poster("honey-dont"),
+      releaseDate: "2025-08-22", genre: "Dark comedy", director: "Ethan Coen",
+      cast: ["Margaret Qualley", "Aubrey Plaza", "Chris Evans", "Charlie Day"],
+      body: <><p>Private investigator Honey O'Donahue investigates unusual deaths connected to a church. Ethan Coen and Tricia Cooke's dark comedy stars Margaret Qualley as Honey, with Aubrey Plaza and Chris Evans among the supporting leads.</p><p><strong>Consider it for:</strong> a standalone crime story with a comic angle.</p></>,
     },
     {
-      title: "Ne Zha II",
-      posterUrl: urls.neZha2,
-      release: "August 22, 2025 (US)",
-      director: "Yu Yang (Jiaozi)",
-      cast: ["(Animation, voice cast)"],
-      body: (
-        <>
-          <p>
-            The mythic fantasy sequel returns with large-scale set pieces and bold
-            color design, now with accessible English-language release for US
-            audiences.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> late-summer animation for older
-            kids/teens is under-served; this bridges the gap with spectacle and
-            folklore.
-          </p>
-          <p>
-            <strong>Who it’s for:</strong> animation fans, families with tweens/teens,
-            and anyone who loves operatic fantasy.
-          </p>
-        </>
-      ),
+      id: "ne-zha-ii", title: "Ne Zha II", posterUrl: poster("ne-zha-2"),
+      releaseDate: "2025-08-22", releaseNote: "English-language version",
+      genre: "Animated fantasy", director: "Jiao Zi",
+      castLabel: "English voices", cast: ["Michelle Yeoh", "Crystal Lee", "Vincent Rodriguez III", "Aleks Le"],
+      body: <><p>The Chinese animated fantasy continues Ne Zha's story, drawing on mythology as its young hero confronts a threat to humanity. A24 and CMC Pictures brought an English-language version to US theaters in August.</p><p><strong>Consider it for:</strong> mythological adventure and animation. The date here refers to the English-language release, not the film's original Chinese premiere.</p></>,
     },
   ],
+  faq: [
+    { question: "Which titles are family-oriented?", answer: <>The Bad Guys 2 is the animated adventure in this selection; Freakier Friday is Disney's multigenerational body-swap comedy. Check the official age rating and content guidance for your family. Animation alone does not make every film suitable for young children.</> },
+    { question: "Which is the standalone horror option?", answer: <>Weapons is the original horror mystery here. You do not need another film to understand its setup; avoid detailed plot breakdowns if you want to preserve the surprises.</> },
+    { question: "What should I watch before the sequels?", answer: <>The Bad Guys (2022), Freaky Friday (2003), Nobody (2021) and Ne Zha (2019) introduce the returning characters in their respective follow-ups.</> },
+    { question: "Do these dates tell me where the movies are streaming now?", answer: <>No. They record the US theatrical releases in August 2025. Current rental and streaming availability varies by country and service; the official film pages linked below are a starting point.</> },
+  ],
 });
-
-export default Post;
+export default post;

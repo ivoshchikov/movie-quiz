@@ -101,6 +101,7 @@ export default function Layout() {
 
   const { pathname } = loc;
   const isBlogIndex = pathname === "/blog" || pathname === "/blog/";
+  const isBlogArticle = pathname.startsWith("/blog/") && !isBlogIndex;
   const search = publicSearch(loc.search);
   useEffect(() => { loadGA(); }, []);
   useEffect(() => { pageview(`${pathname}${search || ""}`); }, [pathname, search]);
@@ -108,7 +109,7 @@ export default function Layout() {
 
   return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>
     <Helmet>
-      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : pathname}${isBlogIndex || ["/login", "/setup-profile"].includes(pathname) ? "" : search || ""}`} />
+      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || ["/login", "/setup-profile"].includes(pathname) ? "" : search || ""}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       <meta property="og:image" content={DEFAULT_OG} />
@@ -142,7 +143,7 @@ export default function Layout() {
           </Menu>}
       </div>
     </header>}
-    <main className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
+    <main className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
       {pathname !== "/login" && !showLogin && (callbackError || authError && !["/profile", "/setup-profile"].includes(pathname)) && <div className="hq-auth-banner" role="alert"><p>{callbackError || authError}</p><button className="hq-inline-action" onClick={() => { if (authError) retrySession(); else { clearCallbackError(); setShowLogin(true); } }}>{authError ? "Retry sign-in check" : "Try signing in again"}</button></div>}
       {!isGameView && nicknameNotice?.owner === owner && <div className="hq-auth-banner hq-nickname-notice"><p role="status">{nicknameNotice.alreadyChosen ? <>This account already has the nickname <strong>{nicknameNotice.nickname}</strong>. You can continue with it.</> : <>Your nickname is saved: <strong>{nicknameNotice.nickname}</strong>.</>}</p><button className="hq-inline-action" onClick={() => setNicknameNotice(null)}>Dismiss</button></div>}
       <Outlet context={{ chooseNickname, openLogin: () => setShowLogin(true), setDailyPlaying,
