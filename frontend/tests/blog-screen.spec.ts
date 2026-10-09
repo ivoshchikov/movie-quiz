@@ -4,8 +4,8 @@ import path from "node:path";
 import { mockQuizApi } from "./fixtures";
 const metadata = JSON.parse(readFileSync(path.resolve("src/blogMetadata.json"), "utf8")) as { title: string; description: string; intro: string; url: string };
 
-const september = "New Movies in September 2025: 9 Biggest Theatrical Releases (US)";
-const august = "New Movies in August 2025: The Only Guide You Need";
+const september = "September 2025 Movie Releases: 9 Picks (US)";
+const august = "August 2025 Movie Releases: 7 Picks (US)";
 const explainer = "Why 2.39:1 Feels More Cinematic";
 const cards = (page: Page) => page.locator(".hq-blog-card");
 const guides = (page: Page) => page.getByRole("button", { name: "Movie guides, 2 articles", exact: true });
@@ -34,7 +34,7 @@ test("the collection has accurate copy, chronological cards, counted topics and 
   await expect(cards(page).filter({ hasText: explainer }).locator(".hq-blog-archive")).toHaveCount(0);
   await expect(cards(page).locator(".hq-blog-card-topic")).toHaveText(["Movie guides", "Explainers", "Movie guides"]);
   await expect(cards(page).locator("time")).toHaveText(["Sep 1, 2025", "Aug 15, 2025", "Aug 13, 2025"]);
-  await expect(cards(page).first()).toContainText("~9 min read");
+  await expect(cards(page).first()).toContainText(/~[1-9]\d* min read/);
   expect(calls).toEqual([]);
 });
 
@@ -56,7 +56,7 @@ test("an article and related article retain the selected collection after reload
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(august);
   await page.reload();
   await expect(page.getByRole("link", { name: "← Back to blog" }).first()).toHaveAttribute("href", "/blog?topic=streaming");
-  await page.getByRole("link", { name: /New Movies in September 2025:/ }).click();
+  await page.getByRole("link", { name: /September 2025 Movie Releases:/ }).click();
   await page.getByRole("link", { name: "← Back to blog" }).first().click();
   await expect(page).toHaveURL(/\/blog\?topic=streaming$/); await expect(cards(page)).toHaveCount(2);
 });
@@ -153,7 +153,7 @@ for (const [timezoneId, locale] of [["America/Los_Angeles", "en-US"], ["Pacific/
   const page = await context.newPage(); await open(page);
   await expect(cards(page).first().locator("time")).toHaveText("Sep 1, 2025");
   await page.getByRole("link", { name: september, exact: true }).click();
-  await expect(page.locator("article > div time")).toHaveText("Sep 1, 2025");
+  await expect(page.locator(".hq-article-meta time").first()).toHaveText("Sep 1, 2025");
   await context.close();
 });
 

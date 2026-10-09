@@ -67,13 +67,49 @@ export function validateBlogPosts(posts: BlogPost[]): void {
     slugs.add(post.slug);
     if (!post.title.trim() || !post.excerpt.trim()) fail("title and excerpt are required");
     if (!validBlogDate(post.date)) fail("date must be a real YYYY-MM-DD calendar date");
+    if (post.modified && (!validBlogDate(post.modified) || post.modified < post.date)) fail("modified must be a real date on or after publication");
     if (!primaryTopic(post)) fail("a canonical topic is required");
     if (post.readingMinutes !== undefined && !readingEstimate(post.readingMinutes)) fail("readingMinutes must be a positive integer");
     if (post.archiveYear !== undefined && (!Number.isInteger(post.archiveYear) || post.archiveYear < 1900 || post.archiveYear > Number(post.date.slice(0, 4)))) fail("invalid archive year");
     for (const image of [post.listingCoverUrl, post.coverUrl, ...(post.gallery ?? [])]) {
       if (image && !listingImages({ ...post, listingCoverUrl: image, coverUrl: undefined, gallery: [] }).length) fail("image must be an absolute HTTPS URL");
     }
+    const ids = new Set<string>();
+    for (const item of post.contents ?? []) {
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(item.id) || ids.has(item.id) || !item.label.trim()) fail("invalid or duplicate contents item");
+      ids.add(item.id);
+    }
+    for (const source of post.sources ?? []) {
+      let valid = false;
+      try { valid = new URL(source.url).protocol === "https:" && !!source.label.trim(); } catch { /* checked below */ }
+      if (!valid) fail("sources need a label and an absolute HTTPS URL");
+    }
   }
+}
+
+/** Shared by the browser and the generated first HTTP response. */
+export function articleMetadata(post: BlogPost) {
+  const origin = new URL(import.meta.env.VITE_SITE_URL || metadata.url).origin;
+  const params = new URLSearchParams({ title: post.title, date: post.date });
+  return {
+    title: `${post.title} | Hard Quiz`, description: post.excerpt,
+    url: `${origin}/blog/${post.slug}`, image: `${origin}/api/og/post?${params}`,
+  };
+}
+
+export function articleJsonLd(post: BlogPost) {
+  const meta = articleMetadata(post);
+  return {
+    "@context": "https://schema.org", "@type": "BlogPosting",
+    "@id": `${meta.url}#article`, url: meta.url, headline: post.title,
+    description: post.excerpt, inLanguage: "en",
+    mainEntityOfPage: { "@type": "WebPage", "@id": meta.url },
+    ...(validBlogDate(post.date) ? { datePublished: post.date } : {}),
+    ...(post.modified && validBlogDate(post.modified) ? { dateModified: post.modified } : {}),
+    ...(listingImages(post)[0] ? { image: listingImages(post)[0] } : {}),
+    articleSection: primaryTopic(post)?.shortLabel,
+    publisher: { "@type": "Organization", name: "Hard Quiz", url: new URL(meta.url).origin },
+  };
 }
 
 export function blogCollectionJsonLd(posts: BlogPost[]) {

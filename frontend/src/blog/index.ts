@@ -1,5 +1,6 @@
 // src/blog/index.ts
 import type { BlogPost } from "./types";
+import { estimateReadingMinutes } from "./reading";
 
 // Посты
 import september2025Movies from "./entries/september-2025-new-movies"; // ← NEW
@@ -11,7 +12,7 @@ export const posts: BlogPost[] = [
   september2025Movies,
   august2025Movies,
   why239,
-];
+].map(post => ({ ...post, readingMinutes: estimateReadingMinutes(post.content()) }));
 
 export const allTags = Array.from(new Set(posts.flatMap((p) => p.tags))).sort();
 
@@ -32,6 +33,7 @@ export function getRelatedPosts(base: BlogPost, limit = 3): BlogPost[] {
         (p.tags || []).reduce((acc, t) => acc + (baseTags.has(t) ? 1 : 0), 0) || 0;
       return { p, overlap };
     })
+    .filter(({ overlap }) => overlap > 0)
     .sort((a, b) => {
       if (b.overlap !== a.overlap) return b.overlap - a.overlap;
       return +new Date(b.p.date) - +new Date(a.p.date);
@@ -39,12 +41,5 @@ export function getRelatedPosts(base: BlogPost, limit = 3): BlogPost[] {
     .slice(0, limit)
     .map((x) => x.p);
 
-  // Фоллбек: если нет пересечений, просто последние
-  if (scored.length === 0) {
-    return posts
-      .filter((p) => p.slug !== base.slug)
-      .sort((a, b) => +new Date(b.date) - +new Date(a.date))
-      .slice(0, limit);
-  }
   return scored;
 }

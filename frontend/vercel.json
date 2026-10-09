@@ -3,6 +3,9 @@
   "routes": [
     { "src": "^/blog\\.html$", "status": 301, "headers": { "Location": "/blog" } },
     { "src": "^/blog/?$", "dest": "/blog.html" },
+    { "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)\\.html$", "status": 301, "headers": { "Location": "/blog/$1" } },
+    { "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)/?$", "dest": "/blog/$1.html" },
+    { "src": "^/blog/_not-found\\.html$", "status": 404, "dest": "/blog/_not-found.html" },
     { "src": "^/setup-profile\\.html$", "status": 301, "headers": { "Location": "/setup-profile" } },
     { "src": "^/setup-profile/?$", "dest": "/setup-profile.html" },
     { "src": "^/login\\.html$", "status": 301, "headers": { "Location": "/login" } },
@@ -11,6 +14,7 @@
     { "src": "^/how-to-play/?$", "dest": "/how-to-play.html" },
     { "src": "/(sitemap\\.xml|feed\\.xml|robots\\.txt)", "dest": "/$1" },
     { "handle": "filesystem" },
+    { "src": "^/blog/.+$", "status": 404, "dest": "/blog/_not-found.html" },
     { "src": "/.*", "dest": "/index.html" }
   ]
 }

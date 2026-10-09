@@ -10,6 +10,7 @@ interface Props {
   ogImage?: string;
   type?: "website" | "article";
   url?: string;
+  canonical?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
@@ -20,6 +21,7 @@ export default function Seo({
   ogImage,
   type = "website",
   url,
+  canonical,
   noindex,
   jsonLd,
 }: Props) {
@@ -42,6 +44,7 @@ export default function Seo({
       {title && <title>{title}</title>}
       {description && <meta name="description" content={description} />}
       {noindex && <meta name="robots" content="noindex, nofollow" />}
+      {canonical && <link rel="canonical" href={canonical} />}
 
       {/* Open Graph */}
       {title && <meta property="og:title" content={title} />}
