@@ -15,7 +15,8 @@ const PRESENTATION_BUNDLE = path.join(CACHE_DIR, "blog-presentation.cjs");
 
 // Всегда генерим ссылки под apex-домен.
 // При необходимости можно переопределить через VITE_SITE_URL.
-const SITE_URL = process.env.VITE_SITE_URL || "https://hard-quiz.com";
+const SITE_URL = new URL(process.env.VITE_SITE_URL || "https://hard-quiz.com").origin;
+const SITE_DEFINE = { "import.meta.env.VITE_SITE_URL": JSON.stringify(SITE_URL) };
 
 const ensureDir =
   (p) => fs.existsSync(p) || fs.mkdirSync(p, { recursive: true });
@@ -35,6 +36,7 @@ const ensureDir =
     platform: "node",
     format: "cjs",
     bundle: true,
+    define: SITE_DEFINE,
     jsx: "automatic",
     loader: { ".ts": "ts", ".tsx": "tsx" },
     logLevel: "silent",
@@ -44,7 +46,7 @@ const ensureDir =
   if (!Array.isArray(posts)) throw new Error("posts export not found");
   await esbuild.build({
     entryPoints: [path.resolve(ROOT, "src/blog/presentation.ts")], outfile: PRESENTATION_BUNDLE,
-    platform: "node", format: "cjs", bundle: true, logLevel: "silent",
+    platform: "node", format: "cjs", bundle: true, define: SITE_DEFINE, logLevel: "silent",
   });
   const { validateBlogPosts, sortBlogPosts, blogCollectionJsonLd, articleMetadata, articleJsonLd } = require(PRESENTATION_BUNDLE);
   validateBlogPosts(posts);
@@ -113,7 +115,7 @@ ${urls}
     const prerenderBundle = path.join(CACHE_DIR, "blog-prerender.cjs");
     await esbuild.build({
       entryPoints: [path.resolve(ROOT, "src/blog/prerender.tsx")], outfile: prerenderBundle,
-      platform: "node", format: "cjs", bundle: true, packages: "external", jsx: "automatic",
+      platform: "node", format: "cjs", bundle: true, packages: "external", jsx: "automatic", define: SITE_DEFINE,
       loader: { ".css": "empty" }, logLevel: "silent",
     });
     const { renderBlogCollection, renderBlogArticle } = require(prerenderBundle);

@@ -1,5 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, mkdtempSync, mkdirSync, copyFileSync, symlinkSync, rmSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { mockQuizApi } from "./fixtures";
 
@@ -134,6 +136,43 @@ test("related articles use a common topic and the explainer honestly offers more
   await expect(page.getByRole("heading", { name: "More articles", exact: true })).toBeVisible();
   await expect(page.locator(".hq-article-card")).toHaveCount(2);
   await expect(page.getByRole("heading", { name: "Related articles", exact: true })).toHaveCount(0);
+});
+
+test("Back restores an unfragmented article's reading position after a related link", async ({ page }) => {
+  await open(page);
+  await page.locator(".hq-article-card").scrollIntoViewIfNeeded();
+  const position = await page.evaluate(() => scrollY);
+  expect(position).toBeGreaterThan(1000);
+  await page.locator(".hq-article-card").click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[1].title);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+  await page.goBack();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[0].title);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(position, 0);
+  await expect(page.locator(".hq-article-card")).toBeInViewport();
+});
+
+test("a configured origin agrees across generated article metadata, RSS and sitemap", () => {
+  const temp = mkdtempSync(path.join(tmpdir(), "hq-origin-"));
+  const origin = "https://quiz.example.test";
+  try {
+    mkdirSync(path.join(temp, "dist"));
+    copyFileSync(path.resolve("index.html"), path.join(temp, "dist/index.html"));
+    copyFileSync(path.resolve("vercel.json"), path.join(temp, "vercel.json"));
+    symlinkSync(path.resolve("src"), path.join(temp, "src"), "dir");
+    symlinkSync(path.resolve("node_modules"), path.join(temp, "node_modules"), "dir");
+    execFileSync(process.execPath, [path.resolve("scripts/generate-seo.cjs"), "dist"], { cwd: temp, env: { ...process.env, VITE_SITE_URL: origin }, stdio: "pipe" });
+    for (const article of articles) {
+      const html = readFileSync(path.join(temp, "dist/blog/" + article.slug + ".html"), "utf8");
+      expect(html).toContain('rel="canonical" href="' + origin + '/blog/' + article.slug + '"');
+      expect(html).toContain('property="og:url" content="' + origin + '/blog/' + article.slug + '"');
+      expect(html).toContain('property="og:image" content="' + origin + '/api/og/post?');
+      const structured = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1])).find(item => item["@type"] === "BlogPosting");
+      expect(structured.publisher.url).toBe(origin);
+      expect(structured.url).toBe(origin + "/blog/" + article.slug);
+      for (const file of ["feed.xml", "sitemap.xml"]) expect(readFileSync(path.join(temp, "dist/" + file), "utf8")).toContain(origin + "/blog/" + article.slug);
+    }
+  } finally { rmSync(temp, { recursive: true, force: true }); }
 });
 
 test("a failed image reserves its space, stops requests and resets on article navigation", async ({ page }) => {

@@ -89,7 +89,7 @@ export function validateBlogPosts(posts: BlogPost[]): void {
 
 /** Shared by the browser and the generated first HTTP response. */
 export function articleMetadata(post: BlogPost) {
-  const origin = new URL(metadata.url).origin;
+  const origin = new URL(import.meta.env.VITE_SITE_URL || metadata.url).origin;
   const params = new URLSearchParams({ title: post.title, date: post.date });
   return {
     title: `${post.title} | Hard Quiz`, description: post.excerpt,
@@ -108,7 +108,7 @@ export function articleJsonLd(post: BlogPost) {
     ...(post.modified && validBlogDate(post.modified) ? { dateModified: post.modified } : {}),
     ...(listingImages(post)[0] ? { image: listingImages(post)[0] } : {}),
     articleSection: primaryTopic(post)?.shortLabel,
-    publisher: { "@type": "Organization", name: "Hard Quiz", url: new URL(metadata.url).origin },
+    publisher: { "@type": "Organization", name: "Hard Quiz", url: new URL(meta.url).origin },
   };
 }
 

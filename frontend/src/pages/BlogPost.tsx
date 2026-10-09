@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigationType, useParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import { getPostBySlug, getRelatedPosts, posts } from "../blog";
 import { GalleryProvider } from "../blog/components/GalleryCollector";
@@ -9,12 +9,13 @@ import "../blog-article.css";
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
   const { state, hash } = useLocation();
+  const navigationType = useNavigationType();
   const backToBlog = blogReturnUrl(state);
   const post = getPostBySlug(slug);
 
   // Native links keep sections shareable and make Back/Forward restore a section.
   useEffect(() => {
-    if (!hash) { window.scrollTo(0, 0); return; }
+    if (!hash) { if (navigationType === "PUSH") window.scrollTo(0, 0); return; }
     let id: string;
     try { id = decodeURIComponent(hash.slice(1)); } catch { return; }
     const target = document.getElementById(id);
@@ -24,7 +25,7 @@ export default function BlogPostPage() {
       target?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
-  }, [slug, hash]);
+  }, [slug, hash, navigationType]);
 
   if (!post) return <section className="hq-article hq-article-empty">
     <Seo title="Article not found | Hard Quiz" description="This article is unavailable. Browse movie guides and film explainers on the Hard Quiz blog." noindex />
@@ -41,7 +42,7 @@ export default function BlogPostPage() {
   const tags = post.tags.filter(tag => tag !== topic?.label);
 
   return <>
-    <Seo title={meta.title} description={meta.description} ogImage={meta.image} type="article" url={meta.url} jsonLd={articleJsonLd(post)} />
+    <Seo title={meta.title} description={meta.description} ogImage={meta.image} type="article" url={meta.url} canonical={meta.url} jsonLd={articleJsonLd(post)} />
     <article className="hq-article" key={post.slug}>
       <Link to={backToBlog} className="hq-article-back">← Back to blog</Link>
       <header className="hq-article-header">
