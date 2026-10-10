@@ -31,13 +31,15 @@ test("unknown addresses keep their URL and offer a clear next step", async ({ pa
   await expect(page.getByRole("link", { name: "Back to blog", exact: true })).toHaveAttribute("href", "/blog");
 });
 
-test("footer navigation starts the new page at its heading and Back restores reading position", async ({ page }) => {
+test("reload and footer navigation preserve reading position while new pages start at their heading", async ({ page }) => {
   await mockQuizApi(page);
   await page.goto(article);
   const footer = page.getByRole("contentinfo").getByRole("link", { name: "How to play", exact: true });
   await footer.scrollIntoViewIfNeeded();
   const readingPosition = await page.evaluate(() => scrollY);
   expect(readingPosition).toBeGreaterThan(500);
+  await page.reload();
+  await expect.poll(async () => Math.abs(await page.evaluate(() => scrollY) - readingPosition)).toBeLessThan(8);
   await footer.click();
   await expect(page.getByRole("heading", { name: "How to play", exact: true })).toBeFocused();
   expect(await page.evaluate(() => scrollY)).toBe(0);
