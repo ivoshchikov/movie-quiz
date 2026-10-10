@@ -4,6 +4,7 @@ import { useAuth } from "../AuthContext";
 import { isGameResult, RESULT_UPDATED } from "../game/resultStorage";
 
 export const LEADERBOARD_TIMEOUT = 10000;
+export { formatQuizDuration } from "../utils/format";
 type Query<T> = { key: string; phase: "ready"; value: T } | { key: string; phase: "error" };
 
 function useRead<T>(key: string, load: (signal: AbortSignal) => Promise<T>, enabled = true) {
@@ -50,9 +51,4 @@ export function useLeaderboard(categoryId: number, difficultyId: number, limit: 
   }, [categoryId, difficultyId, owner, retryScores, retryPersonal]);
 
   return { key, user, authLoading, scores, availability, personal };
-}
-
-export function formatQuizDuration(seconds: number) {
-  const total = Math.floor(seconds);
-  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 }

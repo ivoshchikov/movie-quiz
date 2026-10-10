@@ -67,11 +67,11 @@ test('late question counts cannot unlock play after the selection changes', asyn
   await page.getByRole('radio', { name: /Actors/ }).click();
   await pending;
   await expect(page.getByRole('button', { name: 'Checking questions…' })).toBeDisabled();
+  const cancelled = page.waitForEvent('requestfailed', request => request.url().includes('category_id=eq.2') && request.url().includes('difficulty_level_id=eq.1'));
   await page.getByRole('radio', { name: 'Hard', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Coming soon' })).toBeDisabled();
-  const response = page.waitForResponse(item => item.url().includes('category_id=eq.2') && item.url().includes('difficulty_level_id=eq.1'));
   release();
-  await response;
+  await cancelled;
   await expect(page.getByRole('radio', { name: 'Hard', exact: true })).toHaveAttribute('aria-checked', 'true');
   await expect(page.getByRole('button', { name: 'Coming soon' })).toBeDisabled();
 });

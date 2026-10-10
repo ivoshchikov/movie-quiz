@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider }   from "./AuthProvider";
 import App                from "./App";
+import PageErrorBoundary  from "./components/PageErrorBoundary";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -12,11 +13,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     {/*  HelmetProvider должен быть самым верхним,      */}
     {/*  поэтому просто меняем местами два провайдера. */}
     <HelmetProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AuthProvider>
+      <PageErrorBoundary standalone>
+        <AuthProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </AuthProvider>
+      </PageErrorBoundary>
     </HelmetProvider>
   </React.StrictMode>
 );

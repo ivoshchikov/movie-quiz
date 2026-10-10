@@ -10,11 +10,7 @@ import type { SiteOutletContext } from "./Layout";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
 import "../result.css";
-
-function formatSecs(sec: number) {
-  const rounded = Math.floor(sec);
-  return `${String(Math.floor(rounded / 60)).padStart(2, "0")}:${String(rounded % 60).padStart(2, "0")}`;
-}
+import { formatQuizDuration } from "../utils/format";
 
 function ResultCard({ result }: { result: GameResult }) {
   const { user, session } = useAuth();
@@ -68,7 +64,7 @@ function ResultCard({ result }: { result: GameResult }) {
   const statusText = syncing ? "Syncing…" : failed ? "Couldn’t sync with your account." :
     result.saveStatus === "saved" ? "Synced with your account" : result.saveStatus === "memory" ?
       "Browser storage is unavailable. This result is available while this page is open." : "Saved on this device";
-  const duration = formatSecs(result.elapsedSecs);
+  const duration = formatQuizDuration(result.elapsedSecs);
   return <>
     <Seo title="Your result | Hard Quiz" description={`You scored ${result.score} point${result.score === 1 ? "" : "s"} in ${duration}. Play again to beat your score.`} noindex />
     <section className={`hq-panel hq-result-card${completed ? " hq-result-victory" : ""}`} aria-labelledby="result-title">

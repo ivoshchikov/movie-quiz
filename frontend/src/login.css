@@ -25,7 +25,7 @@
 .hq-login-bottom .hq-icon { width: 15px; height: 15px; }
 .hq-login-backdrop { position: fixed; inset: 0; background: #000b; }
 .hq-login-overlay { position: fixed; inset: 0; display: flex; align-items: flex-start; overflow-y: auto; padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)); }
-.hq-login-dialog .hq-login-card { margin-block: auto; flex-shrink: 0; --hq-background: #101116; --hq-surface: #191a22; --hq-surface-soft: #22232d; --hq-text: #f5f5fa; --hq-muted: #aeaeba; --hq-border: #30313d; --hq-purple: #a391ff; --hq-button: #7258ef; background: var(--hq-surface); color: var(--hq-text); font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; border: 1px solid var(--hq-border); border-radius: 16px; }
+.hq-login-dialog .hq-login-card { margin-block: auto; flex-shrink: 0; background: var(--hq-surface); color: var(--hq-text); font-family: var(--hq-font); border: 1px solid var(--hq-border); border-radius: 16px; }
 .hq-login-dialog button:focus-visible, .hq-login-dialog a:focus-visible { outline: 3px solid var(--hq-purple); outline-offset: 3px; }
 .hq-login-sent { display: flex; flex-direction: column; gap: 13px; border-radius: 8px; }
 .hq-login-symbol { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--hq-surface-soft); color: var(--hq-purple); }

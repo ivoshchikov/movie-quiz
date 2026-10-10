@@ -92,7 +92,7 @@
 .hq-article-cta h2 { margin: 0 0 10px; font-size: 22px; }
 .hq-article-cta p { margin: 0; color: #c1bfd2; font-size: 14px; line-height: 1.7; }
 .hq-article-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-.hq-article-actions a { min-height: 44px; }
+.hq-article-actions a { min-height: 46px; width: auto; }
 .hq-article-empty { padding-block: 24px; }
 .hq-article-eyebrow { font-size: 13px; color: #b9b1ff; }
 .hq-article-empty > p { margin-bottom: 20px; line-height: 1.7; }

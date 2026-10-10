@@ -1,5 +1,5 @@
 // frontend/src/App.tsx
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import Layout              from "./components/Layout";
@@ -17,6 +17,7 @@ import DailyPage           from "./pages/DailyPage";
 import AdminDailyPage      from "./pages/AdminDailyPage";
 import LeaderboardPage     from "./pages/LeaderboardPage";
 import ProfilePage         from "./pages/ProfilePage";
+import NotFound            from "./components/NotFound";
 
 export default function App() {
   return (
@@ -56,7 +57,7 @@ export default function App() {
           </Route>
 
           {/* fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>

@@ -406,7 +406,9 @@ test("a stalled SDK initialization refresh is cancelled and can recover on retry
   await page.goto("/");
   await expect.poll(() => requests).toBe(1);
   await page.clock.runFor(10_100);
-  await expect(page.getByRole("alert")).toContainText("could not be checked");
+  await expect(page.getByRole("alert").filter({ hasText: "Your sign-in status" })).toContainText("could not be checked");
+  const quiz = page.getByRole("region", { name: "Start a quiz", exact: true });
+  await expect(quiz.getByRole("alert")).toContainText("Quiz options could not be loaded.");
   // Let the SDK retry once on the same memoized initialization before recovery.
   await page.clock.runFor(500);
   await expect.poll(() => requests).toBeGreaterThan(1);
@@ -417,6 +419,8 @@ test("a stalled SDK initialization refresh is cancelled and can recover on retry
   await expect(page).toHaveURL("http://localhost:5173/");
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sb-quiz-fixture-auth-token") || "{}").user.id)).toBe("fixture-user");
   release();
+  await quiz.getByRole("button", { name: "Try again", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeEnabled();
 });
 
 test("nickname setup keeps its return page and never permits renaming", async ({ page }) => {

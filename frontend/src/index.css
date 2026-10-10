@@ -9,7 +9,8 @@
 html,
 body,
 #root {
-  @apply h-full bg-black text-white;
+  @apply h-full text-white;
+  background: var(--hq-background, #101116);
 }
 
 /* === START SCREEN === */
