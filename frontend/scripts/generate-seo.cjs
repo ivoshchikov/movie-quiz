@@ -119,7 +119,7 @@ ${urls}
       loader: { ".css": "empty" }, logLevel: "silent",
     });
     const { renderBlogCollection, renderBlogArticle } = require(prerenderBundle);
-    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false]]) {
+    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false], ["admin/daily", "adminDailyMetadata.json", true]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
       let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
       html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(metadata.title)}</title>`);
@@ -142,7 +142,9 @@ ${urls}
         const jsonLd = JSON.stringify(blogCollectionJsonLd(posts)).replace(/</g, "\\u003c");
         html = html.replace("</head>", `  <script data-rh="true" type="application/ld+json">${jsonLd}</script>\n</head>`);
       }
-      fs.writeFileSync(path.join(DEST_DIR, `${name}.html`), html, "utf8");
+      const output = path.join(DEST_DIR, `${name}.html`);
+      ensureDir(path.dirname(output));
+      fs.writeFileSync(output, html, "utf8");
     }
 
     const baseHtml = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");

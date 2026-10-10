@@ -133,15 +133,15 @@ test('admin history and answer search retain their typed fields and image URLs',
   await page.route('**/rest/v1/rpc/get_daily_history_admin', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify([{ d: '2026-10-06', question_id: 800, image_url: 'history-film.jpg', correct_answer: 'History Film', category_id: 1, difficulty_level_id: 1, total_answers: 5, correct_answers: 3, created_at: '2026-10-06T12:00:00Z' }]) }));
   await page.route('**/rest/v1/question?**', route => new URL(route.request().url()).searchParams.has('correct_answer')
     ? route.fulfill({ contentType: 'application/json', body: JSON.stringify([{ id: 801, image_url: 'https://quiz-fixture.supabase.co/fixture.svg', correct_answer: 'Search Film', category_id: 1, difficulty_level_id: 1 }]) })
-    : route.fallback());
+    : route.fulfill({ contentType: 'application/json', body: JSON.stringify([{ id: 801, image_url: 'https://quiz-fixture.supabase.co/fixture.svg', correct_answer: 'Search Film', options_json: ['Search Film', 'Second', 'Third', 'Fourth'], category_id: 1, difficulty_level_id: 1 }]) }));
   await page.goto('/admin/daily');
   await expect(page.getByText('History Film', { exact: true })).toBeVisible();
-  await expect(page.getByAltText('2026-10-06')).toHaveAttribute('src', /\/history-film\.jpg$/);
+  await expect(page.getByAltText('Daily for 2026-10-06')).toHaveAttribute('src', /\/history-film\.jpg$/);
   await expect(page.getByText('3/5 correct', { exact: true })).toBeVisible();
-  await page.getByPlaceholder('Type part of answer…').fill('Search');
+  await page.getByLabel('Search by answer').fill('Search');
   await expect(page.getByText('Search Film', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Use', exact: true }).click();
-  await expect(page.locator('input[type="number"]')).toHaveValue('801');
+  await page.getByRole('button', { name: 'Select question 801' }).click();
+  await expect(page.getByRole('heading', { name: 'Search Film' })).toBeVisible();
 });
 
 test('article posters remain available without gallery data and reset on navigation', async ({ page }) => {

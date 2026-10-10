@@ -1,6 +1,8 @@
 {
   "version": 2,
   "routes": [
+    { "src": "^/admin/daily\\.html$", "status": 301, "headers": { "Location": "/admin/daily" } },
+    { "src": "^/admin/daily/?$", "dest": "/admin/daily.html", "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "no-store" } },
     { "src": "^/blog\\.html$", "status": 301, "headers": { "Location": "/blog" } },
     { "src": "^/blog/?$", "dest": "/blog.html" },
     { "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)\\.html$", "status": 301, "headers": { "Location": "/blog/$1" } },
