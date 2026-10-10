@@ -46,6 +46,11 @@ test("reload and footer navigation preserve reading position while new pages sta
   await page.goBack();
   await expect(page).toHaveURL(new RegExp(article + "$"));
   await expect.poll(async () => Math.abs(await page.evaluate(() => scrollY) - readingPosition)).toBeLessThan(8);
+  await page.goto(article);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+  await page.goto("/how-to-play");
+  await expect(page.getByRole("heading", { name: "How to play", exact: true })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
 });
 
 test("query filters retain focus and do not reset the page", async ({ page }) => {

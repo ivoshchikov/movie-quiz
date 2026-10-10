@@ -15,8 +15,11 @@ interface ScrollPoint { top: number; left: number; }
 export default function SiteNavigation() {
   const location = useLocation();
   const navigation = useNavigationType();
+  // Direct document navigations share React Router's default key. Scope it
+  // to the page so a new address cannot inherit another page's reading point.
+  const scrollKey = location.key === "default" ? `default:${location.pathname}` : location.key;
   const previous = useRef<{ pathname: string; hash: string; key: string } | null>(null);
-  const activeKey = useRef(location.key);
+  const activeKey = useRef(scrollKey);
   const positions = useRef(new Map<string, ScrollPoint>());
 
   useLayoutEffect(() => {
@@ -40,27 +43,32 @@ export default function SiteNavigation() {
       try { sessionStorage.setItem(SCROLL_KEY, JSON.stringify([...positions.current])); } catch { /* Optional persistence. */ }
       window.history.scrollRestoration = "auto";
     };
+    const pageshow = () => { window.history.scrollRestoration = "manual"; };
     window.addEventListener("scroll", remember, { passive: true });
     window.addEventListener("popstate", remember);
     document.addEventListener("click", remember, true);
     window.addEventListener("pagehide", pagehide);
+    window.addEventListener("pageshow", pageshow);
     return () => {
       window.removeEventListener("scroll", remember);
       window.removeEventListener("popstate", remember);
       document.removeEventListener("click", remember, true);
       window.removeEventListener("pagehide", pagehide);
+      window.removeEventListener("pageshow", pageshow);
       window.history.scrollRestoration = restoration;
     };
   }, []);
 
   useLayoutEffect(() => {
     const before = previous.current;
-    const current = { pathname: location.pathname, hash: location.hash, key: location.key };
-    activeKey.current = location.key;
+    const current = { pathname: location.pathname, hash: location.hash, key: scrollKey };
+    activeKey.current = scrollKey;
     const pageChanged = before != null && before.pathname !== location.pathname;
     const hashChanged = before != null && before.hash !== location.hash;
     const sectionChanged = before == null || pageChanged || before.hash !== location.hash;
-    const initialRestore = before == null && navigation === "POP" && positions.current.has(location.key);
+    const documentNavigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const initialRestore = before == null && navigation === "POP" && positions.current.has(scrollKey) &&
+      (documentNavigation?.type === "reload" || documentNavigation?.type === "back_forward");
     // Query-only changes are filters: preserve the current scroll and focus.
     if (!pageChanged && !hashChanged && !(location.hash && sectionChanged) && !initialRestore) { previous.current = current; return; }
     const frame = requestAnimationFrame(() => {
@@ -79,12 +87,12 @@ export default function SiteNavigation() {
         }
       }
       if (pageChanged || hashChanged || initialRestore) {
-        const point = navigation === "POP" ? positions.current.get(location.key) : undefined;
+        const point = navigation === "POP" ? positions.current.get(scrollKey) : undefined;
         window.scrollTo({ top: point?.top ?? 0, left: point?.left ?? 0, behavior: "instant" });
         focusContent(document.querySelector<HTMLElement>("main h1") ?? document.getElementById("main-content"));
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [location.pathname, location.hash, location.key, navigation]);
+  }, [location.pathname, location.hash, scrollKey, navigation]);
   return null;
 }
