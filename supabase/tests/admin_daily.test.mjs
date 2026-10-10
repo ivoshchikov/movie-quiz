@@ -20,7 +20,7 @@ if (nativeUrl) {
 }
 const admin = '00000000-0000-0000-0000-000000000001';
 const player = '00000000-0000-0000-0000-000000000002';
-const migration = await readFile(new URL('../migrations/20261010173000_admin_daily_guard.sql', import.meta.url), 'utf8');
+const migration = await readFile(new URL('../migrations/20261010200933_admin_daily_guard.sql', import.meta.url), 'utf8');
 await db.exec(`
   create role anon; create role authenticated; create role service_role;
   create schema auth;
@@ -96,6 +96,8 @@ test('fallback starts and direct session/result writes use the same date lock', 
   assert.equal(triggers.rows[0].n,3);
 });
 test('untrusted roles cannot use the blind writer, modify assignments, or grant themselves admin', async () => {
+  const secured = await db.query("select count(*)::int as n from pg_class where oid in ('public.admin_users'::regclass,'public.daily_challenge'::regclass) and relrowsecurity");
+  assert.equal(secured.rows[0].n,2);
   for (const role of ['anon','authenticated']) {
     assert.equal((await db.query("select has_function_privilege($1,'public.set_daily_question(date,integer)','EXECUTE') as allowed",[role])).rows[0].allowed,false);
     assert.equal((await db.query("select has_table_privilege($1,'public.admin_users','INSERT') as allowed",[role])).rows[0].allowed,false);
@@ -103,6 +105,17 @@ test('untrusted roles cannot use the blind writer, modify assignments, or grant 
   }
   assert.equal((await db.query("select has_function_privilege('authenticated','public.set_daily_question_admin(date,integer,integer,bigint,uuid,jsonb)','EXECUTE') as allowed")).rows[0].allowed,true);
   assert.equal((await db.query("select has_function_privilege('anon','public.get_daily_assignment_admin(date)','EXECUTE') as allowed")).rows[0].allowed,false);
+  await db.exec('set role anon');
+  try {
+    assert.equal((await db.query('select question_id from public.daily_challenge where d=$1',[day(2)])).rows.length,1);
+    await assert.rejects(db.query('select * from public.admin_users'),/permission denied/);
+  } finally { await db.exec('reset role'); }
+  // RLS still protects membership if table privileges are accidentally restored.
+  await db.exec('begin; grant select,insert on public.admin_users to authenticated; set local role authenticated');
+  try {
+    assert.equal((await db.query('select * from public.admin_users')).rows.length,0);
+    await assert.rejects(db.query("insert into public.admin_users(user_id) values('00000000-0000-0000-0000-000000000003')"),/row-level security/);
+  } finally { await db.exec('rollback'); }
 });
 test('history keeps missing source questions and paginates with correct statistics', async () => {
   await save(day(7),2); await db.exec('delete from public.question where id=2');

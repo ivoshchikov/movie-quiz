@@ -162,6 +162,11 @@ $function$;
 
 -- Remove the legacy blind writer and direct client assignment/admin membership writes.
 -- Definer game RPCs continue to work; the existing session/result RLS is retained.
+alter table public.admin_users enable row level security;
+alter table public.daily_challenge enable row level security;
+-- Membership stays private. Assignments retain their existing public read access.
+drop policy if exists hq_ui11_assignment_read on public.daily_challenge;
+create policy hq_ui11_assignment_read on public.daily_challenge for select to anon, authenticated using (true);
 revoke all on function public.hq_lock_daily_date(date), public.hq_guard_daily_assignment(), public.hq_lock_daily_attempt() from public, anon, authenticated;
 revoke execute on function public.set_daily_question(date, integer) from public, anon, authenticated;
 revoke all on public.admin_users from public, anon, authenticated;
