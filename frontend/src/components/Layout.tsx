@@ -7,6 +7,8 @@ import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
 import NicknameModal from "./NicknameModal";
 import SiteIcon from "./SiteIcon";
+import SiteNavigation from "./SiteNavigation";
+import PageErrorBoundary from "./PageErrorBoundary";
 import { loadGA, pageview } from "../analytics/ga";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
@@ -29,14 +31,15 @@ export default function Layout() {
   const { user, session, loading: authLoading, error: authError, retrySession, callbackError, clearCallbackError, authReturned, finishAuthReturn, signOut } = useAuth();
   const navigate = useNavigate();
   const loc = useLocation();
+  const pathname = loc.pathname.replace(/\/+$/, "") || "/";
   const [showLogin, setShowLogin] = useState(false);
   const [showNickname, setShowNickname] = useState(false);
   const [nicknameNotice, setNicknameNotice] = useState<{ owner: string; nickname: string; alreadyChosen: boolean } | null>(null);
   const [admin, setAdmin] = useState<{ owner: string; value: boolean } | null>(null);
   const [dailyPlaying, setDailyPlaying] = useState(false);
-  const isProfileSetup = loc.pathname === "/setup-profile";
-  const isPlaying = loc.pathname === "/play";
-  const isGameView = isPlaying || (loc.pathname === "/daily" && dailyPlaying);
+  const isProfileSetup = pathname === "/setup-profile";
+  const isPlaying = pathname === "/play";
+  const isGameView = isPlaying || (pathname === "/daily" && dailyPlaying);
   const owner = user?.id ?? "";
   const loadProfile = useCallback((signal: AbortSignal) => getProfile(owner, signal), [owner]);
   const account = useReadRequest(owner, loadProfile, !authLoading && !!owner);
@@ -83,24 +86,23 @@ export default function Layout() {
       return;
     }
     if (!authLoading && owner && profileReady && !nickname && !isProfileSetup && !isGameView &&
-      ["/", "/daily", "/profile"].includes(loc.pathname) && !nicknameWasPrompted(owner)) {
+      ["/", "/daily", "/profile"].includes(pathname) && !nicknameWasPrompted(owner)) {
       markNicknamePrompted(owner); setShowNickname(true);
     }
-  }, [authLoading, owner, profileReady, nickname, isProfileSetup, isGameView, loc.pathname, loc.search, loc.hash, navigate]);
+  }, [authLoading, owner, profileReady, nickname, isProfileSetup, isGameView, pathname, loc.pathname, loc.search, loc.hash, navigate]);
 
   useEffect(() => {
     if (!user || authLoading || !authReturned) return;
     const saved = consumeAuthReturn();
     finishAuthReturn(); setShowLogin(false);
     // A direct callback destination wins over another attempt's fallback.
-    const destination = loc.pathname === "/login" ? loginReturnPath(loc) : loc.pathname === "/" ? saved : null;
+    const destination = pathname === "/login" ? loginReturnPath(loc) : pathname === "/" ? saved : null;
     if (destination && loc.pathname + loc.search + loc.hash !== destination) navigate(destination, { replace: true });
-  }, [user, authLoading, authReturned, finishAuthReturn, navigate, loc]);
+  }, [user, authLoading, authReturned, finishAuthReturn, navigate, loc, pathname]);
 
   useEffect(() => { setShowLogin(false); }, [loc.pathname, loc.search]);
 
-  const { pathname } = loc;
-  const isBlogIndex = pathname === "/blog" || pathname === "/blog/";
+  const isBlogIndex = pathname === "/blog";
   const isBlogArticle = pathname.startsWith("/blog/") && !isBlogIndex;
   const search = publicSearch(loc.search);
   useEffect(() => { loadGA(); }, []);
@@ -108,6 +110,8 @@ export default function Layout() {
   const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/vite.svg` };
 
   return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>
+    <SiteNavigation />
+    <a className="hq-skip-link" href="#main-content">Skip to content</a>
     <Helmet>
       <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || ["/login", "/setup-profile", "/admin/daily"].includes(pathname) ? "" : search || ""}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
@@ -143,11 +147,12 @@ export default function Layout() {
           </Menu>}
       </div>
     </header>}
-    <main className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
+    <main id="main-content" tabIndex={-1} className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
       {pathname !== "/login" && !showLogin && (callbackError || authError && !["/profile", "/setup-profile"].includes(pathname)) && <div className="hq-auth-banner" role="alert"><p>{callbackError || authError}</p><button className="hq-inline-action" onClick={() => { if (authError) retrySession(); else { clearCallbackError(); setShowLogin(true); } }}>{authError ? "Retry sign-in check" : "Try signing in again"}</button></div>}
       {!isGameView && nicknameNotice?.owner === owner && <div className="hq-auth-banner hq-nickname-notice"><p role="status">{nicknameNotice.alreadyChosen ? <>This account already has the nickname <strong>{nicknameNotice.nickname}</strong>. You can continue with it.</> : <>Your nickname is saved: <strong>{nicknameNotice.nickname}</strong>.</>}</p><button className="hq-inline-action" onClick={() => setNicknameNotice(null)}>Dismiss</button></div>}
-      <Outlet context={{ chooseNickname, openLogin: () => setShowLogin(true), setDailyPlaying,
+      <PageErrorBoundary resetKey={loc.pathname}><Outlet context={{ chooseNickname, openLogin: () => setShowLogin(true), setDailyPlaying,
         profileReady, hasNickname: !!nickname, nickname, profileError: account.error, retryProfile: account.retry, confirmNickname } satisfies SiteOutletContext} />
+      </PageErrorBoundary>
     </main>
     {!isGameView && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />

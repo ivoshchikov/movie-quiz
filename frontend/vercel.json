@@ -1,6 +1,7 @@
 {
   "version": 2,
   "routes": [
+    { "src": "^/index\\.html$", "status": 301, "headers": { "Location": "/" } },
     { "src": "^/admin/daily\\.html$", "status": 301, "headers": { "Location": "/admin/daily" } },
     { "src": "^/admin/daily/?$", "dest": "/admin/daily.html", "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "no-store" } },
     { "src": "^/blog\\.html$", "status": 301, "headers": { "Location": "/blog" } },
@@ -15,8 +16,11 @@
     { "src": "^/how-to-play\\.html$", "status": 301, "headers": { "Location": "/how-to-play" } },
     { "src": "^/how-to-play/?$", "dest": "/how-to-play.html" },
     { "src": "/(sitemap\\.xml|feed\\.xml|robots\\.txt)", "dest": "/$1" },
+    { "src": "^/$", "dest": "/index.html" },
+    { "src": "^/(play|result|daily|leaderboard|profile)/?$", "dest": "/index.html" },
+    { "src": "^/404\\.html$", "status": 404, "dest": "/404.html", "headers": { "X-Robots-Tag": "noindex, nofollow" } },
     { "handle": "filesystem" },
     { "src": "^/blog/.+$", "status": 404, "dest": "/blog/_not-found.html" },
-    { "src": "/.*", "dest": "/index.html" }
+    { "src": "/.*", "status": 404, "dest": "/404.html", "headers": { "X-Robots-Tag": "noindex, nofollow" } }
   ]
 }

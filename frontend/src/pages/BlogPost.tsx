@@ -1,39 +1,18 @@
-import { useEffect } from "react";
-import { Link, useLocation, useNavigationType, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import { getPostBySlug, getRelatedPosts, posts } from "../blog";
 import { GalleryProvider } from "../blog/components/GalleryCollector";
 import { articleJsonLd, articleMetadata, blogReturnUrl, blogTopicUrl, formatBlogDate, primaryTopic, readingEstimate, sortBlogPosts, validBlogDate } from "../blog/presentation";
 import "../blog-article.css";
+import NotFound from "../components/NotFound";
 
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
-  const { state, hash } = useLocation();
-  const navigationType = useNavigationType();
+  const { state } = useLocation();
   const backToBlog = blogReturnUrl(state);
   const post = getPostBySlug(slug);
 
-  // Native links keep sections shareable and make Back/Forward restore a section.
-  useEffect(() => {
-    if (!hash) { if (navigationType === "PUSH") window.scrollTo(0, 0); return; }
-    let id: string;
-    try { id = decodeURIComponent(hash.slice(1)); } catch { return; }
-    const target = document.getElementById(id);
-    // Let the browser finish its history scroll restoration before aligning focus.
-    const frame = requestAnimationFrame(() => {
-      target?.scrollIntoView();
-      target?.focus({ preventScroll: true });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [slug, hash, navigationType]);
-
-  if (!post) return <section className="hq-article hq-article-empty">
-    <Seo title="Article not found | Hard Quiz" description="This article is unavailable. Browse movie guides and film explainers on the Hard Quiz blog." noindex />
-    <p className="hq-article-eyebrow">Hard Quiz Blog</p>
-    <h1>Article not found</h1>
-    <p>We couldn't find an article at this address. Explore our movie guides and film explainers instead.</p>
-    <Link to={backToBlog} className="hq-button-primary">Back to blog</Link>
-  </section>;
+  if (!post) return <NotFound article blogReturn={backToBlog} />;
 
   const meta = articleMetadata(post);
   const topic = primaryTopic(post);
@@ -79,7 +58,7 @@ export default function BlogPostPage() {
       </section>}
       <section className="hq-article-cta" aria-labelledby="quiz-next">
         <div><h2 id="quiz-next">Put your movie knowledge to the test</h2><p>Choose a quiz and difficulty, or explore today's Daily challenge. Movie quizzes are open to guests. Daily requires an account.</p></div>
-        <div className="hq-article-actions"><Link to="/" className="hq-button-primary">Choose a quiz</Link><Link to="/daily" className="hq-button-secondary">Try Daily</Link></div>
+        <div className="hq-article-actions"><Link to="/" className="hq-primary">Choose a quiz</Link><Link to="/daily" className="hq-secondary">Try Daily</Link></div>
       </section>
       <Link to={backToBlog} className="hq-article-back">← Back to blog</Link>
     </article>

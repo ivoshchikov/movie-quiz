@@ -118,7 +118,7 @@ ${urls}
       platform: "node", format: "cjs", bundle: true, packages: "external", jsx: "automatic", define: SITE_DEFINE,
       loader: { ".css": "empty" }, logLevel: "silent",
     });
-    const { renderBlogCollection, renderBlogArticle } = require(prerenderBundle);
+    const { renderBlogCollection, renderBlogArticle, renderNotFoundPage } = require(prerenderBundle);
     for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false], ["admin/daily", "adminDailyMetadata.json", true]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
       let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
@@ -177,6 +177,14 @@ ${urls}
     fs.writeFileSync(path.join(blogDir, "_not-found.html"), withArticleMetadata({
       title: "Article not found | Hard Quiz", description: "This article is unavailable. Browse movie guides and film explainers on the Hard Quiz blog.", image: `${SITE_URL}/og/logo.webp?v=og2`,
     }, renderBlogArticle("_not-found.html"), null, true), "utf8");
+
+    fs.writeFileSync(path.join(DEST_DIR, "404.html"), withArticleMetadata({
+      title: "Page not found | Hard Quiz", description: "This page is unavailable. Choose a movie quiz or explore the Hard Quiz blog.", image: `${SITE_URL}/og/logo.webp?v=og2`,
+    }, renderNotFoundPage(), null, true), "utf8");
+    for (const entry of ["/", "/play", "/result", "/daily", "/leaderboard", "/profile"]) {
+      const route = routes.find(rule => rule.src && new RegExp(rule.src).test(entry));
+      if (!route || route.status || route.dest !== "/index.html") throw new Error(`Missing application entry route for ${entry} in vercel.json`);
+    }
 
   }
 

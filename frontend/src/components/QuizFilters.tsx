@@ -18,15 +18,16 @@ export default function QuizFilters({ categories, difficulties, categoryId, diff
       <RadioGroup.Label className="hq-legend">Category</RadioGroup.Label>
       <div className="hq-category-grid">
         {categories.map(category => <RadioGroup.Option as="button" type="button" key={category.id} value={category.id} className="hq-category-option">
-          <SiteIcon name={/actor|actress/i.test(category.name) ? "people" : "film"} />
+          {({ checked }) => <><SiteIcon name={/actor|actress/i.test(category.name) ? "people" : "film"} />
           <span><span className="hq-category-name">{categoryLabel(category)}</span><span className="hq-category-hint">{/actor|actress/i.test(category.name) ? "Recognize the faces" : "Guess from a frame"}</span></span>
+          {checked && <SiteIcon name="check" className="hq-category-check" />}</>}
         </RadioGroup.Option>)}
       </div>
     </RadioGroup>
     <RadioGroup value={difficultyId ?? null} onChange={onDifficultyChange} aria-label="Select level" className="hq-fieldset">
       <RadioGroup.Label className="hq-legend">Difficulty</RadioGroup.Label>
       <div className="hq-level-grid" style={{ gridTemplateColumns: `repeat(${Math.max(difficulties.length, 1)}, minmax(0, 1fr))` }}>
-        {difficulties.map(level => <RadioGroup.Option as="button" type="button" key={level.id} value={level.id} className="hq-difficulty-option">{level.name}</RadioGroup.Option>)}
+        {difficulties.map(level => <RadioGroup.Option as="button" type="button" key={level.id} value={level.id} className="hq-difficulty-option">{({ checked }) => <><span>{level.name}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}
       </div>
     </RadioGroup>
   </div>;

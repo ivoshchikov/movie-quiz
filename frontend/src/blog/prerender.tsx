@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import BlogIndex from "../pages/BlogIndex";
 import BlogPostPage from "../pages/BlogPost";
+import NotFound from "../components/NotFound";
 
 /** The same cards are readable in the first response and after React starts. */
 export function renderBlogCollection(): string {
@@ -12,4 +13,8 @@ export function renderBlogCollection(): string {
 
 export function renderBlogArticle(slug: string): string {
   return renderToStaticMarkup(<HelmetProvider context={{}}><StaticRouter location={`/blog/${slug}`}><div className="hq-site"><main className="hq-shell hq-article-main"><Routes><Route path="/blog/:slug" element={<BlogPostPage />} /></Routes></main></div></StaticRouter></HelmetProvider>);
+}
+
+export function renderNotFoundPage(): string {
+  return renderToStaticMarkup(<HelmetProvider context={{}}><StaticRouter location="/404"><div className="hq-site"><main className="hq-shell hq-fallback-main"><NotFound /></main></div></StaticRouter></HelmetProvider>);
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 const paths = {
+  check: <path d="m5 12 4 4L19 6" />,
   trophy: <><path d="M8 3h8v6a4 4 0 0 1-8 0V3Zm0 2H4v3a4 4 0 0 0 4 4m8-7h4v3a4 4 0 0 1-4 4m-4 1v5m-4 3h8m-6-3h4v3h-4Z" /></>,
   replay: <><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6" /></>,
   cinema: <><path d="m3 8 17-4-1-3L2 5l1 3Zm0 0v13h18V8H3Z" /><path d="m6 4 3 3m3-4 3 3m3-4 2 2M3 13h18" /></>,
