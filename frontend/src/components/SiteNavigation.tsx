@@ -45,13 +45,13 @@ export default function SiteNavigation() {
     };
     const pageshow = () => { window.history.scrollRestoration = "manual"; };
     window.addEventListener("scroll", remember, { passive: true });
-    window.addEventListener("popstate", remember);
+    window.addEventListener("popstate", remember, true);
     document.addEventListener("click", remember, true);
     window.addEventListener("pagehide", pagehide);
     window.addEventListener("pageshow", pageshow);
     return () => {
       window.removeEventListener("scroll", remember);
-      window.removeEventListener("popstate", remember);
+      window.removeEventListener("popstate", remember, true);
       document.removeEventListener("click", remember, true);
       window.removeEventListener("pagehide", pagehide);
       window.removeEventListener("pageshow", pageshow);
@@ -62,6 +62,9 @@ export default function SiteNavigation() {
   useLayoutEffect(() => {
     const before = previous.current;
     const current = { pathname: location.pathname, hash: location.hash, key: scrollKey };
+    // Pending scroll events can belong to the page we are leaving. Capture the
+    // destination's point before changing which entry those events update.
+    const point = navigation === "POP" ? positions.current.get(scrollKey) : undefined;
     activeKey.current = scrollKey;
     const pageChanged = before != null && before.pathname !== location.pathname;
     const hashChanged = before != null && before.hash !== location.hash;
@@ -87,7 +90,6 @@ export default function SiteNavigation() {
         }
       }
       if (pageChanged || hashChanged || initialRestore) {
-        const point = navigation === "POP" ? positions.current.get(scrollKey) : undefined;
         window.scrollTo({ top: point?.top ?? 0, left: point?.left ?? 0, behavior: "instant" });
         focusContent(document.querySelector<HTMLElement>("main h1") ?? document.getElementById("main-content"));
       }
