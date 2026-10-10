@@ -109,7 +109,7 @@ export default function Layout() {
 
   return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>
     <Helmet>
-      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || ["/login", "/setup-profile"].includes(pathname) ? "" : search || ""}`} />
+      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || ["/login", "/setup-profile", "/admin/daily"].includes(pathname) ? "" : search || ""}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       <meta property="og:image" content={DEFAULT_OG} />

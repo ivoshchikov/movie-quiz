@@ -27,6 +27,13 @@ jobs:
         working-directory: frontend
         run: npx playwright install --with-deps
 
+      - name: Build initial page metadata
+        working-directory: frontend
+        env:
+          VITE_SUPABASE_URL: https://quiz-fixture.supabase.co
+          VITE_SUPABASE_ANON_KEY: local-test-placeholder
+        run: npm run build
+
       # Запускаем E2E-тесты и собираем HTML-отчёт
       - name: Run Playwright tests
         working-directory: frontend

@@ -1,0 +1,33 @@
+name: Daily SQL guards
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  daily-sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ui11-test-only
+          POSTGRES_DB: hardquiz_ui11_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install isolated SQL test client
+        run: npm install --prefix "$RUNNER_TEMP/hq-sql-test" --no-package-lock --no-save pg@8.13.3
+      - name: Verify migration and concurrent transactions
+        env:
+          HQ_SQL_TEST_URL: postgresql://postgres:ui11-test-only@localhost:5432/hardquiz_ui11_test
+        run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-sql-test/node_modules/pg/lib/index.js" node --test supabase/tests/admin_daily.test.mjs
