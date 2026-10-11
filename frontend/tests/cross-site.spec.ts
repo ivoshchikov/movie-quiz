@@ -201,13 +201,13 @@ test("long labels and large text still reflow on narrow screens", async ({ page 
 });
 
 test("generated fallback has HTTP 404 and readable actions without JavaScript", async ({ browser }) => {
-  const rules = JSON.parse(readFileSync(path.resolve("vercel.json"), "utf8")).routes as { src?: string; dest?: string; status?: number; headers?: Record<string, string> }[];
+  const rules = JSON.parse(readFileSync(path.resolve("vercel.json"), "utf8")).routes as { has?: unknown; src?: string; dest?: string; status?: number; headers?: Record<string, string> }[];
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.route("**/assets/**", route => route.abort());
   await page.route("http://localhost:5173/ui12-unknown-page**", route => {
     const url = new URL(route.request().url());
-    const rule = rules.find(item => item.src && new RegExp(item.src).test(url.pathname))!;
+    const rule = rules.find(item => !item.has && item.src && new RegExp(item.src).test(url.pathname))!;
     return route.fulfill({ status: rule.status || 200, headers: rule.headers, contentType: "text/html", body: readFileSync(path.resolve("dist" + rule.dest), "utf8") });
   });
   const response = await page.goto("/ui12-unknown-page?source=fixture");

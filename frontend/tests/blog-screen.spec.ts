@@ -138,6 +138,8 @@ test("exhausted image fallbacks keep a stable clickable card without a retry loo
   let requests = 0;
   await page.route("**/storage/v1/object/public/**", route => { requests++; return route.abort(); });
   await page.goto("/blog");
+  // Wait for the lazily loaded collection before measuring its exhausted covers.
+  await expect(cards(page)).toHaveCount(3);
   await expect(cards(page).locator("img")).toHaveCount(0);
   await expect(cards(page).first().locator(".hq-blog-cover-fallback")).toBeVisible();
   const first = await cards(page).first().boundingBox();

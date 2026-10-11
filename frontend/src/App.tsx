@@ -5,20 +5,20 @@ import { lazy, Suspense } from "react";
 
 import Layout              from "./components/Layout";
 import StartScreen         from "./components/StartScreen";
-import GameScreen          from "./components/GameScreen";
-import ResultScreen        from "./components/ResultScreen";
-import HowToPlay           from "./components/HowToPlay";
+import ResultScreen from "./components/ResultScreen";
 import LoginScreen         from "./components/LoginScreen";
 import ProfileSetupScreen  from "./components/ProfileSetupScreen";
 import PrivateRoute        from "./PrivateRoute";
-import BlogIndex           from "./pages/BlogIndex";
-import BlogPostPage        from "./pages/BlogPost";
-import DailyPage           from "./pages/DailyPage";
+import DailyPage from "./pages/DailyPage";
 // ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
-import AdminDailyPage      from "./pages/AdminDailyPage";
-import LeaderboardPage     from "./pages/LeaderboardPage";
-import ProfilePage         from "./pages/ProfilePage";
 import NotFound            from "./components/NotFound";
+const GameScreen = lazy(() => import("./components/GameScreen"));
+const HowToPlay = lazy(() => import("./components/HowToPlay"));
+const BlogIndex = lazy(() => import("./pages/BlogIndex"));
+const BlogPostPage = lazy(() => import("./pages/BlogPost"));
+const AdminDailyPage = lazy(() => import("./pages/AdminDailyPage"));
+const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const AdminQuestionsPage=lazy(()=>import('./pages/AdminQuestionsPage'));
 const AdminQuestionsNewPage=lazy(()=>import('./pages/AdminQuestionsNewPage'));
 
@@ -35,6 +35,7 @@ export default function App() {
         <meta name="robots" content="index, follow" />
       </Helmet>
 
+      <Suspense fallback={<p role="status">Loading page…</p>}>
       <Routes>
         {/* всё под общим Layout */}
         <Route element={<Layout />}>
@@ -65,6 +66,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      </Suspense>
     </>
   );
 }

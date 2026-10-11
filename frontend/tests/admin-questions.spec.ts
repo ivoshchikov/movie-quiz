@@ -560,7 +560,7 @@ test("private routes are noindex in first HTTP metadata and contain no bank data
     expect(html).not.toContain("Private Film");
     expect(html).not.toContain("correct_answer");
     const route = routes.find(
-      (r: { src?: string }) => r.src && new RegExp(r.src).test(`/${name}`),
+      (r: { has?: unknown; src?: string }) => !r.has && r.src && new RegExp(r.src).test(`/${name}`),
     );
     expect(route.headers["Cache-Control"]).toBe("no-store");
     expect(route.headers["X-Robots-Tag"]).toBe("noindex, nofollow");

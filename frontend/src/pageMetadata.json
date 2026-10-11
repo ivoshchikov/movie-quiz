@@ -1,0 +1,41 @@
+{
+  "home": {
+    "title": "Movie & Actor Quiz | Hard Quiz",
+    "description": "Guess movies from stills and recognize famous actors. Choose a difficulty, beat the timer, or take on today's Daily Challenge.",
+    "url": "https://hard-quiz.com/",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Hard Quiz",
+      "url": "https://hard-quiz.com/"
+    }
+  },
+  "daily": {
+    "title": "Daily Challenge | Hard Quiz",
+    "description": "One image. One answer each day. Log in, solve the Daily and build your streak.",
+    "url": "https://hard-quiz.com/daily"
+  },
+  "leaderboard": {
+    "title": "Movie Quiz Leaderboard | Hard Quiz",
+    "description": "See all-time Hard Quiz personal bests for movie stills and actors. Compare scores by category and difficulty, then play the quiz.",
+    "url": "https://hard-quiz.com/leaderboard"
+  },
+  "play": {
+    "title": "Play | Hard Quiz",
+    "description": "Guess the movie or actor, beat the timer and score as many points as you can.",
+    "url": "https://hard-quiz.com/play",
+    "noindex": true
+  },
+  "result": {
+    "title": "Your result | Hard Quiz",
+    "description": "Play a movie or actor quiz and see your result. Choose a mode to start a new quiz.",
+    "url": "https://hard-quiz.com/result",
+    "noindex": true
+  },
+  "profile": {
+    "title": "My Results | Hard Quiz",
+    "description": "Sign in to view your saved movie and actor quiz personal bests.",
+    "url": "https://hard-quiz.com/profile",
+    "noindex": true
+  }
+}

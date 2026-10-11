@@ -50,6 +50,8 @@ const ensureDir =
   });
   const { validateBlogPosts, sortBlogPosts, blogCollectionJsonLd, articleMetadata, articleJsonLd } = require(PRESENTATION_BUNDLE);
   validateBlogPosts(posts);
+  const featured = JSON.parse(fs.readFileSync(path.join(ROOT, "src/featuredPostMetadata.json"), "utf8"));
+  if (!posts.some(post => post.slug === featured.slug && post.title === featured.title)) throw new Error("Homepage featured article metadata is out of date");
   const sorted = sortBlogPosts(posts);
 
   const escape = (s = "") =>
@@ -93,12 +95,12 @@ const ensureDir =
   fs.writeFileSync(path.join(DEST_DIR, "feed.xml"), rss, "utf8");
 
   // Sitemap
-  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/play", "/result"];
+  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/daily"];
   const paths = [...staticPaths.map(url => ({ url })), ...sorted.map(post => ({ url: `/blog/${post.slug}`, lastmod: post.modified || post.date }))];
   const urls = paths
     .map(
       ({ url, lastmod }) =>
-        `<url><loc>${SITE_URL}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<changefreq>weekly</changefreq><priority>0.7</priority></url>`,
+        `<url><loc>${escape(SITE_URL + url)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`,
     )
     .join("");
 
@@ -112,6 +114,12 @@ ${urls}
 
   // Serve page metadata in the first HTTP response, before React.
   if (DEST === "dist") {
+    // Start from an application shell, including when the generator is run twice.
+    const template = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8")
+      .replace(/<div id="root">[\s\S]*<\/div>\s*(?=<script|<\/body>)/, '<div id="root"></div>\n    ')
+      .replace(/<link\b[^>]*rel="canonical"[^>]*>/g, "")
+      .replace(/<meta\b[^>]*property="og:url"[^>]*>/g, "")
+      .replace(/<script\b[^>]*type="application\/ld\+json"[^>]*>[^<]*"@type":"WebSite"[^<]*<\/script>/g, "");
     const prerenderBundle = path.join(CACHE_DIR, "blog-prerender.cjs");
     await esbuild.build({
       entryPoints: [path.resolve(ROOT, "src/blog/prerender.tsx")], outfile: prerenderBundle,
@@ -119,9 +127,28 @@ ${urls}
       loader: { ".css": "empty" }, logLevel: "silent",
     });
     const { renderBlogCollection, renderBlogArticle, renderNotFoundPage } = require(prerenderBundle);
+    const publicBundle = path.join(CACHE_DIR, "public-prerender.cjs");
+    await esbuild.build({
+      entryPoints: [path.resolve(ROOT, "src/publicPrerender.tsx")], outfile: publicBundle,
+      platform: "node", format: "cjs", bundle: true, packages: "external", jsx: "automatic",
+      // Rendering only reads initial hook state. No API requests or credentials are used.
+      define: { ...SITE_DEFINE, "import.meta.env.VITE_SUPABASE_URL": JSON.stringify("https://prerender.invalid"), "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify("prerender-placeholder"), "import.meta.env.VITE_SUPABASE_BUCKET": JSON.stringify("movies") },
+      loader: { ".css": "empty" }, logLevel: "silent",
+    });
+    const { renderPublicPage } = require(publicBundle);
+    const pageStyles = (html, name) => {
+      // Lazy route CSS must also style the content served before JavaScript starts.
+      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"] }[name] || [];
+      const assetDir = path.join(DEST_DIR, "assets");
+      if (!fs.existsSync(assetDir)) return html;
+      const tags = fs.readdirSync(assetDir).filter(file => file.endsWith(".css") && prefixes.some(prefix => file.startsWith(prefix + "-"))).map(file => `<link rel="stylesheet" crossorigin href="/assets/${file}" />`).join("");
+      return html.replace("</head>", `${tags}</head>`);
+    };
+    const pages = JSON.parse(fs.readFileSync(path.join(ROOT, "src/pageMetadata.json"), "utf8"));
     for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false], ["admin/daily", "adminDailyMetadata.json", true], ["admin/questions", "adminQuestionsMetadata.json", true], ["admin/questions/new", "adminQuestionsNewMetadata.json", true]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
-      let html = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
+      metadata.url = SITE_URL + new URL(metadata.url).pathname;
+      let html = template;
       html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(metadata.title)}</title>`);
       for (const [attribute, key, value] of [
         ["name", "description", metadata.description],
@@ -137,6 +164,7 @@ ${urls}
       html = html.replace("</head>", `  <link data-rh="true" rel="canonical" href="${escape(metadata.url)}" />
       <meta data-rh="true" property="og:url" content="${escape(metadata.url)}" />
     </head>`);
+      if (name === "how-to-play") html = html.replace('<div id="root"></div>', `<div id="root">${renderPublicPage("/how-to-play")}</div>`);
       if (name === "blog") {
         html = html.replace('<div id="root"></div>', `<div id="root">${renderBlogCollection()}</div>`);
         const jsonLd = JSON.stringify(blogCollectionJsonLd(posts)).replace(/</g, "\\u003c");
@@ -144,10 +172,10 @@ ${urls}
       }
       const output = path.join(DEST_DIR, `${name}.html`);
       ensureDir(path.dirname(output));
-      fs.writeFileSync(output, html, "utf8");
+      fs.writeFileSync(output, pageStyles(html, name), "utf8");
     }
 
-    const baseHtml = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8");
+    const baseHtml = template;
     const withArticleMetadata = (meta, body, jsonLd, noindex = false) => {
       let html = baseHtml.replace(/<title\b[^>]*>[\s\S]*?<\/title>/, `<title data-rh="true">${escape(meta.title)}</title>`);
       for (const [attribute, key, value] of [
@@ -166,13 +194,13 @@ ${urls}
     const blogDir = path.join(DEST_DIR, "blog");
     ensureDir(blogDir);
     for (const post of sorted) {
-      const route = routes.find(rule => rule.src && new RegExp(rule.src).test(`/blog/${post.slug}`));
+      const route = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(`/blog/${post.slug}`));
       if (!route || route.status || !route.dest?.endsWith("$1.html")) throw new Error(`Missing article HTML route for ${post.slug} in vercel.json`);
       const body = renderBlogArticle(post.slug);
       for (const item of post.contents ?? []) {
         if (body.split(`id="${item.id}"`).length !== 2) throw new Error(`Missing or duplicate section ${item.id} in ${post.slug}`);
       }
-      fs.writeFileSync(path.join(blogDir, `${post.slug}.html`), withArticleMetadata(articleMetadata(post), body, articleJsonLd(post)), "utf8");
+      fs.writeFileSync(path.join(blogDir, `${post.slug}.html`), pageStyles(withArticleMetadata(articleMetadata(post), body, articleJsonLd(post)), "article"), "utf8");
     }
     fs.writeFileSync(path.join(blogDir, "_not-found.html"), withArticleMetadata({
       title: "Article not found | Hard Quiz", description: "This article is unavailable. Browse movie guides and film explainers on the Hard Quiz blog.", image: `${SITE_URL}/og/logo.webp?v=og2`,
@@ -181,9 +209,16 @@ ${urls}
     fs.writeFileSync(path.join(DEST_DIR, "404.html"), withArticleMetadata({
       title: "Page not found | Hard Quiz", description: "This page is unavailable. Choose a movie quiz or explore the Hard Quiz blog.", image: `${SITE_URL}/og/logo.webp?v=og2`,
     }, renderNotFoundPage(), null, true), "utf8");
+    for (const [name, meta] of Object.entries(pages)) {
+      const routePath = new URL(meta.url).pathname;
+      const metadata = { ...meta, url: SITE_URL + routePath, image: `${SITE_URL}/og/logo.webp?v=og2` };
+      const body = meta.noindex ? "" : renderPublicPage(routePath);
+      const structured = name === "home" ? { "@context": "https://schema.org", "@type": "WebSite", name: "Hard Quiz", url: `${SITE_URL}/` } : null;
+      fs.writeFileSync(path.join(DEST_DIR, name === "home" ? "index.html" : `${name}.html`), pageStyles(withArticleMetadata(metadata, body, structured, !!meta.noindex).replace('property="og:type" content="article"', 'property="og:type" content="website"'), name), "utf8");
+    }
     for (const entry of ["/", "/play", "/result", "/daily", "/leaderboard", "/profile"]) {
-      const route = routes.find(rule => rule.src && new RegExp(rule.src).test(entry));
-      if (!route || route.status || route.dest !== "/index.html") throw new Error(`Missing application entry route for ${entry} in vercel.json`);
+      const route = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(entry));
+      if (!route || route.status || route.dest !== (entry === "/" ? "/index.html" : "/$1.html")) throw new Error(`Missing application entry route for ${entry} in vercel.json`);
     }
 
   }
