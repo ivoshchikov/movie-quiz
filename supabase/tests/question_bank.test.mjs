@@ -51,7 +51,7 @@ else await db.exec("create function extensions.gen_random_bytes(n integer) retur
 await db.exec(await readFile(new URL('../migrations/20261010200933_admin_daily_guard.sql',import.meta.url),'utf8'));
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011145955_admin_question_bank.sql',import.meta.url),'utf8'));await db.exec('commit');
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011161955_question_privacy.sql',import.meta.url),'utf8'));await db.exec('commit');
-await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011165030_question_edit_delete.sql',import.meta.url),'utf8'));await db.exec('commit');
+await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011170955_question_edit_delete.sql',import.meta.url),'utf8'));await db.exec('commit');
 const uid=async id=>db.query("select set_config('request.jwt.claim.sub',$1,false)",[id??'']);
 const scalar=async(sql,args)=>(await db.query(sql,args)).rows[0].v;
 const reserve=async(id,category=1,allow=false,hash=id.replaceAll('-','').repeat(2))=>scalar('select public.admin_import_reserve($1,$2,$3,$4,null,$5,1,$6,0,$7) v',[admin,id,'f'.repeat(64),hash,category,JSON.stringify(options),allow]);
