@@ -101,8 +101,8 @@ test("a stalled question check can retry with the same selected quiz", async ({ 
   await mockQuizApi(page);
   await page.clock.install();
   let stall = false;
-  await page.route("**/rest/v1/question?**", async route => {
-    if (!stall || !new URL(route.request().url()).searchParams.has("difficulty_level_id")) await route.fallback();
+  await page.route("**/rest/v1/rpc/count_questions", async route => {
+    if (!stall || route.request().postDataJSON().p_difficulty_id == null) await route.fallback();
   });
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();

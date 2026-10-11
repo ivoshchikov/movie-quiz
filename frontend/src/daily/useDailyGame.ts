@@ -119,7 +119,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
           const status = await request(signal => getMyDailyResult(userId, run.date, signal));
           if (!valid(id)) throw new Error("inactive-daily");
           if (status.is_answered) return status;
-          await request(signal => submitDailyResult(userId, run.date, pending.correct, pending.seconds, signal));
+          await request(signal => submitDailyResult(userId, run.date, pending.selected, pending.seconds, signal));
           if (!valid(id)) throw new Error("inactive-daily");
           const saved = await request(signal => getMyDailyResult(userId, run.date, signal));
           if (!saved.is_answered) throw new Error("unconfirmed-daily");
@@ -140,7 +140,6 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
         // Lock synchronously, before reading the server. Retries retain this payload.
         const stored = readDailyRun(userId!, state.date);
         const run: DailyRun = stored?.pending ? stored : { ...state.run, pending: { selected,
-          correct: selected.trim() === state.question.correct_answer?.trim(),
           seconds: Math.max(1, Math.floor((Date.now() - state.run.startedAt) / 1000)) } };
         const storageAvailable = writeDailyRun(run);
         update({ phase: "save-error", run, storageAvailable, elapsed: run.pending!.seconds });

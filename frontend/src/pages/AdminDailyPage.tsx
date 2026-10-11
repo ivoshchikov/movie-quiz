@@ -8,6 +8,8 @@ import { useReadRequest, READ_TIMEOUT } from "../hooks/useReadRequest";
 import { categoryLabel } from "../hooks/useQuizCatalog";
 import { dailyDate, dailyDateLabel } from "../daily/time";
 import AdminImage from "../admin/AdminImage";
+import { AdminNavigation } from '../admin/AdminAccess';
+import '../admin-questions.css';
 import {
   checkAdminRights,
   getAdminAssignment,
@@ -450,6 +452,7 @@ function AdminDailyWorkspace({
 
   return (
     <div className="hq-admin">
+      <AdminNavigation />
       <header className="hq-admin-heading">
         <p className="hq-eyebrow">Administration</p>
         <h1>Daily Challenge</h1>

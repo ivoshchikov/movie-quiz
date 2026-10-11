@@ -123,12 +123,12 @@ test("the next step chooses a mode and does not auto-start a regular quiz or Dai
   await page.getByRole("link", { name: "Start a quiz", exact: true }).last().click();
   await expect(page).toHaveURL("http://localhost:5173/");
   await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeVisible();
-  expect(calls.filter(call => call.name === "get_question")).toHaveLength(0);
+  expect(calls.filter(call => call.name === "get_game_question")).toHaveLength(0);
   await page.getByRole("link", { name: "How to play", exact: true }).click();
   await page.getByRole("link", { name: "View Daily", exact: true }).click();
   await expect(page).toHaveURL(/\/daily$/);
   await expect(page.getByRole("button", { name: "Log in to play", exact: true })).toBeVisible();
-  expect(calls.filter(call => ["start_daily_session", "submit_daily_result", "upsert_user_best", "touch_question_stats"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["start_daily_session", "submit_daily_answer", "upsert_user_best", "touch_question_stats"].includes(call.name))).toHaveLength(0);
 });
 
 test("page metadata has one owner on direct load and after client-side navigation", async ({ page }) => {
@@ -222,9 +222,9 @@ test("capture the current game demonstration with an isolated sample question", 
   const calls = await mockQuizApi(page);
   const choices = ["Interstellar (2014)", "Moon (2009)", "Gravity (2013)", "The Martian (2015)"];
   await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(difficulties.map(level => ({ ...level, time_limit_secs: 30 }))) }));
-  await page.route("**/rest/v1/rpc/get_question", route => {
-    calls.push({ name: "get_question", payload: route.request().postDataJSON() });
-    return route.fulfill({ contentType: "application/json", body: JSON.stringify([{ id: 81001, image_url: "https://quiz-fixture.supabase.co/how-to-play-scene.svg", options_json: choices, category_id: 1, difficulty_level_id: 1 }]) });
+  await page.route("**/rest/v1/rpc/get_game_question", route => {
+    calls.push({ name: "get_game_question", payload: route.request().postDataJSON() });
+    return route.fulfill({ contentType: "application/json", body: JSON.stringify([{ id: 81001, answer_token: "00000000-0000-4000-8000-000000081001", image_url: "https://quiz-fixture.supabase.co/how-to-play-scene.svg", options_json: choices, category_id: 1, difficulty_level_id: 1 }]) });
   });
   const scene = await readFile(path.resolve("tests/assets/how-to-play-scene.svg"), "utf8");
   await page.route("**/how-to-play-scene.svg", route => route.fulfill({ contentType: "image/svg+xml", body: scene }));
@@ -234,7 +234,7 @@ test("capture the current game demonstration with an isolated sample question", 
   await page.clock.runFor(6000);
   await expect(page.locator(".hq-game-timer-label strong")).toHaveText("24 s");
   await expect(page.locator(".hq-game-footer strong")).toHaveText("00:06");
-  expect(calls.filter(call => ["start_daily_session", "submit_daily_result", "upsert_user_best", "touch_question_stats"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["start_daily_session", "submit_daily_answer", "upsert_user_best", "touch_question_stats"].includes(call.name))).toHaveLength(0);
   if (process.env.HQ_CAPTURE_DEMO === "1") {
     await page.mouse.move(0, 0);
     await page.locator(".hq-game").screenshot({ path: path.resolve("public/how-to-play-game.png") });

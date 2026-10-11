@@ -1,4 +1,4 @@
-export interface DailyAnswer { selected: string; correct: boolean; seconds: number; }
+export interface DailyAnswer { selected: string; seconds: number; }
 export interface DailyRun {
   version: 1; userId: string; date: string; questionId: number; startedAt: number;
   options: string[]; pending?: DailyAnswer;
@@ -16,7 +16,7 @@ function parseRun(value: unknown, userId: string, date: string): DailyRun | null
     !Number.isInteger(row.questionId) || !Number.isFinite(row.startedAt) || row.startedAt! <= 0 || row.startedAt! > Date.now() + 1000 ||
     !Array.isArray(row.options) || row.options.length !== 4 || !row.options.every(option => typeof option === "string" && !!option.trim()) || new Set(row.options).size !== 4) return null;
   if (row.pending && (typeof row.pending.selected !== "string" || !row.options.includes(row.pending.selected) ||
-    typeof row.pending.correct !== "boolean" || !Number.isInteger(row.pending.seconds) || row.pending.seconds < 1)) return null;
+    !Number.isInteger(row.pending.seconds) || row.pending.seconds < 1)) return null;
   return row as DailyRun;
 }
 export function readDailyRun(userId: string, date: string) {

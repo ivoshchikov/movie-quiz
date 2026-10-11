@@ -8,7 +8,7 @@ async function startDaily(page: Page) {
   await page.getByRole("button", { name: "Start Daily", exact: true }).click();
   await expect(page.getByRole("button", { name: dailyChoices[0], exact: true })).toBeEnabled();
 }
-const submitted = (data: Awaited<ReturnType<typeof dailyFixture>>) => data.calls.filter(call => call.name === "submit_daily_result");
+const submitted = (data: Awaited<ReturnType<typeof dailyFixture>>) => data.calls.filter(call => call.name === "submit_daily_answer");
 
 test("guest sees clear rules and sign-in, without loading an answer or starting a session", async ({ page }) => {
   const data = await dailyFixture(page, false);
@@ -71,7 +71,7 @@ test("correct result stays visible, uses server time and refreshes the streak", 
   await expect(page.locator(".hq-daily-stats dd").first()).toHaveText("4 days");
   await expect(page.getByText("13 correct Daily answers", { exact: true })).toBeVisible();
   await expect(page.getByText("Synced with your account", { exact: true })).toBeVisible();
-  expect(submitted(data)[0]?.payload).toEqual({ p_user_id: "fixture-user", p_date: today, p_is_correct: true, p_time: 87 });
+  expect(submitted(data)[0]?.payload).toEqual({ p_user_id: "fixture-user", p_date: today, p_answer: dailyChoices[0], p_time: 87 });
   await expect(page.locator(".hq-header, .hq-footer")).toHaveCount(2);
   await expect(page.getByRole("link", { name: "Share on X" })).toHaveAttribute("href", /^https:\/\/twitter.com\/intent\/tweet/);
 });
@@ -83,7 +83,7 @@ test("wrong result removes the question and never reveals the right answer", asy
   await expect(page.getByRole("heading", { name: "Not this time", exact: true })).toBeVisible();
   await expect(page.getByText(dailyChoices[0], { exact: true })).toHaveCount(0);
   await expect(page.locator(".hq-answer-correct, .hq-game-image, .hq-game-answer")).toHaveCount(0);
-  expect(submitted(data)[0]?.payload.p_is_correct).toBe(false);
+  expect(submitted(data)[0]?.payload.p_answer).toBe(dailyChoices[1]);
   expect(decodeURIComponent(await page.getByRole("link", { name: "Share on X" }).getAttribute("href") || "")).not.toContain(dailyChoices[0]);
 });
 
@@ -93,7 +93,7 @@ test("a reopened answered Daily displays its saved result without starting or fe
   await page.goto("/daily");
   await expect(page.getByRole("heading", { name: "Not this time", exact: true })).toBeVisible();
   await expect(page.locator(".hq-daily-result-time strong")).toHaveText("02:08");
-  expect(data.calls.filter(call => ["start_daily_session", "get_daily_question", "submit_daily_result"].includes(call.name))).toHaveLength(0);
+  expect(data.calls.filter(call => ["start_daily_session", "get_daily_question_public", "submit_daily_answer"].includes(call.name))).toHaveLength(0);
 });
 
 test("double clicks and competing number keys freeze one selection before any network read", async ({ page }) => {
@@ -112,7 +112,7 @@ test("double clicks and competing number keys freeze one selection before any ne
   release();
   await expect(page.getByRole("heading", { name: "Not this time" })).toBeVisible();
   expect(submitted(data)).toHaveLength(1);
-  expect(submitted(data)[0].payload).toMatchObject({ p_is_correct: false, p_time: 13 });
+  expect(submitted(data)[0].payload).toMatchObject({ p_answer: dailyChoices[1], p_time: 13 });
 });
 
 test("submission failure retries an immutable answer and time, including after reload", async ({ page }) => {
@@ -152,7 +152,7 @@ test("a failed status read blocks start or submission, rather than guessing unan
   data.failStatus = true;
   await page.goto("/daily");
   await expect(page.getByRole("heading", { name: "Daily couldn’t load" })).toBeVisible();
-  expect(data.calls.filter(call => call.name === "get_daily_question")).toHaveLength(0);
+  expect(data.calls.filter(call => call.name === "get_daily_question_public")).toHaveLength(0);
   data.failStatus = false;
   await page.getByRole("button", { name: "Try again", exact: true }).click();
   await page.getByRole("button", { name: "Start Daily", exact: true }).click();

@@ -198,7 +198,7 @@ test("the primary and Daily links select a next step without starting a game", a
   await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
   await page.goBack(); await page.getByRole("link", { name: "Daily Challenge", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/daily");
-  expect(calls.filter(call => ["get_question", "start_daily_session", "submit_daily_result", "upsert_user_best"].includes(call.name))).toEqual([]);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session", "submit_daily_answer", "upsert_user_best"].includes(call.name))).toEqual([]);
 });
 
 for (const size of [{ width: 1440, height: 900 }, { width: 768, height: 1024 }, { width: 390, height: 844 }, { width: 320, height: 568 }, { width: 844, height: 390 }]) test(`cards, filters and actions remain usable at ${size.width}×${size.height}`, async ({ page }) => {

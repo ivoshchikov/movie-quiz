@@ -19,11 +19,7 @@ async function fixture(page: Page, signedIn = false) {
     calls.push({ name: "get_leaderboard", payload });
     return route.fulfill({ status: data.failScores ? 503 : 200, contentType: "application/json", body: JSON.stringify(data.failScores ? { message: "fixture unavailable" } : data.malformed ? [{ nickname: "Invalid", best_score: 10, best_time: null }] : data.rows.slice(0, payload.p_limit)) });
   });
-  await page.route("**/rest/v1/question?**", route => {
-    const url = new URL(route.request().url());
-    if (url.searchParams.get("select") === "correct_answer") return route.fallback();
-    return route.fulfill({ status: data.failCount ? 503 : 200, contentType: "application/json", headers: data.missingCount ? {} : { "content-range": `0-${Math.max(0, data.count - 1)}/${data.count}`, "access-control-expose-headers": "content-range" }, body: "" });
-  });
+  await page.route("**/rest/v1/rpc/count_questions", route => route.fulfill({ status: data.failCount ? 503 : 200, contentType: "application/json", body: JSON.stringify(data.missingCount ? null : data.count) }));
   await page.route("**/rest/v1/user_best?**", route => {
     data.bestCalls++;
     const url = new URL(route.request().url());
@@ -53,7 +49,7 @@ test("the public list shows saved duration without starting a game", async ({ pa
   await expect(page.getByRole("button", { name: "Show top 20" })).toHaveCount(0);
   await page.getByText("How ranking works", { exact: true }).click();
   await expect(page.getByText(/including loading and feedback/)).toBeVisible();
-  expect(calls.some(call => ["get_question", "upsert_user_best", "start_daily_session"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["get_game_question", "upsert_user_best", "start_daily_session"].includes(call.name))).toBe(false);
 });
 
 test("top 10 can expand to top 20 and preserves the server order for ties", async ({ page }) => {
@@ -92,7 +88,7 @@ test("the quiz action uses both selected ids and remains available to guests", a
   await page.getByRole("link", { name: "Play this quiz", exact: true }).click();
   await expect(page).toHaveURL(/\/play$/);
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-  await expect.poll(() => calls.filter(call => call.name === "get_question").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
+  await expect.poll(() => calls.filter(call => call.name === "get_game_question").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
 });
 
 test("the login invitation preserves the selected leaderboard and does not publish a guest result", async ({ page }) => {
@@ -291,7 +287,7 @@ test("the catalog times out and can be retried without starting an attempt", asy
   release();
   await page.getByRole("button", { name: "Try again", exact: true }).click();
   await expect(page.locator(".hq-leaderboard-table")).toBeVisible();
-  expect(calls.some(call => call.name === "get_question")).toBe(false);
+  expect(calls.some(call => call.name === "get_game_question")).toBe(false);
 });
 
 test("a late private response stays hidden after sign-out", async ({ page }) => {

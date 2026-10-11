@@ -39,7 +39,7 @@ test("page and modal share email/Google, a labeled field and guest access", asyn
   await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
   await page.getByRole("link", { name: /Play a regular quiz as a guest/ }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
-  expect(calls.filter(call => ["get_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toHaveLength(0);
 });
 
 test("email success is inline, focused and does not announce an authenticated session", async ({ page }) => {
@@ -179,7 +179,7 @@ for (const destination of ["https://evil.test", "//evil.test", "/\\evil.test", "
     const request = page.waitForRequest(item => new URL(item.url()).pathname === "/auth/v1/otp");
     await send(page);
     expect(new URL((await request).url()).searchParams.get("redirect_to")).toBe("http://localhost:5173/");
-    expect(calls.filter(call => ["get_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
+    expect(calls.filter(call => ["get_game_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
   });
 }
 
@@ -192,7 +192,7 @@ test("confirmed sign-in closes the modal and does not start Daily", async ({ pag
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeVisible();
   await expect(page).toHaveURL(/\/daily$/);
-  expect(calls.filter(call => ["get_question", "start_daily_session", "submit_daily_result"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session", "submit_daily_answer"].includes(call.name))).toHaveLength(0);
 });
 
 test("confirmed sign-in returns to selected leaderboard filters", async ({ page }) => {
@@ -438,7 +438,7 @@ test("nickname setup keeps its return page and never permits renaming", async ({
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeVisible();
   await page.goto("/setup-profile?redirect=%2Fdaily");
   await expect(page).toHaveURL(/\/daily$/);
-  expect(calls.filter(call => ["get_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
 });
 
 test("guest result copy explains future saves without transferring the prior score", async ({ page }) => {

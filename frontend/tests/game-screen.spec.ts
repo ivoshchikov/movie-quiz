@@ -13,21 +13,19 @@ async function fixture(page: Page, options: Options = {}) {
   if (options.signedIn) await mockSignedIn(page);
   const choices = options.options ?? answers;
   const questions = Array.from({ length: options.size ?? 6 }, (_, index) => ({
-    id: 1000 + index, image_url: `https://quiz-fixture.supabase.co/game-fixture-${index}.svg`,
+    id: 1000 + index, answer_token: `00000000-0000-4000-8000-${String(1000+index).padStart(12,'0')}`, image_url: `https://quiz-fixture.supabase.co/game-fixture-${index}.svg`,
     options_json: choices, category_id: 1, difficulty_level_id: 1,
   }));
   let checks = 0;
   await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(difficulties.map(level => level.id === 1 ? { ...level, time_limit_secs: options.seconds ?? 30, lives: options.lives ?? 3 } : level)) }));
-  await page.route("**/rest/v1/rpc/get_question", route => {
+  await page.route("**/rest/v1/rpc/get_game_question", route => {
     const payload = route.request().postDataJSON();
-    calls.push({ name: "get_question", payload });
+    calls.push({ name: "get_game_question", payload });
     return route.fulfill({ contentType: "application/json", body: JSON.stringify(questions.filter(question => !payload.p_exclude_ids?.includes(question.id)).slice(0, 1)) });
   });
-  await page.route("**/rest/v1/question?**", route => {
-    const url = new URL(route.request().url());
-    if (url.searchParams.get("select") !== "correct_answer") return route.fallback();
+  await page.route("**/rest/v1/rpc/answer_game_question", route => {
     checks++;
-    return route.fulfill({ contentType: "application/json", body: JSON.stringify({ correct_answer: choices[0] }) });
+    return route.fulfill({ contentType: "application/json", body: JSON.stringify(route.request().postDataJSON().p_answer === choices[0]) });
   });
   await page.route(/\/game-fixture-\d+\.svg(?:\?.*)?$/, route => {
     const [width, height] = options.ratio ?? [239, 100];
@@ -65,11 +63,8 @@ test("settings and image must both load before the question clock and choices un
   await expect(page.locator(".hq-game-footer strong")).toHaveText("00:47");
 });
 
-test("a choice locks immediately, scores once and proceeds independently of statistics", async ({ page }) => {
+test("a choice locks immediately and the server checks it once", async ({ page }) => {
   const data = await fixture(page);
-  let release: () => void = () => {};
-  const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/rpc/touch_question_stats", async route => { await held; await route.fallback(); });
   await start(page);
   await page.getByRole("button", { name: answers[0], exact: true }).evaluate(button => { (button as HTMLButtonElement).click(); (button as HTMLButtonElement).click(); });
   await expect(page.getByText("Correct! +1 point", { exact: true })).toBeVisible();
@@ -80,8 +75,8 @@ test("a choice locks immediately, scores once and proceeds independently of stat
   await page.clock.runFor(200);
   await expect(page.getByText("Question 2", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: answers[0], exact: true })).toBeEnabled();
-  expect(data.calls.filter(call => call.name === "get_question").at(-1)?.payload.p_exclude_ids).toEqual([1000]);
-  release();
+  expect(data.calls.filter(call => call.name === "get_game_question").at(-1)?.payload.p_exclude_ids).toEqual([1000]);
+  expect(data.calls.some(call => call.name === "touch_question_stats")).toBe(false);
 });
 
 test("wrong answers and timeouts have longer feedback and never reveal the correct choice", async ({ page }) => {
@@ -137,7 +132,7 @@ test("image and answer-check errors retry without losing a life or accepting ano
   const data = await fixture(page);
   let imageFails = true, answerFails = true;
   await page.route(/\/game-fixture-0\.svg(?:\?.*)?$/, route => imageFails ? route.abort() : route.fallback());
-  await page.route("**/rest/v1/question?**", route => new URL(route.request().url()).searchParams.get("select") === "correct_answer" && answerFails ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
+  await page.route("**/rest/v1/rpc/answer_game_question", route => answerFails ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
   await page.goto("/");
   await page.getByRole("button", { name: "Play Movie Stills" }).click();
   await expect(page.getByRole("alert")).toContainText("image couldn’t load");
@@ -239,7 +234,7 @@ test("keyboard shortcuts match the visible order and cannot submit twice", async
 test("malformed question data is recoverable without consuming a question or a life", async ({ page }) => {
   await fixture(page);
   let malformed = true;
-  await page.route("**/rest/v1/rpc/get_question", route => malformed ? route.fulfill({ contentType: "application/json", body: JSON.stringify([{ id: 1000, category_id: 1, difficulty_level_id: 1, image_url: "", options_json: ["Only one choice"] }]) }) : route.fallback());
+  await page.route("**/rest/v1/rpc/get_game_question", route => malformed ? route.fulfill({ contentType: "application/json", body: JSON.stringify([{ id: 1000, category_id: 1, difficulty_level_id: 1, image_url: "", options_json: ["Only one choice"] }]) }) : route.fallback());
   await page.goto("/");
   await page.getByRole("button", { name: "Play Movie Stills" }).click();
   await expect(page.getByRole("alert")).toContainText("next question couldn’t load");
@@ -291,10 +286,10 @@ test("settings and question failures retry without premature requests or false c
   let failSettings = true, failQuestion = false;
   await page.addInitScript(() => { if (location.pathname === "/play") history.replaceState({ idx: 0, key: "fixture-play", usr: { categoryId: 1, difficultyId: 1 } }, "", location.href); });
   await page.route("**/rest/v1/difficulty_level?**", route => failSettings ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
-  await page.route("**/rest/v1/rpc/get_question", route => failQuestion ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
+  await page.route("**/rest/v1/rpc/get_game_question", route => failQuestion ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
   await page.goto("/play");
   await expect(page.getByRole("alert")).toContainText("quiz couldn’t load");
-  expect(data.calls.filter(call => call.name === "get_question")).toHaveLength(0);
+  expect(data.calls.filter(call => call.name === "get_game_question")).toHaveLength(0);
   failSettings = false; failQuestion = true;
   await page.getByRole("button", { name: "Try again", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("next question couldn’t load");
@@ -311,7 +306,7 @@ for (const viewport of [{ width: 320, height: 568 }, { width: 568, height: 320 }
     await fixture(page);
     let imageFails = true, answerFails = true;
     await page.route(/\/game-fixture-0\.svg(?:\?.*)?$/, route => imageFails ? route.abort() : route.fallback());
-    await page.route("**/rest/v1/question?**", route => new URL(route.request().url()).searchParams.get("select") === "correct_answer" && answerFails ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
+    await page.route("**/rest/v1/rpc/answer_game_question", route => answerFails ? route.fulfill({ status: 503, body: '{"message":"fixture failure"}' }) : route.fallback());
     await page.goto("/");
     await page.getByRole("button", { name: "Play Movie Stills" }).click();
     await expect(page.getByRole("alert")).toContainText("image couldn’t load");

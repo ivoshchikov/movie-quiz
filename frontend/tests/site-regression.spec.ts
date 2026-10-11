@@ -92,12 +92,12 @@ test('Daily still loads personal stats, switches streak lists and submits its ex
     const payload = route.request().postDataJSON();
     let body: unknown;
     switch (name) {
-      case 'get_daily_question': body = [{ id: 700, image_url: 'https://quiz-fixture.supabase.co/fixture.svg', options_json: ['Fixture answer', 'Second answer', 'Third answer', 'Fourth answer'], correct_answer: 'Fixture answer', category_id: 1, difficulty_level_id: 1 }]; break;
+      case 'get_daily_question_public': body = [{ id: 700, image_url: 'https://quiz-fixture.supabase.co/fixture.svg', options_json: ['Fixture answer', 'Second answer', 'Third answer', 'Fourth answer'], category_id: 1, difficulty_level_id: 1 }]; break;
       case 'get_my_daily_result': body = [{ is_answered: submitted, is_correct: submitted ? true : null, time_spent: submitted ? 1 : null, answered_at: null }]; break;
       case 'get_daily_user_streak': body = [{ current_streak: 3, longest_streak: 7, total_correct: 12 }]; break;
       case 'get_daily_streak_leaderboard': body = Array.from({ length: 5 }, (_, i) => ({ user_id: `leader-${i}`, nickname: i ? `Player ${i}` : payload.p_active_only ? 'ActiveLeader' : 'AllTimeLeader', streak: 8, start_d: '2026-09-29', end_d: '2026-10-06' })); break;
       case 'start_daily_session': body = null; break;
-      case 'submit_daily_result': submitted = true; body = null; break;
+      case 'submit_daily_answer': submitted = true; body = null; break;
       default: return route.fallback();
     }
     calls.push({ name, payload });
@@ -121,9 +121,9 @@ test('Daily still loads personal stats, switches streak lists and submits its ex
   await expect(page.getByRole('heading', { name: 'Correct!', exact: true })).toBeVisible();
   await expect(page.getByText('Synced with your account', { exact: true })).toBeVisible();
   expect(calls.filter(call => call.name === 'start_daily_session')).toHaveLength(1);
-  expect(calls.filter(call => call.name === 'submit_daily_result')).toHaveLength(1);
-  expect(calls.find(call => call.name === 'submit_daily_result')?.payload).toMatchObject({ p_user_id: 'fixture-user', p_is_correct: true });
-  expect(calls.find(call => call.name === 'submit_daily_result')?.payload.p_date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  expect(calls.filter(call => call.name === 'submit_daily_answer')).toHaveLength(1);
+  expect(calls.find(call => call.name === 'submit_daily_answer')?.payload).toMatchObject({ p_user_id: 'fixture-user', p_answer: 'Fixture answer' });
+  expect(calls.find(call => call.name === 'submit_daily_answer')?.payload.p_date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
 });
 
 test('admin history and answer search retain their typed fields and image URLs', async ({ page }) => {

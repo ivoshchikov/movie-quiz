@@ -18,14 +18,14 @@ test('balanced homepage launches the selected category and actual difficulty rul
   await page.getByRole('button', { name: 'Play Actors' }).click();
   await expect(page).toHaveURL(/\/play$/);
   await expect(page.getByRole('button', { name: 'Fixture answer', exact: true })).toBeVisible();
-  expect(calls.filter(call => call.name === 'get_question').every(call => call.payload.p_category_id === 2 && call.payload.p_difficulty_id === 3)).toBeTruthy();
+  expect(calls.filter(call => call.name === 'get_game_question').every(call => call.payload.p_category_id === 2 && call.payload.p_difficulty_id === 3)).toBeTruthy();
 });
 
 test('question counts cannot enable play for an empty level', async ({ page }) => {
   await mockQuizApi(page);
-  await page.route('**/rest/v1/question?**', route => {
-    const url = new URL(route.request().url());
-    if (url.searchParams.has('difficulty_level_id')) return route.fulfill({ status: 200, headers: { 'access-control-expose-headers': 'content-range', 'content-range': '0-0/0' }, body: '' });
+  await page.route('**/rest/v1/rpc/count_questions', route => {
+    const payload = route.request().postDataJSON();
+    if (payload.p_difficulty_id != null) return route.fulfill({ status: 200, contentType:'application/json', body: '0' });
     return route.fallback();
   });
   await page.goto('/');
@@ -36,8 +36,8 @@ test('question counts cannot enable play for an empty level', async ({ page }) =
 test('availability failures can be retried without starting a quiz', async ({ page }) => {
   await mockQuizApi(page);
   let fail = true;
-  await page.route('**/rest/v1/question?**', route => {
-    if (new URL(route.request().url()).searchParams.has('difficulty_level_id') && fail) return route.fulfill({ status: 500, contentType: 'application/json', body: '{"message":"fixture failure"}' });
+  await page.route('**/rest/v1/rpc/count_questions', route => {
+    if (route.request().postDataJSON().p_difficulty_id != null && fail) return route.fulfill({ status: 500, contentType: 'application/json', body: '{"message":"fixture failure"}' });
     return route.fallback();
   });
   await page.goto('/');
@@ -52,22 +52,22 @@ test('late question counts cannot unlock play after the selection changes', asyn
   await mockQuizApi(page);
   let release: () => void = () => {};
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route('**/rest/v1/question?**', async route => {
-    const url = new URL(route.request().url());
-    if (url.searchParams.get('category_id') !== 'eq.2' || !url.searchParams.has('difficulty_level_id')) return route.fallback();
-    if (url.searchParams.get('difficulty_level_id') === 'eq.1') {
+  await page.route('**/rest/v1/rpc/count_questions', async route => {
+    const payload = route.request().postDataJSON();
+    if (payload.p_category_id !== 2 || payload.p_difficulty_id == null) return route.fallback();
+    if (payload.p_difficulty_id === 1) {
       await held;
-      return route.fulfill({ status: 200, headers: { 'access-control-expose-headers': 'content-range', 'content-range': '0-9/10' }, body: '' });
+      return route.fulfill({ status: 200, contentType:'application/json', body: '10' });
     }
-    return route.fulfill({ status: 200, headers: { 'access-control-expose-headers': 'content-range', 'content-range': '0-0/0' }, body: '' });
+    return route.fulfill({ status: 200, contentType:'application/json', body: '0' });
   });
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Play Movie Stills' })).toBeEnabled();
-  const pending = page.waitForRequest(request => request.url().includes('category_id=eq.2') && request.url().includes('difficulty_level_id=eq.1'));
+  const pending = page.waitForRequest(request => request.url().endsWith('/count_questions') && request.postDataJSON().p_category_id === 2 && request.postDataJSON().p_difficulty_id === 1);
   await page.getByRole('radio', { name: /Actors/ }).click();
   await pending;
   await expect(page.getByRole('button', { name: 'Checking questions…' })).toBeDisabled();
-  const cancelled = page.waitForEvent('requestfailed', request => request.url().includes('category_id=eq.2') && request.url().includes('difficulty_level_id=eq.1'));
+  const cancelled = page.waitForEvent('requestfailed', request => request.url().endsWith('/count_questions') && request.postDataJSON().p_category_id === 2 && request.postDataJSON().p_difficulty_id === 1);
   await page.getByRole('radio', { name: 'Hard', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Coming soon' })).toBeDisabled();
   release();
@@ -80,8 +80,8 @@ test('catalog errors can be retried and newly populated categories appear', asyn
   await mockQuizApi(page);
   let fail = true;
   await page.route('**/rest/v1/category?**', route => fail ? route.fulfill({ status: 500, contentType: 'application/json', body: '{"message":"fixture failure"}' }) : route.fallback());
-  await page.route('**/rest/v1/question?**', route => new URL(route.request().url()).searchParams.get('category_id') === 'eq.3'
-    ? route.fulfill({ status: 200, headers: { 'access-control-expose-headers': 'content-range', 'content-range': '0-9/10' }, body: '' }) : route.fallback());
+  await page.route('**/rest/v1/rpc/count_questions', route => route.request().postDataJSON().p_category_id === 3
+    ? route.fulfill({ status: 200, contentType:'application/json', body: '10' }) : route.fallback());
   await page.goto('/');
   await expect(page.getByRole('alert')).toContainText('Quiz options could not be loaded.');
   fail = false;
