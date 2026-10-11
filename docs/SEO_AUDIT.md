@@ -1,6 +1,6 @@
 # SEO-01 — technical audit and implementation
 
-Date: 2026-10-11. Status: implemented; release verification pending.
+Date: 2026-10-11. Status: published and verified in production through PR #23. This supersedes earlier pending SEO-01 entries in PROJECT_CONTEXT.md and DECISIONS.md.
 
 ## Confirmed findings and fixes
 
@@ -32,3 +32,13 @@ Follow-up: monitor recrawling and Search Console performance after deployment, a
 - https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
 - https://developers.google.com/search/docs/appearance/core-web-vitals
 - https://vercel.com/docs/project-configuration/vercel-json
+
+## Release verification
+
+PR: https://github.com/ivoshchikov/movie-quiz/pull/23. Functional merge: `fc9e0796739def6b9d828c0000937bc5a7117c7d`; verified frontend tree: `c3ea860807f251054976364bd5020a9514765296`.
+
+Both browser CI workflows passed 459 tests without retries: https://github.com/ivoshchikov/movie-quiz/actions/runs/38172348207 and https://github.com/ivoshchikov/movie-quiz/actions/runs/38172348163. Daily and question-bank server contract workflows also passed. Production deployment https://vercel.com/ivans-projects-a806f387/movie-quiz/AaqSCgPNpY31BEKTtAMqq16fLs59 succeeded.
+
+28 live HTTP checks passed, including canonical metadata, private noindex/no-store, sitemap/RSS, missing-page 404 responses, technical HTML redirects, favicon/OG and www redirects preserving query parameters. The live entry is `/assets/index-CymASdgR.js`. Fourteen built-page checks at 320 px with and without JavaScript found no overflow, application errors, duplicate canonical or duplicate Organization markup.
+
+The published sitemap was resubmitted to Search Console on 2026-10-11 and accepted. This queues a download and does not confirm recrawling or indexing.
