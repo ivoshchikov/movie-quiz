@@ -174,6 +174,7 @@ async function fixture(
   return { data, calls };
 }
 async function attach(page: Page, files = ["question-frame.png"]) {
+  await expect(page.getByLabel("Choose images", { exact: true })).toBeEnabled();
   await page
     .getByLabel("Choose images", { exact: true })
     .setInputFiles(files.map((f) => `tests/assets/${f}`));

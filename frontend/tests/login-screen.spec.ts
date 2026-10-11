@@ -275,6 +275,11 @@ test("analytics excludes callback credentials and fragments from every pageview"
   await mockQuizApi(page);
   await page.goto("/leaderboard?category=2&difficulty=3&code=fixture-code&provider_token=fixture-provider#access_token=fixture-access&refresh_token=fixture-refresh&error_description=fixture-private");
   await expect(page.getByRole("heading", { name: "Leaderboard", exact: true })).toBeVisible();
+  // Analytics stays disabled until the asynchronous account check completes.
+  await expect.poll(() => page.evaluate(() => window.dataLayer?.filter(entry => {
+    const args = Array.from(entry as IArguments);
+    return args[0] === "event" && args[1] === "page_view";
+  }).length ?? 0)).toBeGreaterThan(0);
   const views = await page.evaluate(() => window.dataLayer.map(entry => Array.from(entry as IArguments)).filter(args => args[0] === "event" && args[1] === "page_view"));
   expect(views.length).toBeGreaterThan(0);
   for (const view of views) {
