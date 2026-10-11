@@ -2,6 +2,19 @@
   "version": 2,
   "routes": [
     {
+      "src": "^/(.*)$",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.hard-quiz.com"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "https://hard-quiz.com/$1"
+      }
+    },
+    {
       "src": "^/index\\.html$",
       "status": 301,
       "headers": {
@@ -122,8 +135,23 @@
       "dest": "/index.html"
     },
     {
-      "src": "^/(play|result|daily|leaderboard|profile)/?$",
-      "dest": "/index.html"
+      "src": "^/(play|result|daily|leaderboard|profile)\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/$1"
+      }
+    },
+    {
+      "src": "^/(play|result|profile)/?$",
+      "dest": "/$1.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/(daily|leaderboard)/?$",
+      "dest": "/$1.html"
     },
     {
       "src": "^/404\\.html$",

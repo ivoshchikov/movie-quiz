@@ -290,14 +290,14 @@ test("large text reflows in the smallest layout without clipping facts, comparis
 
 test("generated articles are complete without JavaScript, preserve RSS URLs, and route unknown articles to HTTP 404", async ({ browser }) => {
   test.skip(!existsSync(path.resolve("dist/blog/" + articles[0].slug + ".html")), "The build job checks generated article HTML.");
-  const routes = JSON.parse(readFileSync(path.resolve("vercel.json"), "utf8")).routes as { src?: string; dest?: string; status?: number; headers?: Record<string, string> }[];
+  const routes = JSON.parse(readFileSync(path.resolve("vercel.json"), "utf8")).routes as { has?: unknown; src?: string; dest?: string; status?: number; headers?: Record<string, string> }[];
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.route("**/assets/**", route => route.abort());
   await page.route("**/storage/**", route => route.abort());
   await page.route("http://localhost:5173/blog/**", route => {
     const pathname = new URL(route.request().url()).pathname;
-    const rule = routes.find(rule => rule.src && new RegExp(rule.src).test(pathname));
+    const rule = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(pathname));
     if (!rule?.dest) return route.abort();
     const destination = pathname.replace(new RegExp(rule.src!), rule.dest);
     return route.fulfill({ status: rule.status || 200, contentType: "text/html", body: readFileSync(path.resolve("dist" + destination), "utf8") });
@@ -310,7 +310,7 @@ test("generated articles are complete without JavaScript, preserve RSS URLs, and
     const json = await structuredArticle(page); expect(json).toHaveLength(1); expect(json[0].datePublished).toBe(article.date);
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
     expect(readFileSync(path.resolve("dist/feed.xml"), "utf8")).toContain("https://hard-quiz.com" + url(index));
-    const redirect = routes.find(rule => rule.src && new RegExp(rule.src).test(url(index) + ".html"));
+    const redirect = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(url(index) + ".html"));
     expect(redirect?.status).toBe(301);
     const sitemap = readFileSync(path.resolve("dist/sitemap.xml"), "utf8");
     expect(sitemap).toContain("<loc>https://hard-quiz.com" + url(index) + "</loc><lastmod>2026-10-09</lastmod>");

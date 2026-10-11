@@ -5,6 +5,7 @@ import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import { LEADERBOARD_TIMEOUT } from "../leaderboard/useLeaderboard";
 import Leaderboard from "../components/Leaderboard";
 import SiteIcon from "../components/SiteIcon";
+import pageMetadata from "../pageMetadata.json";
 import Seo from "../components/Seo";
 import StatusMessage from "../components/StatusMessage";
 import "../leaderboard.css";
@@ -32,7 +33,7 @@ export default function LeaderboardPage() {
   }
 
   return <div className="hq-leaderboard-page">
-    <Seo title="Movie Quiz Leaderboard | Hard Quiz" description="See all-time Hard Quiz personal bests for movie stills and actors. Compare scores by category and difficulty, then play the quiz." url="https://hard-quiz.com/leaderboard" />
+    <Seo {...pageMetadata.leaderboard} />
     <section className="hq-panel hq-leaderboard-panel" aria-labelledby="leaderboard-title">
       <header className="hq-leaderboard-heading"><div><h1 id="leaderboard-title">Leaderboard</h1><p>All-time personal bests</p></div><span className="hq-leaderboard-symbol"><SiteIcon name="trophy" /></span></header>
       {loading ? <StatusMessage tone="loading">Loading quiz options…</StatusMessage>

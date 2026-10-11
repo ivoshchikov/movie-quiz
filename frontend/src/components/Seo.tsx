@@ -43,8 +43,8 @@ export default function Seo({
     <Helmet>
       {title && <title>{title}</title>}
       {description && <meta name="description" content={description} />}
-      {noindex && <meta name="robots" content="noindex, nofollow" />}
-      {canonical && <link rel="canonical" href={canonical} />}
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+      {(canonical || url) && <link rel="canonical" href={canonical || url} />}
 
       {/* Open Graph */}
       {title && <meta property="og:title" content={title} />}

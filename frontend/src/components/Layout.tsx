@@ -110,13 +110,13 @@ export default function Layout() {
   // Disable the tag for the owner on every route, including automatic history measurement.
   useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked]);
   useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`); }, [pathname, search, analyticsBlocked]);
-  const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/vite.svg` };
+  const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/favicon.svg` };
 
   return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>
     <SiteNavigation />
     <a className="hq-skip-link" href="#main-content">Skip to content</a>
     <Helmet>
-      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || isAdministration || ["/login", "/setup-profile"].includes(pathname) ? "" : search || ""}`} />
+      <link rel="canonical" href={`${CANON_BASE}${pathname}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       <meta property="og:image" content={DEFAULT_OG} />

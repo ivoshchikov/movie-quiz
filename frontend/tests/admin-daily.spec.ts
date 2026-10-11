@@ -533,8 +533,8 @@ test("built initial admin HTML and routing are noindex and absent from the sitem
   expect(readFileSync("dist/sitemap.xml", "utf8")).not.toContain("/admin/");
   const routes = JSON.parse(readFileSync("vercel.json", "utf8")).routes;
   const route = routes.find(
-    (rule: { src?: string }) =>
-      rule.src && new RegExp(rule.src).test("/admin/daily"),
+    (rule: { has?: unknown; src?: string }) =>
+      !rule.has && rule.src && new RegExp(rule.src).test("/admin/daily"),
   );
   expect(route.dest).toBe("/admin/daily.html");
   expect(route.headers["X-Robots-Tag"]).toBe("noindex, nofollow");

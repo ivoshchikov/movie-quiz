@@ -9,6 +9,7 @@ import { categoryLabel } from "../hooks/useQuizCatalog";
 import { useDailyGame } from "../daily/useDailyGame";
 import { dailyDateLabel, dailyTime } from "../daily/time";
 import { guardGameNavigation } from "../game/navigationGuard";
+import pageMetadata from "../pageMetadata.json";
 import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
 import YourDailyCard from "../components/YourDailyCard";
@@ -16,7 +17,6 @@ import StreakLeaderboard from "../components/StreakLeaderboard";
 import "../game.css";
 import "../daily.css";
 
-const ORIGIN = (import.meta.env.VITE_SITE_URL as string) || "https://hard-quiz.com";
 export default function DailyPage() {
   const { user, loading: authLoading } = useAuth();
   const { openLogin, chooseNickname, setDailyPlaying, profileReady, hasNickname, profileError, retryProfile } = useOutletContext<SiteOutletContext>();
@@ -79,7 +79,7 @@ export default function DailyPage() {
   const next = <div className="hq-daily-next"><span>Next challenge in <strong>{dailyTime(game.resetIn)}</strong></span><small>Resets at midnight US Central (America/Chicago).</small></div>;
 
   return <>
-    <Seo title="Daily Challenge | Hard Quiz" description="One image. One answer each day. Log in, solve the Daily and build your streak." ogImage={`${ORIGIN}/api/og/daily?d=${encodeURIComponent(game.date)}`} url={`${ORIGIN}/daily`} />
+    <Seo {...pageMetadata.daily} />
     {compact && <header className="hq-play-header"><button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — leave Daily"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</button><button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Leave Daily</button></header>}
     {playingView && question ? <section className="hq-game hq-daily-game" aria-label="Daily question">
       <div className="hq-game-heading"><div><h1>{label}</h1><span>Daily</span></div><time className="hq-question-number" dateTime={game.date}>{dailyDateLabel(game.date)}</time></div>

@@ -1,4 +1,6 @@
 // frontend/src/main.tsx
+// Install the back-navigation guard before BrowserRouter, even when game routes are lazy.
+import "./game/navigationGuard";
 import React            from "react";
 import ReactDOM         from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";

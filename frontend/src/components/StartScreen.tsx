@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { countQuestions } from "../api";
-import { posts } from "../blog";
+import featuredPost from "../featuredPostMetadata.json";
 import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import QuizFilters from "./QuizFilters";
+import pageMetadata from "../pageMetadata.json";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
 import StatusMessage from "./StatusMessage";
@@ -36,10 +37,9 @@ export default function StartScreen() {
   const level = difficulties.find(item => item.id === difficultyId);
   const count = !availability.loading && !availability.error ? availability.value : undefined;
   const canPlay = !loading && !error && !!category && !!level && count != null && count > 0;
-  const featuredPost = posts.find(post => post.slug === "why-2-39-1-feels-more-cinematic") ?? posts[0];
 
   return <>
-    <Seo title="Movie & Actor Quiz | Hard Quiz" description="Guess movies from stills and recognize famous actors. Choose a difficulty, beat the timer, or take on today's Daily Challenge." url="https://hard-quiz.com/" />
+    <Seo {...pageMetadata.home} />
     <div className="hq-home">
       <section className="hq-hero">
         <div className="hq-eyebrow">For the love of cinema</div>
