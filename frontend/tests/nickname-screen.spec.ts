@@ -45,7 +45,7 @@ test("one shared form explains the public fixed name and the passive next step",
   await expect(page.locator(".hq-nickname-next")).toContainText("Daily Challenge. Start Daily when you’re ready.");
   await expect(save(page)).toBeDisabled();
   expect(data.writes).toEqual([]);
-  expect(daily.calls.some(call => ["start_daily_session", "submit_daily_result"].includes(call.name))).toBe(false);
+  expect(daily.calls.some(call => ["start_daily_session", "submit_daily_answer"].includes(call.name))).toBe(false);
 });
 
 for (const value of ["", "ab", "   ", "abcdefghijklmnopqrstu"]) test(`invalid length is explained without a write: ${JSON.stringify(value)}`, async ({ page }) => {

@@ -4,7 +4,6 @@ import { checkAnswer, getCategories, getDifficultyLevels, getQuestion } from "..
 import type { Category, DifficultyLevel, Question } from "../api";
 import { useAuth } from "../AuthContext";
 import { gaEvent } from "../analytics/ga";
-import { supabase } from "../supabase";
 import { shuffle } from "../utils/shuffle";
 import { checkpointGame, lastGameResult, recoverInterruptedGame, retainGameResult, saveGameResult } from "./resultStorage";
 import type { ActiveGame, FinishReason, GameResult } from "./resultStorage";
@@ -116,12 +115,10 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       // Lock synchronously, including consecutive clicks/keyboard events before React renders.
       update({ phase: "checking", selected: answerText, seconds: Math.ceil(chosenTime / 1000), remaining: chosenTime / ((state.level?.time_limit_secs ?? 1) * 1000) });
       try {
-        const result = await checkAnswer(question.id, answerText);
+        const result = await checkAnswer(question.answer_token!, answerText);
         if (!mounted || ended || currentRequest !== requestId) return;
         feedback(result.correct ? "correct" : "wrong");
         gaEvent("quiz_answer", { question_id: question.id, correct: result.correct });
-        // A statistics request must never delay gameplay or change the checked answer.
-        void supabase.rpc("touch_question_stats", { p_question_id: question.id, p_is_correct: result.correct }).then(() => {}, () => {});
       } catch { if (mounted && !ended && currentRequest === requestId) update({ phase: "answer-error" }); }
     }
     function tick() {

@@ -1,6 +1,7 @@
 // frontend/src/App.tsx
 import { Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { lazy, Suspense } from "react";
 
 import Layout              from "./components/Layout";
 import StartScreen         from "./components/StartScreen";
@@ -18,6 +19,8 @@ import AdminDailyPage      from "./pages/AdminDailyPage";
 import LeaderboardPage     from "./pages/LeaderboardPage";
 import ProfilePage         from "./pages/ProfilePage";
 import NotFound            from "./components/NotFound";
+const AdminQuestionsPage=lazy(()=>import('./pages/AdminQuestionsPage'));
+const AdminQuestionsNewPage=lazy(()=>import('./pages/AdminQuestionsNewPage'));
 
 export default function App() {
   return (
@@ -50,6 +53,8 @@ export default function App() {
 
           {/* админка */}
           <Route path="admin/daily"   element={<AdminDailyPage />} />
+          <Route path="admin/questions" element={<Suspense fallback={<p role="status">Loading administration…</p>}><AdminQuestionsPage/></Suspense>}/>
+          <Route path="admin/questions/new" element={<Suspense fallback={<p role="status">Loading administration…</p>}><AdminQuestionsNewPage/></Suspense>}/>
 
           {/* личные результаты */}
           <Route element={<PrivateRoute />}>

@@ -11,7 +11,7 @@ export interface DifficultyLevel {
 export interface Profile { user_id: string; nickname: string | null; avatar_url: string | null; }
 export type ProfileDetails = Pick<Profile, "nickname" | "avatar_url">;
 export interface Question {
-  id: number; image_url: string; options: string[]; correct_answer?: string;
+  id: number; image_url: string; options: string[]; answer_token?: string;
   category_id: number; difficulty_level_id: number;
 }
 export interface MyDailyResult { is_answered: boolean; is_correct: boolean | null; time_spent: number | null; answered_at: string | null; }
@@ -116,9 +116,8 @@ export async function getDifficulties(signal?: AbortSignal): Promise<DifficultyL
 export function getDifficultyLevels(signal?: AbortSignal): Promise<DifficultyLevel[]> { return getDifficulties(signal); }
 
 export async function countQuestions(categoryId: number, difficultyId?: number, signal?: AbortSignal): Promise<number> {
-  let query = supabase.from("question").select("id", { count: "exact", head: true }).eq("category_id", categoryId);
-  if (difficultyId != null) query = query.eq("difficulty_level_id", difficultyId);
-  const { count, error } = await (signal ? query.abortSignal(signal) : query);
+  const query = supabase.rpc("count_questions", { p_category_id: categoryId, p_difficulty_id: difficultyId ?? null });
+  const { data: count, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   if (count == null || !Number.isInteger(count) || count < 0) throw new Error("invalid-question-count");
   return count;
@@ -139,16 +138,17 @@ export async function getQuestion(arg1: number | number[], arg2: number, arg3?: 
     payload = { p_exclude_ids: arg1, p_category_id: arg2, p_difficulty_id: arg3 };
   } else {
     // новая форма
-    payload = { p_category_id: arg1 as number, p_difficulty_id: arg2 as number };
+    payload = { p_exclude_ids: [], p_category_id: arg1 as number, p_difficulty_id: arg2 as number };
   }
 
-  const { data, error } = await supabase.rpc("get_question", payload);
+  const { data, error } = await supabase.rpc("get_game_question", payload);
   if (error) throw error;
 
   const row = (Array.isArray(data) ? data[0] : data) as Record<string, unknown> | null;
   if (!row) throw new Error("no-question");
   if (typeof row.id !== "number" || !Number.isInteger(row.id) || typeof row.category_id !== "number" ||
-    typeof row.difficulty_level_id !== "number" || typeof row.image_url !== "string" || !row.image_url.trim()) throw new Error("invalid-question");
+    typeof row.difficulty_level_id !== "number" || typeof row.image_url !== "string" || !row.image_url.trim() ||
+    typeof row.answer_token !== "string" || !/^[0-9a-f-]{36}$/i.test(row.answer_token)) throw new Error("invalid-question");
   const publicUrl = getPublicUrl(row.image_url);
   const options: unknown =
     Array.isArray(row.options_json) ? row.options_json :
@@ -161,18 +161,17 @@ export async function getQuestion(arg1: number | number[], arg2: number, arg3?: 
     id: row.id,
     image_url: publicUrl,
     options,
-    correct_answer: typeof row.correct_answer === "string" ? row.correct_answer : undefined,
+    answer_token: row.answer_token,
     category_id: row.category_id,
     difficulty_level_id: row.difficulty_level_id,
   };
 }
 
-export async function checkAnswer(questionId: number, answer: string) {
-  const { data, error } = await supabase.from("question").select("correct_answer").eq("id", questionId).single();
+export async function checkAnswer(token: string, answer: string) {
+  const { data, error } = await supabase.rpc("answer_game_question", { p_token: token, p_answer: answer });
   if (error) throw error;
-  const correct_answer = data?.correct_answer ?? "";
-  const correct = correct_answer.trim().toLowerCase() === answer.trim().toLowerCase();
-  return { correct, correct_answer };
+  if (typeof data !== "boolean") throw new Error("invalid-answer-check");
+  return { correct: data };
 }
 
 /* МОИ ЛУЧШИЕ */
@@ -228,13 +227,13 @@ export function getDailyDateUS(tz = "America/Chicago"): string {
 }
 
 type DailyRowFull = {
-  id: number; image_url: string; options_json: unknown; correct_answer?: string;
+  id: number; image_url: string; options_json: unknown;
   category_id: number; difficulty_level_id: number;
 };
 
 export async function getDailyQuestion(dateOverride?: string, signal?: AbortSignal): Promise<Question> {
   const pDate = dateOverride ?? getDailyDateUS();
-  const query = supabase.rpc("get_daily_question", { p_date: pDate });
+  const query = supabase.rpc("get_daily_question_public", { p_date: pDate });
   const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
   const rows = Array.isArray(data) ? data : (data ? [data] : []);
@@ -250,10 +249,9 @@ export async function getDailyQuestion(dateOverride?: string, signal?: AbortSign
     typeof raw.options_json === "string" ? JSON.parse(raw.options_json) : [];
 
   if (opts.length !== 4 || !opts.every(option => typeof option === "string" && !!option.trim()) ||
-    new Set(opts.map(option => option.trim())).size !== 4 || typeof raw.correct_answer !== "string" ||
-    !opts.some(option => option.trim() === raw.correct_answer?.trim())) throw new Error("invalid-daily-question");
+    new Set(opts.map(option => option.trim())).size !== 4) throw new Error("invalid-daily-question");
 
-  return { id: raw.id, image_url: publicUrl, options: opts, correct_answer: raw.correct_answer!,
+  return { id: raw.id, image_url: publicUrl, options: opts,
            category_id: raw.category_id, difficulty_level_id: raw.difficulty_level_id };
 }
 
@@ -281,9 +279,9 @@ export async function startDailySession(userId: string, date?: string, signal?: 
   return (data as unknown) ?? null;
 }
 
-export async function submitDailyResult(userId: string, date: string, isCorrect: boolean, timeSpentSecs: number, signal?: AbortSignal) {
-  const query = supabase.rpc("submit_daily_result", {
-    p_user_id: userId, p_date: date, p_is_correct: isCorrect, p_time: timeSpentSecs,
+export async function submitDailyResult(userId: string, date: string, answer: string, timeSpentSecs: number, signal?: AbortSignal) {
+  const query = supabase.rpc("submit_daily_answer", {
+    p_user_id: userId, p_date: date, p_answer: answer, p_time: timeSpentSecs,
   });
   const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;

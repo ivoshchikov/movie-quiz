@@ -20,7 +20,7 @@ export default function AdminImage({
       {src && !failed ? (
         <img
           key={attempt}
-          src={src}
+          src={attempt && /^https?:\/\//i.test(src) ? `${src}${src.includes('?') ? '&' : '?'}hq_retry=${attempt}` : src}
           alt={alt}
           loading={preview ? "eager" : "lazy"}
           decoding="async"

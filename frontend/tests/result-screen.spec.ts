@@ -22,11 +22,11 @@ async function fixture(page: Page, signedIn = true, bankSize = 10) {
   await page.clock.install({ time: epoch });
   await page.clock.pauseAt(new Date(epoch.getTime() + 1000));
   await page.clock.setSystemTime(epoch);
-  await page.route("**/rest/v1/rpc/get_question", route => {
+  await page.route("**/rest/v1/rpc/get_game_question", route => {
     const payload = route.request().postDataJSON();
     const index = payload.p_exclude_ids?.length ?? 0;
     return route.fulfill({ contentType: "application/json", body: JSON.stringify(index >= bankSize ? [] : [{
-      id: 9000 + index, image_url: "https://quiz-fixture.supabase.co/fixture.svg",
+      id: 9000 + index, answer_token: `00000000-0000-4000-8000-${String(9000+index).padStart(12,"0")}`, image_url: "https://quiz-fixture.supabase.co/fixture.svg",
       options_json: ["Fixture answer", "Second answer", "Third answer", "Fourth answer"],
       category_id: payload.p_category_id, difficulty_level_id: payload.p_difficulty_id,
     }]) });

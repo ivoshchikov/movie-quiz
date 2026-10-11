@@ -1,26 +1,153 @@
 {
   "version": 2,
   "routes": [
-    { "src": "^/index\\.html$", "status": 301, "headers": { "Location": "/" } },
-    { "src": "^/admin/daily\\.html$", "status": 301, "headers": { "Location": "/admin/daily" } },
-    { "src": "^/admin/daily/?$", "dest": "/admin/daily.html", "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "no-store" } },
-    { "src": "^/blog\\.html$", "status": 301, "headers": { "Location": "/blog" } },
-    { "src": "^/blog/?$", "dest": "/blog.html" },
-    { "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)\\.html$", "status": 301, "headers": { "Location": "/blog/$1" } },
-    { "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)/?$", "dest": "/blog/$1.html" },
-    { "src": "^/blog/_not-found\\.html$", "status": 404, "dest": "/blog/_not-found.html" },
-    { "src": "^/setup-profile\\.html$", "status": 301, "headers": { "Location": "/setup-profile" } },
-    { "src": "^/setup-profile/?$", "dest": "/setup-profile.html" },
-    { "src": "^/login\\.html$", "status": 301, "headers": { "Location": "/login" } },
-    { "src": "^/login/?$", "dest": "/login.html" },
-    { "src": "^/how-to-play\\.html$", "status": 301, "headers": { "Location": "/how-to-play" } },
-    { "src": "^/how-to-play/?$", "dest": "/how-to-play.html" },
-    { "src": "/(sitemap\\.xml|feed\\.xml|robots\\.txt)", "dest": "/$1" },
-    { "src": "^/$", "dest": "/index.html" },
-    { "src": "^/(play|result|daily|leaderboard|profile)/?$", "dest": "/index.html" },
-    { "src": "^/404\\.html$", "status": 404, "dest": "/404.html", "headers": { "X-Robots-Tag": "noindex, nofollow" } },
-    { "handle": "filesystem" },
-    { "src": "^/blog/.+$", "status": 404, "dest": "/blog/_not-found.html" },
-    { "src": "/.*", "status": 404, "dest": "/404.html", "headers": { "X-Robots-Tag": "noindex, nofollow" } }
+    {
+      "src": "^/index\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/"
+      }
+    },
+    {
+      "src": "^/admin/questions/new\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/admin/questions/new"
+      }
+    },
+    {
+      "src": "^/admin/questions/new/?$",
+      "dest": "/admin/questions/new.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/admin/questions\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/admin/questions"
+      }
+    },
+    {
+      "src": "^/admin/questions/?$",
+      "dest": "/admin/questions.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/admin/daily\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/admin/daily"
+      }
+    },
+    {
+      "src": "^/admin/daily/?$",
+      "dest": "/admin/daily.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/blog\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/blog"
+      }
+    },
+    {
+      "src": "^/blog/?$",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/blog/$1"
+      }
+    },
+    {
+      "src": "^/blog/(august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)/?$",
+      "dest": "/blog/$1.html"
+    },
+    {
+      "src": "^/blog/_not-found\\.html$",
+      "status": 404,
+      "dest": "/blog/_not-found.html"
+    },
+    {
+      "src": "^/setup-profile\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/setup-profile"
+      }
+    },
+    {
+      "src": "^/setup-profile/?$",
+      "dest": "/setup-profile.html"
+    },
+    {
+      "src": "^/login\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/login"
+      }
+    },
+    {
+      "src": "^/login/?$",
+      "dest": "/login.html"
+    },
+    {
+      "src": "^/how-to-play\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/how-to-play"
+      }
+    },
+    {
+      "src": "^/how-to-play/?$",
+      "dest": "/how-to-play.html"
+    },
+    {
+      "src": "/(sitemap\\.xml|feed\\.xml|robots\\.txt)",
+      "dest": "/$1"
+    },
+    {
+      "src": "^/$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/(play|result|daily|leaderboard|profile)/?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/404\\.html$",
+      "status": 404,
+      "dest": "/404.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "^/blog/.+$",
+      "status": 404,
+      "dest": "/blog/_not-found.html"
+    },
+    {
+      "src": "/.*",
+      "status": 404,
+      "dest": "/404.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow"
+      }
+    }
   ]
 }

@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
@@ -9,7 +9,7 @@ import NicknameModal from "./NicknameModal";
 import SiteIcon from "./SiteIcon";
 import SiteNavigation from "./SiteNavigation";
 import PageErrorBoundary from "./PageErrorBoundary";
-import { loadGA, pageview } from "../analytics/ga";
+import { loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
@@ -39,6 +39,7 @@ export default function Layout() {
   const [dailyPlaying, setDailyPlaying] = useState(false);
   const isProfileSetup = pathname === "/setup-profile";
   const isPlaying = pathname === "/play";
+  const isAdministration = pathname.startsWith('/admin/');
   const isGameView = isPlaying || (pathname === "/daily" && dailyPlaying);
   const owner = user?.id ?? "";
   const loadProfile = useCallback((signal: AbortSignal) => getProfile(owner, signal), [owner]);
@@ -56,7 +57,7 @@ export default function Layout() {
   };
 
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading || isAdministration) return;
     if (!isPlaying) recoverInterruptedGame();
     const flush = () => { void flushPendingGameResults(session); };
     flush();
@@ -64,7 +65,7 @@ export default function Layout() {
     const visible = () => { if (document.visibilityState === "visible") flush(); };
     document.addEventListener("visibilitychange", visible);
     return () => { window.removeEventListener("online", flush); document.removeEventListener("visibilitychange", visible); };
-  }, [session, authLoading, isPlaying]);
+  }, [session, authLoading, isPlaying, isAdministration]);
 
   useEffect(() => {
     let active = true;
@@ -105,15 +106,17 @@ export default function Layout() {
   const isBlogIndex = pathname === "/blog";
   const isBlogArticle = pathname.startsWith("/blog/") && !isBlogIndex;
   const search = publicSearch(loc.search);
-  useEffect(() => { loadGA(); }, []);
-  useEffect(() => { pageview(`${pathname}${search || ""}`); }, [pathname, search]);
+  const analyticsBlocked = authLoading || isAdministration || owner === '112743d7-f683-4bbb-8117-068e89a00f22';
+  // Disable the tag for the owner on every route, including automatic history measurement.
+  useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked]);
+  useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`); }, [pathname, search, analyticsBlocked]);
   const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/vite.svg` };
 
   return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>
     <SiteNavigation />
     <a className="hq-skip-link" href="#main-content">Skip to content</a>
     <Helmet>
-      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || ["/login", "/setup-profile", "/admin/daily"].includes(pathname) ? "" : search || ""}`} />
+      <link rel="canonical" href={`${CANON_BASE}${isBlogIndex ? "/blog" : isBlogArticle ? pathname.replace(/\/$/, "") : pathname}${isBlogIndex || isBlogArticle || isAdministration || ["/login", "/setup-profile"].includes(pathname) ? "" : search || ""}`} />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       <meta property="og:image" content={DEFAULT_OG} />
@@ -139,7 +142,7 @@ export default function Layout() {
               <Menu.Items className="hq-account-menu">
                 <Menu.Item><Link className="hq-menu-item" to="/profile"><SiteIcon name="chart" />My results</Link></Menu.Item>
                 {!authLoading && profileReady && !nickname && <Menu.Item><button className="hq-menu-item" onClick={chooseNickname}><SiteIcon name="user" />Choose nickname</button></Menu.Item>}
-                {admin?.owner === owner && admin.value && <Menu.Item><Link className="hq-menu-item" to="/admin/daily"><SiteIcon name="settings" />Admin</Link></Menu.Item>}
+                {admin?.owner === owner && admin.value && <Menu.Item><Link className="hq-menu-item" to="/admin/questions"><SiteIcon name="settings" />Admin</Link></Menu.Item>}
                 <div className="hq-menu-divider" />
                 <Menu.Item><button className="hq-menu-item" onClick={() => signOut()}><SiteIcon name="logout" />Log out</button></Menu.Item>
               </Menu.Items>

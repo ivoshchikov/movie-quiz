@@ -23,17 +23,17 @@ export async function dailyFixture(page: Page, signedIn = true, options = dailyC
     const key = `${payload.p_user_id}:${payload.p_date}`;
     let body: unknown, fail = false;
     switch (name) {
-      case "get_daily_question":
+      case "get_daily_question_public":
         fail = data.failQuestion;
-        body = data.noQuestion ? [] : [{ id: 700, image_url: "https://quiz-fixture.supabase.co/daily-fixture.svg", options_json: data.malformedQuestion ? ["invalid"] : options, correct_answer: options[0], category_id: 1, difficulty_level_id: 1 }]; break;
+        body = data.noQuestion ? [] : [{ id: 700, image_url: "https://quiz-fixture.supabase.co/daily-fixture.svg", options_json: data.malformedQuestion ? ["invalid"] : options, category_id: 1, difficulty_level_id: 1 }]; break;
       case "get_my_daily_result":
         if (data.beforeStatus) await data.beforeStatus();
         fail = data.failStatus || (data.failConfirmation && data.results.has(key));
         body = [data.results.get(key) ?? { is_answered: false, is_correct: null, time_spent: null, answered_at: null }]; break;
       case "start_daily_session": fail = data.failStart; body = null; break;
-      case "submit_daily_result":
+      case "submit_daily_answer":
         fail = data.failSubmit; body = null;
-        if (!fail) data.results.set(key, { is_answered: true, is_correct: data.serverCorrect ?? payload.p_is_correct, time_spent: payload.p_time, answered_at: "2026-10-07T17:00:00Z" });
+        if (!fail) data.results.set(key, { is_answered: true, is_correct: data.serverCorrect ?? payload.p_answer === options[0], time_spent: payload.p_time, answered_at: "2026-10-07T17:00:00Z" });
         break;
       case "get_daily_user_streak":
         fail = data.failStreak;

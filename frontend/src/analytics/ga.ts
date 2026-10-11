@@ -18,8 +18,14 @@ const GA_ID =
   import.meta.env.VITE_GA_ID ||
   import.meta.env.VITE_GA_MEASUREMENT_ID;
 
+let blocked = false;
+export function setAnalyticsBlocked(value: boolean) {
+  blocked = value;
+  if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: value });
+}
+
 export function loadGA() {
-  if (!GA_ID || window.__gaLoaded) return;
+  if (!GA_ID || blocked || window.__gaLoaded) return;
 
   // Заглушка + очередь
   window.dataLayer = window.dataLayer || [];
@@ -47,7 +53,7 @@ const isDebug =
   /localhost|127\.0\.0\.1/.test(location.hostname);
 
 export function pageview(path: string) {
-  if (!GA_ID) return;
+  if (!GA_ID || blocked) return;
   window.gtag?.('event', 'page_view', {
     page_title: document.title,
     // Layout supplies the public path without callback credentials or fragments.
@@ -58,7 +64,7 @@ export function pageview(path: string) {
 }
 
 export function event(name: string, params: AnalyticsParameters = {}) {
-  if (!GA_ID) return;
+  if (!GA_ID || blocked) return;
   window.gtag?.('event', name, { ...params, debug_mode: isDebug });
 }
 

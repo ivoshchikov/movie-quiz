@@ -168,7 +168,7 @@ test("broken images show a finite fallback and require a successful explicit ret
   });
   let images = 0,
     fail = true;
-  await page.route("**/broken.svg", (route) => {
+  await page.route(/\/broken\.svg(?:\?.*)?$/, (route) => {
     images++;
     return fail
       ? route.fulfill({ status: 404, body: "" })
@@ -228,7 +228,7 @@ test("confirmed save uses actor and assignment revision, and prevents a second s
   });
   expect(
     otherCalls.some((call) =>
-      /set_daily_question$|start_daily_session|submit_daily_result|get_daily_question/.test(
+      /set_daily_question$|start_daily_session|submit_daily_answer|get_daily_question/.test(
         call.name,
       ),
     ),

@@ -36,12 +36,10 @@ async function fixture(page: Page) {
     data.dailyCalls++;
     return route.fulfill({ status: data.failDaily ? 503 : 200, contentType: "application/json", body: JSON.stringify(data.failDaily ? { message: "fixture streak error" } : data.streak == null ? [] : [data.streak]) });
   });
-  await page.route("**/rest/v1/question?**", route => {
-    if (route.request().method() !== "HEAD") return route.fallback();
-    const url = new URL(route.request().url());
-    const key = `${url.searchParams.get("category_id")?.replace("eq.", "")}:${url.searchParams.get("difficulty_level_id")?.replace("eq.", "")}`;
-    const count = data.counts.get(key) ?? 42;
-    return route.fulfill({ status: data.failCount ? 503 : 200, headers: data.missingCount ? {} : { "content-range": `0-${Math.max(0, count - 1)}/${count}`, "access-control-expose-headers": "content-range" }, body: "" });
+  await page.route("**/rest/v1/rpc/count_questions", route => {
+    const payload=route.request().postDataJSON();
+    const count=data.counts.get(`${payload.p_category_id}:${payload.p_difficulty_id}`)??42;
+    return route.fulfill({status:data.failCount?503:200,contentType:'application/json',body:JSON.stringify(data.missingCount?null:count)});
   });
   for (const name of ["category", "difficulty_level"]) await page.route(`**/rest/v1/${name}?**`, route => data.failCatalog ? route.fulfill({ status: 503, contentType: "application/json", body: '{"message":"fixture catalog error"}' }) : route.fallback());
   return { data, calls };
@@ -67,7 +65,7 @@ test("records group in catalog order, with a count, correct duration and a fixed
   await page.getByRole("button", { name: "Account menu" }).click();
   await expect(page.getByRole("menuitem", { name: /Change nickname/ })).toHaveCount(0);
   expect(data.writes).toEqual([]);
-  expect(calls.some(call => ["get_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["get_game_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toBe(false);
 });
 
 test("record actions pass the exact category and difficulty to the game and leaderboard", async ({ page }) => {
@@ -81,7 +79,7 @@ test("record actions pass the exact category and difficulty to the game and lead
   await page.getByRole("link", { name: "Play again: Actors — Hard", exact: true }).click();
   await expect(page).toHaveURL(/\/play$/);
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-  expect(calls.filter(call => call.name === "get_question").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
+  expect(calls.filter(call => call.name === "get_game_question").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
 });
 
 test("historical scores stay visible when only that exact quiz is unavailable", async ({ page }) => {
@@ -439,7 +437,7 @@ test("Chicago midnight refreshes Daily statistics without playing an attempt", a
   await page.clock.runFor(3000);
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("0 days");
   expect(data.dailyCalls).toBeGreaterThan(before);
-  expect(calls.some(call => ["get_daily_question", "start_daily_session", "submit_daily_result"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["get_daily_question_public", "start_daily_session", "submit_daily_answer"].includes(call.name))).toBe(false);
 });
 
 test("all record actions are keyboard reachable with visible focus", async ({ page }) => {

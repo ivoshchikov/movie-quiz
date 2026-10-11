@@ -25,13 +25,13 @@ export async function mockQuizApi(page: Page) {
     switch (name) {
       case 'category': body = categories; break;
       case 'difficulty_level': body = difficulties; break;
-      case 'question': {
-        const category = Number(url.searchParams.get('category_id')?.replace('eq.', ''));
-        const count = category === 1 ? 100 : category === 2 ? 200 : 0;
-        headers['content-range'] = `0-${Math.max(count - 1, 0)}/${count}`;
-        body = { correct_answer: 'Fixture answer' };
+      case 'count_questions': {
+        const category = request.postDataJSON().p_category_id;
+        body = category === 1 ? 100 : category === 2 ? 200 : 0;
         break;
       }
+      case 'question': return route.fulfill({status:403,body:'{}'});
+      case 'answer_game_question': body = request.postDataJSON().p_answer === 'Fixture answer'; break;
       case 'profiles': {
         headers['content-range'] = '0-0/0';
         body = request.method() === 'POST' ? { nickname: request.postDataJSON().nickname, avatar_url: null } : { nickname: 'MovieFan', avatar_url: null };
@@ -40,9 +40,9 @@ export async function mockQuizApi(page: Page) {
       case 'is_admin': body = false; break;
       case 'get_leaderboard': body = [{ nickname: 'FilmExpert', best_score: 25, best_time: 82, updated_at: '2026-10-05T12:00:00Z' }]; break;
       case 'user_best': body = [{ category_id: 1, difficulty_level_id: 3, best_score: 12, best_time: 65, updated_at: '2026-10-05T12:00:00Z' }]; break;
-      case 'get_question': {
+      case 'get_game_question': {
         const payload = request.postDataJSON();
-        body = [{ id: 999, image_url: 'https://quiz-fixture.supabase.co/fixture.svg', options_json: ['Fixture answer', 'Second answer', 'Third answer', 'Fourth answer'], category_id: payload.p_category_id, difficulty_level_id: payload.p_difficulty_id }];
+        body = [{ id: 999, answer_token: '00000000-0000-4000-8000-000000000999', image_url: 'https://quiz-fixture.supabase.co/fixture.svg', options_json: ['Fixture answer', 'Second answer', 'Third answer', 'Fourth answer'], category_id: payload.p_category_id, difficulty_level_id: payload.p_difficulty_id }];
         break;
       }
     }
@@ -53,13 +53,13 @@ export async function mockQuizApi(page: Page) {
   return calls;
 }
 
-export async function mockSignedIn(page: Page) {
+export async function mockSignedIn(page: Page, owner = 'fixture-user') {
   const supabaseUrl = 'https://quiz-fixture.supabase.co';
   const storageKey = `sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`;
   const session = {
-    access_token: `e30.${Buffer.from(JSON.stringify({ sub: 'fixture-user', role: 'authenticated', exp: 4102444800 })).toString('base64url')}.fixture`,
+    access_token: `e30.${Buffer.from(JSON.stringify({ sub: owner, role: 'authenticated', exp: 4102444800 })).toString('base64url')}.fixture`,
     refresh_token: 'fixture-refresh-token', token_type: 'bearer', expires_in: 3600, expires_at: 4102444800,
-    user: { id: 'fixture-user', aud: 'authenticated', role: 'authenticated', email: 'fixture@example.test', app_metadata: {}, user_metadata: {}, created_at: '2026-01-01T00:00:00Z' },
+    user: { id: owner, aud: 'authenticated', role: 'authenticated', email: 'fixture@example.test', app_metadata: {}, user_metadata: {}, created_at: '2026-01-01T00:00:00Z' },
   };
   await page.addInitScript(({ storageKey, session }) => localStorage.setItem(storageKey, JSON.stringify(session)), { storageKey, session });
 }

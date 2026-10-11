@@ -39,7 +39,7 @@ test("page and modal share email/Google, a labeled field and guest access", asyn
   await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
   await page.getByRole("link", { name: /Play a regular quiz as a guest/ }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
-  expect(calls.filter(call => ["get_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toHaveLength(0);
 });
 
 test("email success is inline, focused and does not announce an authenticated session", async ({ page }) => {
@@ -179,7 +179,7 @@ for (const destination of ["https://evil.test", "//evil.test", "/\\evil.test", "
     const request = page.waitForRequest(item => new URL(item.url()).pathname === "/auth/v1/otp");
     await send(page);
     expect(new URL((await request).url()).searchParams.get("redirect_to")).toBe("http://localhost:5173/");
-    expect(calls.filter(call => ["get_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
+    expect(calls.filter(call => ["get_game_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
   });
 }
 
@@ -192,7 +192,7 @@ test("confirmed sign-in closes the modal and does not start Daily", async ({ pag
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeVisible();
   await expect(page).toHaveURL(/\/daily$/);
-  expect(calls.filter(call => ["get_question", "start_daily_session", "submit_daily_result"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session", "submit_daily_answer"].includes(call.name))).toHaveLength(0);
 });
 
 test("confirmed sign-in returns to selected leaderboard filters", async ({ page }) => {
@@ -275,6 +275,11 @@ test("analytics excludes callback credentials and fragments from every pageview"
   await mockQuizApi(page);
   await page.goto("/leaderboard?category=2&difficulty=3&code=fixture-code&provider_token=fixture-provider#access_token=fixture-access&refresh_token=fixture-refresh&error_description=fixture-private");
   await expect(page.getByRole("heading", { name: "Leaderboard", exact: true })).toBeVisible();
+  // Analytics stays disabled until the asynchronous account check completes.
+  await expect.poll(() => page.evaluate(() => window.dataLayer?.filter(entry => {
+    const args = Array.from(entry as IArguments);
+    return args[0] === "event" && args[1] === "page_view";
+  }).length ?? 0)).toBeGreaterThan(0);
   const views = await page.evaluate(() => window.dataLayer.map(entry => Array.from(entry as IArguments)).filter(args => args[0] === "event" && args[1] === "page_view"));
   expect(views.length).toBeGreaterThan(0);
   for (const view of views) {
@@ -438,7 +443,7 @@ test("nickname setup keeps its return page and never permits renaming", async ({
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeVisible();
   await page.goto("/setup-profile?redirect=%2Fdaily");
   await expect(page).toHaveURL(/\/daily$/);
-  expect(calls.filter(call => ["get_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["get_game_question", "start_daily_session"].includes(call.name))).toHaveLength(0);
 });
 
 test("guest result copy explains future saves without transferring the prior score", async ({ page }) => {
