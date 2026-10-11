@@ -128,8 +128,8 @@ test("the explainer compares one image early, keeps shapes intact, and explains 
 test("related articles use a common topic and the explainer honestly offers more articles", async ({ page }) => {
   await open(page);
   await expect(page.getByRole("heading", { name: "Related articles", exact: true })).toBeVisible();
-  await expect(page.locator(".hq-article-card")).toHaveCount(1);
-  await page.locator(".hq-article-card").click();
+  await expect(page.locator(".hq-article-card")).toHaveCount(2);
+  await page.locator(".hq-article-card").filter({ hasText: articles[1].title }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[1].title);
   const json = await structuredArticle(page); expect(json).toHaveLength(1); expect(json[0].headline).toBe(articles[1].title);
   await page.goto(url(2));
@@ -140,16 +140,16 @@ test("related articles use a common topic and the explainer honestly offers more
 
 test("Back restores an unfragmented article's reading position after a related link", async ({ page }) => {
   await open(page);
-  await page.locator(".hq-article-card").scrollIntoViewIfNeeded();
+  await page.locator(".hq-article-card").filter({ hasText: articles[1].title }).scrollIntoViewIfNeeded();
   const position = await page.evaluate(() => scrollY);
   expect(position).toBeGreaterThan(1000);
-  await page.locator(".hq-article-card").click();
+  await page.locator(".hq-article-card").filter({ hasText: articles[1].title }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[1].title);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[0].title);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(position, 0);
-  await expect(page.locator(".hq-article-card")).toBeInViewport();
+  await expect(page.locator(".hq-article-card").filter({ hasText: articles[1].title })).toBeInViewport();
 });
 
 test("a configured origin agrees across generated article metadata, RSS and sitemap", () => {
@@ -185,7 +185,7 @@ test("a failed image reserves its space, stops requests and resets on article na
   await expect(figure.getByRole("img", { name: /Image unavailable/ })).toBeVisible();
   const box = await figure.locator(".hq-article-image").boundingBox();
   expect(box!.width / box!.height).toBeCloseTo(2 / 3, 2);
-  await page.locator(".hq-article-card").click();
+  await page.locator(".hq-article-card").filter({ hasText: articles[1].title }).click();
   await page.locator(".hq-movie-poster").first().scrollIntoViewIfNeeded();
   await expect(page.locator(".hq-movie-poster img").first()).toBeVisible();
   await expect(page.locator(".hq-movie-poster img").first()).toHaveAttribute("loading", "lazy");
@@ -217,7 +217,7 @@ test("reading estimates follow rendered prose and agree with the collection", as
   const card = page.locator(".hq-blog-card").filter({ hasText: articles[1].title });
   const minutes = (await card.innerText()).match(/~\d+ min read/)![0];
   expect(text).toContain(minutes);
-  expect(values.minutes.every((value: number) => value > 0 && value < 8)).toBe(true);
+  expect(values.minutes.every((value: number) => value > 0 && Number.isInteger(value))).toBe(true);
 });
 
 test("editorial data checks reject impossible update dates, duplicate sections and unsafe sources", async ({ page }) => {

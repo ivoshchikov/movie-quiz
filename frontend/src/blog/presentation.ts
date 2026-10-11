@@ -66,6 +66,8 @@ export function validateBlogPosts(posts: BlogPost[]): void {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug) || slugs.has(post.slug)) fail("invalid or duplicate slug");
     slugs.add(post.slug);
     if (!post.title.trim() || !post.excerpt.trim()) fail("title and excerpt are required");
+    if (post.seoTitle !== undefined && !post.seoTitle.trim()) fail("seoTitle must not be empty");
+    if (post.socialImagePath && !/^\/blog-assets\/[a-z0-9/-]+\.(?:webp|png|jpe?g)$/.test(post.socialImagePath)) fail("socialImagePath must be an image under /blog-assets");
     if (!validBlogDate(post.date)) fail("date must be a real YYYY-MM-DD calendar date");
     if (post.modified && (!validBlogDate(post.modified) || post.modified < post.date)) fail("modified must be a real date on or after publication");
     if (!primaryTopic(post)) fail("a canonical topic is required");
@@ -92,8 +94,8 @@ export function articleMetadata(post: BlogPost) {
   const origin = new URL(import.meta.env.VITE_SITE_URL || metadata.url).origin;
   const params = new URLSearchParams({ title: post.title, date: post.date });
   return {
-    title: `${post.title} | Hard Quiz`, description: post.excerpt,
-    url: `${origin}/blog/${post.slug}`, image: `${origin}/api/og/post?${params}`,
+    title: `${post.seoTitle || post.title} | Hard Quiz`, description: post.excerpt,
+    url: `${origin}/blog/${post.slug}`, image: post.socialImagePath ? `${origin}${post.socialImagePath}` : `${origin}/api/og/post?${params}`,
   };
 }
 
@@ -106,7 +108,7 @@ export function articleJsonLd(post: BlogPost) {
     mainEntityOfPage: { "@type": "WebPage", "@id": meta.url },
     ...(validBlogDate(post.date) ? { datePublished: post.date } : {}),
     ...(post.modified && validBlogDate(post.modified) ? { dateModified: post.modified } : {}),
-    ...(listingImages(post)[0] ? { image: listingImages(post)[0] } : {}),
+    ...(post.socialImagePath || listingImages(post)[0] ? { image: post.socialImagePath ? meta.image : listingImages(post)[0] } : {}),
     articleSection: primaryTopic(post)?.shortLabel,
     publisher: { "@type": "Organization", name: "Hard Quiz", url: new URL(meta.url).origin },
   };

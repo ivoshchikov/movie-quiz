@@ -23,6 +23,8 @@
 .hq-article h2 { margin: 34px 0 14px; font-size: 24px; scroll-margin-top: 24px; }
 .hq-article h3 { margin: 22px 0 9px; font-size: 19px; }
 .hq-article-prose strong { color: #f4f5fa; font-weight: 650; }
+.hq-article-prose a { color: #c7bfff; text-decoration: underline; text-decoration-color: #665d99; text-underline-offset: 3px; }
+.hq-article-prose a:hover { color: #e3ddff; text-decoration-color: currentColor; }
 .hq-article-prose ul { margin: 0 0 22px; padding-left: 23px; list-style: disc; }
 .hq-article-prose li { margin-bottom: 12px; padding-left: 3px; }
 .hq-article-prose figure { margin: 22px 0 28px; }
@@ -56,6 +58,9 @@
 .hq-movie-facts dd { margin: 2px 0 0; color: #e4e7ed; }
 .hq-movie-facts dd span { display: block; color: #bbc2d0; font-size: 12px; }
 .hq-movie-copy p:last-child { margin-bottom: 0; }
+.hq-watchlist-entry { padding-block: 10px 4px; border-top: 1px solid #30343e; }
+.hq-article-prose .hq-watchlist-facts { color: #b6bdcc; font-size: 14px; line-height: 1.8; }
+.hq-article-prose .hq-watchlist-facts strong { color: #d0d5df; }
 .hq-article-faq { padding-top: 2px; border-top: 1px solid #30343e; }
 .hq-article-faq > div { margin-block: 22px; }
 .hq-frame-pair { display: grid; grid-template-columns: 2.39fr 1.7778fr; gap: 14px; }

@@ -134,6 +134,6 @@ test('mobile homepage has no overflow and all primary navigation is reachable', 
   await page.screenshot({ path: test.info().outputPath('homepage-mobile.png'), fullPage: true });
   for (const name of ['Play', 'Daily', 'Leaderboard', 'Blog']) await expect(page.getByRole('navigation').getByRole('link', { name, exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Play Daily' })).toHaveAttribute('href', '/daily');
-  await expect(page.getByRole('link', { name: 'Why 2.39:1 Feels More Cinematic' })).toHaveAttribute('href', '/blog/why-2-39-1-feels-more-cinematic');
+  await expect(page.getByRole('link', { name: 'Best Horror Movies of 2026 So Far: A Spoiler-Free Watchlist' })).toHaveAttribute('href', '/blog/best-horror-movies-2026');
   await expect(page.getByRole('link', { name: 'How to play' })).toHaveAttribute('href', '/how-to-play');
 });

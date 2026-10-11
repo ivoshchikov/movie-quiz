@@ -4,11 +4,13 @@ import type { ReactNode } from "react";
 export type BlogPost = {
   slug: string;
   title: string;
+  seoTitle?: string;       // concise search title; the visible headline stays complete
   excerpt: string;
   date: string;            // ISO
   tags: string[];          // e.g. ["Streaming & New Releases"]
   coverUrl?: string;       // editorial / preview image; content owns inline illustrations
   listingCoverUrl?: string; // compact cover for the article list
+  socialImagePath?: string; // own share image under /blog-assets, resolved on the site origin
   archiveYear?: number;     // explicit archive marker for time-bound guides
   gallery?: string[];      // existing images available to listing fallbacks
   readingMinutes?: number; // optional
