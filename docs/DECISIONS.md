@@ -338,3 +338,14 @@ UI-01—UI-12 завершены и опубликованы. Следующий
 Проверенный код прошёл 446 браузерных тестов без повторов в обоих workflow, 11 SQL проверок PostgreSQL 16, 9 Edge/image проверок и существующие Daily guards. Lint, TypeScript, сборка/SEO и Deno typecheck прошли. Production проверен по HTTP, через прямые API и права authenticated/anon; создание вопроса проверено на изолированных данных. Старые вопросы и изображения сохранены, два некорректных вопроса помечены Needs review.
 
 Файлы миграций приведены к версиям, назначенным при установке, чтобы история Supabase совпадала с репозиторием. SQL содержимое не менялось; тестовые пути обновлены и проверены. Черновики восстанавливаются в том же браузере/аккаунте до семи дней. Открытые вкладки со старым игровым клиентом требуют обновления страницы.
+
+
+## UI-13 extension — owner-only question editing and deletion
+
+Approved by the owner on 11 October 2026. Implemented for verification; production release is pending.
+
+The question detail includes editing four options, selecting the correct option, optional replacement-image processing and a separate deletion confirmation. Category/difficulty and the question ID are retained. Text edits and deletion use an owner-guarded RPC; replacement images use the existing server-verified import pipeline and a fresh namespace path. Existing files are never overwritten. Request UUIDs make retries idempotent; row revisions reject stale edits from another tab. Unconfirmed requests keep their payload locked for the same-operation retry.
+
+Deletion retires the question: it disappears from the active bank and new question pools, while its row and images remain for statistics, pending game tickets and assigned Daily questions. A private snapshot per Daily date preserves the image, options and correct answer at assignment. Existing assignments are backfilled before editing is enabled. Public Daily reads and server answer checks, the public archive and administrative history use this snapshot. Administrative Daily current-question display uses the guarded snapshot endpoint, including retired questions. New assignments reject retired questions. Ordinary game tickets already preserve their answers.
+
+The database migration is `20261011165030_question_edit_delete.sql` (local generated version, to be aligned with installed history after release). Private snapshots and the mutation audit are inaccessible to players; owner checks use the existing pinned Isildur account and database membership. Editing drafts are memory-only and clearly described as unsaved until confirmation. Closing a dirty edit requires confirmation; unknown network outcomes remain retryable with the same UUID. Images and retired records are retained deliberately; physical purge and restoration are outside this release.

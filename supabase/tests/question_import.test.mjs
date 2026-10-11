@@ -97,3 +97,16 @@ test('duplicate detection asks for an explicit choice; cleanup failure cannot un
  const f=fixture();f.state.duplicate=true;const duplicate=await f.handler(request());assert.equal(duplicate.status,409);assert.equal((await duplicate.json()).question_id,71);assert.equal(f.uploads.length,0);
  f.state.failCleanup=true;const response=await f.handler(request({...data,allow_duplicate:true}));assert.equal(response.status,200);assert.equal((await response.json()).status,'committed');
 });
+
+test('replacement uploads carry an immutable target and expected revision through the guarded service RPC',async()=>{
+ const calls=[];
+ const handler=createHandler({authorize:async()=>owner,decode:decodeWebp,storage:{},rpc:async(name,args)=>{
+  calls.push({name,args});assert.equal(name,'admin_edit_import_reserve');assert.equal(args.p_question_id,42);assert.equal(args.p_revision,3);
+  return {status:'committed',question_id:42,image_path:'general/g_00401.webp'};
+ }});
+ const response=await handler(request({...data,edit_question_id:42,edit_revision:3}));assert.equal(response.status,200);assert.equal((await response.json()).question_id,42);
+ assert.equal(calls.length,1);
+ assert.equal((await handler(request({...data,edit_question_id:42,edit_revision:0}))).status,400);assert.equal(calls.length,1);
+ const conflicting=createHandler({authorize:async()=>owner,decode:decodeWebp,storage:{},rpc:async()=>{throw Error('Question changed. Reload before editing.');}});
+ const conflict=await conflicting(request({...data,edit_question_id:42,edit_revision:3}));assert.equal(conflict.status,409);assert.equal((await conflict.json()).status,'conflict');
+});

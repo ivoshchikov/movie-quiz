@@ -12,6 +12,7 @@ const row = (id: number) => ({
   category_id: 1,
   difficulty_level_id: 1,
   needs_review: false,
+  admin_revision: 1,
 });
 async function fixture(
   page: Page,
@@ -40,6 +41,10 @@ async function fixture(
     dimensions: [] as [number, number][],
     statuses: new Map<string, unknown>(),
     rights: account === "owner",
+    changes: [] as Record<string, unknown>[],
+    conflict: false,
+    loseChangeResponse: false,
+    operations: new Map<string, unknown>(),
   };
   await page.route("**/rest/v1/rpc/is_admin", (r) =>
     r.fulfill({
@@ -62,6 +67,40 @@ async function fixture(
       ),
     }),
   );
+  await page.route("**/rest/v1/rpc/admin_change_question", async (r) => {
+    const p = r.request().postDataJSON();
+    data.changes.push(p);
+    if (data.conflict)
+      return r.fulfill({
+        status: 409,
+        contentType: "application/json",
+        body: JSON.stringify({ code: "40001", message: "Question changed" }),
+      });
+    let result = data.operations.get(p.p_operation);
+    if (!result) {
+      const q = data.rows.find((q) => q.id === p.p_id)!;
+      if (p.p_delete) data.rows = data.rows.filter((q) => q.id !== p.p_id);
+      else {
+        q.options_json = p.p_options;
+        q.correct_answer = p.p_options[p.p_correct_index];
+        q.admin_revision++;
+      }
+      result = {
+        status: "committed",
+        question_id: p.p_id,
+        deleted: p.p_delete,
+      };
+      data.operations.set(p.p_operation, result);
+    }
+    if (data.loseChangeResponse) {
+      data.loseChangeResponse = false;
+      return r.abort();
+    }
+    return r.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify(result),
+    });
+  });
   await page.route("**/rest/v1/rpc/admin_question_bank", (r) => {
     const p = r.request().postDataJSON();
     data.bankCalls.push(p);
@@ -161,9 +200,10 @@ async function fixture(
       });
     const result = {
       status: "committed",
-      question_id: 300 + data.imports.length,
+      question_id: p.edit_question_id ?? 300 + data.imports.length,
       image_path: `general/g_${String(100 + data.imports.length).padStart(5, "0")}.webp`,
     };
+    if (p.edit_question_id) { const q = data.rows.find(q => q.id === p.edit_question_id)!; q.image_url = result.image_path; q.options_json = p.options; q.correct_answer = p.options[p.correct_index]; q.admin_revision++; }
     data.statuses.set(p.id, result);
     if (data.loseResponse) return r.abort();
     return r.fulfill({
@@ -525,4 +565,101 @@ test("private routes are noindex in first HTTP metadata and contain no bank data
     expect(route.headers["Cache-Control"]).toBe("no-store");
     expect(route.headers["X-Robots-Tag"]).toBe("noindex, nofollow");
   }
+});
+
+test("edit four answers and correct option, refreshing the existing question", async ({
+  page,
+}) => {
+  const { data: f } = await fixture(page);
+  await page.goto("/admin/questions?question=60");
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  for (const [i, value] of [
+    "Edited One",
+    "Edited Two",
+    "Edited Three",
+    "Edited Four",
+  ].entries())
+    await page
+      .getByLabel(`Answer ${String.fromCharCode(65 + i)}`, { exact: true })
+      .fill(value);
+  await page.getByRole("radio", { name: "Correct answer C" }).check();
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "changes saved" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("dialog").getByText("Edited Three", { exact: true }),
+  ).toHaveCount(2);
+  expect(f.changes[0].p_correct_index).toBe(2);
+  expect(f.changes[0].p_revision).toBe(1);
+  expect(f.rows.find((q) => q.id === 60)?.admin_revision).toBe(2);
+});
+test("deletion requires confirmation and preserves list filters", async ({
+  page,
+}) => {
+  const { data: f } = await fixture(page);
+  await page.goto("/admin/questions?sort=id_asc&question=1");
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await page
+    .getByRole("button", { name: "Delete question", exact: true })
+    .click();
+  expect(f.changes).toHaveLength(0);
+  await expect(
+    page.getByText("Delete question #1?", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Keep question" }).click();
+  expect(f.changes).toHaveLength(0);
+  await page
+    .getByRole("button", { name: "Delete question", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Confirm deletion" }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page).toHaveURL(/sort=id_asc$/);
+  await expect(page.getByText("59 questions in the bank")).toBeVisible();
+});
+test("a lost deletion response retries the same operation without another deletion", async ({
+  page,
+}) => {
+  const { data: f } = await fixture(page);
+  f.loseChangeResponse = true;
+  await page.goto("/admin/questions?question=60");
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await page
+    .getByRole("button", { name: "Delete question", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Confirm deletion" }).click();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "could not be confirmed" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Retry same operation" }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  expect(f.changes).toHaveLength(2);
+  expect(f.changes[0].p_operation).toBe(f.changes[1].p_operation);
+  expect(f.rows).toHaveLength(59);
+});
+test("conflicting edits show reload and never claim a successful save", async ({
+  page,
+}) => {
+  const { data: f } = await fixture(page);
+  f.conflict = true;
+  await page.goto("/admin/questions?question=60");
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await page.getByLabel("Answer A", { exact: true }).fill("Updated title");
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "changed or was deleted" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Reload question" }).click();
+  await expect(
+    page.getByRole("button", { name: "Edit or delete question" }),
+  ).toBeVisible();
+  await expect(page.getByText(/changes saved/)).toHaveCount(0);
+});
+
+test("replace an image on mobile without changing the question ID",async({page})=>{
+ const {data}=await fixture(page);await page.setViewportSize({width:390,height:844});await page.goto('/admin/questions?question=60');await page.getByRole('button',{name:'Edit or delete question'}).click();
+ await page.getByLabel('Replace image (optional)',{exact:true}).setInputFiles('tests/assets/question-frame.png');await expect(page.getByAltText('Replacement image preview')).toBeVisible({timeout:20000});
+ await expect(page.getByRole('button',{name:'Save changes',exact:true})).toBeEnabled();
+ const bounds=await page.getByRole('dialog').evaluate(e=>({width:e.scrollWidth,viewport:window.innerWidth}));expect(bounds.width).toBeLessThanOrEqual(bounds.viewport);
+ await page.getByRole('button',{name:'Save changes',exact:true}).click();await expect(page.getByText('Question #60 changes saved.',{exact:true})).toBeVisible();expect(data.imports).toHaveLength(1);expect((data.imports[0] as unknown as {edit_question_id:number}).edit_question_id).toBe(60);expect(data.rows).toHaveLength(60);expect(data.rows.find(q=>q.id===60)?.image_url).not.toBe('general/g_00060.webp');
 });

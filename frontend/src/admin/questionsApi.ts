@@ -8,6 +8,7 @@ export interface BankQuestion {
   category_id: number | null;
   difficulty_level_id: number;
   needs_review: boolean;
+  admin_revision?: number;
   invalid_options?: string;
 }
 export interface BankResult {
@@ -43,6 +44,8 @@ export interface ImportPayload {
   correct_index: number;
   source_hash: string;
   allow_duplicate: boolean;
+  edit_question_id?: number;
+  edit_revision?: number;
 }
 const object = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === "object" && !Array.isArray(v);
@@ -57,11 +60,17 @@ function question(v: unknown): BankQuestion {
     typeof v.correct_answer !== "string" ||
     !(v.category_id === null || count(v.category_id)) ||
     !count(v.difficulty_level_id) ||
-    typeof v.needs_review !== "boolean"
+    typeof v.needs_review !== "boolean" ||
+    (v.admin_revision !== undefined && (!count(v.admin_revision) || v.admin_revision < 1))
   )
     throw new Error("Invalid question response");
-  return { ...v, options_json: Array.isArray(v.options_json) ? v.options_json : [],
-    invalid_options: Array.isArray(v.options_json) ? undefined : JSON.stringify(v.options_json) } as unknown as BankQuestion;
+  return {
+    ...v,
+    options_json: Array.isArray(v.options_json) ? v.options_json : [],
+    invalid_options: Array.isArray(v.options_json)
+      ? undefined
+      : JSON.stringify(v.options_json),
+  } as unknown as BankQuestion;
 }
 export async function loadBank(
   filters: BankFilters,
@@ -147,7 +156,8 @@ export async function draftKey(signal: AbortSignal): Promise<CryptoKey> {
 }
 export class ImportError extends Error {
   constructor(
-    public readonly kind: "duplicate" | "busy" | "unknown" | "invalid",
+    public readonly kind:
+      "duplicate" | "busy" | "unknown" | "invalid" | "conflict",
     message: string,
     public readonly questionId?: number,
   ) {
@@ -219,6 +229,11 @@ export async function sendImport(
         "busy",
         "This question is still being saved. Check status in a moment.",
       );
+    if (data?.status === "conflict")
+      throw new ImportError(
+        "conflict",
+        "This question changed or was deleted. Reload before continuing.",
+      );
     if (response.status === 400)
       throw new ImportError(
         "invalid",
@@ -247,4 +262,50 @@ export async function sendImport(
 export async function cleanupImports(signal: AbortSignal) {
   const response = await callImport({ action: "cleanup" }, signal);
   if (!response.ok) throw new Error("Cleanup unavailable");
+}
+
+export async function changeQuestion(
+  operation: string,
+  row: BankQuestion,
+  options: string[] | null,
+  correctIndex: number | null,
+  remove: boolean,
+  signal: AbortSignal,
+) {
+  const { data, error } = await supabase
+    .rpc("admin_change_question", {
+      p_operation: operation,
+      p_id: row.id,
+      p_revision: row.admin_revision,
+      p_options: options,
+      p_correct_index: correctIndex,
+      p_delete: remove,
+    })
+    .abortSignal(signal);
+  if (error) {
+    if (error.code === "40001" || /Question unavailable/.test(error.message))
+      throw new ImportError(
+        "conflict",
+        "This question changed or was deleted. Reload before continuing.",
+      );
+    if (/Invalid answers/.test(error.message))
+      throw new ImportError(
+        "invalid",
+        "Enter four different answers and choose the correct one.",
+      );
+    throw new ImportError(
+      "unknown",
+      "Saving could not be confirmed. Retry the same operation.",
+    );
+  }
+  if (
+    !object(data) ||
+    data.status !== "committed" ||
+    data.question_id !== row.id ||
+    data.deleted !== remove
+  )
+    throw new ImportError(
+      "unknown",
+      "Saving could not be confirmed. Retry the same operation.",
+    );
 }
