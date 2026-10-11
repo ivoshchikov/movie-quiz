@@ -342,10 +342,21 @@ UI-01—UI-12 завершены и опубликованы. Следующий
 
 ## UI-13 extension — owner-only question editing and deletion
 
-Approved by the owner on 11 October 2026. Implemented for verification; production release is pending.
+Approved by the owner on 11 October 2026. Implemented, tested and published through PR #22.
 
 The question detail includes editing four options, selecting the correct option, optional replacement-image processing and a separate deletion confirmation. Category/difficulty and the question ID are retained. Text edits and deletion use an owner-guarded RPC; replacement images use the existing server-verified import pipeline and a fresh namespace path. Existing files are never overwritten. Request UUIDs make retries idempotent; row revisions reject stale edits from another tab. Unconfirmed requests keep their payload locked for the same-operation retry.
 
 Deletion retires the question: it disappears from the active bank and new question pools, while its row and images remain for statistics, pending game tickets and assigned Daily questions. A private snapshot per Daily date preserves the image, options and correct answer at assignment. Existing assignments are backfilled before editing is enabled. Public Daily reads and server answer checks, the public archive and administrative history use this snapshot. Administrative Daily current-question display uses the guarded snapshot endpoint, including retired questions. New assignments reject retired questions. Ordinary game tickets already preserve their answers.
 
-The database migration is `20261011165030_question_edit_delete.sql` (local generated version, to be aligned with installed history after release). Private snapshots and the mutation audit are inaccessible to players; owner checks use the existing pinned Isildur account and database membership. Editing drafts are memory-only and clearly described as unsaved until confirmation. Closing a dirty edit requires confirmation; unknown network outcomes remain retryable with the same UUID. Images and retired records are retained deliberately; physical purge and restoration are outside this release.
+The database migration is `20261011170955_question_edit_delete.sql` (installed migration version; SQL contents unchanged). Private snapshots and the mutation audit are inaccessible to players; owner checks use the existing pinned Isildur account and database membership. Editing drafts are memory-only and clearly described as unsaved until confirmation. Closing a dirty edit requires confirmation; unknown network outcomes remain retryable with the same UUID. Images and retired records are retained deliberately; physical purge and restoration are outside this release.
+
+
+## Question editing release confirmation — 11 October 2026
+
+[PR #22](https://github.com/ivoshchikov/movie-quiz/pull/22) merged as `2436ead27b8bcacc49092e5f8fda98277eb21bfd`. Both full browser workflows passed **451 tests** without retries on the functional code; native PostgreSQL passed **17** checks, Edge/image handling passed **10**, and existing Daily SQL guards passed. Lint, TypeScript and build/SEO passed. The final alignment commit changes only the migration filename/test path; SQL bytes are identical, and the renamed test path was verified locally.
+
+Migration `20261011170955_question_edit_delete.sql` is installed; Edge `admin-questions` version 2 is ACTIVE with JWT verification. [Production deployment](https://vercel.com/ivans-projects-a806f387/movie-quiz/DV9YT9W87hLY7AYXKMYbLXgZhF8Y) succeeded. All 300 original question contents retain the same checksum; 36 existing Daily assignments received exact snapshots, with no mismatches or retired questions introduced by QA. Read-only production checks confirmed owner access and guest/player denial for answers, editing and Daily snapshots. Service-only image editing RPC is not exposed to clients. No question edits, deletions or game attempts were performed in production for QA.
+
+The prepared PROJECT_CONTEXT update was published with explicit owner authorization in `7cc4a24a209bb5ddbf32bccf85a253c85b267070`. SEO-01 and GAME-DATA-01/02 remain separate pending work. Physical purge and restoration are outside this release; retirement deliberately retains records and images needed for history.
+
+Production HTTP verification: `/admin/questions`, `/admin/questions/new` and `/admin/daily` return 200 with noindex/no-store. The live entry `/assets/index-DWFebDvp.js` loads `AdminQuestionsPage-CNxjvwjt.js`, which contains the released editing form and deletion confirmation.

@@ -306,7 +306,7 @@ API обычной игры: count_questions, get_game_question и answer_game_q
 UI-13 опубликован через PR #21; merge ceaa206c66a127836695339d533e5babe0f8c2a0. CI: 446 browser tests без повторов, 11 PostgreSQL и 9 Edge checks; lint/types/build и Deno typecheck прошли. Серверная часть установлена, Vercel success; после публикации клиента privacy переключён и подтверждён прямыми API/RLS запросами. 300 исторических вопросов/изображений сохранены; 2 записи Needs review исключены из безопасного игрового пула. Обе новые страницы доступны по прямым URL, noindex/no-store. Создание вопроса проверено на изолированных данных; настоящая сессия Isildur для production-записи в QA не использовалась. Общий план UI-01—UI-13 завершён; SEO-01, GAME-DATA-01/02 и широкий серверный аудит открыты.
 
 
-## Question bank editing and deletion — implementation pending release
+## Question bank editing and deletion — published 11 October 2026
 
 The owner approved editing images, four options and the correct option, and deletion. The detail dialog now has an editing form and explicit deletion confirmation. IDs, category and difficulty stay unchanged. Replacement images use the same WebP processing/verification and namespace allocation as additions; each replacement receives a new path and leaves the previous file intact.
 
@@ -314,4 +314,15 @@ The owner approved editing images, four options and the correct option, and dele
 
 Retirement hides questions from the bank, counts, new games and new Daily assignments. Rows/files remain to preserve history and pending game tickets. `hq_private.daily_questions` stores an immutable version for each assignment; existing Daily assignments are backfilled. Daily public reads/grading, archive/history and the administrative current-question display use the assigned version. Players cannot read snapshots or the mutation audit. Editing drafts are memory-only; the interface explains this, guards closing unsaved changes and locks uncertain request payloads for retry.
 
-Schema source: `supabase/migrations/20261011165030_question_edit_delete.sql`; Edge: `supabase/functions/admin-questions/handler.js`; UI: `frontend/src/admin/QuestionEditor.tsx`, question bank/detail and administrative Daily API. Release and validation results are recorded separately once confirmed.
+Schema source: `supabase/migrations/20261011170955_question_edit_delete.sql`; Edge: `supabase/functions/admin-questions/handler.js`; UI: `frontend/src/admin/QuestionEditor.tsx`, question bank/detail and administrative Daily API. Release and validation results are recorded below.
+
+
+## Question editing release confirmation — 11 October 2026
+
+[PR #22](https://github.com/ivoshchikov/movie-quiz/pull/22) merged as `2436ead27b8bcacc49092e5f8fda98277eb21bfd`. Both full browser workflows passed **451 tests** without retries on the functional code; native PostgreSQL passed **17** checks, Edge/image handling passed **10**, and existing Daily SQL guards passed. Lint, TypeScript and build/SEO passed. The final alignment commit changes only the migration filename/test path; SQL bytes are identical, and the renamed test path was verified locally.
+
+Migration `20261011170955_question_edit_delete.sql` is installed; Edge `admin-questions` version 2 is ACTIVE with JWT verification. [Production deployment](https://vercel.com/ivans-projects-a806f387/movie-quiz/DV9YT9W87hLY7AYXKMYbLXgZhF8Y) succeeded. All 300 original question contents retain the same checksum; 36 existing Daily assignments received exact snapshots, with no mismatches or retired questions introduced by QA. Read-only production checks confirmed owner access and guest/player denial for answers, editing and Daily snapshots. Service-only image editing RPC is not exposed to clients. No question edits, deletions or game attempts were performed in production for QA.
+
+The prepared PROJECT_CONTEXT update was published with explicit owner authorization in `7cc4a24a209bb5ddbf32bccf85a253c85b267070`. SEO-01 and GAME-DATA-01/02 remain separate pending work. Physical purge and restoration are outside this release; retirement deliberately retains records and images needed for history.
+
+Production HTTP verification: `/admin/questions`, `/admin/questions/new` and `/admin/daily` return 200 with noindex/no-store. The live entry `/assets/index-DWFebDvp.js` loads `AdminQuestionsPage-CNxjvwjt.js`, which contains the released editing form and deletion confirmation.
