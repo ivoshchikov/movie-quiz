@@ -9,6 +9,7 @@ import { useReadRequest } from "../hooks/useReadRequest";
 import Seo from "../components/Seo";
 import AdminAccess from "../admin/AdminAccess";
 import AdminImage from "../admin/AdminImage";
+import QuestionEditor from "../admin/QuestionEditor";
 import { loadBank, loadQuestion } from "../admin/questionsApi";
 import type { BankFilters } from "../admin/questionsApi";
 import "../admin-daily.css";
@@ -53,6 +54,11 @@ function QuestionBank({ owner }: { owner: string }) {
   );
   const questionId = number(params.get("question"));
   const opened = useRef(false);
+  const closeGuard = useRef<(() => boolean) | null>(null);
+  const registerGuard = useCallback((check: (() => boolean) | null) => {
+    closeGuard.current = check;
+  }, []);
+  const [notice, setNotice] = useState("");
   useEffect(() => setSearch(q), [q]);
   useEffect(() => {
     if (search === q) return;
@@ -110,6 +116,7 @@ function QuestionBank({ owner }: { owner: string }) {
     });
   };
   const close = () => {
+    if (closeGuard.current && !closeGuard.current()) return;
     if (opened.current) {
       opened.current = false;
       navigate(-1);
@@ -154,6 +161,7 @@ function QuestionBank({ owner }: { owner: string }) {
           Add questions
         </Link>
       </div>
+      {notice && <p role="status">{notice}</p>}
       <div className="hq-bank-filters">
         <label className="hq-bank-search">
           Search
@@ -396,6 +404,19 @@ function QuestionBank({ owner }: { owner: string }) {
                 id={questionId}
                 category={category}
                 difficulty={difficulty}
+                guard={registerGuard}
+                changed={(deleted) => {
+                  bank.retry();
+                  setNotice(
+                    deleted
+                      ? `Question #${questionId} deleted from the bank.`
+                      : `Question #${questionId} changes saved.`,
+                  );
+                  if (deleted) {
+                    closeGuard.current = null;
+                    close();
+                  }
+                }}
               />
             )}
           </DialogPanel>
@@ -409,11 +430,15 @@ function QuestionDetail({
   id,
   category,
   difficulty,
+  changed,
+  guard,
 }: {
   owner: string;
   id: number;
   category: (id: number | null) => string;
   difficulty: (id: number) => string;
+  changed: (deleted: boolean) => void;
+  guard: (check: (() => boolean) | null) => void;
 }) {
   const load = useCallback(
     (signal: AbortSignal) => loadQuestion(id, signal),
@@ -421,6 +446,7 @@ function QuestionDetail({
   );
   const read = useReadRequest(`${owner}:${id}`, load);
   const [zoom, setZoom] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [copy, setCopy] = useState("");
   const row = read.value;
   const copyValue = async (value: string, label: string) => {
@@ -477,7 +503,11 @@ function QuestionDetail({
           shown for inspection.
         </p>
       )}
-      {row.invalid_options && <p className="hq-bank-warning">Stored options: <code>{row.invalid_options}</code></p>}
+      {row.invalid_options && (
+        <p className="hq-bank-warning">
+          Stored options: <code>{row.invalid_options}</code>
+        </p>
+      )}
       <ol className="hq-bank-answers" aria-label="Answer options">
         {row.options_json.map((option, index) => {
           const answer =
@@ -533,6 +563,29 @@ function QuestionDetail({
         </div>
       </dl>
       <p role="status">{copy}</p>
+      {editing ? (
+        <QuestionEditor
+          key={`${row.id}:${row.admin_revision}`}
+          row={row}
+          guard={guard}
+          cancel={() => setEditing(false)}
+          reload={() => {
+            setEditing(false);
+            read.retry();
+          }}
+          done={(deleted) => {
+            setEditing(false);
+            read.retry();
+            changed(deleted);
+          }}
+        />
+      ) : (
+        <div className="hq-bank-detail-actions">
+          <button className="hq-primary" onClick={() => setEditing(true)}>
+            Edit or delete question
+          </button>
+        </div>
+      )}
     </>
   );
 }

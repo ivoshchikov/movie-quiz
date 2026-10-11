@@ -304,3 +304,14 @@ API обычной игры: count_questions, get_game_question и answer_game_q
 
 
 UI-13 опубликован через PR #21; merge ceaa206c66a127836695339d533e5babe0f8c2a0. CI: 446 browser tests без повторов, 11 PostgreSQL и 9 Edge checks; lint/types/build и Deno typecheck прошли. Серверная часть установлена, Vercel success; после публикации клиента privacy переключён и подтверждён прямыми API/RLS запросами. 300 исторических вопросов/изображений сохранены; 2 записи Needs review исключены из безопасного игрового пула. Обе новые страницы доступны по прямым URL, noindex/no-store. Создание вопроса проверено на изолированных данных; настоящая сессия Isildur для production-записи в QA не использовалась. Общий план UI-01—UI-13 завершён; SEO-01, GAME-DATA-01/02 и широкий серверный аудит открыты.
+
+
+## Question bank editing and deletion — implementation pending release
+
+The owner approved editing images, four options and the correct option, and deletion. The detail dialog now has an editing form and explicit deletion confirmation. IDs, category and difficulty stay unchanged. Replacement images use the same WebP processing/verification and namespace allocation as additions; each replacement receives a new path and leaves the previous file intact.
+
+`admin_change_question` checks the existing Isildur-only authorization, locks the question, checks its revision and atomically saves text edits or retirement with an operation UUID and private audit. Lost responses can retry the same operation without repeating it; stale changes are rejected. The service-only `admin_edit_import_reserve` binds image imports to the original question/revision, and `admin_import_finish` updates that same ID only after Storage verification. Deletion during an upload prevents resurrection.
+
+Retirement hides questions from the bank, counts, new games and new Daily assignments. Rows/files remain to preserve history and pending game tickets. `hq_private.daily_questions` stores an immutable version for each assignment; existing Daily assignments are backfilled. Daily public reads/grading, archive/history and the administrative current-question display use the assigned version. Players cannot read snapshots or the mutation audit. Editing drafts are memory-only; the interface explains this, guards closing unsaved changes and locks uncertain request payloads for retry.
+
+Schema source: `supabase/migrations/20261011165030_question_edit_delete.sql`; Edge: `supabase/functions/admin-questions/handler.js`; UI: `frontend/src/admin/QuestionEditor.tsx`, question bank/detail and administrative Daily API. Release and validation results are recorded separately once confirmed.

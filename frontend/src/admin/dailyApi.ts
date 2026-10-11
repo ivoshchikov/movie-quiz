@@ -124,7 +124,16 @@ export async function getAdminQuestion(
     .abortSignal(signal)
     .maybeSingle();
   if (error) throw error;
+  return parsePreview(data);
+}
+function parsePreview(data: unknown): AdminQuestionPreview | null {
   if (data === null) return null;
+  if (
+    !record(data) ||
+    typeof data.correct_answer !== "string" ||
+    typeof data.image_url !== "string"
+  )
+    throw new Error("invalid-admin-question");
   const parsed = question(data);
   let options: unknown = data.options_json;
   if (typeof options === "string") {
@@ -237,4 +246,15 @@ export async function saveAdminAssignment(
   if (result.question_id !== question.id)
     throw new Error("unconfirmed-admin-write");
   return result;
+}
+
+export async function getAdminDailySnapshot(
+  date: string,
+  signal: AbortSignal,
+): Promise<AdminQuestionPreview | null> {
+  const { data, error } = await supabase
+    .rpc("admin_daily_question_snapshot", { p_date: date })
+    .abortSignal(signal);
+  if (error) throw error;
+  return parsePreview(data);
 }

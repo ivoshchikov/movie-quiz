@@ -44,10 +44,7 @@ export async function mockAdmin(page: Page, signedIn = true) {
     searchDelay: 0,
     writeDelay: 0,
     writeMode: "success" as
-      | "success"
-      | "reject"
-      | "lost-saved"
-      | "lost-unknown",
+      "success" | "reject" | "lost-saved" | "lost-unknown",
     beforeRead: null as null | (() => void),
     calls: [] as { name: string; payload: Record<string, unknown> }[],
     searches: [] as string[],
@@ -69,6 +66,7 @@ export async function mockAdmin(page: Page, signedIn = true) {
         "is_admin",
         "get_daily_history_admin",
         "get_daily_assignment_admin",
+        "admin_daily_question_snapshot",
         "set_daily_question_admin",
       ].includes(name)
     )
@@ -93,6 +91,13 @@ export async function mockAdmin(page: Page, signedIn = true) {
         Number(payload.p_offset),
         Number(payload.p_offset) + Number(payload.p_limit),
       );
+    }
+    if (name === "admin_daily_question_snapshot") {
+      if (state.previewError) return error(route);
+      body =
+        state.current === null
+          ? null
+          : (state.previewRows.get(state.current) ?? null);
     }
     if (name === "get_daily_assignment_admin") {
       state.beforeRead?.();

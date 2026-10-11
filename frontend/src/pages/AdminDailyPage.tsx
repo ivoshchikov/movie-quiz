@@ -8,11 +8,12 @@ import { useReadRequest, READ_TIMEOUT } from "../hooks/useReadRequest";
 import { categoryLabel } from "../hooks/useQuizCatalog";
 import { dailyDate, dailyDateLabel } from "../daily/time";
 import AdminImage from "../admin/AdminImage";
-import { AdminNavigation } from '../admin/AdminAccess';
-import '../admin-questions.css';
+import { AdminNavigation } from "../admin/AdminAccess";
+import "../admin-questions.css";
 import {
   checkAdminRights,
   getAdminAssignment,
+  getAdminDailySnapshot,
   getAdminHistory,
   getAdminQuestion,
   searchAdminQuestions,
@@ -215,8 +216,8 @@ function AdminDailyWorkspace({
   );
   const currentId = assignment.value?.question_id ?? null;
   const loadCurrent = useCallback(
-    (signal: AbortSignal) => getAdminQuestion(currentId!, signal),
-    [currentId],
+    (signal: AbortSignal) => getAdminDailySnapshot(date, signal),
+    [date],
   );
   const current = useReadRequest(
     `${owner}:${date}:${currentId}`,

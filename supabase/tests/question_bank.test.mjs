@@ -51,6 +51,7 @@ else await db.exec("create function extensions.gen_random_bytes(n integer) retur
 await db.exec(await readFile(new URL('../migrations/20261010200933_admin_daily_guard.sql',import.meta.url),'utf8'));
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011145955_admin_question_bank.sql',import.meta.url),'utf8'));await db.exec('commit');
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011161955_question_privacy.sql',import.meta.url),'utf8'));await db.exec('commit');
+await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011165030_question_edit_delete.sql',import.meta.url),'utf8'));await db.exec('commit');
 const uid=async id=>db.query("select set_config('request.jwt.claim.sub',$1,false)",[id??'']);
 const scalar=async(sql,args)=>(await db.query(sql,args)).rows[0].v;
 const reserve=async(id,category=1,allow=false,hash=id.replaceAll('-','').repeat(2))=>scalar('select public.admin_import_reserve($1,$2,$3,$4,null,$5,1,$6,0,$7) v',[admin,id,'f'.repeat(64),hash,category,JSON.stringify(options),allow]);
@@ -165,4 +166,66 @@ test('concurrent manual references prevent orphan cleanup from deleting a live q
   const cleanup=await b.query('select public.admin_import_cleanup($1) v',[admin]);assert.equal(cleanup.rows[0].v.some(x=>x.id===id),false);
   await a.query('commit');assert.equal((await scalar('select public.admin_import_cleanup($1) v',[admin])).some(x=>x.id===id),false);
  }finally{await a.end();await b.end();}
+});
+
+test('edits retain Daily snapshots and old game answers; stale revisions and retries are safe',async()=>{
+ const date=await scalar("select (now() at time zone 'America/Chicago')::date::text v");
+ await uid(null);const ticket=await scalar('select public.get_game_question(array(select id from public.question where id<>1),1,1) v');
+ await uid(admin);const row=await scalar('select public.admin_question_detail(1) v');
+ const op='00000000-0000-4000-8000-000000000401';
+ const change=()=>scalar('select public.admin_change_question($1,1,$2,$3,1,false) v',[op,row.admin_revision,JSON.stringify(['New One','New Two','New Three','New Four'])]);
+ const saved=await change();assert.equal(saved.revision,row.admin_revision+1);assert.deepEqual(await change(),saved);
+ await assert.rejects(scalar('select public.admin_change_question(gen_random_uuid(),1,$1,$2,0,false) v',[row.admin_revision,JSON.stringify(options)]),/Question changed/);
+ await uid(null);assert.equal(await scalar('select public.answer_game_question($1,$2) v',[ticket.answer_token,'One']),true);
+ await uid(player);const daily=(await db.query('select * from public.get_daily_question_public($1)',[date])).rows[0];assert.equal(daily.options_json[0],'One');
+ await uid(admin);const history=(await db.query('select * from public.get_daily_history_admin(30,0)')).rows.find(r=>(r.d instanceof Date ? r.d.toISOString().slice(0,10) : r.d)===date);assert.equal(history.correct_answer,'One');
+});
+test('replacement images update the same ID once, retaining original files and Daily image',async()=>{
+ await uid(admin);const row=await scalar('select public.admin_question_detail(1) v');const id='00000000-0000-4000-8000-000000000402',hash='9'.repeat(64),fp='8'.repeat(64);
+ const reserveEdit=()=>scalar('select public.admin_edit_import_reserve($1,$2,$3,$4,null,1,1,$5,0,true,1,$6) v',[admin,id,fp,hash,JSON.stringify(options),row.admin_revision]);
+ await reserveEdit();const j=await scalar('select public.admin_import_claim($1,$2,$3) v',[admin,id,fp]);
+ await db.query('insert into storage.objects(bucket_id,name,user_metadata) values($1,$2,$3)',['movies',j.image_path,JSON.stringify({hq_import_id:id,sha256:hash})]);
+ const finish=()=>scalar('select public.admin_import_finish($1,$2,$3,$4,$5) v',[admin,id,j.lease_token,fp,hash]);
+ const result=await finish();assert.equal(result.question_id,1);assert.deepEqual(await finish(),result);assert.equal((await reserveEdit()).question_id,1);
+ assert.equal(await scalar('select image_url v from public.question where id=1'),j.image_path);assert.equal(await scalar("select count(*)::integer v from storage.objects where name='general/g_00001.webp'"),1);
+ assert.equal(await scalar("select image_url v from hq_private.daily_questions order by d desc limit 1"),'general/g_00001.webp');
+});
+test('deletion retires the question, excludes new pools and preserves pending games and Daily',async()=>{
+ await uid(null);const ticket=await scalar('select public.get_game_question(array(select id from public.question where id<>1),1,1) v');
+ assert.equal(ticket.id,1);await uid(admin);const remaining=await scalar('select public.count_questions(1,1) v');const revision=await scalar('select admin_revision v from public.question where id=1');const op='00000000-0000-4000-8000-000000000403';
+ const remove=()=>scalar('select public.admin_change_question($1,1,$2,null,null,true) v',[op,revision]);const result=await remove();assert.equal(result.deleted,true);assert.deepEqual(await remove(),result);
+ assert.equal(await scalar('select public.admin_question_detail(1) v'),null);assert.equal((await scalar('select public.admin_question_bank() v')).rows.some(r=>r.id===1),false);
+ assert.equal(await scalar('select public.count_questions(1,1) v'),remaining-1);assert.equal(await scalar('select public.get_game_question(array(select id from public.question where id<>1),1,1) v'),null);
+ assert.equal(await scalar('select count(*)::integer v from public.question where id=1'),1);
+ await uid(null);assert.equal(await scalar('select public.answer_game_question($1,$2) v',[ticket.answer_token,'One']),true);
+ await uid(admin);await assert.rejects(db.query("insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) values('2099-01-01',1,1,1)"),/Question unavailable/);
+});
+test('edit and deletion APIs reject guests, players and direct service-only calls',async()=>{
+ await uid(player);await db.exec('set role authenticated');try{
+ await assert.rejects(db.query('select public.admin_change_question(gen_random_uuid(),100,1,null,null,true)'),/Administrator/);
+ await assert.rejects(db.query(`select public.admin_edit_import_reserve('${admin}',gen_random_uuid(),'x','y',null,1,1,'[]',0,false,100,1)`),/permission denied/);
+ await assert.rejects(db.query('select * from hq_private.daily_questions'),/permission denied/);
+ }finally{await db.exec('reset role');}
+ await db.exec('set role anon');try{await assert.rejects(db.query('select public.admin_change_question(gen_random_uuid(),100,1,null,null,true)'),/permission denied/);}finally{await db.exec('reset role');}
+});
+
+test('two owner tabs cannot overwrite each other with the same revision',{skip:!native},async()=>{
+ const q=await scalar("insert into public.question(image_url,correct_answer,options_json,category_id,difficulty_level_id) values('test/concurrent.webp','One','[\"One\",\"Two\",\"Three\",\"Four\"]',4,1) returning id v");
+ const a=new Client({connectionString:native}),b=new Client({connectionString:native});await a.connect();await b.connect();
+ try{
+  await Promise.all([a.query("select set_config('request.jwt.claim.sub',$1,false)",[admin]),b.query("select set_config('request.jwt.claim.sub',$1,false)",[admin])]);
+  const query='select public.admin_change_question($1,$2,1,$3,0,false) v';
+  const outcomes=await Promise.allSettled([a.query(query,['00000000-0000-4000-8000-000000000411',q,JSON.stringify(['A1','A2','A3','A4'])]),b.query(query,['00000000-0000-4000-8000-000000000412',q,JSON.stringify(['B1','B2','B3','B4'])])]);
+  assert.equal(outcomes.filter(o=>o.status==='fulfilled').length,1);const failure=outcomes.find(o=>o.status==='rejected');assert.match(failure.reason.message,/Question changed/);assert.equal(await scalar('select admin_revision v from public.question where id=$1',[q]),2);
+ }finally{await a.end();await b.end();}
+});
+test('deletion during a replacement upload prevents the upload from resurrecting a question',async()=>{
+ await uid(admin);const q=await scalar("insert into public.question(image_url,correct_answer,options_json,category_id,difficulty_level_id) values('test/upload-delete.webp','One','[\"One\",\"Two\",\"Three\",\"Four\"]',4,1) returning id v");
+ const id='00000000-0000-4000-8000-000000000420',hash='7'.repeat(64),fp='6'.repeat(64);
+ await scalar('select public.admin_edit_import_reserve($1,$2,$3,$4,null,4,1,$5,0,true,$6,1) v',[admin,id,fp,hash,JSON.stringify(options),q]);
+ const j=await scalar('select public.admin_import_claim($1,$2,$3) v',[admin,id,fp]);
+ await db.query('insert into storage.objects(bucket_id,name,user_metadata) values($1,$2,$3)',['movies',j.image_path,JSON.stringify({hq_import_id:id,sha256:hash})]);
+ await scalar('select public.admin_change_question(gen_random_uuid(),$1,1,null,null,true) v',[q]);
+ await assert.rejects(scalar('select public.admin_import_finish($1,$2,$3,$4,$5) v',[admin,id,j.lease_token,fp,hash]),/Question unavailable/);
+ assert.equal(await scalar('select image_url v from public.question where id=$1',[q]),'test/upload-delete.webp');assert.equal(await scalar('select status v from hq_private.question_imports where id=$1',[id]),'reserved');
 });

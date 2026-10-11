@@ -57,10 +57,12 @@ export function createHandler({ authorize, rpc, storage, decode }) {
       if (actual.width !== expected.width || actual.height !== expected.height) return reply({ error: 'Invalid image content' }, 400);
       const hash = await sha256(bytes);
       const fingerprint = await sha256(new TextEncoder().encode(JSON.stringify({ hash, category_id: data.category_id,
-        difficulty_level_id: data.difficulty_level_id, options, correct_index: data.correct_index, source_hash: data.source_hash ?? null })));
-      job = await rpc('admin_import_reserve', { p_owner: owner, p_id: data.id, p_fingerprint: fingerprint, p_hash: hash,
+        difficulty_level_id: data.difficulty_level_id, options, correct_index: data.correct_index, source_hash: data.source_hash ?? null, ...(data.edit_question_id != null ? { edit_question_id: data.edit_question_id, edit_revision: data.edit_revision } : {}) })));
+      if (data.edit_question_id != null && (!Number.isSafeInteger(data.edit_question_id) || data.edit_question_id < 1 || !Number.isSafeInteger(data.edit_revision) || data.edit_revision < 1)) return reply({ error: 'Invalid edit settings' }, 400);
+      job = await rpc(data.edit_question_id != null ? 'admin_edit_import_reserve' : 'admin_import_reserve', { p_owner: owner, p_id: data.id, p_fingerprint: fingerprint, p_hash: hash,
         p_source_hash: data.source_hash ?? null, p_category: data.category_id, p_difficulty: data.difficulty_level_id,
-        p_options: options, p_correct_index: data.correct_index, p_allow_duplicate: data.allow_duplicate === true });
+        p_options: options, p_correct_index: data.correct_index, p_allow_duplicate: data.allow_duplicate === true,
+        ...(data.edit_question_id != null ? { p_question_id: data.edit_question_id, p_revision: data.edit_revision } : {}) });
       if (job.status === 'duplicate') return reply(job, 409);
       if (job.status === 'committed') return reply({ status: 'committed', question_id: job.question_id, image_path: job.image_path });
       const claimed = await rpc('admin_import_claim', { p_owner: owner, p_id: data.id, p_fingerprint: fingerprint });
@@ -101,6 +103,7 @@ export function createHandler({ authorize, rpc, storage, decode }) {
       }
       const message = error instanceof Error ? error.message : '';
       if (error instanceof SyntaxError || error instanceof TypeError && /multipart|form.?data|parse/i.test(message)) return reply({ error: 'Invalid request body' }, 400);
+      if (/Question changed|Question unavailable/i.test(message)) return reply({ error: message.slice(0,200), status: 'conflict' }, 409);
       if (/Administrator|auth|JWT|Account/i.test(message)) return reply({ error: 'Administrator access required' }, 403);
       if (/Invalid|dimensions|static WebP|metadata|Animated|WebP must|Decoding|different answers|Draft expired|data changed/i.test(message)) return reply({ error: message.slice(0,200) }, 400);
       return reply({ error: 'Saving could not be confirmed. Check status or retry this question.' }, 503);
