@@ -45,7 +45,7 @@ export default function BlogPostPage() {
       </GalleryProvider>
       {!!post.sources?.length && <section className="hq-article-sources" aria-labelledby="sources">
         <h2 id="sources" tabIndex={-1}>Sources</h2>
-        <p>Official film and technical references used for this article.</p>
+        <p>Film references, reviews and technical sources used for this article.</p>
         <ul>{post.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
       </section>}
       {!!tags.length && <div className="hq-article-tags" aria-label="Article tags">{tags.map(tag => <span key={tag}>{tag}</span>)}</div>}

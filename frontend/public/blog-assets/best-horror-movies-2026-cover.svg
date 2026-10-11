@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <title>Horror 2026 — the Hard Quiz watchlist</title>
+  <desc>Original graphic illustration of a red-lit open doorway, a long shadow and a crescent moon.</desc>
+  <defs>
+    <linearGradient id="wall" x2="1" y2="1"><stop stop-color="#17131d"/><stop offset="1" stop-color="#25181e"/></linearGradient>
+    <linearGradient id="light" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd8a0"/><stop offset=".45" stop-color="#f25847"/><stop offset="1" stop-color="#7f252d"/></linearGradient>
+    <linearGradient id="floor" x1="0" x2="1"><stop stop-color="#e0443f"/><stop offset="1" stop-color="#55272c"/></linearGradient>
+    <pattern id="grain" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#fff" opacity=".025"/><rect x="4" y="3" width="1" height="1" fill="#000" opacity=".1"/></pattern>
+    <clipPath id="frame"><rect width="1200" height="675" rx="0"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="675" fill="url(#wall)"/>
+    <path d="M688 0v494L1200 675V0Z" fill="#302027"/>
+    <path d="M0 560 1200 458v217H0Z" fill="#20141b"/>
+    <path d="M981 482 1200 585v90H603L803 521Z" fill="url(#floor)" opacity=".84"/>
+    <path d="m902 485 145 29 153 161H931L837 521Z" fill="#150f18"/>
+    <circle cx="1074" cy="128" r="69" fill="#f7d7b0"/>
+    <circle cx="1100" cy="105" r="64" fill="#302027"/>
+    <path d="m791 148 211 25v329l-211 27Z" fill="#100f17" stroke="#622f34" stroke-width="3"/>
+    <path d="m809 170 167 20v303l-167 20Z" fill="url(#light)"/>
+    <path d="m842 203 145-62v374l-145-28Z" fill="#24151d" stroke="#ef765b" stroke-width="3"/>
+    <path d="m853 211 120-52v339l-120-22Z" fill="#1a131b" stroke="#7a3439" stroke-width="1"/>
+    <path d="m976 162 9-5v350l-9-5Z" fill="#f49a72"/>
+    <path d="M811 174v334" fill="none" stroke="#ffe2b3" stroke-width="3"/>
+    <circle cx="861" cy="355" r="4" fill="#f49a72"/>
+    <path d="M727 550 1075 622M688 611l144 43M1132 549l61 11" stroke="#854047" stroke-width="1" opacity=".7"/>
+    <path d="m742 63 27 9M712 92l12 3M1140 425l37-13M1142 446l21-6" stroke="#945147" stroke-width="2" opacity=".5"/>
+    <rect width="1200" height="675" fill="url(#grain)"/>
+    <rect x="64" y="64" width="206" height="35" rx="3" fill="#bdd5b8"/>
+    <text x="80" y="88" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="700" letter-spacing="2" fill="#1a1a20">THE WATCHLIST</text>
+    <text x="64" y="184" font-family="DejaVu Sans, sans-serif" font-size="22" font-weight="400" letter-spacing="5" fill="#ead7c8">BEST MOVIES SO FAR</text>
+    <text x="57" y="314" font-family="DejaVu Sans, sans-serif" font-size="120" font-weight="700" letter-spacing="-5" fill="#f5e8d8">HORROR</text>
+    <text x="53" y="498" font-family="DejaVu Sans, sans-serif" font-size="190" font-weight="700" letter-spacing="-8" fill="#ed674f">2026</text>
+    <path d="M64 545h525" stroke="#77616b"/>
+    <text x="64" y="584" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="400" letter-spacing="1.7" fill="#d7c5be">7 FILMS · SPOILER-FREE PICKS</text>
+    <text x="64" y="635" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#bdd5b8">HARD QUIZ</text>
+  </g>
+</svg>

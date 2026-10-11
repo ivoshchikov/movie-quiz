@@ -1,5 +1,7 @@
 # Hard Quiz — текущий интерфейс
 
+Блог дополнен этапом BLOG-01 от 2026-10-12: новая подборка хорроров 2026 года. Текущие детали — в разделе BLOG-01 ниже; запись UI-09 о трёх статьях описывает исторический выпуск.
+
 Обновлено: 2026-10-11 (Asia/Nicosia). UI-01—UI-13 опубликованы и проверены. UI-12: PR #19 и #20, финальный merge d0c9e30184f085774a5f451e0bf8f941437ffa97. Миграция Supabase 20261010200933 установлена в UI-11, ready=true. Следующий отдельный этап — SEO-01; GAME-DATA-01/02 и серверный аудит остаются открытыми.
 
 Проект использует Vite, React, TypeScript, Tailwind, Supabase и Vercel. Публичный интерфейс — на английском. Основной сайт: https://hard-quiz.com. Изменения `main` публикуются существующей интеграцией GitHub → Vercel; успех конкретного выпуска требует проверки статуса и опубликованной страницы.
@@ -324,5 +326,15 @@ Schema source: `supabase/migrations/20261011170955_question_edit_delete.sql`; Ed
 Migration `20261011170955_question_edit_delete.sql` is installed; Edge `admin-questions` version 2 is ACTIVE with JWT verification. [Production deployment](https://vercel.com/ivans-projects-a806f387/movie-quiz/DV9YT9W87hLY7AYXKMYbLXgZhF8Y) succeeded. All 300 original question contents retain the same checksum; 36 existing Daily assignments received exact snapshots, with no mismatches or retired questions introduced by QA. Read-only production checks confirmed owner access and guest/player denial for answers, editing and Daily snapshots. Service-only image editing RPC is not exposed to clients. No question edits, deletions or game attempts were performed in production for QA.
 
 The prepared PROJECT_CONTEXT update was published with explicit owner authorization in `7cc4a24a209bb5ddbf32bccf85a253c85b267070`. SEO-01 and GAME-DATA-01/02 remain separate pending work. Physical purge and restoration are outside this release; retirement deliberately retains records and images needed for history.
+
+## BLOG-01 — horror watchlist, 12 October 2026
+
+По прямому поручению владельца подготовлена к публикации англоязычная статья `best-horror-movies-2026`: семь уже вышедших фильмов, сравнение по настроению, требования к просмотру предыдущих частей, причины выбора и проверенные источники. Исследовательская методика и AI assistance обозначены в тексте; автор и личные просмотры не выдумываются. Полный редакционный и иллюстрационный журнал — `docs/blog/best-horror-movies-2026.md`.
+
+В блоге четыре статьи: All 4, Movie guides 3, Explainers 1. Новая статья стоит первой по дате и заменяет прежнюю featured-ссылку на главной. Канонические темы сохранены. Обложка — оригинальная иллюстрация проекта, локальный WebP 1200×675 (~31 KB), с SVG-исходником; внешние кадры и постеры для неё не требуются.
+
+`BlogPost.seoTitle` позволяет сократить поисковый title при полном H1. `socialImagePath` задаёт собственную OG/Twitter-картинку из `/blog-assets/` на том же origin. Проверка этих полей работает при сборке. Новая статья использует общий полный HTML prerender, BlogPosting, RSS и sitemap, с отдельным Vercel-маршрутом и 301 с технического `.html`. Первый ответ содержит весь текст и нативные ссылки до JS.
+
+Локальные build/types/lint и 96 целевых Chromium проверок пройдены, включая чтение новой страницы без JS и ширины 320/390/1440. Выпуск требует зелёных GitHub/Vercel статусов и HTTP-проверки production; подтверждение фиксируется в PR. Расписание и автоматическая очередь публикаций этим этапом не включаются. Следующую содержательную проверку предлагается выполнить 2026-11-02 и затем использовать данные GSC.
 
 Production HTTP verification: `/admin/questions`, `/admin/questions/new` and `/admin/daily` return 200 with noindex/no-store. The live entry `/assets/index-DWFebDvp.js` loads `AdminQuestionsPage-CNxjvwjt.js`, which contains the released editing form and deletion confirmation.

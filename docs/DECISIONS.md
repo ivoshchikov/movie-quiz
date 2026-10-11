@@ -359,4 +359,15 @@ Migration `20261011170955_question_edit_delete.sql` is installed; Edge `admin-qu
 
 The prepared PROJECT_CONTEXT update was published with explicit owner authorization in `7cc4a24a209bb5ddbf32bccf85a253c85b267070`. SEO-01 and GAME-DATA-01/02 remain separate pending work. Physical purge and restoration are outside this release; retirement deliberately retains records and images needed for history.
 
+## BLOG-01 — Best Horror Movies of 2026 So Far
+
+Владелец прямо поручил подготовить и опубликовать выбранную пилотную статью; дополнительное согласование публикации не требуется. Рабочая ветка — `feat/blog-horror-2026`, база проверена по актуальному `main`.
+
+- Один адрес `/blog/best-horror-movies-2026`, полный выбранный H1 и короткий title для поиска. Целевой запрос `best horror movies 2026` — редакционная цель без выдуманных данных о частотности или обещаний позиции.
+- Семь US-релизов 2026 года, уже доступных зрителям; фестивальный год отличать от проката. Подборка по задаче читателя и типу ужаса, с критическими источниками, оговорками о выборе и сиквелах, без сюжетных развязок.
+- Авторство соответствует исследовательскому процессу с AI assistance. Оригинальная обложка заменяет необходимость ручной подготовки кадров; сведения о её происхождении и источники сохранены в `docs/blog/best-horror-movies-2026.md`.
+- Статья получает ссылки из `/blog` и главной, а также ведёт в обычную игру, Daily и релевантный evergreen-разбор. Структура, теги, общий SEO/prerender, RSS и sitemap сохраняются.
+- Процесс этого выпуска: исследование → entry и обложка → build/types/lint и browser/visual проверки → PR/CI/preview → merge → подтверждение Vercel и production HTTP → проверка GSC. Результат публикации фиксируется в PR, а не объявляется по одному успешному build.
+- Автоматическую публикацию по расписанию этим поручением не запускаем. Рекомендуемая будущая редакционная проверка — 2026-11-02; добавление действительно сильных новых фильмов выполняется как содержательное обновление этой же страницы.
+
 Production HTTP verification: `/admin/questions`, `/admin/questions/new` and `/admin/daily` return 200 with noindex/no-store. The live entry `/assets/index-DWFebDvp.js` loads `AdminQuestionsPage-CNxjvwjt.js`, which contains the released editing form and deletion confirmation.
