@@ -32,7 +32,7 @@ const post: BlogPost = {
   tags: ["Streaming & New Releases", "Horror", "Thriller", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
-  socialImagePath: coverPath,
+  socialImagePath: "/blog-assets/best-horror-movies-2026-social.webp",
   contents: [
     { id: "quick-picks", label: "Choose a film by mood" },
     ...picks.map(({ id, title }) => ({ id, label: title })),

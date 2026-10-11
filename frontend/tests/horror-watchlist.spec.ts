@@ -6,6 +6,7 @@ import { mockQuizApi } from "./fixtures";
 const slug = "best-horror-movies-2026";
 const title = "Best Horror Movies of 2026 So Far: A Spoiler-Free Watchlist";
 const image = "/blog-assets/best-horror-movies-2026-cover.webp";
+const socialImage = "/blog-assets/best-horror-movies-2026-social.webp";
 
 test("the new watchlist serves its complete text, own share image and canonical without JavaScript", async ({ browser }) => {
   const html = readFileSync(path.resolve(`dist/blog/${slug}.html`), "utf8");
@@ -20,16 +21,27 @@ test("the new watchlist serves its complete text, own share image and canonical 
   await expect(page.locator(".hq-release-index tbody tr")).toHaveCount(7);
   await expect(page).toHaveTitle("Best Horror Movies of 2026 So Far | Hard Quiz");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://hard-quiz.com/blog/${slug}`);
-  for (const selector of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) await expect(page.locator(selector)).toHaveAttribute("content", "https://hard-quiz.com" + image);
+  for (const selector of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) await expect(page.locator(selector)).toHaveAttribute("content", "https://hard-quiz.com" + socialImage);
   const cover = page.locator(".hq-article-image img");
   await expect.poll(() => cover.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBe(1200);
   await expect(cover).toHaveAttribute("loading", "eager");
   const json = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || "{}")).find(item => item["@type"] === "BlogPosting"));
-  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", image: "https://hard-quiz.com" + image, publisher: { name: "Hard Quiz" } });
+  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
+  const sharePage = await context.newPage();
+  await sharePage.route("**" + socialImage, route => route.fulfill({ contentType: "image/webp", path: "public" + socialImage }));
+  await sharePage.setContent('<img src="https://hard-quiz.com' + socialImage + '" alt="Social cover">');
+  await expect.poll(() => sharePage.locator("img").evaluate(element => (element as HTMLImageElement).naturalWidth)).toBe(Number(articleImageWidth(html)));
+  const dimensions = await sharePage.locator("img").evaluate(element => ({ width: (element as HTMLImageElement).naturalWidth, height: (element as HTMLImageElement).naturalHeight }));
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute("content", String(dimensions.width));
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute("content", String(dimensions.height));
   expect(json.author).toBeUndefined();
   for (const file of ["sitemap.xml", "feed.xml"]) expect(readFileSync(path.resolve("dist/" + file), "utf8")).toContain(`https://hard-quiz.com/blog/${slug}`);
   await context.close();
 });
+
+function articleImageWidth(html: string) {
+  return html.match(/property="og:image:width" content="(\d+)"/)?.[1] || "0";
+}
 
 for (const width of [1440, 390, 320]) test(`watchlist links, image and comparison remain usable at ${width}px`, async ({ page }) => {
   const calls = await mockQuizApi(page);

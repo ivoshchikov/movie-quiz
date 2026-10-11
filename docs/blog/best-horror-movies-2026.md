@@ -38,11 +38,13 @@ Reception candidates were checked against [Rotten Tomatoes' 2026 horror guide](h
 - Typeface: local DejaVu Sans rasterized into the WebP. No font files are distributed. [DejaVu font license](https://dejavu-fonts.github.io/License.html).
 - Alt: “Original illustration of a red-lit doorway, a long shadow and a crescent moon, with the words Horror 2026”.
 - Caption: “Original Hard Quiz illustration. It does not depict a scene from any of the films.”
-- The same small WebP is used for article/list covers and OG/Twitter. The article image has explicit dimensions, eager loading and async decoding; subsequent collection covers keep the existing lazy loading.
+- The 1200×675 WebP is used for article/list covers. `best-horror-movies-2026-social.webp` is a separate 1200×630 version derived from the same SVG, matching the shared template's declared OG dimensions. The article image has explicit dimensions, eager loading and async decoding; subsequent collection covers keep the existing lazy loading.
 
 ## Validation and release
 
 Local checks: npm production build including prerender/RSS/sitemap, both TypeScript projects, ESLint with zero warnings, 96 targeted Chromium scenarios, generated HTML without JavaScript, original WebP decoding, clean diff and desktop/mobile visual checks. CI and production evidence belong in the publication PR before declaring the article live.
+
+PR review caught the shared template's fixed OG height of 630. A separate share asset fixes that mismatch; the browser check decodes its actual size and compares both dimensions with the generated meta tags.
 
 The new optional `seoTitle` and `socialImagePath` fields keep one metadata implementation for browser and generated HTML. Existing posts retain their current metadata. Vercel registers the public article, trailing-slash form and technical `.html` redirect without weakening unknown-article 404 behavior.
 
