@@ -20,6 +20,8 @@
   line-height: 1.5; -webkit-font-smoothing: antialiased;
 }
 .hq-site :is(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid var(--hq-purple); outline-offset: 3px; }
+/* Route and fragment targets keep accessible focus without looking like controls. */
+.hq-site :is(h1, h2, h3, h4, main, section, article)[tabindex="-1"]:focus { outline: none; }
 .hq-site :is(button, input, select, textarea) { font-family: inherit; }
 .hq-skip-link { position: fixed; top: 12px; left: max(16px, env(safe-area-inset-left)); z-index: 100; display: flex; align-items: center; min-height: 44px; padding: 10px 16px; border-radius: 8px; background: var(--hq-surface); color: var(--hq-text); border: 1px solid var(--hq-purple); transform: translateY(calc(-100% - 24px)); }
 .hq-skip-link:focus { transform: none; }

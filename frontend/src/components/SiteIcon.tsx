@@ -11,6 +11,7 @@ const paths = {
   timer: <><circle cx="12" cy="14" r="8" /><path d="M9 2h6m-3 0v4m0 4v5l3 2m3-12 2 2" /></>,
   heart: <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" />,
   arrow: <path d="M4 12h16m-6-6 6 6-6 6" />,
+  x: <path d="M4 3h4l12 18h-4L4 3Zm16 0L4 21" />,
   chevron: <path d="m6 9 6 6 6-6" />,
   chart: <><path d="M4 20V10m8 10V4m8 16v-7M2 20h20" /></>,
   user: <><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></>,

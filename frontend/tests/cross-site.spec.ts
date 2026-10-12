@@ -42,6 +42,7 @@ test("reload and footer navigation preserve reading position while new pages sta
   await expect.poll(async () => Math.abs(await page.evaluate(() => scrollY) - readingPosition)).toBeLessThan(8);
   await footer.click();
   await expect(page.getByRole("heading", { name: "How to play", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "How to play", exact: true })).toHaveCSS("outline-style", "none");
   expect(await page.evaluate(() => scrollY)).toBe(0);
   await page.goBack();
   await expect(page).toHaveURL(new RegExp(article + "$"));
@@ -78,8 +79,10 @@ test("keyboard users can skip the header and continue into quiz controls", async
   await expect(skip).toBeInViewport();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
+  await expect(page.getByRole("main")).toHaveCSS("outline-style", "none");
   await page.keyboard.press("Tab");
   await expect(page.getByRole("radio", { name: /Movie Stills/ })).toBeFocused();
+  await expect(page.getByRole("radio", { name: /Movie Stills/ })).toHaveCSS("outline-style", "solid");
 });
 
 test("a stalled catalog becomes retryable instead of a permanent loading state", async ({ page }) => {
