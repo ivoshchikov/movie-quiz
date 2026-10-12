@@ -82,7 +82,7 @@ export default function LoginForm({ returnPath, onClose }: { returnPath: string;
       <button className="hq-inline-action" disabled={blocked} onClick={changeEmail}>Use another email</button>
       <button className="hq-secondary hq-secondary-wide" disabled={blocked} onClick={() => void start("google")}>{busy === "google" ? "Connecting…" : "Continue with Google"}</button>
     </div> : <>
-      <button className="hq-primary" disabled={blocked} onClick={() => void start("google")}><span className="hq-login-google" aria-hidden="true">G</span>{busy === "google" ? "Connecting…" : "Continue with Google"}</button>
+      <button className="hq-primary" disabled={blocked} onClick={() => void start("google")}><svg className="hq-login-google" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M43.61 24.46c0-1.36-.12-2.67-.35-3.93H24v7.43h10.99a9.4 9.4 0 0 1-4.08 6.17v5h6.62c3.86-3.55 6.08-8.78 6.08-14.67ZM24 44c5.4 0 9.92-1.79 13.23-4.87l-6.62-5c-1.79 1.2-4.07 1.92-6.61 1.92-5.2 0-9.6-3.5-11.17-8.21H6v5.19A20 20 0 0 0 24 44ZM12.83 27.84a12 12 0 0 1 0-7.68v-5.19H6a20 20 0 0 0 0 18.06l6.83-5.19ZM24 11.95c2.94 0 5.57 1.01 7.64 2.98l5.73-5.73C33.92 5.96 29.4 4 24 4A20 20 0 0 0 6 14.97l6.83 5.19C14.4 15.45 18.8 11.95 24 11.95Z" /></svg><span>{busy === "google" ? "Connecting…" : "Continue with Google"}</span></button>
       <div className="hq-login-divider"><span>or use email</span></div>
       <form onSubmit={submit} aria-label="Email sign-in" aria-busy={busy === "email"}>
         <label htmlFor={`${id}-email`}>Email</label>

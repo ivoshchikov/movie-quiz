@@ -3,7 +3,7 @@
 .hq-login-intro { margin-bottom: 25px; }
 .hq-login-intro .hq-page-heading { font-size: 27px; letter-spacing: -.7px; }
 .hq-login-intro p { color: var(--hq-muted); font-size: 14px; line-height: 1.65; }
-.hq-login-google { display: grid; place-items: center; width: 20px; height: 20px; font-weight: 700; font-size: 18px; }
+.hq-login-google { display: block; flex-shrink: 0; width: 20px; height: 20px; fill: currentColor; }
 .hq-login-divider { display: flex; align-items: center; gap: 12px; margin-block: 22px; color: var(--hq-muted); font-size: 12px; }
 .hq-login-divider::before, .hq-login-divider::after { content: ""; height: 1px; flex: 1; background: var(--hq-border); }
 .hq-login-form form { display: flex; flex-direction: column; gap: 9px; }

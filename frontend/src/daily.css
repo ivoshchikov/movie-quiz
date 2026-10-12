@@ -67,7 +67,7 @@
 .hq-daily-saved { color: var(--hq-muted); font-size: 11px; }
 .hq-daily-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .hq-daily-actions .hq-primary, .hq-daily-actions .hq-secondary { font-size: 13px; min-width: 0; }
-.hq-daily-share { display: flex; width: fit-content; margin: 10px auto; }
+.hq-daily-share { display: flex; width: fit-content; max-width: 100%; margin: 14px auto 20px; padding-inline: 18px; }
 .hq-daily-page button:focus-visible, .hq-daily-page a:focus-visible, .hq-daily-game button:focus-visible { outline: 3px solid #a391ff; outline-offset: 3px; }
 @media (max-width: 600px) {
   .hq-daily-main { padding: 20px 12px 24px; }

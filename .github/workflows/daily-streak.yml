@@ -1,0 +1,33 @@
+name: Daily streak rules
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  daily-streak:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: streak-test-only
+          POSTGRES_DB: hardquiz_streak_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install isolated SQL client
+        run: npm install --prefix "$RUNNER_TEMP/hq-streak-test" --no-package-lock --no-save pg@8.13.3
+      - name: Verify streak rules and Chicago date boundaries
+        env:
+          HQ_SQL_TEST_URL: postgresql://postgres:streak-test-only@localhost:5432/hardquiz_streak_test
+        run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-streak-test/node_modules/pg/lib/index.js" node --test supabase/tests/daily_streak.test.mjs

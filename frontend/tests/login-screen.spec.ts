@@ -260,7 +260,7 @@ test("a direct destination wins over another attempt's stored fallback", async (
 test("return destinations keep filters and remove authentication parameters", async ({ page }) => {
   const destination = "/leaderboard?category=2&difficulty=3&provider_token=fixture-token&provider_refresh_token=fixture-refresh&access_token=fixture-access&refresh_token=fixture-refresh&code=fixture-code&error_description=fixture-error&redirect=%2Fdaily#details";
   await ready(page, `/login?redirect=${encodeURIComponent(destination)}`);
-  expect(new URL(page.url()).searchParams.get("redirect")).toBe("/leaderboard?category=2&difficulty=3#details");
+  await expect.poll(() => new URL(page.url()).searchParams.get("redirect")).toBe("/leaderboard?category=2&difficulty=3#details");
   const request = page.waitForRequest(item => new URL(item.url()).pathname === "/auth/v1/otp");
   await send(page);
   expect(new URL((await request).url()).searchParams.get("redirect_to")).toBe("http://localhost:5173/leaderboard?category=2&difficulty=3#details");
