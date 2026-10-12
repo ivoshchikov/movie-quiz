@@ -31,7 +31,7 @@ await db.exec(`
   grant execute on function public.get_daily_user_streak(uuid) to anon,authenticated;
 `);
 const before = (await db.query("select proacl::text as acl from pg_proc where oid='public.get_daily_user_streak(uuid)'::regprocedure")).rows[0].acl;
-const migration = await readFile(new URL('../migrations/20261012181118_daily_streak_pending_day.sql', import.meta.url), 'utf8');
+const migration = await readFile(new URL('../migrations/20261012182356_daily_streak_pending_day.sql', import.meta.url), 'utf8');
 await db.exec(migration);
 const now = value => db.query("select set_config('hq.test_now',$1,false)", [value]);
 const stats = async (user = owner) => (await db.query('select * from public.get_daily_user_streak($1)', [user])).rows[0];
