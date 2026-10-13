@@ -1,5 +1,5 @@
 {
-  "status": "publication expressly authorized by site owner; release pending",
+  "status": "published on explicit owner instruction; copyright ownership not independently verified",
   "baseCommit": "b03646e873d3813b492d2bc6f0a3ba0e6a28e828",
   "images": [
     {
@@ -21,7 +21,7 @@
       "externalSource": null,
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified."
     },
     {
@@ -43,7 +43,7 @@
       "externalSource": null,
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified."
     },
     {
@@ -65,7 +65,7 @@
       "externalSource": null,
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified."
     },
     {
@@ -87,7 +87,7 @@
       "externalSource": null,
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified."
     },
     {
@@ -109,7 +109,7 @@
       "externalSource": null,
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified."
     },
     {
@@ -131,7 +131,7 @@
       "externalSource": null,
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified."
     },
     {
@@ -154,7 +154,7 @@
       "sourceBasis": "Provided by site owner. Owner now describes the images as their own, inspired by IMDb, rather than downloaded from IMDb. This revised origin statement is not independently verified.",
       "photographer": null,
       "license": null,
-      "publicationStatus": "publication expressly authorized by site owner; release pending",
+      "publicationStatus": "published on explicit owner instruction; copyright ownership not independently verified",
       "editorialStatus": "accepted for watchlist preview; no plot resolution described"
     }
   ],
@@ -205,5 +205,21 @@
       "date": "2026-10-14 Asia/Nicosia",
       "statement": "Owner subsequently described the images as their own, inspired by IMDb rather than downloaded, and explicitly instructed publication."
     }
-  ]
+  ],
+  "release": {
+    "date": "2026-10-14 Asia/Nicosia",
+    "url": "https://hard-quiz.com/blog/best-horror-movies-2026",
+    "pullRequest": "https://github.com/ivoshchikov/movie-quiz/pull/26",
+    "mergeCommit": "cab3857293a42cd18caa74111685a5a2217566f2",
+    "productionDeployment": "https://vercel.com/ivans-projects-a806f387/movie-quiz/9zmRZRQ2YXBPE4RfUm8CdPGAER5t",
+    "httpStatus": 200,
+    "rawHtmlFilmFigures": 7,
+    "webpBytes": 388136,
+    "responsiveWidths": [
+      1440,
+      390,
+      320
+    ],
+    "ci": "All five PR workflows passed; both complete browser workflows passed 463 tests without retries."
+  }
 }
