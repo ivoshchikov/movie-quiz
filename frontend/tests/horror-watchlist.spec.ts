@@ -22,11 +22,18 @@ test("the new watchlist serves its complete text, own share image and canonical 
   await expect(page).toHaveTitle("Best Horror Movies of 2026 So Far | Hard Quiz");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://hard-quiz.com/blog/${slug}`);
   for (const selector of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) await expect(page.locator(selector)).toHaveAttribute("content", "https://hard-quiz.com" + socialImage);
-  const cover = page.locator(".hq-article-image img");
+  const cover = page.locator(`img[src="${image}"]`);
   await expect.poll(() => cover.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBe(1200);
   await expect(cover).toHaveAttribute("loading", "eager");
+  await expect(page.locator(".hq-film-still")).toHaveCount(7);
+  for (const still of await page.locator(".hq-film-still img").all()) {
+    await expect(still).toHaveAttribute("loading", "lazy");
+    await expect(still).toHaveAttribute("alt", /\S/);
+    await expect(still).toHaveAttribute("width", /^[1-9]\d+$/);
+    await expect(still).toHaveAttribute("height", /^[1-9]\d+$/);
+  }
   const json = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || "{}")).find(item => item["@type"] === "BlogPosting"));
-  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
+  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-10-14", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
   const sharePage = await context.newPage();
   await sharePage.route("**" + socialImage, route => route.fulfill({ contentType: "image/webp", path: "public" + socialImage }));
   await sharePage.setContent('<img src="https://hard-quiz.com' + socialImage + '" alt="Social cover">');
@@ -56,6 +63,16 @@ for (const width of [1440, 390, 320]) test(`watchlist links, image and compariso
   await rows.first().getByRole("link").click();
   await expect(page.locator("#resident-evil")).toBeFocused();
   await expect(page.locator("#resident-evil")).toBeInViewport();
+  for (const still of await page.locator(".hq-film-still img").all()) {
+    await still.scrollIntoViewIfNeeded();
+    await expect.poll(() => still.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    const size = await still.evaluate(element => {
+      const img = element as HTMLImageElement;
+      return { actual: [img.naturalWidth, img.naturalHeight], declared: [Number(img.getAttribute("width")), Number(img.getAttribute("height"))], displayedHeight: img.getBoundingClientRect().height };
+    });
+    expect(size.actual).toEqual(size.declared);
+    expect(size.displayedHeight).toBeLessThanOrEqual(361);
+  }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.getByRole("link", { name: "guide to aspect ratios and composition", exact: true })).toHaveAttribute("href", "/blog/why-2-39-1-feels-more-cinematic");
   await expect(page.getByRole("link", { name: "Hard Quiz's movie and actor quizzes", exact: true })).toHaveAttribute("href", "/");

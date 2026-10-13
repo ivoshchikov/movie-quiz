@@ -58,3 +58,31 @@ Suggested review: 2026-11-02, or sooner if an official viewing link breaks. This
 4. At year-end, decide whether to finalize the 2026 selection or mark it as a historical guide. Do not keep changing the year in the URL or headline without rewriting the selection.
 
 For the next article, reuse the existing entry/metadata/prerender path and original-cover approach. The owner does not need to prepare screenshots. A durable content queue and scheduled publication are separate implementation work; this release creates neither a schedule nor API spending.
+
+## Film still draft — 2026-10-13
+
+The owner supplied Archive.zip with seven PNG screenshots. Six are optimized into WebP in the local branch feat/blog-horror-stills-2026: 6,751,073 original bytes become 328,780 bytes, retaining the supplied framing. Embedded ICC profiles are converted to sRGB before encoding; private metadata is removed. Images reserve their true dimensions, use lazy loading and retain their aspect ratios. The figure size caps displayed height near 360 px. Captions and alt text describe visible content without identifying actors from their faces.
+
+The file named 28 Years Later.png is held out: its supplied title refers to the 2025 film, while this article selects The Bone Temple (2026). The owner should supply the sequel frame or its exact source before it is matched. The Obsession (2025) filename is consistent with the festival-year distinction already explained in the article.
+
+No image source, photographer or reuse terms are present in the archive or its screenshot metadata. These fields remain explicitly unknown in docs/blog/horror-2026-stills.json. The original illustration and social cover retain their documented original-art rights basis; the six uploaded film stills do not inherit that permission. This is a private draft, not a production release or a claim that the uploaded stills are licensed. Public GitHub/Vercel publication is held pending source/terms clarification.
+
+Draft validation: production/SEO build, both TypeScript projects, zero-warning ESLint and all 42 targeted blog/article Chromium scenarios passed. The scenarios check six lazy-loaded stills, actual file dimensions versus declared dimensions and layouts at 1440/390/320 px. A self-contained, no-script/noindex private HTML preview embeds all six stills and the original cover. No public PR, push, merge or production deployment was performed for this draft.
+
+The private HTML preview was visually inspected at 1440, 390 and 320 px: all six image files decode, their supplied framing is retained and no horizontal overflow is present. The preview file was saved privately for owner review.
+
+## BLOG-02 follow-up — 2026-10-14 Asia/Nicosia
+
+The owner states that all supplied stills came from imdb.com. IMDb Conditions of Use (License and Site Access) do not establish a license to republish these photos, and its verified employee response to “Press images” explicitly says IMDb does not grant photo reuse permission. Source website is recorded; photographer, exact photo page and an independent rights basis remain unknown. This is a source/permission finding, not a categorical opinion on every statutory copyright exception.
+
+The new file 28 Years Later The Bone Temple.png was read successfully. It is optimized to a 1200×503 WebP (53048 bytes), but held as an editor-only candidate: its scene reveals the ending/surprise appearance. It is not inserted into the spoiler-free article. The private preview includes it in a clearly marked appendix. Public publication remains pending an appropriate non-spoiler image and a rights basis for the film stills. Relevant evidence: https://www.imdb.com/conditions/ ; https://community-imdb.sprinklr.com/conversations/data-issues-policy-discussions/press-images/65d3a97725c30b3e7ceba50f ; https://nerdist.com/article/28-years-later-the-bone-temple-final-scene-cillian-murphy-jim-cameo/ .
+
+### BLOG-02 second replacement — 2026-10-14 Asia/Nicosia
+
+The owner supplied 28 Years Later The Bone Temple(1).png. The new shot is accepted for the private watchlist preview: it conveys the film setting without describing a resolution or surprise appearance. Its original framing is retained in a 1200×682 WebP (59356 bytes). The earlier ending-scene candidate is excluded from the article and moved outside deployable assets. The private article now has seven stills. IMDb remains the reported source; no reuse permission is claimed and no public deployment has been performed.
+
+The current standalone preview contains seven film stills and the original cover; the earlier spoiler appendix is removed. The seven original PNGs total 9,547,799 bytes, and the optimized WebPs total 388,136 bytes (95.9% smaller). The updated production/SEO build, both TypeScript projects, zero-warning ESLint and four watchlist browser scenarios passed. Private preview checks at 1440/390/320 px confirm all seven images decode at their declared dimensions and no horizontal overflow; the new Bone Temple figure was visually inspected on mobile. The existing 42 targeted blog/article scenarios passed before the seventh image was added. This is private draft validation, not a production release.
+
+## Owner publication instruction — 2026-10-14 Asia/Nicosia
+
+The owner explicitly requested publication of the seven supplied images and revised the previous source statement: they describe them as their own images, inspired by IMDb rather than downloaded. This is an owner statement, not independent verification of authorship or a license grant. The manifest retains both statements and does not invent a photographer, license or copyright credit. Publication proceeds on the explicit owner instruction. The article publication date remains October 12; the substantial addition of seven inline images is recorded as a modification on October 14. Film facts remain marked as checked on October 12. Release remains pending PR/CI, merge and confirmed production deployment.

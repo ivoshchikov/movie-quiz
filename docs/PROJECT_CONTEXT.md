@@ -338,3 +338,21 @@ The prepared PROJECT_CONTEXT update was published with explicit owner authorizat
 Локальные build/types/lint и 96 целевых Chromium проверок пройдены, включая чтение новой страницы без JS и ширины 320/390/1440. Выпуск требует зелёных GitHub/Vercel статусов и HTTP-проверки production; подтверждение фиксируется в PR. Расписание и автоматическая очередь публикаций этим этапом не включаются. Следующую содержательную проверку предлагается выполнить 2026-11-02 и затем использовать данные GSC.
 
 Production HTTP verification: `/admin/questions`, `/admin/questions/new` and `/admin/daily` return 200 with noindex/no-store. The live entry `/assets/index-DWFebDvp.js` loads `AdminQuestionsPage-CNxjvwjt.js`, which contains the released editing form and deletion confirmation.
+
+## BLOG-02 — кадры, локальный черновик 13 October 2026
+
+Владелец прислал Archive.zip с семью кадрами. В отдельной локальной ветке feat/blog-horror-stills-2026 от main b03646e подготовлены шесть WebP с английскими подписями/alt и адаптивными фигурами. Файл 28 Years Later.png требует уточнения: подборка содержит The Bone Temple (2026). Источники и условия повторного использования отсутствуют; черновик и частный предпросмотр не являются публикацией. Инвентарь — docs/blog/horror-2026-stills.json.
+
+## BLOG-02 follow-up — 2026-10-14 Asia/Nicosia
+
+The owner states that all supplied stills came from imdb.com. IMDb Conditions of Use (License and Site Access) do not establish a license to republish these photos, and its verified employee response to “Press images” explicitly says IMDb does not grant photo reuse permission. Source website is recorded; photographer, exact photo page and an independent rights basis remain unknown. This is a source/permission finding, not a categorical opinion on every statutory copyright exception.
+
+The new file 28 Years Later The Bone Temple.png was read successfully. It is optimized to a 1200×503 WebP (53048 bytes), but held as an editor-only candidate: its scene reveals the ending/surprise appearance. It is not inserted into the spoiler-free article. The private preview includes it in a clearly marked appendix. Public publication remains pending an appropriate non-spoiler image and a rights basis for the film stills. Relevant evidence: https://www.imdb.com/conditions/ ; https://community-imdb.sprinklr.com/conversations/data-issues-policy-discussions/press-images/65d3a97725c30b3e7ceba50f ; https://nerdist.com/article/28-years-later-the-bone-temple-final-scene-cillian-murphy-jim-cameo/ .
+
+### BLOG-02 second replacement — 2026-10-14 Asia/Nicosia
+
+The owner supplied 28 Years Later The Bone Temple(1).png. The new shot is accepted for the private watchlist preview: it conveys the film setting without describing a resolution or surprise appearance. Its original framing is retained in a 1200×682 WebP (59356 bytes). The earlier ending-scene candidate is excluded from the article and moved outside deployable assets. The private article now has seven stills. IMDb remains the reported source; no reuse permission is claimed and no public deployment has been performed.
+
+## BLOG-02 publication preparation — 2026-10-14 Asia/Nicosia
+
+Владелец прямо поручил опубликовать семь подготовленных кадров и уточнил, что считает изображения своими, вдохновлёнными IMDb. Это заявление владельца, без независимого подтверждения авторства или лицензии; манифест сохраняет прежнее и новое описание происхождения. Черновик подготовлен на актуальном main b03646e, оригинальная обложка и OG сохраняются. Дата публикации статьи — 2026-10-12, дата изменения с добавлением кадров — 2026-10-14; проверка фактов в тексте по-прежнему датирована 12 октября. Публикация пока ожидает PR/CI, merge и подтверждение Vercel.

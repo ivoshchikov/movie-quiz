@@ -59,6 +59,7 @@
 .hq-movie-facts dd span { display: block; color: #bbc2d0; font-size: 12px; }
 .hq-movie-copy p:last-child { margin-bottom: 0; }
 .hq-watchlist-entry { padding-block: 10px 4px; border-top: 1px solid #30343e; }
+.hq-article-prose .hq-film-still { width: 100%; margin-inline: auto; }
 .hq-article-prose .hq-watchlist-facts { color: #b6bdcc; font-size: 14px; line-height: 1.8; }
 .hq-article-prose .hq-watchlist-facts strong { color: #d0d5df; }
 .hq-article-faq { padding-top: 2px; border-top: 1px solid #30343e; }
