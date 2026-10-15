@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { countQuestions, getLeaderboard, getPersonalBest } from "../api";
+import { countQuestions, getPersonalBest } from "../api";
+import { quizRanking } from "./api";
 import { useAuth } from "../AuthContext";
 import { isGameResult, RESULT_UPDATED } from "../game/resultStorage";
 
@@ -30,10 +31,10 @@ export function useLeaderboard(categoryId: number, difficultyId: number, limit: 
   const key = `${categoryId}:${difficultyId}`;
   const owner = user?.id ?? null;
   // One extra row determines whether there is a larger list without guessing a total.
-  const loadScores = useCallback((signal: AbortSignal) => getLeaderboard(categoryId, difficultyId, limit + 1, signal), [categoryId, difficultyId, limit]);
+  const loadScores = useCallback((signal: AbortSignal) => quizRanking(categoryId, difficultyId, limit, signal), [categoryId, difficultyId, limit]);
   const loadCount = useCallback((signal: AbortSignal) => countQuestions(categoryId, difficultyId, signal), [categoryId, difficultyId]);
   const loadBest = useCallback((signal: AbortSignal) => getPersonalBest(owner ?? "", categoryId, difficultyId, signal), [owner, categoryId, difficultyId]);
-  const scores = useRead(`${key}:${limit}`, loadScores);
+  const scores = useRead(`${key}:${limit}:${owner}`, loadScores);
   const availability = useRead(key, loadCount);
   const personal = useRead(`${key}:${owner}`, loadBest, !authLoading && owner != null);
   const retryScores = scores.retry, retryPersonal = personal.retry;

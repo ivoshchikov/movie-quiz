@@ -20,7 +20,7 @@ test("instructions and the game use the same current difficulty settings", async
   await expect(page.locator("#howto-end + p")).toContainText("reach the end of the available questions");
   await expect(page.locator(".hq-howto")).toContainText("A regular quiz cannot be resumed");
   await expect(page.locator(".hq-howto")).toContainText("logging in later does not add it to your account");
-  await expect(page.locator(".hq-howto-daily")).toContainText("No time limit.");
+  await expect(page.locator(".hq-howto-daily")).toContainText("Until midnight US Central.");
   await expect(page.locator(".hq-howto-daily")).toContainText("America/Chicago");
   expect(calls).toEqual([]);
 });
@@ -222,9 +222,9 @@ test("capture the current game demonstration with an isolated sample question", 
   const calls = await mockQuizApi(page);
   const choices = ["Interstellar (2014)", "Moon (2009)", "Gravity (2013)", "The Martian (2015)"];
   await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(difficulties.map(level => ({ ...level, time_limit_secs: 30 }))) }));
-  await page.route("**/rest/v1/rpc/get_game_question", route => {
-    calls.push({ name: "get_game_question", payload: route.request().postDataJSON() });
-    return route.fulfill({ contentType: "application/json", body: JSON.stringify([{ id: 81001, answer_token: "00000000-0000-4000-8000-000000081001", image_url: "https://quiz-fixture.supabase.co/how-to-play-scene.svg", options_json: choices, category_id: 1, difficulty_level_id: 1 }]) });
+  await page.route("**/rest/v1/rpc/quiz_next", async route => {
+    const t="2026-10-08T12:00:01Z";const g={id:route.request().postDataJSON().p_session,category_id:1,difficulty_id:1,score:0,lives:3,bank_size:10,status:"active",started_at:t,server_now:t,time_secs:0,finish_reason:null,previous_best:null,personal_best:null,record_outcome:null,round:{id:"demo-round",number:1,question_id:81001,image_url:"https://quiz-fixture.supabase.co/how-to-play-scene.svg",options:choices,issued_at:t,deadline_at:"2026-10-08T12:00:31Z",outcome:null,selected:null}};
+    await route.fulfill({contentType:"application/json",body:JSON.stringify(g)});
   });
   const scene = await readFile(path.resolve("tests/assets/how-to-play-scene.svg"), "utf8");
   await page.route("**/how-to-play-scene.svg", route => route.fulfill({ contentType: "image/svg+xml", body: scene }));

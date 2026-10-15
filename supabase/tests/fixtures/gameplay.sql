@@ -1,0 +1,38 @@
+
+create role anon;create role authenticated;create role service_role;
+create schema auth;create schema storage;create schema extensions;
+create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+grant usage on schema public,auth to anon,authenticated,service_role;
+create table public.admin_users(user_id uuid primary key,created_at timestamptz default now());
+create table public.profiles(user_id uuid primary key,nickname text,avatar_url text,created_at timestamptz default now());
+create table public.category(id integer primary key,name text);
+create table public.difficulty_level(id integer primary key,name text,key text,time_limit_secs integer,lives integer,mistakes_allowed integer,sort_order integer);
+create table public.question(id serial primary key,image_url text not null,correct_answer text not null,options_json jsonb not null,category_id integer,difficulty_level_id integer not null);
+create table storage.objects(bucket_id text,name text,metadata jsonb,user_metadata jsonb,unique(bucket_id,name));
+create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
+create table public.daily_challenge(d date primary key,question_id integer not null,category_id integer not null,difficulty_level_id integer not null,created_at timestamptz default now());
+create table public.daily_session(user_id uuid,d date,started_at timestamptz default now(),created_at timestamptz default now(),primary key(user_id,d));
+create table public.daily_result(user_id uuid,d date,is_correct boolean,time_spent integer,answered_at timestamptz default now(),primary key(user_id,d));
+create table public.question_stats(question_id integer primary key,total_attempts bigint default 0,correct_attempts bigint default 0,updated_at timestamptz default now());
+create function public.is_admin() returns boolean language sql stable security definer as $$select exists(select 1 from public.admin_users where user_id=auth.uid())$$;
+create function public.touch_question_stats(p_question_id integer,p_is_correct boolean) returns void language sql security definer as $$insert into public.question_stats(question_id,total_attempts,correct_attempts) values(p_question_id,1,p_is_correct::integer) on conflict(question_id) do update set total_attempts=question_stats.total_attempts+1,correct_attempts=question_stats.correct_attempts+p_is_correct::integer$$;
+create function public.start_daily_session(p_user_id uuid,p_date date) returns timestamptz language plpgsql security definer as $$declare v timestamptz;begin if auth.uid() is distinct from p_user_id then raise exception 'mismatch';end if;insert into public.daily_session(user_id,d) values(p_user_id,p_date) on conflict do nothing;select started_at into v from public.daily_session where user_id=p_user_id and d=p_date;return v;end$$;
+create function public.submit_daily_result(p_user_id uuid,p_date date,p_is_correct boolean,p_time integer) returns void language sql security definer as $$insert into public.daily_result(user_id,d,is_correct,time_spent) values(p_user_id,p_date,p_is_correct,p_time) on conflict do nothing$$;
+create function public.set_daily_question(p_date date,p_question_id integer) returns void language sql security definer as $$insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) select p_date,id,category_id,difficulty_level_id from public.question where id=p_question_id on conflict do nothing$$;
+create function public.get_daily_history_admin(p_limit integer,p_offset integer) returns table(d date,question_id integer,image_url text,correct_answer text,category_id integer,difficulty_level_id integer,total_answers integer,correct_answers integer,created_at timestamptz) language sql as $$select null::date,0,'','',0,0,0,0,null::timestamptz where false$$;
+create function public.get_daily_history(p_limit integer,p_offset integer) returns table(correct_answer text) language sql security definer as $$select correct_answer from public.question$$;
+create function public.get_question(p_category_id integer,p_difficulty_id integer) returns table(correct_answer text) language sql security definer as $$select correct_answer from public.question limit 1$$;
+create function public.get_question(p_exclude_ids integer[],p_category_id integer,p_difficulty_id integer) returns table(correct_answer text) language sql security definer as $$select correct_answer from public.question limit 1$$;
+create function public.get_daily_question(p_date date) returns table(id integer,image_url text,options_json jsonb,correct_answer text,category_id integer,difficulty_level_id integer) language sql security definer as $$select q.* from (select id,image_url,options_json,correct_answer,category_id,difficulty_level_id from public.question) q join public.daily_challenge d on d.question_id=q.id where d.d=p_date$$;
+create function public.get_daily_question_public(p_date date) returns table(id integer,image_url text,options_json jsonb,category_id integer,difficulty_level_id integer) language sql security definer as $$select id,image_url,options_json,category_id,difficulty_level_id from public.get_daily_question(p_date)$$;
+insert into public.admin_users values('112743d7-f683-4bbb-8117-068e89a00f22',now());insert into public.profiles(user_id,nickname) values('112743d7-f683-4bbb-8117-068e89a00f22','Isildur'),('00000000-0000-0000-0000-000000000002','Player');
+insert into public.category values(1,'All movies'),(2,'Actors'),(3,'Actresses'),(4,'TV series');insert into public.difficulty_level values(1,'Easy','easy',30,3,2,1),(2,'Medium','normal',30,3,2,2),(3,'Hard','hard',30,1,0,3);
+insert into public.question values(1,'general/g_00001.webp','One','["One","Two","Three","Four"]',1,1),(100,'general/g_00100.webp','One','["One","Two","Three","Four"]',1,2),(101,'actors/act_00200.webp','One','["One","Two","Three","Four"]',2,1),(175,'actors/act_00075.webp','One','["One","One","Three","Four"]',2,1),(300,'legacy.webp','Missing','["One","Two","Three","Four"]',null,1);
+insert into storage.buckets values('movies','movies',true,null,null);insert into storage.objects(bucket_id,name) select 'movies',image_url from public.question;
+select setval('public.question_id_seq',5,true);
+alter table public.question enable row level security;create policy old_public_read on public.question for select using(true);
+grant all on all tables in schema public to anon,authenticated;grant all on sequence public.question_id_seq to anon,authenticated;
+
+create table public.user_best(user_id uuid,category_id integer,difficulty_level_id integer,best_score integer,best_time integer,updated_at timestamptz default now(),primary key(user_id,category_id,difficulty_level_id));
+create table public.leaderboard_seed(nickname text,category_id integer,difficulty_level_id integer,best_score integer,best_time integer,updated_at timestamptz);
+

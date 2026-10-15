@@ -65,7 +65,7 @@ export class NicknameSelectionError extends Error {
   }
 }
 
-// Only initial selection is exposed. Server-side immutability still requires a DB policy/trigger.
+// Initial selection only; the database also enforces nickname immutability and folded uniqueness.
 export async function chooseInitialNickname(userId: string, nickname: string, signal: AbortSignal,
   onWriting?: () => void): Promise<ProfileDetails> {
   const nick = nickname.trim();

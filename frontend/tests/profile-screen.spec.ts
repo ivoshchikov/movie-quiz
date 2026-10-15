@@ -79,7 +79,7 @@ test("record actions pass the exact category and difficulty to the game and lead
   await page.getByRole("link", { name: "Play again: Actors — Hard", exact: true }).click();
   await expect(page).toHaveURL(/\/play$/);
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-  expect(calls.filter(call => call.name === "get_game_question").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
+  expect(calls.filter(call => call.name === "quiz_start").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
 });
 
 test("historical scores stay visible when only that exact quiz is unavailable", async ({ page }) => {
@@ -343,14 +343,14 @@ test("only confirmed results of this account refresh the personal list", async (
 
 test("a real queued result save updates the mounted profile after confirmation", async ({ page }) => {
   const { data } = await fixture(page);
-  const result = { id: "pending-profile-run", playKey: "old-play", userId: "fixture-user", categoryId: 1, difficultyId: 3, score: 39, elapsedSecs: 91, finishReason: "exit", saveStatus: "pending", previousBest: { score: 12, time: 65 } };
+  const result = { id: "pending-profile-run", serverGame: true, playKey: "old-play", userId: "fixture-user", categoryId: 1, difficultyId: 3, score: 39, elapsedSecs: 91, finishReason: "exit", saveStatus: "pending", previousBest: { score: 12, time: 65 } };
   await page.addInitScript(result => localStorage.setItem("hq:quiz:pending:" + result.id, JSON.stringify(result)), result);
   let release = () => {}, waiting = false;
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/rpc/upsert_user_best", async route => {
+  await page.route("**/rest/v1/rpc/quiz_finish", async route => {
     waiting = true; await held;
     data.rows = [row(1, 3, 39, 91)];
-    await route.fulfill({ contentType: "application/json", body: "null" });
+    await route.fulfill({ contentType: "application/json", body: JSON.stringify({id:"pending-profile-run",category_id:1,difficulty_id:3,score:39,lives:1,bank_size:50,status:"finished",started_at:"2026-10-07T12:00:00Z",server_now:"2026-10-07T12:01:31Z",time_secs:91,finish_reason:"exit",round:null,previous_best:{score:12,time:65},personal_best:{score:39,time:91},record_outcome:"new"}) });
   });
   await loaded(page);
   await expect.poll(() => waiting).toBe(true);

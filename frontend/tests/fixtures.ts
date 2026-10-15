@@ -12,6 +12,7 @@ export const difficulties = [
 
 export async function mockQuizApi(page: Page) {
   const calls: { name: string; payload: Record<string, unknown> }[] = [];
+  const games = new Map<string, Record<string, unknown>>();
   // Keep analytics in its local command queue; never send test events to Google.
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'text/javascript', body: '' }));
   await page.route('https://hard-quiz.com/blog-assets/best-horror-movies-2026-cover.webp', route => route.fulfill({ contentType: 'image/webp', path: 'public/blog-assets/best-horror-movies-2026-cover.webp' }));
@@ -25,6 +26,32 @@ export async function mockQuizApi(page: Page) {
     let body: unknown = [];
     const headers: Record<string, string> = { 'access-control-expose-headers': 'content-range' };
     switch (name) {
+      case 'quiz_start': {
+        const p = request.postDataJSON();
+        body = games.get(p.p_session) ?? { id: p.p_session, category_id: p.p_category_id, difficulty_id: p.p_difficulty_id,
+          score: 0, lives: difficulties.find(d => d.id === p.p_difficulty_id)?.lives ?? 3, bank_size: 10,
+          status: 'active', started_at: new Date().toISOString(), server_now: new Date().toISOString(), time_secs: 0,
+          finish_reason: null, round: null, previous_best: null, personal_best: null, record_outcome: null };
+        games.set(p.p_session, body as Record<string, unknown>); break;
+      }
+      case 'quiz_next': case 'quiz_answer': case 'quiz_finish': {
+        const p = request.postDataJSON(), g = games.get(p.p_session);
+        if (!g) return route.fulfill({ status: 404, body: '{}' });
+        const now = new Date().toISOString(); g.server_now = now;
+        if (name === 'quiz_next') g.round = { id: '00000000-0000-4000-8000-000000000999', number: 1, question_id: 999,
+          image_url: 'https://quiz-fixture.supabase.co/fixture.svg', options: ['Fixture answer','Second answer','Third answer','Fourth answer'],
+          issued_at: now, deadline_at: new Date(Date.parse(now) + 30000).toISOString(), outcome: null, selected: null };
+        if (name === 'quiz_answer') {
+          const r = g.round as Record<string, unknown>; r.selected = p.p_answer; r.outcome = p.p_answer === 'Fixture answer' ? 'correct' : p.p_answer == null ? 'timeout' : 'wrong';
+          if (r.outcome === 'correct') g.score = Number(g.score) + 1; else g.lives = Number(g.lives) - 1;
+        }
+        if (name === 'quiz_finish') { g.status = 'finished'; g.finish_reason = 'exit'; }
+        body = g; break;
+      }
+      case 'quiz_leaderboard': body = { total: 1, top: [{ rank: 1, user_id: 'expert', nickname: 'FilmExpert', best_score: 25, best_time: 82, updated_at: '2026-10-05T12:00:00Z' }], me: null }; break;
+      case 'daily_status': body = { date: '2026-10-07', server_now: '2026-10-07T17:00:00Z', closes_at: '2026-10-08T05:00:00Z', started_at: null, result: null }; break;
+      case 'daily_leaderboard': body = { total: 0, top: [], me: null }; break;
+      case 'my_game_stats': body = { tracking_since: '2026-10-15T00:00:00Z', normal: { games: 0, correct: 0, wrong: 0, timeouts: 0, abandoned: 0, average_ms: null, best_streak: 0, unique_questions: 0 }, breakdown: [], trend: [], daily_calendar: [] }; break;
       case 'category': body = categories; break;
       case 'difficulty_level': body = difficulties; break;
       case 'count_questions': {

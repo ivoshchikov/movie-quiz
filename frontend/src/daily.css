@@ -94,3 +94,6 @@
 @media (max-height: 350px), (max-width: 360px) and (max-height: 480px) {
   .hq-daily-game { min-height: 340px; flex-shrink: 0; }
 }
+@media (min-width: 540px) and (max-height: 350px) {
+  .hq-daily-game { min-height: 0; }
+}

@@ -40,8 +40,8 @@ export default function GameScreen() {
 
   const instructions = !validSelection ? "Choose a category and difficulty to start a quiz." : game.phase === "empty" ?
     "No questions for this difficulty yet." : error ? (
-      game.phase === "image-error" ? "The image couldn’t load. Your timer hasn’t started." :
-      game.phase === "answer-error" ? "Your answer couldn’t be checked. Your timer is paused." : "The quiz couldn’t load. No life lost."
+      game.phase === "image-error" ? "The image couldn’t load. Your timer keeps running." :
+      game.phase === "answer-error" ? "Your answer couldn’t be confirmed. Retry sends the same choice; the server deadline still applies." : "The quiz couldn’t load. Retry checks the existing server session."
     ) : "Loading your quiz…";
 
   return <>
@@ -68,7 +68,7 @@ export default function GameScreen() {
           {(busyImage || game.phase === "loading") && <div className="hq-game-image-message" role="status"><span className="hq-game-spinner" /><span>{busyImage ? "Loading image…" : "Loading next question…"}</span></div>}
           {(game.phase === "image-error" || game.phase === "question-error") && <div className="hq-game-image-message"><p role="alert">{game.phase === "image-error" ? "The image couldn’t load." : "The next question couldn’t load."}</p><button className="hq-secondary" onClick={() => game.actions.current?.retry()}>Try again</button></div>}
         </div>
-        <div className="hq-game-timer" aria-label={ready || game.phase === "feedback" ? `${game.seconds} seconds left` : "Timer waits until the question is ready"}>
+        <div className="hq-game-timer" aria-label={ready || game.phase === "feedback" ? `${game.seconds} seconds left` : "Server question timer"}>
           <div className="hq-game-timer-label"><span><SiteIcon name="timer" />Time left</span><strong className={game.seconds <= 5 && ready ? "hq-time-low" : ""}>{game.seconds}<small> s</small></strong></div>
           <div className="hq-game-time-track"><div className={`hq-game-time-fill${game.seconds <= 5 && ready ? " hq-time-low" : ""}`} style={{ width: `${Math.max(0, Math.min(1, game.remaining)) * 100}%` }} /></div>
         </div>
@@ -91,7 +91,7 @@ export default function GameScreen() {
       </section>}
     <Dialog open={exitOpen} onClose={() => setExitOpen(false)} className="hq-game-dialog-root"><div className="hq-game-dialog-backdrop" aria-hidden="true" />
       <div className="hq-game-dialog-wrap"><Dialog.Panel className="hq-game-dialog"><Dialog.Title>End this quiz?</Dialog.Title>
-        <Dialog.Description>Your current score ({game.score}) and elapsed time will be saved on this device. This quiz will end and cannot be resumed. {user && "We’ll also submit it for your personal best. If you’re offline, saving will retry when you’re back online."}</Dialog.Description>
+        <Dialog.Description>Your current score ({game.score}) and elapsed time will be saved on this device. This quiz will end and cannot be resumed. {user && "The server saves accepted answers and calculates your personal best. If you’re offline, confirmation retries when you reconnect; the server clock keeps running."}</Dialog.Description>
         <p>The timer keeps running until you end the quiz.</p><div><button className="hq-secondary" autoFocus onClick={() => setExitOpen(false)}>Keep playing</button>
           <button className="hq-primary" onClick={() => { setExitOpen(false); if (game.actions.current) game.actions.current.finish(); else navigate("/"); }}>End quiz & save</button></div>
       </Dialog.Panel></div>

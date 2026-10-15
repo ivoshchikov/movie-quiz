@@ -1,0 +1,33 @@
+name: Authoritative gameplay contracts
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  gameplay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: gameplay-test-only
+          POSTGRES_DB: hardquiz_gameplay_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install isolated SQL client
+        run: npm install --prefix "$RUNNER_TEMP/hq-gameplay-test" --no-package-lock --no-save pg@8.13.3
+      - name: Test ownership, deadlines, Chicago rollover, ranking and concurrent writes
+        env:
+          HQ_SQL_TEST_URL: postgresql://postgres:gameplay-test-only@localhost:5432/hardquiz_gameplay_test
+        run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-gameplay-test/node_modules/pg/lib/index.js" node --test supabase/tests/gameplay.test.mjs

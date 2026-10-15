@@ -18,7 +18,7 @@ test('balanced homepage launches the selected category and actual difficulty rul
   await page.getByRole('button', { name: 'Play Actors' }).click();
   await expect(page).toHaveURL(/\/play$/);
   await expect(page.getByRole('button', { name: 'Fixture answer', exact: true })).toBeVisible();
-  expect(calls.filter(call => call.name === 'get_game_question').every(call => call.payload.p_category_id === 2 && call.payload.p_difficulty_id === 3)).toBeTruthy();
+  expect(calls.filter(call => call.name === 'quiz_start').every(call => call.payload.p_category_id === 2 && call.payload.p_difficulty_id === 3)).toBeTruthy();
 });
 
 test('question counts cannot enable play for an empty level', async ({ page }) => {
@@ -98,7 +98,7 @@ test('leaderboard is public and its filters use the selected ids', async ({ page
   await page.getByRole('radio', { name: /Actors/ }).click();
   await page.getByRole('radio', { name: 'Medium', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Actors — Medium', exact: true })).toBeVisible();
-  await expect.poll(() => calls.filter(call => call.name === 'get_leaderboard').at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 2, p_limit: 11 });
+  await expect.poll(() => calls.filter(call => call.name === 'quiz_leaderboard').at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 2, p_limit: 10 });
 });
 
 test('signed-in users can view personal bests with a fixed nickname', async ({ page }) => {
