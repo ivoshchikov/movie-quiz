@@ -48,15 +48,14 @@ export async function getProfile(userId: string, signal?: AbortSignal): Promise<
   return data as ProfileDetails;
 }
 
-export async function isNicknameTaken(nickname: string, excludeUserId?: string, signal?: AbortSignal): Promise<boolean> {
+export async function isNicknameTaken(nickname: string, signal?: AbortSignal): Promise<boolean> {
   if (!nickname.trim()) return false;
-  const pattern = nickname.trim().replace(/[\\%_]/g, "\\$&");
-  let q = supabase.from("profiles").select("user_id", { count: "exact", head: true }).ilike("nickname", pattern);
-  if (excludeUserId) q = q.neq("user_id", excludeUserId);
-  const { count, error } = await (signal ? q.abortSignal(signal) : q);
+  // Availability is a boolean RPC: own-profile RLS intentionally hides other players' rows.
+  const query = supabase.rpc("is_nickname_taken", { p_nick: nickname.trim() });
+  const { data, error } = await (signal ? query.abortSignal(signal) : query);
   if (error) throw error;
-  if (count == null || !Number.isInteger(count) || count < 0) throw new Error("invalid-nickname-count");
-  return count > 0;
+  if (typeof data !== "boolean") throw new Error("invalid-nickname-availability");
+  return data;
 }
 
 export class NicknameSelectionError extends Error {
@@ -76,7 +75,7 @@ export async function chooseInitialNickname(userId: string, nickname: string, si
   signal.throwIfAborted();
   if (profile?.nickname) return profile;
   let taken: boolean;
-  try { taken = await isNicknameTaken(nick, userId, signal); }
+  try { taken = await isNicknameTaken(nick, signal); }
   catch { throw new NicknameSelectionError("availability"); }
   signal.throwIfAborted();
   if (taken) throw new NicknameSelectionError("taken");

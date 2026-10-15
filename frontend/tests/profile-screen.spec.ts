@@ -65,7 +65,7 @@ test("records group in catalog order, with a count, correct duration and a fixed
   await page.getByRole("button", { name: "Account menu" }).click();
   await expect(page.getByRole("menuitem", { name: /Change nickname/ })).toHaveCount(0);
   expect(data.writes).toEqual([]);
-  expect(calls.some(call => ["get_game_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["quiz_start", "daily_begin", "quiz_finish"].includes(call.name))).toBe(false);
 });
 
 test("record actions pass the exact category and difficulty to the game and leaderboard", async ({ page }) => {
@@ -212,7 +212,7 @@ test("Daily profile failure cannot start a session or offer a new nickname", asy
   await page.goto("/daily");
   await expect(page.getByRole("button", { name: "Retry profile", exact: true })).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  expect(data.calls.filter(call => call.name === "start_daily_session")).toHaveLength(0);
+  expect(data.calls.filter(call => call.name === "daily_begin")).toHaveLength(0);
   fail = false;
   await page.getByRole("button", { name: "Retry profile", exact: true }).click();
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeEnabled();
@@ -262,9 +262,9 @@ test("initial selection preserves an existing avatar and updates only an empty n
   const { data } = await fixture(page); data.profile = { nickname: null, avatar_url: "https://fixture.test/avatar" };
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("Film_Fan");
-  const check = page.waitForRequest(request => request.url().includes("/profiles?") && request.method() === "HEAD");
+  const check = page.waitForRequest(request => request.url().includes("/rpc/is_nickname_taken"));
   await page.getByRole("button", { name: "Save and continue", exact: true }).click();
-  expect(new URL((await check).url()).searchParams.get("nickname")).toBe("ilike.Film\\_Fan");
+  expect((await check).postDataJSON()).toEqual({p_nick:"Film_Fan"});
   await expect(page.locator(".hq-account-name")).toHaveText("Film_Fan");
   expect(data.writes).toHaveLength(1);
   expect(data.writes[0]).toMatchObject({ method: "PATCH", body: { nickname: "Film_Fan" } });
@@ -275,7 +275,7 @@ test("initial selection preserves an existing avatar and updates only an empty n
 test("nickname availability errors block writes and permit retry", async ({ page }) => {
   const { data } = await fixture(page); data.profile = null;
   let fail = true;
-  await page.route("**/rest/v1/profiles?**", route => route.request().method() === "HEAD" && fail ? route.fulfill({ status: 503, body: "" }) : route.fallback());
+  await page.route("**/rest/v1/rpc/is_nickname_taken", route => fail ? route.fulfill({ status: 503, body: "{}" }) : route.fallback());
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("NewName");
   await page.getByRole("button", { name: "Save and continue", exact: true }).click();
@@ -289,7 +289,7 @@ test("nickname availability errors block writes and permit retry", async ({ page
 
 test("a taken nickname stays in the form without a write", async ({ page }) => {
   const { data } = await fixture(page); data.profile = null;
-  await page.route("**/rest/v1/profiles?**", route => route.request().method() === "HEAD" ? route.fulfill({ headers: { "content-range": "0-0/1", "access-control-expose-headers": "content-range" }, body: "" }) : route.fallback());
+  await page.route("**/rest/v1/rpc/is_nickname_taken", route => route.fulfill({contentType:"application/json",body:"true"}));
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("ExistingName");
   await page.getByRole("button", { name: "Save and continue", exact: true }).click();
@@ -437,7 +437,7 @@ test("Chicago midnight refreshes Daily statistics without playing an attempt", a
   await page.clock.runFor(3000);
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("0 days");
   expect(data.dailyCalls).toBeGreaterThan(before);
-  expect(calls.some(call => ["get_daily_question_public", "start_daily_session", "submit_daily_answer"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["daily_begin", "daily_begin", "submit_daily_answer"].includes(call.name))).toBe(false);
 });
 
 test("all record actions are keyboard reachable with visible focus", async ({ page }) => {

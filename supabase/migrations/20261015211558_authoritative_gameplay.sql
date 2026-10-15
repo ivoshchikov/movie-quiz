@@ -4,6 +4,17 @@ alter table public.question add column selection_weight numeric not null default
   check (selection_weight > 0 and selection_weight <= 100);
 alter table public.question add column daily_eligible boolean not null default true;
 update public.question set selection_weight = 0.1, daily_eligible = false where id = 175;
+-- Provenance is retained without splitting or resetting the existing competition.
+alter table public.user_best add column verified_session_id uuid;
+alter function public.upsert_user_best(uuid,integer,integer,integer,integer) set search_path=pg_catalog;
+alter function public.touch_question_stats(integer,boolean) set search_path=pg_catalog;
+create or replace function public.us_central_today() returns date language sql volatile set search_path=pg_catalog as $$
+  select (clock_timestamp() at time zone 'America/Chicago')::date;
+$$;
+create or replace function public.is_nickname_taken(p_nick text) returns boolean
+language sql stable security definer set search_path=pg_catalog as $$
+  select exists(select 1 from public.profiles where lower(btrim(nickname))=lower(btrim(p_nick)));
+$$;
 
 create table hq_private.game_sessions (
   id uuid primary key,
@@ -103,6 +114,19 @@ alter table public.daily_result add column response_ms bigint;
 -- Existing Daily starts continue with their original clock and assigned snapshot.
 update public.daily_session s set question_revision=d.revision, options_json=d.options_json
   from hq_private.daily_questions d where d.d=s.d;
+-- Retain an audit copy of impossible legacy starts instead of letting one pre-start
+-- freeze a future date's assignment for every player. Accepted results are untouched.
+create table hq_private.invalid_daily_starts (
+  owner uuid not null, d date not null, original jsonb not null,
+  quarantined_at timestamptz not null default clock_timestamp(), primary key(owner,d)
+);
+insert into hq_private.invalid_daily_starts(owner,d,original)
+  select s.user_id,s.d,to_jsonb(s) from public.daily_session s
+  where not exists(select 1 from public.daily_result r where r.user_id=s.user_id and r.d=s.d)
+    and ((s.started_at at time zone 'America/Chicago')::date<>s.d
+      or not exists(select 1 from public.daily_challenge c where c.d=s.d));
+delete from public.daily_session s using hq_private.invalid_daily_starts q
+  where s.user_id=q.owner and s.d=q.d and to_jsonb(s)=q.original;
 
 create function hq_private.record_answer(p_event hq_private.answer_events)
 returns void language plpgsql set search_path=pg_catalog as $$
@@ -168,10 +192,10 @@ begin
     select * into old from public.user_best where user_id=s.owner and category_id=s.category_id and difficulty_level_id=s.difficulty_id for update;
     if old.user_id is null then award:='first';
     elsif s.score>old.best_score or (s.score=old.best_score and v_time<old.best_time) then award:='new'; end if;
-    insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time,updated_at)
-      values(s.owner,s.category_id,s.difficulty_id,s.score,v_time,p_at)
+    insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time,updated_at,verified_session_id)
+      values(s.owner,s.category_id,s.difficulty_id,s.score,v_time,p_at,s.id)
     on conflict(user_id,category_id,difficulty_level_id) do update set
-      best_score=excluded.best_score,best_time=excluded.best_time,updated_at=excluded.updated_at
+      best_score=excluded.best_score,best_time=excluded.best_time,updated_at=excluded.updated_at,verified_session_id=excluded.verified_session_id
       where excluded.best_score>user_best.best_score or (excluded.best_score=user_best.best_score and excluded.best_time<user_best.best_time);
     select * into best from public.user_best where user_id=s.owner and category_id=s.category_id and difficulty_level_id=s.difficulty_id;
   end if;
@@ -377,7 +401,9 @@ begin
   insert into public.daily_session(user_id,d,started_at,question_revision,options_json)
     select uid,p_date,t,q.revision,
       (select jsonb_agg(value order by random()) from jsonb_array_elements(q.options_json))
-    on conflict(user_id,d) do nothing;
+    on conflict(user_id,d) do update set started_at=excluded.started_at,
+      question_revision=excluded.question_revision,options_json=excluded.options_json
+      where (daily_session.started_at at time zone 'America/Chicago')::date<>p_date or daily_session.started_at>t;
   select * into s from public.daily_session where user_id=uid and d=p_date;
   t:=clock_timestamp();
   if p_date<>(t at time zone 'America/Chicago')::date then raise exception 'Daily expired' using errcode='22023'; end if;
@@ -508,10 +534,15 @@ begin
     (new.nickname is distinct from old.nickname or new.user_id is distinct from old.user_id) then
     raise exception 'Your nickname cannot be changed' using errcode='23514';
   end if;
+  if (tg_op='INSERT' or old.nickname is null or btrim(old.nickname)='') and
+    new.nickname is not null and new.nickname<>'' and
+    (char_length(new.nickname) not between 3 and 20 or new.nickname<>btrim(new.nickname)) then
+    raise exception 'Choose a nickname of 3 to 20 characters without surrounding spaces' using errcode='23514';
+  end if;
   return new;
 end $$;
 create unique index hq_profiles_nickname_folded on public.profiles(lower(btrim(nickname))) where nickname is not null;
-create trigger hq_player_identity before update on public.profiles for each row execute function hq_private.guard_player_identity();
+create trigger hq_player_identity before insert or update on public.profiles for each row execute function hq_private.guard_player_identity();
 
 -- Lock every old write path, including overloads and implicit PUBLIC grants.
 do $$ declare f record; t text; begin
@@ -527,6 +558,12 @@ do $$ declare f record; t text; begin
     execute format('alter table hq_private.%I enable row level security',t);
     execute format('revoke all on hq_private.%I from public,anon,authenticated',t);
   end loop;
+end $$;
+do $$ begin
+  if to_regclass('public.user_best_backup') is not null then
+    alter table public.user_best_backup enable row level security;
+    revoke all on public.user_best_backup from public,anon,authenticated;
+  end if;
 end $$;
 alter table public.leaderboard_seed enable row level security;
 alter table public.user_best enable row level security;

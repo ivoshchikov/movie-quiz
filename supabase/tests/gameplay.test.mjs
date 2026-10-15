@@ -20,7 +20,7 @@ if (native) await db.exec('create extension pgcrypto with schema extensions');
 else await db.exec("create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec(`create schema if not exists hq_private; create table hq_private.test_clock_state(at timestamptz); insert into hq_private.test_clock_state values(null); create function hq_private.test_clock() returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$;`);
 for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay']) {
-  if (file.endsWith('authoritative_gameplay')) await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8'));
+  if (file.endsWith('authoritative_gameplay')) { await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8')); await db.exec("insert into public.daily_session(user_id,d) values('00000000-0000-0000-0000-000000000003',(clock_timestamp() at time zone 'America/Chicago')::date+1)"); }
   await db.exec('begin');
   try { await db.exec((await readFile(new URL(`../migrations/${file}.sql`,import.meta.url),'utf8')).replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
   catch(e) { await db.exec('rollback'); throw e; }
@@ -117,8 +117,8 @@ test('Daily measures time on the server, first accepted answer wins and statisti
 });
 test('rank is computed across everyone, lower time wins equal points, only top plus caller is returned; seeds never enter',async()=>{
   await reset();
-  for(let i=1;i<=30;i++) await db.query("insert into public.user_best values($1,1,1,10,$2,clock_timestamp())",[`10000000-0000-0000-0000-${String(i).padStart(12,'0')}`,i]);
-  await db.query('insert into public.user_best values($1,1,1,10,99,clock_timestamp())',[player]);
+  for(let i=1;i<=30;i++) await db.query("insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time,updated_at) values($1,1,1,10,$2,clock_timestamp())",[`10000000-0000-0000-0000-${String(i).padStart(12,'0')}`,i]);
+  await db.query('insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time,updated_at) values($1,1,1,10,99,clock_timestamp())',[player]);
   await db.exec("insert into public.leaderboard_seed values('Fake',1,1,9999,0,now())");
   const board=await value('select public.quiz_leaderboard(1,1,5) v');assert.equal(board.total,31);assert.equal(board.top.length,5);assert.equal(board.me.rank,31);assert.equal(board.top[0].best_time,1);
   assert.deepEqual((await value('select public.quiz_leaderboard(1,1,5) v')).top,board.top);
@@ -201,7 +201,7 @@ test('authenticated RPC grants work while protected table writes and private hel
 });
 test('nicknames are immutable and case-insensitively unique; a delete cannot bypass immutability',async()=>{
  await reset();await assert.rejects(db.query("update public.profiles set nickname='Renamed' where user_id=$1",[player]),/cannot be changed/);
- await assert.rejects(db.query("insert into public.profiles(user_id,nickname) values($1,' player ')",[other]),/duplicate key/);
+ await assert.rejects(db.query("insert into public.profiles(user_id,nickname) values($1,'PLAYER')",[other]),/duplicate key/);
  await db.exec('set role authenticated');try {await assert.rejects(db.query('delete from public.profiles where user_id=$1',[player]),/permission denied/);}finally {await db.exec('reset role');}
 });
 test('empty banks do not create competitive records and bounded retention keeps account statistics',async()=>{
@@ -210,4 +210,33 @@ test('empty banks do not create competitive records and bounded retention keeps 
  await db.query("update hq_private.game_sessions set finished_at=clock_timestamp()-interval '31 days' where id=$1",[g.id]);
  await db.exec('select hq_private.prune_gameplay()');assert.equal(await value('select count(*) v from hq_private.game_rounds where session_id=$1',[g.id]),0);
  const receipt=await finish(g.id);assert.equal(receipt.score,1);assert.equal(receipt.round,null);assert.equal((await value('select public.my_game_stats() v')).normal.correct,1);
+});
+
+test('only a server-verified best gains provenance; arbitrary legacy best values are preserved without certification',async()=>{
+ await reset();const g=await next((await start()).id);await answer(g,'One');assert.equal(await value('select verified_session_id v from public.user_best where user_id=$1',[player]),g.id);
+ await reset();await db.query('insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time) values($1,1,1,99,1)',[player]);
+ const s=await next((await start()).id);await answer(s,'One');assert.equal(await value('select verified_session_id v from public.user_best where user_id=$1',[player]),null);assert.equal(await value('select best_score v from public.user_best where user_id=$1',[player]),99);
+});
+test('a legacy pre-start for a future day cannot grant a valid attempt before that day or poison its real start',async()=>{
+ await reset();const d=(await value('select public.daily_status() v')).date;
+ await db.query("insert into public.daily_session(user_id,d,started_at) values($1,$2,clock_timestamp()-interval '1 day')",[player,d]);
+ const g=await value('select public.daily_begin($1) v',[d]);assert.equal(new Date(g.started_at).toLocaleDateString('en-CA',{timeZone:'America/Chicago'}),d);
+});
+test('competing Daily choices and a normal exit race never replace an accepted answer',{skip:!native},async()=>{
+ await reset();const a=new Client({connectionString:native}),b=new Client({connectionString:native});await a.connect();await b.connect();
+ try {
+  for(const c of [a,b])await c.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);
+  const d=(await value('select public.daily_status() v')).date;const daily=await value('select public.daily_begin($1) v',[d]);
+  await Promise.all([a.query('select public.submit_daily_answer($1,$2,$3,0)',[player,d,daily.question.options[0]]),b.query('select public.submit_daily_answer($1,$2,$3,0)',[player,d,daily.question.options[1]])]);
+  assert.equal(await value('select count(*) v from hq_private.answer_events'),1);assert.equal(await value('select count(*) v from public.daily_result'),1);
+  const g=await next((await start()).id);
+  await a.query('begin');await a.query("select public.quiz_answer($1,$2,'One')",[g.id,g.round.id]);
+  const ending=b.query('select public.quiz_finish($1) v',[g.id]);await a.query('commit');assert.equal((await ending).rows[0].v.score,1);
+  assert.equal(await value("select count(*) v from hq_private.answer_events where mode='normal'"),1);
+ } finally {await a.query('rollback');await a.end();await b.end();}
+});
+
+test('impossible old future starts are quarantined with their original data, without erasing results',async()=>{
+ assert.equal(await value('select count(*) v from hq_private.invalid_daily_starts'),1);
+ const archived=await value('select original v from hq_private.invalid_daily_starts limit 1');assert.equal(archived.user_id,other);assert.ok(archived.started_at);
 });

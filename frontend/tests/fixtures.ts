@@ -66,7 +66,7 @@ export async function mockQuizApi(page: Page) {
         body = request.method() === 'POST' ? { nickname: request.postDataJSON().nickname, avatar_url: null } : { nickname: 'MovieFan', avatar_url: null };
         break;
       }
-      case 'is_admin': body = false; break;
+      case 'is_admin': case 'is_nickname_taken': body = false; break;
       case 'get_leaderboard': body = [{ nickname: 'FilmExpert', best_score: 25, best_time: 82, updated_at: '2026-10-05T12:00:00Z' }]; break;
       case 'user_best': body = [{ category_id: 1, difficulty_level_id: 3, best_score: 12, best_time: 65, updated_at: '2026-10-05T12:00:00Z' }]; break;
       case 'get_game_question': {

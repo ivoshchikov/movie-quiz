@@ -123,12 +123,12 @@ test("the next step chooses a mode and does not auto-start a regular quiz or Dai
   await page.getByRole("link", { name: "Start a quiz", exact: true }).last().click();
   await expect(page).toHaveURL("http://localhost:5173/");
   await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeVisible();
-  expect(calls.filter(call => call.name === "get_game_question")).toHaveLength(0);
+  expect(calls.filter(call => call.name === "quiz_start")).toHaveLength(0);
   await page.getByRole("link", { name: "How to play", exact: true }).click();
   await page.getByRole("link", { name: "View Daily", exact: true }).click();
   await expect(page).toHaveURL(/\/daily$/);
   await expect(page.getByRole("button", { name: "Log in to play", exact: true })).toBeVisible();
-  expect(calls.filter(call => ["start_daily_session", "submit_daily_answer", "upsert_user_best", "touch_question_stats"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["daily_begin", "submit_daily_answer", "quiz_finish", "touch_question_stats"].includes(call.name))).toHaveLength(0);
 });
 
 test("page metadata has one owner on direct load and after client-side navigation", async ({ page }) => {
@@ -234,7 +234,7 @@ test("capture the current game demonstration with an isolated sample question", 
   await page.clock.runFor(6000);
   await expect(page.locator(".hq-game-timer-label strong")).toHaveText("24 s");
   await expect(page.locator(".hq-game-footer strong")).toHaveText("00:06");
-  expect(calls.filter(call => ["start_daily_session", "submit_daily_answer", "upsert_user_best", "touch_question_stats"].includes(call.name))).toHaveLength(0);
+  expect(calls.filter(call => ["daily_begin", "submit_daily_answer", "quiz_finish", "touch_question_stats"].includes(call.name))).toHaveLength(0);
   if (process.env.HQ_CAPTURE_DEMO === "1") {
     await page.mouse.move(0, 0);
     await page.locator(".hq-game").screenshot({ path: path.resolve("public/how-to-play-game.png") });

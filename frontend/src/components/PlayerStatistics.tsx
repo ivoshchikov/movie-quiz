@@ -64,23 +64,13 @@ export default function PlayerStatistics({
   const stats = useReadRequest(`${owner}:${refresh}`, load, !!owner);
   const s = stats.value,
     n = s?.normal;
-  const recent = (days: number) =>
-    s?.trend
-      .filter(
-        (t) =>
-          t.d >=
-          new Date(Date.now() - (days - 1) * 86400000).toLocaleDateString(
-            "en-CA",
-            { timeZone: "America/Chicago" },
-          ),
-      )
-      .reduce(
-        (a, t) => ({
-          correct: a.correct + t.correct,
-          total: a.total + t.correct + t.wrong + t.timeouts,
-        }),
-        { correct: 0, total: 0 },
-      );
+  const calendarEnd = s?.daily_calendar[s.daily_calendar.length - 1]?.d;
+  const recent = (days: number) => {
+    const end = calendarEnd ? Date.parse(`${calendarEnd}T12:00:00Z`) : Date.now();
+    const cutoff = new Date(end - (days - 1) * 86400000).toISOString().slice(0, 10);
+    return s?.trend.filter(t => t.d >= cutoff && (!calendarEnd || t.d <= calendarEnd)).reduce(
+      (a,t) => ({correct:a.correct+t.correct,total:a.total+t.correct+t.wrong+t.timeouts}), {correct:0,total:0});
+  };
   return (
     <section
       className="hq-profile-results hq-player-statistics"
