@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Whalefall: From Page to Screen</title>
+  <desc id="desc">Original ocean-themed editorial illustration with an open book and a filmstrip. No scene from the movie is depicted.</desc>
+  <defs>
+    <linearGradient id="sea" x2="1" y2="1"><stop stop-color="#123d50"/><stop offset=".55" stop-color="#082736"/><stop offset="1" stop-color="#041720"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#76c5c2" stop-opacity=".23"/><stop offset="1" stop-color="#76c5c2" stop-opacity="0"/></radialGradient>
+    <linearGradient id="paper" x2="0" y2="1"><stop stop-color="#f2f0d8"/><stop offset="1" stop-color="#90bdb7"/></linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sea)"/>
+  <ellipse cx="950" cy="260" rx="430" ry="410" fill="url(#glow)"/>
+  <g fill="none" stroke="#6eaaa9" stroke-width="1.5" opacity=".16">
+    <path d="M-50 470Q130 410 310 470T670 470T1030 470T1390 470"/>
+    <path d="M-50 495Q130 435 310 495T670 495T1030 495T1390 495"/>
+    <path d="M-50 520Q130 460 310 520T670 520T1030 520T1390 520"/>
+    <path d="M-50 545Q130 485 310 545T670 545T1030 545T1390 545"/>
+    <path d="M-50 570Q130 510 310 570T670 570T1030 570T1390 570"/>
+    <path d="M-50 595Q130 535 310 595T670 595T1030 595T1390 595"/>
+  </g>
+  <text x="76" y="112" fill="#9ed1c9" font-family="Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="5">HARD QUIZ · BOOK TO FILM</text>
+  <rect x="76" y="158" width="62" height="4" rx="2" fill="#b9d8bf"/>
+  <text x="70" y="298" fill="#f1f0de" font-family="Georgia, serif" font-size="91" letter-spacing="1">WHALEFALL</text>
+  <text x="76" y="365" fill="#c1ddd4" font-family="Arial, sans-serif" font-size="34">From Page to Screen</text>
+  <text x="76" y="424" fill="#8fb5b8" font-family="Arial, sans-serif" font-size="21">The novel. The film. No spoilers.</text>
+  <g transform="translate(920 298)">
+    <circle r="151" fill="#0f3540" stroke="#619b9b" stroke-opacity=".4" stroke-width="2"/>
+    <circle r="134" fill="none" stroke="#619b9b" stroke-opacity=".15"/>
+    <g transform="translate(-90 -67)" stroke="#c7e1d3" stroke-width="3" stroke-linejoin="round">
+      <path d="M0 0Q43-13 88 15Q133-13 176 0V112Q133 100 88 128Q43 100 0 112Z" fill="url(#paper)"/>
+      <path d="M88 15V128" fill="none" stroke="#4d7e80"/>
+      <g fill="none" stroke="#4d7e80" stroke-width="2.5" opacity=".65"><path d="M17 25Q43 19 68 33M17 45Q43 39 68 53M17 65Q43 59 68 73M108 33Q133 19 159 25M108 53Q133 39 159 45M108 73Q133 59 159 65"/></g>
+    </g>
+    <g transform="translate(7 24) rotate(12)" stroke="#acd6ca" stroke-width="3">
+      <rect x="0" y="0" width="98" height="64" rx="4" fill="#0b2d39"/>
+      <path d="M16 0V64M82 0V64M16 12H82M16 52H82" fill="none"/>
+      <path d="M6 9H10M6 24H10M6 39H10M6 54H10M88 9H92M88 24H92M88 39H92M88 54H92"/>
+      <path d="M42 22L59 32L42 42Z" fill="#acd6ca" stroke-width="1"/>
+    </g>
+  </g>
+  <text x="76" y="617" fill="#6c979e" font-family="Arial, sans-serif" font-size="16" letter-spacing="2">A SPOILER-FREE GUIDE</text>
+</svg>
