@@ -21,7 +21,17 @@
       content="Play fast movie quizzes using still frames and faces. Explore monthly new releases and bite-size explainers."
     />
     <meta data-rh="true" name="robots" content="index, follow" />
-    <meta name="theme-color" content="#0d0d0d" />
+    <meta name="theme-color" content="#101116" />
+    <!-- Restore the preference before styles, prerendered content and React paint. -->
+    <script>
+      (() => {
+        let theme = "dark";
+        try { if (localStorage.getItem("hard-quiz-theme") === "light") theme = "light"; } catch {}
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "light" ? "#f6f7fb" : "#101116");
+      })();
+    </script>
+    <style>html{background:#101116;color-scheme:dark}html[data-theme="light"]{background:#f6f7fb;color-scheme:light}</style>
 
     <!-- Open Graph -->
     <meta data-rh="true" property="og:site_name" content="Hard Quiz" />

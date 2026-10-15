@@ -1,0 +1,69 @@
+/* Shared by pages and dialogs rendered outside the site shell. */
+:root {
+  color-scheme: dark;
+  --hq-background: #101116;
+  --hq-surface: #191a22;
+  --hq-surface-soft: #22232d;
+  --hq-text: #f5f5fa;
+  --hq-reading-text: #e4e7ed;
+  --hq-muted: #aeaeba;
+  --hq-border: #30313d;
+  --hq-control-border: #77798d;
+  --hq-purple: #a391ff;
+  --hq-button: #7258ef;
+  --hq-button-hover: #6950df;
+  --hq-tint: #29233e;
+  --hq-tint-hover: #362d50;
+  --hq-error: #ffb7bc;
+  --hq-error-soft: #3d242c;
+  --hq-error-border: #d07880;
+  --hq-success: #a3e5c8;
+  --hq-success-soft: #19382d;
+  --hq-success-border: #4aac85;
+  --hq-warning: #e7bd83;
+  --hq-media: #0c0d11;
+  --hq-backdrop: #07080bc4;
+  --hq-shadow: #0009;
+  --hq-gold: #edc76d;
+  --hq-gold-soft: #b88a1924;
+  --hq-silver: #c9d2df;
+  --hq-silver-soft: #aab7cc18;
+  --hq-bronze: #dfa67c;
+  --hq-bronze-soft: #bd784724;
+  --hq-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --hq-background: #f6f7fb;
+  --hq-surface: #ffffff;
+  --hq-surface-soft: #eef0f6;
+  --hq-text: #232535;
+  --hq-reading-text: #36394c;
+  --hq-muted: #626579;
+  --hq-border: #d9dce7;
+  --hq-control-border: #808192;
+  --hq-purple: #6246c8;
+  --hq-button: #6950df;
+  --hq-button-hover: #5940cb;
+  --hq-tint: #eee9fc;
+  --hq-tint-hover: #e2d9fa;
+  --hq-error: #ae3046;
+  --hq-error-soft: #fff0f1;
+  --hq-error-border: #c35468;
+  --hq-success: #216848;
+  --hq-success-soft: #eaf7ef;
+  --hq-success-border: #428564;
+  --hq-warning: #855213;
+  --hq-media: #e9ecf3;
+  --hq-backdrop: #1b203b66;
+  --hq-shadow: #242b4826;
+  --hq-gold: #79550c;
+  --hq-gold-soft: #faf0cf;
+  --hq-silver: #505b70;
+  --hq-silver-soft: #e9edf5;
+  --hq-bronze: #87491d;
+  --hq-bronze-soft: #f8eadd;
+}
+
+html { background: var(--hq-background); color: var(--hq-text); }

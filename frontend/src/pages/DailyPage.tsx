@@ -12,6 +12,7 @@ import { guardGameNavigation } from "../game/navigationGuard";
 import pageMetadata from "../pageMetadata.json";
 import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
+import ThemeToggle from "../components/ThemeToggle";
 import YourDailyCard from "../components/YourDailyCard";
 import StreakLeaderboard from "../components/StreakLeaderboard";
 import "../game.css";
@@ -80,7 +81,7 @@ export default function DailyPage() {
 
   return <>
     <Seo {...pageMetadata.daily} />
-    {compact && <header className="hq-play-header"><button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — leave Daily"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</button><button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Leave Daily</button></header>}
+    {compact && <header className="hq-play-header"><button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — leave Daily"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</button><div className="hq-play-actions"><ThemeToggle /><button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Leave Daily</button></div></header>}
     {playingView && question ? <section className="hq-game hq-daily-game" aria-label="Daily question">
       <div className="hq-game-heading"><div><h1>{label}</h1><span>Daily</span></div><time className="hq-question-number" dateTime={game.date}>{dailyDateLabel(game.date)}</time></div>
       <div className="hq-game-image" aria-busy={game.phase === "image-loading" || game.phase === "starting"}>

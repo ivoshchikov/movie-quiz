@@ -1,3 +1,5 @@
+@import "./theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,8 +11,9 @@
 html,
 body,
 #root {
-  @apply h-full text-white;
+  @apply h-full;
   background: var(--hq-background, #101116);
+  color: var(--hq-text, #f5f5fa);
 }
 
 /* === START SCREEN === */

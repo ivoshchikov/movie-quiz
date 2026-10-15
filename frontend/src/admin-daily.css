@@ -10,7 +10,7 @@
 .hq-admin-help { color: var(--hq-muted); font-size: 13px; line-height: 1.6; }
 .hq-admin-field { min-width: 0; display: grid; gap: 7px; }
 .hq-admin-field label { font-size: 13px; font-weight: 500; }
-.hq-admin-field input { display: block; min-width: 0; width: 100%; min-height: 46px; border: 1px solid var(--hq-border); border-radius: 9px; background: var(--hq-surface); color: var(--hq-text); padding: 10px 12px; font-size: 16px; color-scheme: dark; }
+.hq-admin-field input { display: block; min-width: 0; width: 100%; min-height: 46px; border: 1px solid var(--hq-border); border-radius: 9px; background: var(--hq-surface); color: var(--hq-text); padding: 10px 12px; font-size: 16px; color-scheme: inherit; }
 .hq-admin-field input:focus-visible, .hq-admin summary:focus-visible { outline: 3px solid var(--hq-purple); outline-offset: 3px; }
 .hq-admin input:disabled, .hq-admin button:disabled { opacity: .55; cursor: default; }
 .hq-admin-date-controls, .hq-admin-history-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin-bottom: 10px; }
@@ -39,7 +39,7 @@
 .hq-admin-options .hq-admin-correct { border-color: var(--hq-purple); background: var(--hq-tint); }
 .hq-admin-save { width: auto; margin-top: 16px; min-width: 215px; }
 .hq-admin-notice { padding: 13px 16px; background: var(--hq-surface-soft); border: 1px solid var(--hq-border); border-radius: 10px; margin-block: 13px; font-size: 14px; }
-.hq-admin-success { border-color: #5f907e; }
+.hq-admin-success { border-color: var(--hq-success-border); }
 .hq-admin-history-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
 .hq-admin-history-heading h2 { margin-bottom: 0; }
 .hq-admin-history-filters { margin-block: 15px; }
@@ -48,18 +48,18 @@
 .hq-admin-history .hq-admin-answer { margin-bottom: 3px; }
 .hq-admin-history { margin-bottom: 16px; }
 .hq-admin-stats { text-align: right; font-size: 13px; }
-.hq-admin-dialog { position: relative; z-index: 80; color: #f5f5fa; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; }
-.hq-admin-dialog-backdrop { position: fixed; inset: 0; background: #000b; }
+.hq-admin-dialog { position: relative; z-index: 80; color: var(--hq-text); font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; }
+.hq-admin-dialog-backdrop { position: fixed; inset: 0; background: var(--hq-backdrop); }
 .hq-admin-dialog-wrap { position: fixed; inset: 0; overflow-y: auto; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.hq-admin-dialog-panel { width: min(100%, 500px); padding: 24px; border: 1px solid #30313d; border-radius: 14px; background: #191a22; overflow-wrap: anywhere; }
+.hq-admin-dialog-panel { width: min(100%, 500px); padding: 24px; border: 1px solid var(--hq-border); border-radius: 14px; background: var(--hq-surface); overflow-wrap: anywhere; }
 .hq-admin-dialog-panel h2 { font-size: 22px; font-weight: 600; margin-bottom: 14px; }
 .hq-admin-dialog-panel p { margin-block: 9px; }
-.hq-admin-dialog-panel .hq-admin-help { color: #aeaeba; }
+.hq-admin-dialog-panel .hq-admin-help { color: var(--hq-muted); }
 .hq-admin-dialog-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .hq-admin-dialog-actions button { flex: 1 1 170px; }
-.hq-admin-dialog-actions .hq-primary { background: #7258ef; }
-.hq-admin-dialog-actions .hq-secondary { background: #22232d; border-color: #30313d; }
-.hq-admin-dialog button:focus-visible { outline: 3px solid #a391ff; outline-offset: 3px; }
+.hq-admin-dialog-actions .hq-primary { background: var(--hq-button); }
+.hq-admin-dialog-actions .hq-secondary { background: var(--hq-surface-soft); border-color: var(--hq-border); }
+.hq-admin-dialog button:focus-visible { outline: 3px solid var(--hq-purple); outline-offset: 3px; }
 @media (max-width: 600px) {
   .hq-admin-preview { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .hq-admin-image-preview { height: 215px; }

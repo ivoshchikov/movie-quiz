@@ -24,9 +24,9 @@
 .hq-leaderboard-score strong { font-size: 17px; font-weight: 650; }
 .hq-leaderboard-duration { color: var(--hq-muted); }
 .hq-leaderboard-rank { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--hq-muted); border-radius: 8px; }
-.hq-leaderboard-rank-1 { background: #b88a1924; color: #edc76d; }
-.hq-leaderboard-rank-2 { background: #aab7cc18; color: #c9d2df; }
-.hq-leaderboard-rank-3 { background: #bd784724; color: #dfa67c; }
+.hq-leaderboard-rank-1 { background: var(--hq-gold-soft); color: var(--hq-gold); }
+.hq-leaderboard-rank-2 { background: var(--hq-silver-soft); color: var(--hq-silver); }
+.hq-leaderboard-rank-3 { background: var(--hq-bronze-soft); color: var(--hq-bronze); }
 .hq-leaderboard-name { overflow-wrap: anywhere; }
 .hq-leaderboard-own { background: var(--hq-tint); }
 .hq-leaderboard-you { display: inline-block; margin-left: 7px; font-size: 11px; font-weight: 600; color: var(--hq-purple); }

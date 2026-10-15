@@ -40,7 +40,7 @@
 .hq-howto-links a, .hq-howto-daily-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--hq-purple); font-size: 13px; }
 .hq-howto-links .hq-icon, .hq-howto-daily-link .hq-icon { width: 15px; height: 15px; }
 .hq-howto-links a:hover, .hq-howto-daily-link:hover { text-decoration: underline; }
-.hq-howto-daily { margin-top: 22px; padding: 20px; border-radius: 12px; background: var(--hq-tint); border: 1px solid #413756; }
+.hq-howto-daily { margin-top: 22px; padding: 20px; border-radius: 12px; background: var(--hq-tint); border: 1px solid var(--hq-border); }
 .hq-howto-daily-heading { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .hq-howto-daily-heading .hq-icon { width: 18px; height: 18px; color: var(--hq-purple); }
 .hq-howto-daily ul { padding-left: 18px; margin-top: 10px; list-style: disc; color: var(--hq-muted); font-size: 13px; }
