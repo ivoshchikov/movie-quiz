@@ -58,7 +58,7 @@ test("an article and related article retain the selected collection after reload
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(august);
   await page.reload();
   await expect(page.getByRole("link", { name: "← Back to blog" }).first()).toHaveAttribute("href", "/blog?topic=streaming");
-  await page.getByRole("link", { name: whalefall, exact: true }).click();
+  await page.locator(".hq-article-card").filter({ hasText: whalefall }).click();
   await page.getByRole("link", { name: "← Back to blog" }).first().click();
   await expect(page).toHaveURL(/\/blog\?topic=streaming$/); await expect(cards(page)).toHaveCount(4);
 });

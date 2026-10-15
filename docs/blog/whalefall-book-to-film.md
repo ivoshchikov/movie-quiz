@@ -43,7 +43,7 @@ The publication uses an original code-drawn vector illustration of a book, films
 - Link contextually to the horror watchlist, framing explainer, regular quiz and Daily Challenge. Preserve honest guest/account requirements.
 - Update the blog's collection description to cover current guides rather than only the 2025 archive.
 - Adapt existing collection, related-navigation, image-fallback and homepage expectations for the fifth article; do not add tests that duplicate static prose.
-- Local validation: production build/SEO generation, both TypeScript projects, zero-warning ESLint, 87 existing targeted browser scenarios, and direct checks of the new article's generated HTML, image dimensions, internal links and layouts at 1440/390/320 px. Release evidence belongs in the publishing PR once those checks and production verification finish.
+- Local validation: production build/SEO generation, both TypeScript projects, zero-warning ESLint, 104 existing targeted browser scenarios, including cross-site navigation, and direct checks of the new article's generated HTML, image dimensions, internal links and layouts at 1440/390/320 px. Release evidence belongs in the publishing PR once those checks and production verification finish.
 
 ## Maintenance
 
