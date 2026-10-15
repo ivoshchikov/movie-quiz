@@ -7,6 +7,7 @@ import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
 import NicknameModal from "./NicknameModal";
 import SiteIcon from "./SiteIcon";
+import ThemeToggle from "./ThemeToggle";
 import SiteNavigation from "./SiteNavigation";
 import PageErrorBoundary from "./PageErrorBoundary";
 import { loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
@@ -132,6 +133,7 @@ export default function Layout() {
           <NavLink to="/leaderboard" className="hq-nav-link">Leaderboard</NavLink>
           <NavLink to="/blog" className="hq-nav-link">Blog</NavLink>
         </nav>
+        <div className="hq-header-actions"><ThemeToggle />
         {authLoading && !authError ? <span className="hq-account-button hq-account" role="status">Checking account…</span> : !user ? <button className="hq-account-button hq-account" onClick={() => { clearCallbackError(); setShowLogin(true); }}>{authError ? "Check account" : "Log in"}</button>
           : <Menu as="div" className="hq-account">
             <Menu.Button className="hq-account-button" aria-label="Account menu">
@@ -148,6 +150,7 @@ export default function Layout() {
               </Menu.Items>
             </Transition>
           </Menu>}
+        </div>
       </div>
     </header>}
     <main id="main-content" tabIndex={-1} className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>

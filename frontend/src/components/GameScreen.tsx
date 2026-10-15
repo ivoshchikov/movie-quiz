@@ -6,6 +6,7 @@ import { categoryLabel } from "../hooks/useQuizCatalog";
 import { useNormalGame } from "../game/useNormalGame";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
+import ThemeToggle from "./ThemeToggle";
 import "../game.css";
 
 interface LocationState { categoryId?: number; difficultyId?: number; }
@@ -48,7 +49,7 @@ export default function GameScreen() {
     <header className="hq-play-header">
       {validSelection ? <button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — exit quiz"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</button> :
         <Link className="hq-brand" to="/"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>}
-      {validSelection ? <button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Exit quiz</button> : <Link className="hq-play-exit" to="/">Back to home</Link>}
+      <div className="hq-play-actions"><ThemeToggle />{validSelection ? <button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Exit quiz</button> : <Link className="hq-play-exit" to="/">Back to home</Link>}</div>
     </header>
     {(!validSelection || game.phase === "setup" || game.phase === "setup-error" || game.phase === "empty") ?
       <section className="hq-game-placeholder" aria-live="polite"><SiteIcon name="film" />
