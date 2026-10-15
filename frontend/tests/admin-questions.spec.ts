@@ -664,16 +664,16 @@ test("replace an image on mobile without changing the question ID",async({page})
  await page.getByRole('button',{name:'Save changes',exact:true}).click();await expect(page.getByText('Question #60 changes saved.',{exact:true})).toBeVisible();expect(data.imports).toHaveLength(1);expect((data.imports[0] as unknown as {edit_question_id:number}).edit_question_id).toBe(60);expect(data.rows).toHaveLength(60);expect(data.rows.find(q=>q.id===60)?.image_url).not.toBe('general/g_00060.webp');
 });
 
-for (const theme of ["light", "dark"]) test(`${theme} theme covers the question bank, editor and upload form`, async ({ page }) => {
+for (const theme of ["light", "dark", "halloween"]) test(`${theme} theme covers the question bank, editor and upload form`, async ({ page }) => {
   const { data } = await fixture(page);
   await page.addInitScript(theme => localStorage.setItem("hard-quiz-theme", theme), theme);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/admin/questions?question=60");
   await expect(page.locator(".hq-bank-dialog-panel")).toBeVisible();
-  await expect(page.locator(".hq-bank-dialog-panel")).toHaveCSS("background-color", theme === "light" ? "rgb(255, 255, 255)" : "rgb(25, 26, 34)");
+  await expect(page.locator(".hq-bank-dialog-panel")).toHaveCSS("background-color", theme === "light" ? "rgb(255, 255, 255)" : theme === "halloween" ? "rgb(33, 24, 41)" : "rgb(25, 26, 34)");
   await expect(page.getByRole("dialog").locator("img")).toHaveCSS("object-fit", "contain");
   await page.getByRole("button", { name: "Edit or delete question" }).click();
-  await expect(page.getByLabel("Answer A", { exact: true })).toHaveCSS("color", theme === "light" ? "rgb(35, 37, 53)" : "rgb(245, 245, 250)");
+  await expect(page.getByLabel("Answer A", { exact: true })).toHaveCSS("color", theme === "light" ? "rgb(35, 37, 53)" : theme === "halloween" ? "rgb(255, 245, 233)" : "rgb(245, 245, 250)");
   await page.screenshot({ path: test.info().outputPath(`question-editor-${theme}.png`), fullPage: true });
   expect(data.changes).toHaveLength(0);
   await page.keyboard.press("Escape");
