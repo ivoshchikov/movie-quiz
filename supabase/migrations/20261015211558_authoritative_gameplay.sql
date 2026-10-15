@@ -88,10 +88,6 @@ create table hq_private.gameplay_settings (
   tracking_since timestamptz not null default clock_timestamp()
 );
 insert into hq_private.gameplay_settings default values;
--- Preserve the existing normal leaderboard exclusion by identity, not by a renameable nickname.
-create table hq_private.leaderboard_exclusions(user_id uuid primary key);
-insert into hq_private.leaderboard_exclusions select user_id from public.profiles where lower(nickname)='isildur';
-
 -- Revision 0 means an existing Daily snapshot predates revision tracking.
 alter table hq_private.daily_questions add column revision integer not null default 0;
 create or replace function hq_private.snapshot_daily_question() returns trigger
@@ -457,7 +453,6 @@ returns jsonb language sql stable security definer set search_path=pg_catalog as
       row_number() over(order by ub.best_score desc,ub.best_time asc,ub.updated_at asc nulls last,ub.user_id) as rank
     from public.user_best ub left join public.profiles p on p.user_id=ub.user_id
     where ub.category_id=p_category_id and ub.difficulty_level_id=p_difficulty_id
-      and not exists(select 1 from hq_private.leaderboard_exclusions x where x.user_id=ub.user_id)
   ) select jsonb_build_object('total',(select count(*) from ranked),
     'top',coalesce((select jsonb_agg(to_jsonb(r) order by rank) from ranked r where rank<=greatest(1,least(100,coalesce(p_limit,10)))),'[]'::jsonb),
     'me',(select to_jsonb(r) from ranked r where user_id=auth.uid()));

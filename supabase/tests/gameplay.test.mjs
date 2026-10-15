@@ -248,3 +248,9 @@ test('personal streak RPC is own-account only and keeps yesterday while today is
  await uid(other);assert.equal((await db.query('select * from public.get_daily_user_streak($1)',[player])).rows.length,0);
  await uid(null);await db.exec('set role anon');try{await assert.rejects(db.query('select * from public.get_daily_user_streak($1)',[player]),/permission denied/);}finally{await db.exec('reset role');}
 });
+
+test('every real account participates in the normal ranking, including the formerly hidden nickname',async()=>{
+ await reset();const admin='112743d7-f683-4bbb-8117-068e89a00f22';
+ await db.query('insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time) values($1,1,1,11,9),($2,1,1,10,8)',[admin,player]);
+ const board=await value('select public.quiz_leaderboard(1,1,1) v');assert.equal(board.total,2);assert.equal(board.top.length,1);assert.equal(board.top[0].user_id,admin);assert.equal(board.me.rank,2);
+});
