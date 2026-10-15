@@ -36,7 +36,7 @@ export default function NicknameForm({ userId, destination, onSaved, onCancel, o
     const delay = window.setTimeout(() => {
       setAvailability({ nickname: nick, state: "checking" });
       deadline = window.setTimeout(() => controller.abort(), READ_TIMEOUT);
-      isNicknameTaken(nick, userId, controller.signal).then(taken => {
+      isNicknameTaken(nick, controller.signal).then(taken => {
         if (active && !controller.signal.aborted) setAvailability({ nickname: nick, state: taken ? "taken" : "available" });
       }).catch(fail).finally(() => window.clearTimeout(deadline));
     }, 400);

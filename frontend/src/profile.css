@@ -66,3 +66,28 @@
   .hq-profile-record-actions .hq-profile-unavailable { flex: 1; }
   .hq-profile-note { margin-bottom: 16px; }
 }
+
+.hq-stat-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 1rem; margin: 1.5rem 0; }
+.hq-stat-grid dt { color: var(--hq-muted); font-size: .82rem; }
+.hq-stat-grid dd { margin: .4rem 0 0; font-size: 1.3rem; font-weight: 700; }
+.hq-stat-grid dd small { font-size: .75rem; font-weight: 400; }
+.hq-stats-table-wrap { overflow-x: auto; margin: 1rem 0 2rem; }
+.hq-player-statistics .hq-profile-table { min-width: 460px; }
+.hq-daily-calendar { display: grid; grid-template-columns: repeat(auto-fit,minmax(78px,1fr)); gap: .45rem; padding: 0; list-style: none; }
+.hq-daily-calendar li { display: flex; flex-direction: column; gap: .25rem; padding: .6rem; border: 1px solid currentColor; border-radius: .5rem; font-size: .7rem; text-align: center; }
+.hq-daily-calendar time { font-weight: 700; }
+.hq-calendar-correct { color: var(--hq-success); }
+.hq-calendar-wrong,.hq-calendar-missed { color: var(--hq-muted); }
+.hq-calendar-not-played { opacity: .65; }
+
+.hq-stats-table { width: 100%; min-width: 460px; border-collapse: collapse; font-size: .8rem; }
+.hq-stats-table th,.hq-stats-table td { padding: .7rem; text-align: left; border-bottom: 1px solid var(--hq-border); }
+.hq-stat-grid dd small { display: block; line-height: 1.5; color: var(--hq-muted); margin-top: 4px; }
+.hq-stats-table-wrap:focus-visible { outline: 2px solid var(--hq-purple); outline-offset: 3px; }
+@media (max-width: 600px) {
+  .hq-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.25rem .75rem; }
+  .hq-stat-grid dt { min-height: 2.6em; }
+}
+
+.hq-stats-scroll-hint { display: none; }
+@media (max-width: 600px) { .hq-stats-scroll-hint { display: block; font-size: 11px; color: var(--hq-muted); margin-bottom: 8px; } }

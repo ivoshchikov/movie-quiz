@@ -65,7 +65,7 @@ test("records group in catalog order, with a count, correct duration and a fixed
   await page.getByRole("button", { name: "Account menu" }).click();
   await expect(page.getByRole("menuitem", { name: /Change nickname/ })).toHaveCount(0);
   expect(data.writes).toEqual([]);
-  expect(calls.some(call => ["get_game_question", "start_daily_session", "upsert_user_best"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["quiz_start", "daily_begin", "quiz_finish"].includes(call.name))).toBe(false);
 });
 
 test("record actions pass the exact category and difficulty to the game and leaderboard", async ({ page }) => {
@@ -79,7 +79,7 @@ test("record actions pass the exact category and difficulty to the game and lead
   await page.getByRole("link", { name: "Play again: Actors — Hard", exact: true }).click();
   await expect(page).toHaveURL(/\/play$/);
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-  expect(calls.filter(call => call.name === "get_game_question").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
+  expect(calls.filter(call => call.name === "quiz_start").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
 });
 
 test("historical scores stay visible when only that exact quiz is unavailable", async ({ page }) => {
@@ -212,7 +212,7 @@ test("Daily profile failure cannot start a session or offer a new nickname", asy
   await page.goto("/daily");
   await expect(page.getByRole("button", { name: "Retry profile", exact: true })).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  expect(data.calls.filter(call => call.name === "start_daily_session")).toHaveLength(0);
+  expect(data.calls.filter(call => call.name === "daily_begin")).toHaveLength(0);
   fail = false;
   await page.getByRole("button", { name: "Retry profile", exact: true }).click();
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeEnabled();
@@ -262,9 +262,9 @@ test("initial selection preserves an existing avatar and updates only an empty n
   const { data } = await fixture(page); data.profile = { nickname: null, avatar_url: "https://fixture.test/avatar" };
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("Film_Fan");
-  const check = page.waitForRequest(request => request.url().includes("/profiles?") && request.method() === "HEAD");
+  const check = page.waitForRequest(request => request.url().includes("/rpc/is_nickname_taken"));
   await page.getByRole("button", { name: "Save and continue", exact: true }).click();
-  expect(new URL((await check).url()).searchParams.get("nickname")).toBe("ilike.Film\\_Fan");
+  expect((await check).postDataJSON()).toEqual({p_nick:"Film_Fan"});
   await expect(page.locator(".hq-account-name")).toHaveText("Film_Fan");
   expect(data.writes).toHaveLength(1);
   expect(data.writes[0]).toMatchObject({ method: "PATCH", body: { nickname: "Film_Fan" } });
@@ -275,7 +275,7 @@ test("initial selection preserves an existing avatar and updates only an empty n
 test("nickname availability errors block writes and permit retry", async ({ page }) => {
   const { data } = await fixture(page); data.profile = null;
   let fail = true;
-  await page.route("**/rest/v1/profiles?**", route => route.request().method() === "HEAD" && fail ? route.fulfill({ status: 503, body: "" }) : route.fallback());
+  await page.route("**/rest/v1/rpc/is_nickname_taken", route => fail ? route.fulfill({ status: 503, body: "{}" }) : route.fallback());
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("NewName");
   await page.getByRole("button", { name: "Save and continue", exact: true }).click();
@@ -289,7 +289,7 @@ test("nickname availability errors block writes and permit retry", async ({ page
 
 test("a taken nickname stays in the form without a write", async ({ page }) => {
   const { data } = await fixture(page); data.profile = null;
-  await page.route("**/rest/v1/profiles?**", route => route.request().method() === "HEAD" ? route.fulfill({ headers: { "content-range": "0-0/1", "access-control-expose-headers": "content-range" }, body: "" }) : route.fallback());
+  await page.route("**/rest/v1/rpc/is_nickname_taken", route => route.fulfill({contentType:"application/json",body:"true"}));
   await page.goto("/setup-profile");
   await page.getByRole("textbox", { name: "Nickname", exact: true }).fill("ExistingName");
   await page.getByRole("button", { name: "Save and continue", exact: true }).click();
@@ -343,14 +343,14 @@ test("only confirmed results of this account refresh the personal list", async (
 
 test("a real queued result save updates the mounted profile after confirmation", async ({ page }) => {
   const { data } = await fixture(page);
-  const result = { id: "pending-profile-run", playKey: "old-play", userId: "fixture-user", categoryId: 1, difficultyId: 3, score: 39, elapsedSecs: 91, finishReason: "exit", saveStatus: "pending", previousBest: { score: 12, time: 65 } };
+  const result = { id: "pending-profile-run", serverGame: true, playKey: "old-play", userId: "fixture-user", categoryId: 1, difficultyId: 3, score: 39, elapsedSecs: 91, finishReason: "exit", saveStatus: "pending", previousBest: { score: 12, time: 65 } };
   await page.addInitScript(result => localStorage.setItem("hq:quiz:pending:" + result.id, JSON.stringify(result)), result);
   let release = () => {}, waiting = false;
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/rpc/upsert_user_best", async route => {
+  await page.route("**/rest/v1/rpc/quiz_finish", async route => {
     waiting = true; await held;
     data.rows = [row(1, 3, 39, 91)];
-    await route.fulfill({ contentType: "application/json", body: "null" });
+    await route.fulfill({ contentType: "application/json", body: JSON.stringify({id:"pending-profile-run",category_id:1,difficulty_id:3,score:39,lives:1,bank_size:50,status:"finished",started_at:"2026-10-07T12:00:00Z",server_now:"2026-10-07T12:01:31Z",time_secs:91,finish_reason:"exit",round:null,previous_best:{score:12,time:65},personal_best:{score:39,time:91},record_outcome:"new"}) });
   });
   await loaded(page);
   await expect.poll(() => waiting).toBe(true);
@@ -437,7 +437,7 @@ test("Chicago midnight refreshes Daily statistics without playing an attempt", a
   await page.clock.runFor(3000);
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("0 days");
   expect(data.dailyCalls).toBeGreaterThan(before);
-  expect(calls.some(call => ["get_daily_question_public", "start_daily_session", "submit_daily_answer"].includes(call.name))).toBe(false);
+  expect(calls.some(call => ["daily_begin", "daily_begin", "submit_daily_answer"].includes(call.name))).toBe(false);
 });
 
 test("all record actions are keyboard reachable with visible focus", async ({ page }) => {

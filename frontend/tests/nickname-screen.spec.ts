@@ -23,6 +23,10 @@ async function fixture(page: Page, signedIn = true) {
     }
     return route.fulfill({ status: data.failProfile ? 503 : 200, contentType: "application/json", body: JSON.stringify(data.failProfile ? { message: "fixture read failure" } : data.profile) });
   });
+  await page.route("**/rest/v1/rpc/is_nickname_taken", route => {
+    const name=route.request().postDataJSON().p_nick; data.heads.push(name);
+    return route.fulfill({status:data.failAvailability?503:200,contentType:"application/json",body:JSON.stringify(data.failAvailability?{message:"fixture unavailable"}:data.taken.has(name.toLowerCase()))});
+  });
   return { data, daily };
 }
 const field = (page: Page) => page.getByRole("textbox", { name: "Nickname", exact: true });
@@ -45,7 +49,7 @@ test("one shared form explains the public fixed name and the passive next step",
   await expect(page.locator(".hq-nickname-next")).toContainText("Daily Challenge. Start Daily when you’re ready.");
   await expect(save(page)).toBeDisabled();
   expect(data.writes).toEqual([]);
-  expect(daily.calls.some(call => ["start_daily_session", "submit_daily_answer"].includes(call.name))).toBe(false);
+  expect(daily.calls.some(call => ["daily_begin", "submit_daily_answer"].includes(call.name))).toBe(false);
 });
 
 for (const value of ["", "ab", "   ", "abcdefghijklmnopqrstu"]) test(`invalid length is explained without a write: ${JSON.stringify(value)}`, async ({ page }) => {
@@ -92,10 +96,10 @@ test("late availability for an old input cannot replace the current name’s sta
   await fixture(page); await openSetup(page);
   let release = () => {}, waiting = false;
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/profiles?**", async route => {
-    if (route.request().method() === "HEAD" && new URL(route.request().url()).searchParams.get("nickname") === "ilike.OldFan") {
+  await page.route("**/rest/v1/rpc/is_nickname_taken", async route => {
+    if (route.request().postDataJSON().p_nick === "OldFan") {
       waiting = true; await held;
-      return route.fulfill({ headers: { "content-range": "0-0/1", "access-control-expose-headers": "content-range" }, body: "" }).catch(() => {});
+      return route.fulfill({ contentType: "application/json", body: "true" }).catch(() => {});
     }
     return route.fallback();
   });
@@ -122,10 +126,10 @@ test("a hanging availability check times out and can recover with Retry check", 
   await page.clock.install(); const { data } = await fixture(page);
   let release = () => {}, checking = false, hang = true;
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/profiles?**", async route => {
-    if (route.request().method() !== "HEAD" || !hang) return route.fallback();
+  await page.route("**/rest/v1/rpc/is_nickname_taken", async route => {
+    if (!hang) return route.fallback();
     checking = true; await held;
-    await route.fulfill({ headers: { "content-range": "0-0/1", "access-control-expose-headers": "content-range" }, body: "" }).catch(() => {});
+    await route.fulfill({ contentType: "application/json", body: "true" }).catch(() => {});
   });
   await openSetup(page); await field(page).fill("NetworkFan"); await page.clock.runFor(500);
   await expect.poll(() => checking).toBe(true); await page.clock.runFor(10_100);
@@ -167,7 +171,7 @@ test("Choose later is respected across routes; Daily can explicitly reopen the f
   await page.getByRole("button", { name: "Choose a nickname to play" }).click();
   await field(page).fill("DailyFilmFan"); await save(page).click();
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeEnabled();
-  expect(daily.calls.filter(call => call.name === "start_daily_session")).toHaveLength(0);
+  expect(daily.calls.filter(call => call.name === "daily_begin")).toHaveLength(0);
   await expect(page.getByRole("menuitem", { name: "Choose nickname" })).toHaveCount(0);
 });
 
@@ -444,7 +448,7 @@ for (const destination of ["https://evil.test", "//evil.test", "/play", "/login"
   await expect(page).toHaveURL(/\/setup-profile$/);
   await page.getByRole("button", { name: "Choose later" }).click();
   await expect(page).toHaveURL(/\/$/);
-  expect(daily.calls.some(call => call.name === "start_daily_session")).toBe(false);
+  expect(daily.calls.some(call => call.name === "daily_begin")).toBe(false);
 });
 
 test("Choose later consumes an internal setup flag instead of reopening the dialog", async ({ page }) => {

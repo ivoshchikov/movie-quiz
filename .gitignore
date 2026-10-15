@@ -3,6 +3,7 @@ __pycache__/
 *.db
 *.pyc
 .env
+supabase/.temp/
 
 media/
 .DS_Store

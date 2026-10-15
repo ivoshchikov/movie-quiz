@@ -39,7 +39,7 @@ export default function HowToPlay() {
 
       <ol className="hq-howto-steps" aria-label="Three steps to play a regular quiz">
         <li><span aria-hidden="true">1</span><div><h2>Choose your quiz</h2><p>Pick a category and difficulty on the Play page.</p></div></li>
-        <li><span aria-hidden="true">2</span><div><h2>Look at the image</h2><p>Your question timer starts when the image is ready.</p></div></li>
+        <li><span aria-hidden="true">2</span><div><h2>Look at the image</h2><p>The server starts your question timer when it issues the question. Loading time counts.</p></div></li>
         <li><span aria-hidden="true">3</span><div><h2>Choose an answer</h2><p>Tap one of four choices, or use keys 1–4.</p></div></li>
       </ol>
 
@@ -73,10 +73,10 @@ export default function HowToPlay() {
       <section className="hq-howto-section" aria-labelledby="howto-clocks">
         <h2 id="howto-clocks">Two different clocks</h2>
         <dl className="hq-howto-clocks">
-          <div><dt>Time left</dt><dd>The countdown for the current question. It starts after the image loads. Switching tabs does not pause it.</dd></div>
+          <div><dt>Time left</dt><dd>The countdown for the current question. It starts when the server issues the question, including image loading. Switching tabs does not pause it.</dd></div>
           <div><dt>Quiz duration</dt><dd>The total time from the start of your quiz to its end. It includes question and image loading, feedback and time in the background. During play, it is labelled <strong>Elapsed</strong>.</dd></div>
         </dl>
-        <p className="hq-howto-note">An image-loading or answer-checking error does not cost a life. Follow the on-screen retry instructions; Quiz duration keeps counting.</p>
+        <p className="hq-howto-note">The server deadline applies during connection and image-loading errors too. Retry confirms the same question or chosen answer; it never resets a clock. The final duration stops when the server accepts the last answer, or receives your exit.</p>
       </section>
 
       <section className="hq-howto-section" aria-labelledby="howto-end">
@@ -97,7 +97,7 @@ export default function HowToPlay() {
       <section className="hq-howto-section" aria-labelledby="howto-records">
         <h2 id="howto-records">Guests & saved records</h2>
         <p>You can play regular quizzes without an account. Your last guest result stays on this device while browser storage is available; logging in later does not add it to your account.</p>
-        <p>Log in <strong>before starting a quiz</strong> to save personal bests and join the leaderboard. Records are kept separately for each category and difficulty, with the final Quiz duration.</p>
+        <p>Log in <strong>before starting a quiz</strong> to save personal bests and join the leaderboard. Records are kept separately for each category and difficulty. Higher scores rank first; equal scores are ordered by shorter Quiz duration. The server measures time, so your connection can affect it.</p>
         <div className="hq-howto-links"><Link to="/profile">Your records <SiteIcon name="arrow" /></Link><Link to="/leaderboard">Leaderboard <SiteIcon name="arrow" /></Link></div>
       </section>
 
@@ -105,9 +105,9 @@ export default function HowToPlay() {
         <div className="hq-howto-daily-heading"><SiteIcon name="calendar" /><h2 id="howto-daily">Daily Challenge</h2></div>
         <p>A separate challenge: one question and one answer per day. An account is required.</p>
         <ul>
-          <li><strong>No time limit.</strong> Answer time measures how long you take to choose your answer; it keeps counting in the background.</li>
+          <li><strong>Until midnight US Central.</strong> Answer time runs from the first server start until the server accepts your answer, including loading, connection delays and time away. Continuing on another device keeps the original start.</li>
           <li><strong>Build a streak.</strong> Correct answers on consecutive days extend your streak.</li>
-          <li><strong>A new question at midnight.</strong> Daily resets in America/Chicago (US Central), which may differ from your local date.</li>
+          <li><strong>A new question at midnight.</strong> Daily resets in America/Chicago (US Central), which may differ from your local date. Yesterday’s question closes immediately; unsent or late answers cannot be saved after the reset.</li>
         </ul>
         <Link to="/daily" className="hq-howto-daily-link">View Daily & its reset countdown <SiteIcon name="arrow" /></Link>
       </section>

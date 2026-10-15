@@ -164,17 +164,17 @@ for (const theme of ["dark", "light", "halloween"] as const) {
     await expect(page.locator(".hq-game-dialog")).toHaveCSS("background-color", theme === "dark" ? "rgb(255, 255, 255)" : "rgb(25, 26, 34)");
     await page.getByRole("button", { name: "Keep playing" }).click();
     await slider(page).focus(); await page.keyboard.press("1");
-    await expect.poll(() => calls.filter(call => call.name === "answer_game_question").length).toBe(1);
+    await expect.poll(() => calls.filter(call => call.name === "quiz_answer").length).toBe(1);
   });
 
   test(`${theme}: Daily keeps one running attempt when the theme changes`, async ({ page }) => {
     const data = await dailyFixture(page); await savedTheme(page, theme);
     await page.goto("/daily"); await page.getByRole("button", { name: "Start Daily" }).click();
     await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-    const starts = data.calls.filter(call => call.name === "start_daily_session").length;
+    const starts = data.calls.filter(call => call.name === "daily_begin").length;
     await changeTheme(page);
     await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-    expect(data.calls.filter(call => call.name === "start_daily_session")).toHaveLength(starts);
+    expect(data.calls.filter(call => call.name === "daily_begin")).toHaveLength(starts);
     expect(data.calls.filter(call => call.name === "submit_daily_answer")).toHaveLength(0);
     await page.getByRole("button", { name: "Leave Daily", exact: true }).click();
     await expect(page.locator(".hq-game-dialog")).toHaveCSS("background-color", theme === "dark" ? "rgb(255, 255, 255)" : "rgb(25, 26, 34)");

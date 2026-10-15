@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { mockQuizApi, mockSignedIn } from './fixtures';
+import { dailyFixture } from './daily-fixtures';
 
 test('analytics keeps Google Arguments commands and records quiz events once', async ({ page }) => {
   await mockQuizApi(page);
@@ -82,48 +83,10 @@ test('a new profile loads an empty nickname and saves the existing profile field
   await expect(page.locator('.hq-account-name')).toHaveText('NewFilmFan');
 });
 
-test('Daily still loads personal stats, switches streak lists and submits its existing payload', async ({ page }) => {
-  await mockQuizApi(page);
-  await mockSignedIn(page);
-  const calls: { name: string; payload: Record<string, unknown> }[] = [];
-  let submitted = false;
-  await page.route('**/rest/v1/rpc/**', route => {
-    const name = new URL(route.request().url()).pathname.split('/').pop() || '';
-    const payload = route.request().postDataJSON();
-    let body: unknown;
-    switch (name) {
-      case 'get_daily_question_public': body = [{ id: 700, image_url: 'https://quiz-fixture.supabase.co/fixture.svg', options_json: ['Fixture answer', 'Second answer', 'Third answer', 'Fourth answer'], category_id: 1, difficulty_level_id: 1 }]; break;
-      case 'get_my_daily_result': body = [{ is_answered: submitted, is_correct: submitted ? true : null, time_spent: submitted ? 1 : null, answered_at: null }]; break;
-      case 'get_daily_user_streak': body = [{ current_streak: 3, longest_streak: 7, total_correct: 12 }]; break;
-      case 'get_daily_streak_leaderboard': body = Array.from({ length: 5 }, (_, i) => ({ user_id: `leader-${i}`, nickname: i ? `Player ${i}` : payload.p_active_only ? 'ActiveLeader' : 'AllTimeLeader', streak: 8, start_d: '2026-09-29', end_d: '2026-10-06' })); break;
-      case 'start_daily_session': body = null; break;
-      case 'submit_daily_answer': submitted = true; body = null; break;
-      default: return route.fallback();
-    }
-    calls.push({ name, payload });
-    return route.fulfill({ contentType: 'application/json', body: JSON.stringify(body) });
-  });
-  await page.goto('/daily');
-  const card = page.getByRole('region', { name: 'Your Daily stats', exact: true });
-  await expect(card.locator('dd').first()).toHaveText('3 days');
-  await expect(card.locator('dd').last()).toHaveText('7 days');
-  await expect(card.getByText('12 correct Daily answers', { exact: true })).toBeVisible();
-  expect(calls.filter(call => call.name === 'start_daily_session')).toHaveLength(0);
-  await page.getByRole('button', { name: 'Streak leaderboard', exact: true }).click();
-  await expect(page.getByText('ActiveLeader', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: /All-time/ }).click();
-  await expect(page.getByText('AllTimeLeader', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Show top 20', exact: true }).click();
-  await expect.poll(() => calls.filter(call => call.name === 'get_daily_streak_leaderboard').at(-1)?.payload).toMatchObject({ p_active_only: false, p_limit: 20 });
-  await page.getByRole('button', { name: 'Start Daily', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Fixture answer', exact: true })).toBeEnabled();
-  await page.getByRole('button', { name: 'Fixture answer', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Correct!', exact: true })).toBeVisible();
-  await expect(page.getByText('Synced with your account', { exact: true })).toBeVisible();
-  expect(calls.filter(call => call.name === 'start_daily_session')).toHaveLength(1);
-  expect(calls.filter(call => call.name === 'submit_daily_answer')).toHaveLength(1);
-  expect(calls.find(call => call.name === 'submit_daily_answer')?.payload).toMatchObject({ p_user_id: 'fixture-user', p_answer: 'Fixture answer' });
-  expect(calls.find(call => call.name === 'submit_daily_answer')?.payload.p_date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+test('Daily loads personal stats, switches ranked lists and submits a server-graded answer',async({page})=>{
+ const data=await dailyFixture(page);await page.goto('/daily');const card=page.getByRole('region',{name:'Your Daily stats',exact:true});await expect(card.locator('dd').first()).toHaveText('3 days');
+ await page.getByRole('button',{name:'Streak leaderboard',exact:true}).click();await expect(page.getByText('ActivePlayer 1',{exact:true})).toBeVisible();await page.getByRole('button',{name:'All-time best',exact:true}).click();await expect(page.getByText('BestPlayer 1',{exact:true})).toBeVisible();
+ expect(data.calls.filter(c=>c.name==='daily_begin')).toHaveLength(0);await page.getByRole('button',{name:'Start Daily',exact:true}).click();await expect(page.getByRole('button',{name:'Fixture answer',exact:true})).toBeEnabled();await page.getByRole('button',{name:'Fixture answer',exact:true}).click();await expect(page.getByRole('heading',{name:'Correct!',exact:true})).toBeVisible();expect(data.calls.filter(c=>c.name==='daily_begin')).toHaveLength(1);expect(data.calls.find(c=>c.name==='submit_daily_answer')?.payload).toMatchObject({p_user_id:'fixture-user',p_answer:'Fixture answer',p_time:0});
 });
 
 test('admin history and answer search retain their typed fields and image URLs', async ({ page }) => {

@@ -1,5 +1,6 @@
 import type { Session } from "@supabase/supabase-js";
-import { getPersonalBest } from "../api";
+import { parseServerGame } from "./server";
+import type { ServerGame } from "./server";
 import type { PersonalBest } from "../api";
 
 export type FinishReason = "out-of-lives" | "completed" | "exit";
@@ -7,6 +8,7 @@ export type SaveStatus = "saved" | "pending" | "device" | "memory";
 export type RecordOutcome = "first" | "new";
 export interface GameResult {
   id: string;
+  serverGame?: boolean;
   playKey: string;
   userId: string | null;
   categoryId: number;
@@ -104,63 +106,44 @@ export function recoverInterruptedGame() {
   if (isGameResult(result)) retainGameResult(result, false);
 }
 
-async function readPersonalBest(result: GameResult): Promise<PersonalBest | null | undefined> {
-  if (!result.userId) return undefined;
-  const abort = new AbortController();
-  const timeout = window.setTimeout(() => abort.abort(), 3000);
-  try { return await getPersonalBest(result.userId, result.categoryId, result.difficultyId, abort.signal); }
-  catch { return undefined; }
-  finally { window.clearTimeout(timeout); }
-}
-function recordOutcome(result: GameResult, best: PersonalBest | null): RecordOutcome | undefined {
-  if (!best || best.score !== result.score || result.previousBest === undefined) return undefined;
-  if (result.previousBest === null) return "first";
-  if (best.score > result.previousBest.score) return "new";
-  // A tie is celebrated only if the server actually changed the best time to this run's time.
-  if (best.score === result.previousBest.score && best.time === result.elapsedSecs && best.time !== result.previousBest.time) return "new";
-  return undefined;
+export function confirmedGameResult(result: GameResult, game: ServerGame): GameResult {
+  if (game.id !== result.id || game.category_id !== result.categoryId || game.difficulty_id !== result.difficultyId || game.status !== "finished" || !game.finish_reason) throw new Error("invalid-game-receipt");
+  return { ...result, score: game.score, elapsedSecs: game.time_secs, finishReason: game.finish_reason,
+    saveStatus: result.userId ? "saved" : result.saveStatus === "memory" ? "memory" : "device",
+    previousBest: game.previous_best, personalBest: game.personal_best, recordOutcome: game.record_outcome ?? undefined };
 }
 
-/** The immutable final score/time are retried; an unfinished game is never resumed. */
-export function saveGameResult(result: GameResult, session: Session | null, keepalive = false): Promise<SaveStatus> {
-  if (!result.userId) return Promise.resolve(result.saveStatus === "memory" ? "memory" : "device");
-  if (result.userId !== session?.user.id) return Promise.resolve("pending");
+/** Only the server session ID is sent. Local score, time and awards are never trusted. */
+export function saveGameResult(result: GameResult, session: Session | null, keepalive = false, after: Promise<unknown> = Promise.resolve()): Promise<SaveStatus> {
+  if (result.userId && result.userId !== session?.user.id) return Promise.resolve("pending");
+  if (!result.serverGame) {
+    // Retain old device history, but never replay the retired aggregate-score endpoint.
+    remove("local", PENDING_PREFIX + result.id);
+    updateResult({ ...result, saveStatus: result.deviceStored === false ? "memory" : "device" });
+    return Promise.resolve("device");
+  }
   const existing = sending.get(result.id);
   if (existing) return existing;
   let current = { ...result };
   const request = (async (): Promise<SaveStatus> => {
+    await after.catch(() => {});
     const abort = new AbortController();
-    let timeout: number | undefined;
+    const timeout = window.setTimeout(() => abort.abort(), 10000);
     try {
-      // Keep pagehide's keepalive request immediate. Missing comparison data never invents an award.
-      if (!keepalive && current.previousBest === undefined) {
-        const previousBest = await readPersonalBest(current);
-        if (previousBest !== undefined) { current = { ...current, previousBest }; updateResult(current); }
-      }
-      timeout = window.setTimeout(() => abort.abort(), 6000);
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rpc/upsert_user_best`, {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rpc/quiz_finish`, {
         method: "POST", keepalive, signal: abort.signal,
         headers: {
           "Content-Type": "application/json", apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${result.userId ? session!.access_token : import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
-        body: JSON.stringify({ p_user_id: result.userId, p_category_id: result.categoryId,
-          p_difficulty_id: result.difficultyId, p_score: result.score, p_time: result.elapsedSecs }),
+        body: JSON.stringify({ p_session: result.id }),
       });
-      window.clearTimeout(timeout);
-      if (!response.ok) return "pending";
+      if (!response.ok) return result.userId ? "pending" : "device";
+      current = confirmedGameResult(current, parseServerGame(await response.json()));
       remove("local", PENDING_PREFIX + result.id);
-      current = { ...current, saveStatus: "saved" };
       updateResult(current);
-      if (!keepalive) {
-        const personalBest = await readPersonalBest(current);
-        if (personalBest !== undefined) {
-          current = { ...current, personalBest, recordOutcome: recordOutcome(current, personalBest) };
-          updateResult(current);
-        }
-      }
-      return "saved";
-    } catch { return "pending"; }
+      return current.saveStatus;
+    } catch { return result.userId ? "pending" : "device"; }
     finally { window.clearTimeout(timeout); sending.delete(result.id); updateResult(current); }
   })();
   sending.set(result.id, request);

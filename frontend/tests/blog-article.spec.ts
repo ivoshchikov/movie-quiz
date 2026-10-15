@@ -253,7 +253,7 @@ test("article actions explain guest access and do not start a quiz or Daily atte
   await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
   await page.goBack(); await page.getByRole("link", { name: "Try Daily", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/daily");
-  expect(calls.filter(call => ["get_game_question", "start_daily_session", "submit_daily_answer", "upsert_user_best"].includes(call.name))).toEqual([]);
+  expect(calls.filter(call => ["quiz_start", "daily_begin", "submit_daily_answer", "quiz_finish"].includes(call.name))).toEqual([]);
 });
 
 for (const size of [{ width: 1440, height: 900 }, { width: 768, height: 1024 }, { width: 390, height: 844 }, { width: 320, height: 568 }, { width: 844, height: 390 }]) {
