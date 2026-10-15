@@ -86,7 +86,12 @@ test("reduced motion disables visits from startup and immediately after a live p
   await expect(page.locator(".hq-haunt-motion")).toBeHidden();
   await page.clock.runFor(120_000); await expect(visitor(page)).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: "no-preference" }); await waitForTheme(page);
-  await page.clock.runFor(10_000); await expect(visitor(page)).toHaveCount(1);
+  // CSS updates before the MediaQueryList change event is delivered. Advance
+  // the test clock in steps so that the fresh wait starts after that event.
+  await expect.poll(async () => {
+    await page.clock.runFor(1_000);
+    return visitor(page).count();
+  }, { intervals: [50], timeout: 10_000 }).toBe(1);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(visitor(page)).toHaveCount(0);
   await page.clock.runFor(120_000); await expect(visitor(page)).toHaveCount(0);
