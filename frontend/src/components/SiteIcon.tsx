@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 const paths = {
+  pumpkin: <><path d="M12 6c-9-5-13 13-4 14 2 1 3 0 4 0s2 1 4 0c9-1 5-19-4-14Zm0 0c-1-3 1-4 3-4" /><path d="m7 11 2 2H6l1-2Zm10 0 1 2h-3l2-2Zm-9 5 2 1 2-1 2 1 2-1" /></>,
   sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></>,
   moon: <path d="M20.5 13.2A8.5 8.5 0 0 1 10.8 3.5a8.5 8.5 0 1 0 9.7 9.7Z" />,
   check: <path d="m5 12 4 4L19 6" />,

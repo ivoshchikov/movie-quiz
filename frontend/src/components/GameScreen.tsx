@@ -6,7 +6,7 @@ import { categoryLabel } from "../hooks/useQuizCatalog";
 import { useNormalGame } from "../game/useNormalGame";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
-import ThemeToggle from "./ThemeToggle";
+import ThemeSlider from "./ThemeSlider";
 import "../game.css";
 
 interface LocationState { categoryId?: number; difficultyId?: number; }
@@ -28,7 +28,7 @@ export default function GameScreen() {
     function keyDown(event: KeyboardEvent) {
       if (exitOpen || event.repeat || event.ctrlKey || event.altKey || event.metaKey || !ready) return;
       const target = event.target instanceof HTMLElement ? event.target : null;
-      if (target?.isContentEditable || target?.matches("input, textarea, select")) return;
+      if (target?.isContentEditable || target?.matches('input:not([type="range"]), textarea, select')) return;
       const index = Number(event.key) - 1;
       if (index >= 0 && index < game.options.length && /^[1-4]$/.test(event.key)) {
         event.preventDefault(); game.actions.current?.answer(game.options[index]);
@@ -47,9 +47,9 @@ export default function GameScreen() {
   return <>
     <Seo title="Play | Hard Quiz" description="Guess the movie or actor, beat the timer and score as many points as you can." noindex />
     <header className="hq-play-header">
-      {validSelection ? <button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — exit quiz"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</button> :
-        <Link className="hq-brand" to="/"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>}
-      <div className="hq-play-actions"><ThemeToggle />{validSelection ? <button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Exit quiz</button> : <Link className="hq-play-exit" to="/">Back to home</Link>}</div>
+      {validSelection ? <button className="hq-brand" onClick={() => setExitOpen(true)} aria-label="Hard Quiz — exit quiz"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></button> :
+        <Link className="hq-brand" to="/"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></Link>}
+      <div className="hq-play-actions"><ThemeSlider />{validSelection ? <button className="hq-play-exit" onClick={() => setExitOpen(true)}><SiteIcon name="logout" />Exit quiz</button> : <Link className="hq-play-exit" to="/">Back to home</Link>}</div>
     </header>
     {(!validSelection || game.phase === "setup" || game.phase === "setup-error" || game.phase === "empty") ?
       <section className="hq-game-placeholder" aria-live="polite"><SiteIcon name="film" />

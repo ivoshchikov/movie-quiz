@@ -66,4 +66,25 @@
   --hq-bronze-soft: #f8eadd;
 }
 
+:root[data-theme="halloween"] {
+  color-scheme: dark;
+  --hq-background: #140f1b;
+  --hq-surface: #211829;
+  --hq-surface-soft: #2d2237;
+  --hq-text: #fff5e9;
+  --hq-reading-text: #ece0ee;
+  --hq-muted: #c4b6c8;
+  --hq-border: #49354e;
+  --hq-control-border: #a28aae;
+  --hq-purple: #ffbc78;
+  --hq-button: #b94517;
+  --hq-button-hover: #9f3411;
+  --hq-tint: #33203a;
+  --hq-tint-hover: #462a4f;
+  --hq-warning: #f2c27d;
+  --hq-media: #100c16;
+  --hq-backdrop: #08040ed1;
+  --hq-shadow: #050209b3;
+}
+
 html { background: var(--hq-background); color: var(--hq-text); }

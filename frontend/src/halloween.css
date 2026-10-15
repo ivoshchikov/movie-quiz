@@ -1,0 +1,25 @@
+:root[data-theme="halloween"] .hq-site { isolation: isolate; background-image: radial-gradient(ellipse at 50% 0, #45234233, transparent 600px); }
+.hq-haunt { pointer-events: none; user-select: none; flex-shrink: 0; }
+.hq-haunt-glyph { display: block; width: 64px; height: 64px; flex-shrink: 0; overflow: visible; }
+.hq-haunt-edges { position: fixed; inset: 0; z-index: -1; overflow: hidden; color: #aa8abb; }
+.hq-haunt-web-left, .hq-haunt-web-right { position: absolute; top: 0; width: 140px; height: 140px; opacity: .3; }
+.hq-haunt-web-left { left: 0; }
+.hq-haunt-web-right { right: 0; transform: scaleX(-1); }
+.hq-haunt-spider { position: absolute; top: 105px; left: 28px; width: 48px; height: 72px; }
+.hq-haunt-skeleton { position: absolute; bottom: 28px; left: 24px; width: 88px; height: 110px; opacity: .65; transform: rotate(-9deg); }
+.hq-haunt-witch { position: absolute; right: 20px; top: 230px; width: 94px; height: 94px; opacity: .8; transform: rotate(-13deg); }
+.hq-haunt-bat { position: absolute; right: 42px; bottom: 60px; width: 72px; height: 72px; opacity: .45; transform: rotate(12deg); }
+.hq-haunt-band { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(calc(100% - 72px), 944px); height: 88px; margin: 12px auto -8px; padding: 0 24px; border-block: 1px solid #70513e66; background: linear-gradient(90deg, transparent, #45234266, transparent); }
+.hq-haunt-still-life { display: flex; align-items: center; gap: 12px; }
+.hq-haunt-still-life .hq-haunt-glyph:nth-child(2) { transform: rotate(7deg); }
+.hq-haunt-season { display: flex; align-items: center; gap: 14px; color: #ffbc78; }
+.hq-haunt-season > span { font-size: 12px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; }
+.hq-haunt-season small { display: block; margin-top: 5px; color: var(--hq-muted); font-size: 11px; letter-spacing: .2px; text-transform: none; font-weight: 400; }
+.hq-haunt-compact .hq-haunt-edges { opacity: .4; }
+@media (max-width: 1240px) { .hq-haunt-spider, .hq-haunt-skeleton, .hq-haunt-witch, .hq-haunt-bat { display: none; } .hq-haunt-web-left, .hq-haunt-web-right { width: 64px; height: 64px; opacity: .2; } }
+@media (max-width: 800px) { .hq-haunt-band { width: calc(100% - 48px); padding-inline: 8px; } .hq-haunt-still-life { gap: 0; } .hq-haunt-still-life .hq-haunt-glyph { width: 44px; height: 56px; } .hq-haunt-season { gap: 8px; } }
+@media (max-width: 620px) { .hq-haunt-band { width: calc(100% - 36px); height: 72px; gap: 5px; padding: 0; margin-top: 8px; } .hq-haunt-season { gap: 5px; } .hq-haunt-season .hq-haunt-glyph { width: 43px; height: 54px; } .hq-haunt-season > span { font-size: 10px; letter-spacing: .7px; } .hq-haunt-season small { font-size: 10px; letter-spacing: 0; } .hq-haunt-still-life .hq-haunt-glyph { width: 36px; height: 44px; } .hq-haunt-still-life .hq-haunt-glyph:first-child { display: none; } .hq-haunt-web-left, .hq-haunt-web-right { width: 38px; height: 38px; } }
+@media (max-width: 360px) { .hq-haunt-season .hq-haunt-glyph { width: 34px; } .hq-haunt-season > span { font-size: 9px; letter-spacing: .4px; } .hq-haunt-season small { font-size: 9px; } .hq-haunt-still-life .hq-haunt-glyph { width: 30px; } }
+
+@media (max-width: 1240px) { .hq-haunt-spider { display: block; top: 80px; left: 0; width: 24px; height: 50px; opacity: .65; } }
+@media (max-width: 620px) { .hq-haunt-spider { top: 104px; width: 22px; } }

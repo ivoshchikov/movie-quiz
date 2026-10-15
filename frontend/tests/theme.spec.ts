@@ -4,7 +4,15 @@ import { mockQuizApi } from "./fixtures";
 import { dailyFixture } from "./daily-fixtures";
 
 const preference = "hard-quiz-theme";
-const toggle = (page: Page) => page.getByRole("button", { name: /Switch to (light|dark) theme/ });
+const slider = (page: Page) => page.getByRole("slider", { name: "Color theme" });
+async function selectTheme(page: Page, theme: "light" | "dark" | "halloween") {
+  await slider(page).focus(); await slider(page).press("Home");
+  if (theme !== "light") await slider(page).press("ArrowRight");
+  if (theme === "halloween") await slider(page).press("ArrowRight");
+}
+async function changeTheme(page: Page) {
+  await selectTheme(page, await slider(page).getAttribute("aria-valuetext") === "Dark" ? "light" : "dark");
+}
 async function savedTheme(page: Page, theme: string) {
   await page.addInitScript(({ preference, theme }) => localStorage.setItem(preference, theme), { preference, theme });
 }
@@ -27,24 +35,24 @@ test("the original dark theme is the default; keyboard choice persists across na
   await mockQuizApi(page);
   await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
   await page.goto("/");
-  await expect(toggle(page)).toHaveAccessibleName("Switch to light theme");
-  await toggle(page).focus();
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Dark");
+  await slider(page).focus();
   await page.keyboard.press("Tab");
   await page.keyboard.press("Shift+Tab");
-  await expect(toggle(page)).toBeFocused();
-  await expect(toggle(page)).toHaveCSS("outline-style", "solid");
-  await page.keyboard.press("Enter");
+  await expect(slider(page)).toBeFocused();
+  await expect(page.locator(".hq-theme-slider")).toHaveCSS("outline-style", "solid");
+  await page.keyboard.press("Home");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await expect(toggle(page)).toBeFocused();
+  await expect(slider(page)).toBeFocused();
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#f6f7fb");
   await page.getByRole("link", { name: "Blog", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Blog", exact: true })).toBeVisible();
   await page.reload();
-  await expect(toggle(page)).toHaveAccessibleName("Switch to dark theme");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
   await expect(page.locator("html")).toHaveCSS("color-scheme", "light");
-  await toggle(page).click();
+  await changeTheme(page);
   await page.reload();
-  await expect(toggle(page)).toHaveAccessibleName("Switch to light theme");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Dark");
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#101116");
 });
 
@@ -58,10 +66,10 @@ test("storage denial keeps switching and route changes working without an except
   });
   await mockQuizApi(page);
   await page.goto("/");
-  await toggle(page).click();
+  await changeTheme(page);
   await page.getByRole("link", { name: "Daily", exact: true }).click();
-  await expect(toggle(page)).toHaveAccessibleName("Switch to dark theme");
-  await toggle(page).click();
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
+  await changeTheme(page);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(errors).toEqual([]);
 });
@@ -70,7 +78,7 @@ test("invalid saved values fall back to the original dark palette", async ({ pag
   await savedTheme(page, "unexpected");
   await mockQuizApi(page);
   await page.goto("/");
-  await expect(toggle(page)).toHaveAccessibleName("Switch to light theme");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Dark");
   await expect(page.locator("html")).toHaveCSS("color-scheme", "dark");
 });
 
@@ -78,18 +86,20 @@ test("the selected theme synchronizes between tabs, including resetting the pref
   const other = await context.newPage();
   await mockQuizApi(page); await mockQuizApi(other);
   await page.goto("/"); await other.goto("/how-to-play");
-  await expect(toggle(other)).toBeVisible();
-  await toggle(page).click();
-  await expect(toggle(other)).toHaveAccessibleName("Switch to dark theme");
-  await toggle(other).click();
-  await expect(toggle(page)).toHaveAccessibleName("Switch to light theme");
-  await toggle(page).click();
-  await expect(toggle(other)).toHaveAccessibleName("Switch to dark theme");
+  await expect(slider(other)).toBeVisible();
+  await changeTheme(page);
+  await expect(slider(other)).toHaveAttribute("aria-valuetext", "Light");
+  await changeTheme(other);
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Dark");
+  await changeTheme(page);
+  await expect(slider(other)).toHaveAttribute("aria-valuetext", "Light");
+  await selectTheme(other, "halloween");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
   await page.evaluate(key => localStorage.removeItem(key), preference);
-  await expect(toggle(other)).toHaveAccessibleName("Switch to light theme");
+  await expect(slider(other)).toHaveAttribute("aria-valuetext", "Dark");
 });
 
-for (const theme of ["dark", "light"] as const) {
+for (const theme of ["dark", "light", "halloween"] as const) {
   test(`${theme}: readable pages, usable mobile header and portal login`, async ({ page }) => {
     test.setTimeout(60_000);
     await mockQuizApi(page); await savedTheme(page, theme);
@@ -100,12 +110,12 @@ for (const theme of ["dark", "light"] as const) {
       for (const route of ["/", "/leaderboard", "/how-to-play", "/blog", "/blog/why-2-39-1-feels-more-cinematic", "/login", "/result", "/missing-theme-test"]) {
         await page.goto(route);
         await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
-        await expect(toggle(page)).toBeVisible();
+        await expect(slider(page)).toBeVisible();
         if (process.env.HQ_THEME_VISUAL_DIR && ["/", "/blog/why-2-39-1-feels-more-cinematic"].includes(route)) {
           mkdirSync(process.env.HQ_THEME_VISUAL_DIR, { recursive: true });
           await page.screenshot({ path: `${process.env.HQ_THEME_VISUAL_DIR}/${theme}-${width}-${route === "/" ? "home" : "article"}.png`, fullPage: route === "/" });
         }
-        const box = await toggle(page).boundingBox();
+        const box = await slider(page).boundingBox();
         expect(box!.width).toBeGreaterThanOrEqual(44); expect(box!.height).toBeGreaterThanOrEqual(44);
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), `${route}, ${width}`).toBeLessThanOrEqual(1);
       }
@@ -114,16 +124,17 @@ for (const theme of ["dark", "light"] as const) {
     await page.getByRole("button", { name: "Log in", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator(".hq-login-card")).toHaveCSS("background-color", theme === "light" ? "rgb(255, 255, 255)" : "rgb(25, 26, 34)");
-    await expect(dialog.getByRole("textbox", { name: "Email" })).toHaveCSS("color", theme === "light" ? "rgb(35, 37, 53)" : "rgb(245, 245, 250)");
+    await expect(dialog.locator(".hq-login-card")).toHaveCSS("background-color", theme === "light" ? "rgb(255, 255, 255)" : theme === "halloween" ? "rgb(33, 24, 41)" : "rgb(25, 26, 34)");
+    await expect(dialog.getByRole("textbox", { name: "Email" })).toHaveCSS("color", theme === "light" ? "rgb(35, 37, 53)" : theme === "halloween" ? "rgb(255, 245, 233)" : "rgb(245, 245, 250)");
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
+    await expect(page.locator(".hq-haunt")).toHaveCount(theme === "halloween" ? 1 : 0);
     expect(errors).toEqual([]);
   });
 
   test(`${theme}: text, status, primary button and control focus contrast`, async ({ page }) => {
     await mockQuizApi(page); await savedTheme(page, theme); await page.goto("/");
-    await expect(toggle(page)).toBeVisible();
+    await expect(slider(page)).toBeVisible();
     const colors = await page.evaluate(() => {
       const style = getComputedStyle(document.documentElement);
       return Object.fromEntries(["background", "surface", "surface-soft", "media", "tint", "text", "reading-text", "muted", "purple", "button", "button-hover", "success", "success-soft", "error", "error-soft", "warning", "control-border", "gold", "gold-soft", "silver", "silver-soft", "bronze", "bronze-soft"].map(name => [name, style.getPropertyValue(`--hq-${name}`)]));
@@ -144,7 +155,7 @@ for (const theme of ["dark", "light"] as const) {
     const stats = await page.locator(".hq-game-stats").innerText();
     const timer = await page.locator(".hq-game-timer").innerText();
     const before = calls.length;
-    await toggle(page).click();
+    await changeTheme(page);
     await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
     expect(await page.locator(".hq-game-stats").innerText()).toBe(stats);
     expect(await page.locator(".hq-game-timer").innerText()).toBe(timer);
@@ -152,6 +163,8 @@ for (const theme of ["dark", "light"] as const) {
     await page.getByRole("button", { name: "Exit quiz", exact: true }).click();
     await expect(page.locator(".hq-game-dialog")).toHaveCSS("background-color", theme === "dark" ? "rgb(255, 255, 255)" : "rgb(25, 26, 34)");
     await page.getByRole("button", { name: "Keep playing" }).click();
+    await slider(page).focus(); await page.keyboard.press("1");
+    await expect.poll(() => calls.filter(call => call.name === "answer_game_question").length).toBe(1);
   });
 
   test(`${theme}: Daily keeps one running attempt when the theme changes`, async ({ page }) => {
@@ -159,18 +172,20 @@ for (const theme of ["dark", "light"] as const) {
     await page.goto("/daily"); await page.getByRole("button", { name: "Start Daily" }).click();
     await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
     const starts = data.calls.filter(call => call.name === "start_daily_session").length;
-    await toggle(page).click();
+    await changeTheme(page);
     await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
     expect(data.calls.filter(call => call.name === "start_daily_session")).toHaveLength(starts);
     expect(data.calls.filter(call => call.name === "submit_daily_answer")).toHaveLength(0);
     await page.getByRole("button", { name: "Leave Daily", exact: true }).click();
     await expect(page.locator(".hq-game-dialog")).toHaveCSS("background-color", theme === "dark" ? "rgb(255, 255, 255)" : "rgb(25, 26, 34)");
     await page.keyboard.press("Escape");
+    await slider(page).focus(); await page.keyboard.press("1");
+    await expect.poll(() => data.calls.filter(call => call.name === "submit_daily_answer").length).toBe(1);
   });
 }
 
-test("the saved light theme is restored in built HTML before the application can start", async ({ page }) => {
-  await savedTheme(page, "light");
+for (const theme of ["light", "halloween"] as const) test(`the saved ${theme} theme is restored before the application can start`, async ({ page }) => {
+  await savedTheme(page, theme);
   // Simulate a slow or unavailable application bundle; the inline bootstrap must suffice.
   await page.route("**/*", route => {
     const url = new URL(route.request().url());
@@ -182,9 +197,49 @@ test("the saved light theme is restored in built HTML before the application can
   });
   for (const route of ["/", "/blog", "/how-to-play", "/daily", "/404"]) {
     await page.goto(route);
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-    await expect(page.locator("html")).toHaveCSS("background-color", "rgb(246, 247, 251)");
-    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#f6f7fb");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    await expect(page.locator("html")).toHaveCSS("background-color", theme === "light" ? "rgb(246, 247, 251)" : "rgb(20, 15, 27)");
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", theme === "light" ? "#f6f7fb" : "#140f1b");
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
   }
+});
+
+test("the slider supports dragging through three stops and removes Halloween decoration on exit", async ({ page }) => {
+  await mockQuizApi(page); await page.goto("/");
+  const box = await slider(page).boundingBox();
+  const y = box!.y + box!.height / 2;
+  await page.mouse.move(box!.x + box!.width / 2, y); await page.mouse.down();
+  await page.mouse.move(box!.x + box!.width - 12, y, { steps: 8 }); await page.mouse.up();
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await expect(page.locator(".hq-haunt-band")).toBeVisible();
+  await expect(page.locator(".hq-haunt")).toHaveAttribute("aria-hidden", "true");
+  await expect(page.locator(".hq-haunt")).toHaveCSS("pointer-events", "none");
+  await page.reload();
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await slider(page).press("Home");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
+  await expect(page.locator(".hq-haunt")).toHaveCount(0);
+  await slider(page).press("End");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".hq-theme-thumb")).toHaveCSS("transition-duration", "0s");
+});
+
+test("touch selection is usable at 320px and keeps game controls within the viewport", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 320, height: 568 }, hasTouch: true });
+  const page = await context.newPage(); await mockQuizApi(page); await page.goto("/");
+  await slider(page).waitFor();
+  let box = (await slider(page).boundingBox())!;
+  await page.touchscreen.tap(box.x + box.width - 12, box.y + box.height / 2);
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
+  await expect(page.locator(".hq-haunt-band")).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
+  box = (await slider(page).boundingBox())!;
+  await page.touchscreen.tap(box.x + 12, box.y + box.height / 2);
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
+  await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
+  await context.close();
 });

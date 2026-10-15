@@ -7,7 +7,8 @@ import { useAuth } from "../AuthContext";
 import LoginModal from "./LoginModal";
 import NicknameModal from "./NicknameModal";
 import SiteIcon from "./SiteIcon";
-import ThemeToggle from "./ThemeToggle";
+import ThemeSlider from "./ThemeSlider";
+import HalloweenDecorations from "./HalloweenDecorations";
 import SiteNavigation from "./SiteNavigation";
 import PageErrorBoundary from "./PageErrorBoundary";
 import { loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
@@ -133,7 +134,7 @@ export default function Layout() {
           <NavLink to="/leaderboard" className="hq-nav-link">Leaderboard</NavLink>
           <NavLink to="/blog" className="hq-nav-link">Blog</NavLink>
         </nav>
-        <div className="hq-header-actions"><ThemeToggle />
+        <div className="hq-header-actions"><ThemeSlider />
         {authLoading && !authError ? <span className="hq-account-button hq-account" role="status">Checking account…</span> : !user ? <button className="hq-account-button hq-account" onClick={() => { clearCallbackError(); setShowLogin(true); }}>{authError ? "Check account" : "Log in"}</button>
           : <Menu as="div" className="hq-account">
             <Menu.Button className="hq-account-button" aria-label="Account menu">
@@ -153,6 +154,7 @@ export default function Layout() {
         </div>
       </div>
     </header>}
+    <HalloweenDecorations compact={isGameView} />
     <main id="main-content" tabIndex={-1} className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
       {pathname !== "/login" && !showLogin && (callbackError || authError && !["/profile", "/setup-profile"].includes(pathname)) && <div className="hq-auth-banner" role="alert"><p>{callbackError || authError}</p><button className="hq-inline-action" onClick={() => { if (authError) retrySession(); else { clearCallbackError(); setShowLogin(true); } }}>{authError ? "Retry sign-in check" : "Try signing in again"}</button></div>}
       {!isGameView && nicknameNotice?.owner === owner && <div className="hq-auth-banner hq-nickname-notice"><p role="status">{nicknameNotice.alreadyChosen ? <>This account already has the nickname <strong>{nicknameNotice.nickname}</strong>. You can continue with it.</> : <>Your nickname is saved: <strong>{nicknameNotice.nickname}</strong>.</>}</p><button className="hq-inline-action" onClick={() => setNicknameNotice(null)}>Dismiss</button></div>}
