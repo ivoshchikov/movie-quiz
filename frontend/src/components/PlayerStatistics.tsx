@@ -134,7 +134,7 @@ export default function PlayerStatistics({
               </dd>
             </div>
             <div>
-              <dt>Best correct-answer streak</dt>
+              <dt>Best correct streak</dt>
               <dd>{n.best_streak}</dd>
             </div>
             <div>
@@ -155,7 +155,8 @@ export default function PlayerStatistics({
             })}
           </dl>
           {!!s.breakdown.length && (
-            <div className="hq-stats-table-wrap">
+            <div className="hq-stats-table-wrap" role="region" aria-label="Statistics by quiz" tabIndex={0}>
+              <p className="hq-stats-scroll-hint">Scroll the table to see all columns.</p>
               <table className="hq-stats-table">
                 <caption>Regular quizzes by category and difficulty</caption>
                 <thead>

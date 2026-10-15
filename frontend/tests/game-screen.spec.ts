@@ -396,3 +396,9 @@ for (const viewport of [
     ).toHaveCount(0);
   });
 }
+
+test('signing out in another tab never transfers the running account session to the guest',async({page,context})=>{
+ const d=await gameFixture(page,{signedIn:true});await start(page);await page.getByRole('button',{name:answers[0],exact:true}).click();await expect(page.getByText('Correct! +1 point')).toBeVisible();await page.clock.runFor(1000);await expect(page.getByText('Question 2',{exact:true})).toBeVisible();
+ const other=await context.newPage();const {mockQuizApi}=await import('./fixtures');await mockQuizApi(other);await other.goto('/');await other.getByRole('button',{name:'Account menu'}).click();await other.getByRole('menuitem',{name:'Log out'}).click();
+ await expect(page.locator('.hq-game-stat strong')).toHaveText('0');await expect(page.getByText('Question 1',{exact:true})).toBeVisible();expect(d.games.size).toBe(2);await other.close();
+});

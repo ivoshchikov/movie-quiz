@@ -35,6 +35,7 @@ function sessionId(key: string) {
 
 export function useNormalGame(categoryId: number | undefined, difficultyId: number | undefined, playKey: string) {
   const { loading: authLoading, session } = useAuth();
+  const ownerId = session?.user.id ?? null;
   const sessionRef = useRef(session);
   useEffect(() => { sessionRef.current = session; }, [session]);
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     let serverAt = 0, receivedAt = 0, feedbackAt = 0;
     let answerInFlight: Promise<void> = Promise.resolve();
     let pendingAnswer: string | null = null;
-    const id = sessionId(playKey);
+    const id = sessionId(`${playKey}:${ownerId ?? "guest"}`);
     const originalIndex = window.history.state?.idx as number | undefined;
     const now = () => serverAt + Math.max(0, performance.now() - receivedAt);
     function update(patch: Partial<GameView>) { state = { ...state, ...patch }; if (mounted) setView(state); }
@@ -109,7 +110,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
         update({ category, level, seconds: level.time_limit_secs, lives: level.lives });
         const value = await gameRequest("quiz_start", { p_session: id, p_category_id: catId, p_difficulty_id: diffId });
         if (!mounted || ended) return;
-        game = { id, serverGame: true, playKey, userId: sessionRef.current?.user.id ?? null, categoryId: catId, difficultyId: diffId,
+        game = { id, serverGame: true, playKey, userId: ownerId, categoryId: catId, difficultyId: diffId,
           categoryName: category.name, difficultyName: level.name, score: value.score, elapsedSecs: value.time_secs, startedAt: Date.parse(value.started_at) };
         sync(value); checkpointGame(game);
         if (value.bank_size === 0) { update({ phase: "empty" }); return; }
@@ -181,6 +182,6 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       window.removeEventListener("pagehide", pageHide); window.removeEventListener("pageshow", pageShow); window.removeEventListener("beforeunload", beforeUnload);
       document.removeEventListener("visibilitychange", tick); release();
     };
-  }, [authLoading, categoryId, difficultyId, playKey, navigate]);
+  }, [authLoading, categoryId, difficultyId, playKey, navigate, ownerId]);
   return { ...view, actions };
 }

@@ -240,3 +240,11 @@ test('impossible old future starts are quarantined with their original data, wit
  assert.equal(await value('select count(*) v from hq_private.invalid_daily_starts'),1);
  const archived=await value('select original v from hq_private.invalid_daily_starts limit 1');assert.equal(archived.user_id,other);assert.ok(archived.started_at);
 });
+
+test('personal streak RPC is own-account only and keeps yesterday while today is pending',async()=>{
+ await reset();const today=await value('select public.us_central_today()::text v');
+ await db.query('insert into public.daily_result(user_id,d,is_correct,time_spent) values($1,$2::date-2,true,3),($1,$2::date-1,true,4)',[player,today]);
+ const own=(await db.query('select * from public.get_daily_user_streak($1)',[player])).rows[0];assert.equal(own.current_streak,2);assert.equal(own.longest_streak,2);
+ await uid(other);assert.equal((await db.query('select * from public.get_daily_user_streak($1)',[player])).rows.length,0);
+ await uid(null);await db.exec('set role anon');try{await assert.rejects(db.query('select * from public.get_daily_user_streak($1)',[player]),/permission denied/);}finally{await db.exec('reset role');}
+});

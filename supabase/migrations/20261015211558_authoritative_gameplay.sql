@@ -6,6 +6,7 @@ alter table public.question add column daily_eligible boolean not null default t
 update public.question set selection_weight = 0.1, daily_eligible = false where id = 175;
 -- Provenance is retained without splitting or resetting the existing competition.
 alter table public.user_best add column verified_session_id uuid;
+create index hq_user_best_rank on public.user_best(category_id,difficulty_level_id,best_score desc,best_time,updated_at,user_id);
 alter function public.upsert_user_best(uuid,integer,integer,integer,integer) set search_path=pg_catalog;
 alter function public.touch_question_stats(integer,boolean) set search_path=pg_catalog;
 create or replace function public.us_central_today() returns date language sql volatile set search_path=pg_catalog as $$
@@ -488,6 +489,65 @@ returns jsonb language sql stable security definer set search_path=pg_catalog as
     'me',(select to_jsonb(r) from ranked r where user_id=auth.uid()));
 $$;
 
+-- Private personal streaks retain the pending-day rule and never expose another account.
+create or replace function public.get_daily_user_streak(p_user_id uuid)
+returns table (
+  user_id uuid,
+  current_streak integer,
+  longest_streak integer,
+  total_correct integer,
+  last_played date,
+  last_correct date
+)
+language sql
+stable
+security definer
+set search_path = pg_catalog
+as $function$
+  with
+  t as (
+    select d
+    from public.daily_result
+    where user_id = p_user_id and is_correct = true and d <= public.us_central_today()
+  ),
+  runs as (
+    select d, (d - (row_number() over (order by d))::integer * interval '1 day')::date as grp
+    from t
+  ),
+  agg as (
+    select min(d) as start_d, max(d) as end_d, count(*) as len
+    from runs
+    group by grp
+  ),
+  today as (select public.us_central_today() as d0),
+  longest as (
+    select coalesce(max(len), 0)::integer as longest_streak from agg
+  ),
+  current as (
+    select coalesce(max(len), 0)::integer as current_streak
+    from agg cross join today
+    where end_d = today.d0
+       or (end_d = today.d0 - 1 and not exists (
+         select 1 from public.daily_result
+         where user_id = p_user_id and d = today.d0
+       ))
+  ),
+  totals as (
+    select count(*) filter (where is_correct)::integer as total_correct,
+           max(d) as last_played,
+           max(d) filter (where is_correct) as last_correct
+    from public.daily_result
+    where user_id = p_user_id and d <= public.us_central_today()
+  )
+  select p_user_id,
+         (select current_streak from current),
+         (select longest_streak from longest),
+         (select total_correct from totals),
+         (select last_played from totals),
+         (select last_correct from totals)
+  where p_user_id = auth.uid();
+$function$;
+
 create function public.my_game_stats()
 returns jsonb language plpgsql stable security definer set search_path=pg_catalog as $$
 declare uid uuid:=auth.uid(); result jsonb;
@@ -581,7 +641,7 @@ revoke all on schema hq_private from public,anon,authenticated;
 do $$ declare f record; begin
   for f in select p.oid::regprocedure signature,p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace
     where n.nspname='public' and p.proname in ('quiz_start','quiz_next','quiz_answer','quiz_finish','daily_status','daily_begin',
-      'quiz_leaderboard','daily_leaderboard','my_game_stats','submit_daily_answer') loop
+      'quiz_leaderboard','daily_leaderboard','my_game_stats','get_daily_user_streak','get_my_daily_result','submit_daily_answer') loop
     execute format('revoke all on function %s from public,anon,authenticated',f.signature);
     execute format('grant execute on function %s to authenticated',f.signature);
     if f.proname in ('quiz_start','quiz_next','quiz_answer','quiz_finish','daily_status','quiz_leaderboard','daily_leaderboard') then
