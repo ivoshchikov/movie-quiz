@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
+import FilmStill from "../components/FilmStill";
 
 const coverPath = "/blog-assets/whalefall-book-to-film-cover.webp";
 const sources = {
@@ -69,6 +70,7 @@ const post: BlogPost = {
     <p>Our advice is to choose the experience you want first, rather than treating the book as homework. For viewers interested in how images tell stories, our <Link to="/blog/why-2-39-1-feels-more-cinematic">guide to film framing and aspect ratios</Link> offers a way to think about that change of medium.</p>
 
     <h2 id="movie-details" tabIndex={-1}>Who stars in Whalefall, and when is it released?</h2>
+    <FilmStill src="/blog-assets/whalefall-coast-still.webp" alt="A diver wearing a blue wetsuit and scuba gear beside a rocky coastline and choppy sea." width={1200} height={572} caption="Whalefall (2026): a diver on the coast." />
     <p><strong>Austin Abrams plays Jay Gardiner, and Josh Brolin plays his father, Mitt.</strong> The studio's cast list also includes Elisabeth Shue, John Ortiz, Jane Levy and Emily Rudd. Brian Duffield directs the survival thriller.</p>
     <p>The <a href={sources.film}>official US film page</a> lists <strong>October 16, 2026</strong> as the theatrical release date and a <strong>PG-13</strong> rating. Those details refer to the United States; release schedules and age classifications can differ elsewhere.</p>
     <h3>Where can you watch it?</h3>

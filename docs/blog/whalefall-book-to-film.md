@@ -27,13 +27,23 @@ The article uses original wording and no direct interview quotations. Reading-or
 
 ## Images
 
-The publication uses an original code-drawn vector illustration of a book, filmstrip and abstract ocean. It is not a movie still, book-cover reproduction or synthetic portrayal of a real performer. No externally licensed image is used. The visible caption identifies the illustration and says it does not depict a film scene.
+The cover is an original code-drawn vector illustration of a book, filmstrip and abstract ocean. It is not a movie still, book-cover reproduction or synthetic portrayal of a real performer. Its visible caption identifies it as an illustration. The article also includes the owner-supplied film frame documented below.
 
 - Editable source: `frontend/public/blog-assets/whalefall-book-to-film-cover.svg`.
 - Article/list cover: `whalefall-book-to-film-cover.webp`, 1200 × 675, 29,922 bytes.
 - OG/Twitter image: `whalefall-book-to-film-social.webp`, 1200 × 630, 30,210 bytes.
 - The cover reserves its dimensions, loads eagerly and decodes asynchronously. Alt text describes the illustration rather than claiming it is a film still.
-- An optional owner-supplied image can be added later: one non-spoiler landscape still showing Jay on the coast or before diving, with exact source and applicable reuse terms. A poster is an alternative; separate actor portraits are unnecessary for this article. Do not infer permission from availability on a studio site or IMDb.
+- Inline frame: `whalefall-coast-still.webp`, 1200 × 572, 41,092 bytes, preserving the uploaded frame's full composition. The image loads lazily and decodes asynchronously, with declared dimensions and descriptive alt text.
+- Provenance: the owner supplied `image(6).png` and explicitly stated on 2026-10-15 that they made the frame and it may be used on the site. This statement and publication authorization are recorded in `docs/blog/whalefall-still.json`; no third-party license, photographer identity or independently verified authorship is invented.
+- The frame sits in the movie-details section. Its caption describes a diver on the coast without naming a person from appearance or asserting when the scene occurs. No escape or ending detail is added.
+
+### Image addition — 2026-10-15
+
+The owner explicitly requested adding the supplied frame to the published article. Original PNG: 1600 × 763, 1,859,584 bytes. Prepared WebP: 1200 × 572, 41,092 bytes (97.8% smaller). The existing `FilmStill` component reserves the aspect ratio and limits the displayed height. This is a same-day image addition: the original publication date remains October 15, and no duplicate same-day update label is added. Film facts and the source-check date are unaffected.
+
+The original article release is confirmed in [PR #28](https://github.com/ivoshchikov/movie-quiz/pull/28). Publication of this image addition must be confirmed separately by its own publishing PR, successful checks, merge, Vercel production status and live HTTP/browser checks.
+
+Image-addition local validation passed: production build and SEO generation, both TypeScript projects, zero-warning ESLint, 66 existing blog/article browser scenarios, and direct checks of the new figure in generated HTML and at 1440/390/320 px. The frame decodes at its declared 1200 × 572 dimensions, keeps the full composition, loads lazily and does not cause horizontal overflow or page errors. Desktop and mobile screenshots were visually inspected.
 
 ## Publication decisions and checks
 
