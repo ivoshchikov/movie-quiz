@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "article_slug": "is-whalefall-based-on-a-book",
+  "supplied_by": "Hard Quiz site owner",
+  "supplied_on": "2026-10-15",
+  "owner_statement": "The owner states that they created this frame. They explicitly authorize using it on Hard Quiz.",
+  "publication_authorized_on": "2026-10-15",
+  "source_url": null,
+  "photographer": null,
+  "third_party_license": null,
+  "source_file": {
+    "uploaded_name": "image(6).png",
+    "dimensions": [
+      1600,
+      763
+    ],
+    "bytes": 1859584,
+    "sha256": "9c055c46c2cfd9231a2c6a2187e8310b35976b58da53747c3c0027d13f707d22"
+  },
+  "prepared_image": {
+    "src": "/blog-assets/whalefall-coast-still.webp",
+    "width": 1200,
+    "height": 572,
+    "bytes": 41092,
+    "sha256": "c0a6fe978a173370f6999b31b8dba83744cd435add094ec4980ef0a7d7a73f70",
+    "alt": "A diver wearing a blue wetsuit and scuba gear beside a rocky coastline and choppy sea.",
+    "caption": "Whalefall (2026): a diver on the coast.",
+    "loading": "lazy",
+    "decoding": "async",
+    "framing": "Full source frame preserved; resized without cropping."
+  }
+}
