@@ -23,3 +23,45 @@
 
 @media (max-width: 1240px) { .hq-haunt-spider { display: block; top: 80px; left: 0; width: 24px; height: 50px; opacity: .65; } }
 @media (max-width: 620px) { .hq-haunt-spider { top: 104px; width: 22px; } }
+
+/* Short visits stay near the viewport edges and never receive pointer events. */
+.hq-haunt-end { display: flex; align-items: center; gap: 12px; }
+.hq-haunt-motion { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; padding: 0; color: var(--hq-muted); background: transparent; border: 1px solid var(--hq-control-border); border-radius: 50%; cursor: pointer; pointer-events: auto; }
+.hq-haunt-motion:hover { color: var(--hq-text); background: var(--hq-surface-soft); }
+.hq-haunt-motion:focus-visible { outline: 2px solid var(--hq-purple); outline-offset: 3px; }
+.hq-haunt-motion svg { width: 16px; height: 16px; }
+.hq-haunt-visitors { position: fixed; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.hq-haunt-visitor { position: absolute; color: #c2a0de; animation-duration: 4s; animation-timing-function: linear; animation-fill-mode: both; }
+.hq-haunt-visitor-spider { left: -60px; bottom: max(3px, env(safe-area-inset-bottom)); animation-name: hq-spider-run; }
+.hq-haunt-visitor-spider .hq-haunt-glyph { width: 44px; height: 44px; transform: rotate(90deg); }
+.hq-haunt-legs-a, .hq-haunt-legs-b { transform-origin: 40px 44px; animation: hq-spider-step .16s ease-in-out infinite alternate; }
+.hq-haunt-legs-b { animation-direction: alternate-reverse; }
+.hq-haunt-visitor-witch { right: -102px; top: max(120px, 20vh); --hq-witch-inset: -100px; animation-name: hq-witch-flight; }
+.hq-haunt-visitor-witch .hq-haunt-glyph { width: 94px; height: 94px; }
+@keyframes hq-spider-run {
+  0% { opacity: 0; transform: translateX(0); }
+  6%, 94% { opacity: .9; }
+  100% { opacity: 0; transform: translateX(calc(100vw + 120px)); }
+}
+@keyframes hq-spider-step { from { transform: scaleY(.82); } to { transform: scaleY(1.08); } }
+@keyframes hq-witch-flight {
+  0% { opacity: 0; transform: translate(0, 24px) rotate(-16deg); }
+  15% { opacity: .85; }
+  30% { transform: translate(var(--hq-witch-inset), -12px) rotate(-8deg); }
+  65% { opacity: .85; transform: translate(var(--hq-witch-inset), -68px) rotate(12deg); }
+  100% { opacity: 0; transform: translate(0, -150px) rotate(24deg); }
+}
+@media (max-width: 800px) {
+  .hq-haunt-end { gap: 4px; }
+  .hq-haunt-visitor-witch { right: -56px; --hq-witch-inset: -50px; }
+  .hq-haunt-visitor-witch .hq-haunt-glyph { width: 48px; height: 48px; }
+  .hq-haunt-visitor-spider .hq-haunt-glyph { width: 34px; height: 34px; }
+}
+@media (max-width: 620px) {
+  .hq-haunt-end .hq-haunt-still-life { display: none; }
+  .hq-haunt-season .hq-haunt-glyph { width: 36px; }
+}
+@media (max-width: 360px) { .hq-haunt-band > .hq-haunt-still-life { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .hq-haunt-visitors, .hq-haunt-motion { display: none; }
+}

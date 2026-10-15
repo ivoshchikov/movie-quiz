@@ -212,7 +212,7 @@ test("the slider supports dragging through three stops and removes Halloween dec
   await page.mouse.move(box!.x + box!.width - 12, y, { steps: 8 }); await page.mouse.up();
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
   await expect(page.locator(".hq-haunt-band")).toBeVisible();
-  await expect(page.locator(".hq-haunt")).toHaveAttribute("aria-hidden", "true");
+  await expect(page.locator(".hq-haunt-edges")).toHaveAttribute("aria-hidden", "true");
   await expect(page.locator(".hq-haunt")).toHaveCSS("pointer-events", "none");
   await page.reload();
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
