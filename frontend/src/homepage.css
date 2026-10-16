@@ -41,6 +41,7 @@
 .hq-panel { background: var(--hq-surface); border: 1px solid var(--hq-border); border-radius: 16px; }
 .hq-quiz-panel { padding: 25px; }
 .hq-section-heading { font-size: 20px; line-height: 1.35; letter-spacing: -.45px; font-weight: 600; margin-bottom: 19px; }
+.hq-guest-note { margin-top: -12px; margin-bottom: 19px; color: var(--hq-muted); font-size: 13px; line-height: 1.5; }
 .hq-fieldset { min-width: 0; }
 .hq-fieldset + .hq-fieldset { margin-top: 22px; }
 .hq-legend { display: block; font-size: 12px; color: var(--hq-muted); margin-bottom: 9px; font-weight: 500; }

@@ -49,6 +49,7 @@ export default function StartScreen() {
       <div className="hq-play-area">
         <section className="hq-panel hq-quiz-panel" aria-labelledby="start-quiz-heading" aria-busy={loading || availability.loading}>
           <h2 id="start-quiz-heading" className="hq-section-heading">Start a quiz</h2>
+          <p className="hq-guest-note">Play free. No account needed.</p>
           {loading ? <StatusMessage tone="loading">Loading quiz options…</StatusMessage>
             : error ? <StatusMessage tone="error">Quiz options could not be loaded. <button className="hq-inline-action" onClick={reload}>Try again</button></StatusMessage>
             : !categories.length || !difficulties.length ? <StatusMessage>New quizzes are coming soon.</StatusMessage>
@@ -71,7 +72,7 @@ export default function StartScreen() {
           <h2 id="daily-heading">Today’s challenge</h2>
           <p className="hq-daily-copy">One question. One attempt.<br />Same challenge for everyone.</p>
           <div className="hq-daily-bottom">
-            <p className="hq-daily-note">Come back every day to build your streak.</p>
+            <p className="hq-daily-note">Account required. Build your streak one day at a time.</p>
             <Link to="/daily" className="hq-secondary hq-secondary-wide">Play Daily <SiteIcon name="arrow" /></Link>
           </div>
         </section>

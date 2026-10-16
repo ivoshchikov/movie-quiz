@@ -430,6 +430,8 @@ test("switching accounts isolates identity, records and Daily from late response
 
 test("Chicago midnight refreshes Daily statistics without playing an attempt", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-10-08T04:59:58Z") });
+  // Keep fixture loading before midnight regardless of browser/server load.
+  await page.clock.pauseAt(new Date("2026-10-08T04:59:59Z"));
   const { data, calls } = await fixture(page);
   await loaded(page);
   const before = data.dailyCalls;
