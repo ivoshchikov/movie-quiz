@@ -33,6 +33,7 @@ export default defineConfig({
       VITE_SUPABASE_ANON_KEY: 'local-test-placeholder',
       VITE_GA_ID: 'G-QUIZFIXTURE',
       VITE_GA_MEASUREMENT_ID: '',
+      VITE_ANALYTICS_TEST_MODE: 'true',
     },
     // если хотите, на CI можно не переиспользовать уже запущенный сервер
     reuseExistingServer: false,

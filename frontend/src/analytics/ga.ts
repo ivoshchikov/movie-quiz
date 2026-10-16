@@ -1,7 +1,7 @@
-// frontend/src/analytics/ga.ts
-type AnalyticsParameters = Record<string, unknown>;
+export type AnalyticsParameters = Record<string, unknown>;
 type GtagArguments =
   | [command: "js", date: Date]
+  | [command: "set", parameters: AnalyticsParameters]
   | [command: "config", id: string, parameters?: AnalyticsParameters]
   | [command: "event", name: string, parameters?: AnalyticsParameters];
 
@@ -10,63 +10,104 @@ declare global {
     dataLayer: unknown[];
     gtag?: (...args: GtagArguments) => void;
     __gaLoaded?: boolean;
+    __gaLoading?: boolean;
   }
 }
 
-// поддерживаем и VITE_GA_ID, и VITE_GA_MEASUREMENT_ID
-const GA_ID =
-  import.meta.env.VITE_GA_ID ||
-  import.meta.env.VITE_GA_MEASUREMENT_ID;
+const browser = typeof window !== "undefined";
+const GA_ID = import.meta.env?.VITE_GA_ID || import.meta.env?.VITE_GA_MEASUREMENT_ID || "";
+const fixture = GA_ID === "G-QUIZFIXTURE" && import.meta.env?.VITE_ANALYTICS_TEST_MODE === "true";
+const allowedHost = browser && (["hard-quiz.com", "www.hard-quiz.com"].includes(location.hostname) ||
+  fixture && ["localhost", "127.0.0.1"].includes(location.hostname));
+const debug = fixture || browser && new URLSearchParams(location.search).get("debug_mode") === "1";
+const optOutKey = "hq_analytics_opt_out";
+const optOut = (() => {
+  if (!browser) return true;
+  const control = new URLSearchParams(location.search).get("analytics");
+  try {
+    if (control === "off") localStorage.setItem(optOutKey, "1");
+    if (control === "on") localStorage.removeItem(optOutKey);
+    return control === "off" || localStorage.getItem(optOutKey) === "1";
+  } catch { return control === "off"; }
+})();
+let blocked = true, initialized = false;
+let lastPage: { visit: string; url: string } | null = null;
 
-let blocked = false;
+/** Keep campaign IDs and public filters; never send credentials, free text or URL fragments. */
+export function analyticsPath(path: string): string {
+  const url = new URL(path, location.origin);
+  const safe = new URLSearchParams();
+  for (const name of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id",
+    "gclid", "dclid", "gbraid", "wbraid", "category", "difficulty", "topic", "tag", "page", "sort"]) {
+    const value = url.searchParams.get(name);
+    if (value != null) safe.set(name, value);
+  }
+  return url.pathname + (safe.size ? `?${safe}` : "");
+}
+
+function initialReferrer() {
+  try {
+    const ref = new URL(document.referrer);
+    const authHost = new URL(import.meta.env?.VITE_SUPABASE_URL || location.origin).hostname;
+    const authentication = ref.hostname === "accounts.google.com" || ref.hostname === authHost && ref.pathname.startsWith("/auth/v1/");
+    return { page_referrer: authentication ? "" : ref.origin + ref.pathname, ignore_referrer: authentication };
+  } catch { return { page_referrer: "", ignore_referrer: false }; }
+}
+const referral = initialReferrer();
+let virtualReferrer = referral.page_referrer;
+const canTrack = () => !!GA_ID && !blocked && allowedHost && !optOut && !/^\/admin(?:\/|$)/.test(location.pathname);
+const pageContext = () => ({
+  page_title: document.title,
+  page_location: location.origin + analyticsPath(location.pathname + location.search),
+  ...referral, page_referrer: virtualReferrer, debug_mode: debug, analytics_version: 2,
+});
+
 export function setAnalyticsBlocked(value: boolean) {
   blocked = value;
-  if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: value });
+  if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: !canTrack() });
 }
 
 export function loadGA() {
-  if (!GA_ID || blocked || window.__gaLoaded) return;
-
-  // Заглушка + очередь
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    // Keep Google's documented Arguments queue format; an array is a different command shape.
-    // https://developers.google.com/tag-platform/tag-manager/datalayer
-    // eslint-disable-next-line prefer-rest-params -- Compatibility with the Google tag queue protocol.
-    window.dataLayer.push(arguments);
-  };
-
-  // Базовые команды (как в оф. сниппете)
-  window.gtag('js', new Date());
-  window.gtag('config', GA_ID, { send_page_view: false });
-
-  // Загрузка gtag.js
-  const s = document.createElement('script');
-  s.async = true;
-  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-  s.onload = () => { window.__gaLoaded = true; };
-  document.head.appendChild(s);
+  if (!canTrack() || window.__gaLoaded || window.__gaLoading) return;
+  // Mark synchronously: StrictMode and concurrent events must share one script/config.
+  window.__gaLoading = true;
+  if (!initialized) {
+    initialized = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() {
+      // Google's queue uses Arguments objects, not arrays.
+      // eslint-disable-next-line prefer-rest-params -- Google tag queue protocol.
+      window.dataLayer.push(arguments);
+    };
+    window.gtag("js", new Date());
+    window.gtag("config", GA_ID, { ...pageContext(), send_page_view: false });
+  }
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  script.onload = () => { window.__gaLoading = false; window.__gaLoaded = true; };
+  script.onerror = () => { window.__gaLoading = false; script.remove(); };
+  document.head.appendChild(script);
 }
 
-const isDebug =
-  /debug_mode=1/.test(location.search) ||
-  /localhost|127\.0\.0\.1/.test(location.hostname);
-
-export function pageview(path: string) {
-  if (!GA_ID || blocked) return;
-  window.gtag?.('event', 'page_view', {
-    page_title: document.title,
-    // Layout supplies the public path without callback credentials or fragments.
-    page_location: location.origin + path,
-    page_path: path,
-    debug_mode: isDebug,
-  });
+export function event(name: string, params: AnalyticsParameters = {}): boolean {
+  if (!canTrack()) return false;
+  loadGA();
+  window.gtag?.("event", name, { ...pageContext(), ...params, debug_mode: debug, analytics_version: 2 });
+  return !!window.gtag;
 }
 
-export function event(name: string, params: AnalyticsParameters = {}) {
-  if (!GA_ID || blocked) return;
-  window.gtag?.('event', name, { ...params, debug_mode: isDebug });
+export function pageview(path: string, visit = path) {
+  if (!canTrack()) return;
+  const cleanPath = analyticsPath(path), url = location.origin + cleanPath;
+  if (lastPage?.visit === visit && lastPage.url === url) return;
+  loadGA();
+  const context = { ...pageContext(), page_location: url, page_path: cleanPath,
+    page_referrer: lastPage?.url ?? referral.page_referrer };
+  virtualReferrer = context.page_referrer;
+  // Keep automatic events on the same sanitized virtual page as our manual page_view.
+  window.gtag?.("set", context);
+  if (event("page_view", context)) lastPage = { visit, url };
 }
 
-// совместимость
 export const gaEvent = event;

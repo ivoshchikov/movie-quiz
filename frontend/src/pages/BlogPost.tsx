@@ -5,6 +5,7 @@ import { GalleryProvider } from "../blog/components/GalleryCollector";
 import { articleJsonLd, articleMetadata, blogReturnUrl, blogTopicUrl, formatBlogDate, primaryTopic, readingEstimate, sortBlogPosts, validBlogDate } from "../blog/presentation";
 import "../blog-article.css";
 import NotFound from "../components/NotFound";
+import { articleToQuiz } from "../analytics/attempts";
 
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
@@ -58,7 +59,7 @@ export default function BlogPostPage() {
       </section>}
       <section className="hq-article-cta" aria-labelledby="quiz-next">
         <div><h2 id="quiz-next">Put your movie knowledge to the test</h2><p>Choose a quiz and difficulty, or explore today's Daily challenge. Movie quizzes are open to guests. Daily requires an account.</p></div>
-        <div className="hq-article-actions"><Link to="/" className="hq-primary">Choose a quiz</Link><Link to="/daily" className="hq-secondary">Try Daily</Link></div>
+        <div className="hq-article-actions"><Link to="/" className="hq-primary" onClick={() => articleToQuiz(post.slug, "normal")}>Choose a quiz</Link><Link to="/daily" className="hq-secondary" onClick={() => articleToQuiz(post.slug, "daily")}>Try Daily</Link></div>
       </section>
       <Link to={backToBlog} className="hq-article-back">← Back to blog</Link>
     </article>

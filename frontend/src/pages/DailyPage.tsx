@@ -15,6 +15,7 @@ import SiteIcon from "../components/SiteIcon";
 import ThemeSlider from "../components/ThemeSlider";
 import YourDailyCard from "../components/YourDailyCard";
 import StreakLeaderboard from "../components/StreakLeaderboard";
+import { gaEvent } from "../analytics/ga";
 import "../game.css";
 import "../daily.css";
 
@@ -114,7 +115,7 @@ export default function DailyPage() {
             </div>
             <YourDailyCard date={game.today} refreshKey={game.refreshKey} />
             <div className="hq-daily-actions">{previousDay ? <button className="hq-primary" onClick={() => game.actions.current?.openToday()}>Play today’s Daily</button> : <Link className="hq-primary" to="/">Play a regular quiz <SiteIcon name="arrow" /></Link>}<Link className="hq-secondary" to="/">Back to home</Link></div>
-            <a className="hq-secondary hq-daily-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://hard-quiz.com/daily")}`} target="_blank" rel="noopener noreferrer"><SiteIcon name="x" />Share on X</a>{next}
+            <a className="hq-secondary hq-daily-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://hard-quiz.com/daily")}`} onClick={() => gaEvent("share_click", { method: "x", game_mode: "daily", d: game.date })} target="_blank" rel="noopener noreferrer"><SiteIcon name="x" />Share on X</a>{next}
           </> : game.phase === "load-error" || game.phase === "start-error" || game.phase === "empty" ? <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.phase === "empty" ? "Today’s challenge is on its way" : "Daily couldn’t load"}</h1><p role={game.phase === "empty" ? "status" : "alert"}>{game.phase === "empty" ? "No question is available for this Daily yet. You can still play a regular quiz." : "We couldn’t check your Daily or load the question. Please try again."}</p><button className="hq-primary" onClick={() => game.actions.current?.retry()}>Try again</button><Link className="hq-inline-action" to="/">Back to home</Link>{next}</div> : <>
             <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.startedAt ? "Your Daily is waiting" : "One image. One daily challenge."}</h1><p>{game.startedAt ? "Continue your attempt on any device. Your answer timer has kept running." : "Identify the movie or actor. Get it right and build your streak, one day at a time."}</p>
               <div className="hq-daily-rules"><span>One answer per day</span><span>Until midnight US Central</span></div>

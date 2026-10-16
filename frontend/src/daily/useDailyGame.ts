@@ -5,6 +5,7 @@ import { getPublicUrl } from "../supabase";
 import { dailyBegin, dailyReceipt, dailyStatus } from "../game/server";
 import type { DailyStatus } from "../game/server";
 import { gaEvent } from "../analytics/ga";
+import { attemptAnalytics } from "../analytics/attempts";
 import { clearDailyRun, dailyRunKey, pointToDaily, readDailyRun, writeDailyRun } from "./dailyStorage";
 import type { DailyRun } from "./dailyStorage";
 import { dailyDate, nextDailyReset } from "./time";
@@ -30,6 +31,7 @@ async function withDailyLock<T>(key: string, work: () => Promise<T>): Promise<T>
 export function useDailyGame(userId: string | null, authLoading: boolean) {
   const [view, setView] = useState<DailyView>(() => initial(userId));
   const actions = useRef<Actions | null>(null);
+  const viewed = useRef<string | null>(null);
   useEffect(() => {
     let mounted = true, revision = 0, state = initial(userId), refreshing = false;
     let serverAt = Date.now(), receivedAt = performance.now(), closesAt = nextDailyReset();
@@ -57,7 +59,8 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
         if (!valid(id)) return;
         sync(status);
         if (userId && previousDate !== status.date) clearDailyRun(userId, previousDate);
-        gaEvent("daily_view", { d: status.date, is_logged_in: !!userId });
+        const viewKey = `${status.date}:${userId ?? "guest"}`;
+        if (viewed.current !== viewKey && gaEvent("daily_view", { d: status.date, game_mode: "daily", is_logged_in: !!userId })) viewed.current = viewKey;
         if (!userId) { update({ phase: "guest" }); return; }
         const receipt = dailyReceipt(status);
         if (receipt) { confirmed(receipt); return; }
@@ -71,6 +74,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
     async function begin() {
       if (!userId || !["ready", "start-error"].includes(state.phase)) return;
       const id = revision, date = state.date;
+      const resumed = !!state.startedAt;
       update({ phase: "starting" });
       try {
         const status = await withDailyLock(dailyRunKey(userId, date), () => dailyBegin(date, lifetime.signal));
@@ -86,7 +90,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
         const storageAvailable = writeDailyRun(run);
         update({ phase: run.pending ? "save-error" : "image-loading", question, run, options: run.options, storageAvailable,
           imageAttempt: 0, elapsed: Math.max(0, Math.floor((now() - run.startedAt) / 1000)) });
-        gaEvent("daily_start", { d: status.date, is_logged_in: true });
+        attemptAnalytics("daily", `${userId}:${status.date}:${run.startedAt}`).start({ d: status.date, is_logged_in: true }, resumed);
       } catch {
         if (valid(id)) {
           // A day may have changed while the request waited for a database lock.
@@ -112,7 +116,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
         });
         if (!valid(id)) return;
         confirmed(result);
-        gaEvent("daily_submit", { d: run.date, ok: result.is_correct ?? false, elapsed: result.time_spent ?? 0 });
+        attemptAnalytics("daily", `${userId}:${run.date}:${run.startedAt}`).submit({ d: run.date, ok: result.is_correct ?? false, elapsed: result.time_spent ?? 0, is_logged_in: true });
       } catch { if (valid(id)) { if (now() >= closesAt) { clearDailyRun(userId, run.date); void boot(); } else update({ phase: "save-error" }); } }
     }
     actions.current = {
