@@ -362,3 +362,7 @@ The owner supplied 28 Years Later The Bone Temple(1).png. The new shot is accept
 ## BLOG-02 publication preparation — 2026-10-14 Asia/Nicosia
 
 Владелец прямо поручил опубликовать семь подготовленных кадров и уточнил, что считает изображения своими, вдохновлёнными IMDb. Это заявление владельца, без независимого подтверждения авторства или лицензии; манифест сохраняет прежнее и новое описание происхождения. Черновик подготовлен на актуальном main b03646e, оригинальная обложка и OG сохраняются. Дата публикации статьи — 2026-10-12, дата изменения с добавлением кадров — 2026-10-14; проверка фактов в тексте по-прежнему датирована 12 октября. Публикация пока ожидает PR/CI, merge и подтверждение Vercel.
+
+## Question upload recovery — 16 October 2026 (UTC)
+
+A targeted fix is prepared for the missing-object response that prevented first-time image imports. Upload cards now expose category destinations, reserved paths and explicit unconfirmed-operation recovery. See [QUESTION_UPLOAD_RECOVERY.md](QUESTION_UPLOAD_RECOVERY.md) for the cause, existing naming and recovery procedure. No schema, owner authorization, compression or game rules change. Deployment is recorded separately after confirmation.

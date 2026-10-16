@@ -419,3 +419,7 @@ The owner supplied 28 Years Later The Bone Temple(1).png. The new shot is accept
 - Неиспользованные будущие раунды удаляются при завершении. При новых стартах выполняется ограниченная очистка: гостевые сессии/сырые гостевые события старше суток, полные снимки завершённых раундов старше 30 дней. Итоги аккаунтов, события для личной статистики и агрегаты сохраняются. После удаления старого снимка результат читается через finish receipt, а старый round ID не принимается повторно.
 
 Пределы защиты: общедоступные изображения, заранее известный банк, внешние подсказки, автоматизация и несколько аккаунтов не дают основания обещать абсолютный античит. Сохранённые до выпуска рекорды не получают задним числом серверного доказательства. Проверки не создают игровые попытки и рекорды в production.
+
+## Question upload recovery — 16 October 2026 (UTC)
+
+Preserve the existing movies bucket, category namespaces, transactional numbering and same-operation retries. Handle only positively identified missing objects as absent; missing buckets and access errors remain failures. Display unconfirmed additions clearly and retain explicit encrypted-draft restoration without automatic publication. Implementation and verification: [QUESTION_UPLOAD_RECOVERY.md](QUESTION_UPLOAD_RECOVERY.md); publication remains pending confirmation.
