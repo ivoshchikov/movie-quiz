@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { test } from 'node:test';
 import { webcrypto } from 'node:crypto';
 import { createHandler } from '../functions/admin-questions/handler.js';
+import { createStorageAdapter } from '../functions/admin-questions/storage.js';
 import { imageHeader, decodeWebp, sha256 } from '../functions/admin-questions/image.js';
 if(!globalThis.crypto)globalThis.crypto=webcrypto;
 const image=new Uint8Array(await readFile(new URL('./assets/question.webp',import.meta.url)));
@@ -42,16 +43,53 @@ function fixture(){
       if(name==='admin_import_cleanup')return [];
       throw Error(name);
     },
-    storage:{
-      download:async(bucket,path)=>objects.get(`${bucket}/${path}`)?.bytes??null,
-      upload:async(bucket,path,bytes,metadata)=>{
-        assert.equal(objects.has(`${bucket}/${path}`),false,'never overwrite');uploads.push(`${bucket}/${path}`);objects.set(`${bucket}/${path}`,{bytes,metadata});
-        if(bucket==='movies'&&state.loseUpload){state.loseUpload=false;throw Error('Timeout after file persisted');}
+    storage:createStorageAdapter({from:bucket=>({
+      download:async path=>{
+        const object=objects.get(`${bucket}/${path}`);
+        return object?{data:new Blob([object.bytes]),error:null}:{data:null,error:{name:'StorageUnknownError',originalError:new Response(JSON.stringify({statusCode:'404',error:'not_found',message:'Object not found'}),{status:400})}};
       },
-      remove:async(bucket,path)=>{if(state.failCleanup)throw Error('Cleanup unavailable');objects.delete(`${bucket}/${path}`);},
-    },
+      upload:async(path,bytes,options)=>{
+        assert.equal(options.upsert,false,'never request an overwrite');assert.equal(options.contentType,'image/webp');
+        assert.equal(objects.has(`${bucket}/${path}`),false,'never overwrite');uploads.push(`${bucket}/${path}`);objects.set(`${bucket}/${path}`,{bytes,metadata:options.metadata});
+        return {error:bucket==='movies'&&state.loseUpload?(state.loseUpload=false,Error('Timeout after file persisted')):null};
+      },
+      remove:async paths=>{if(state.failCleanup)return {error:Error('Cleanup unavailable')};for(const path of paths)objects.delete(`${bucket}/${path}`);return {error:null};},
+    })}),
   });return {handler,state,objects,jobs,uploads,calls};
 }
+test('only a positively identified missing object is treated as an empty download',async()=>{
+ const download=error=>createStorageAdapter({from:()=>({download:async()=>({data:null,error})})}).download('question-staging','fixture.webp');
+ for(const error of [
+  {status:400,message:'Object not found'},
+  {statusCode:'404',message:'Object not found'},
+  {status:404,code:'NoSuchKey'},
+  {originalError:new Response(JSON.stringify({code:'NoSuchKey'}),{status:404})},
+ ])assert.equal(await download(error),null);
+ for(const error of [
+  {status:400,message:'Bucket not found'},
+  {statusCode:404,code:'NoSuchBucket'},
+  {status:403,message:'Object not found'},
+  {originalError:new Response(JSON.stringify({message:'Bucket not found'}),{status:400})},
+  {originalError:new Response('not JSON',{status:404})},
+  {originalError:new Response(JSON.stringify({message:'Object not found'}),{status:500})},
+  {originalError:new TypeError('fetch failed')},
+ ])await assert.rejects(download(error),/Storage unavailable/);
+});
+test('the exact pinned Supabase SDK wraps a missing download Response; the adapter handles it',async()=>{
+ const {createClient}=await import(process.env.HQ_SUPABASE_SDK_MODULE||new URL('../../frontend/node_modules/@supabase/supabase-js/dist/main/index.js',import.meta.url).href);
+ let status=400,body={statusCode:'404',error:'not_found',message:'Object not found'};
+ const client=createClient('https://fixture.supabase.co','fixture-key',{auth:{persistSession:false},global:{fetch:async()=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}})}});
+ const storage=createStorageAdapter(client.storage);
+ const legacy=await client.storage.from('question-staging').download('fixture.webp');
+ assert.equal(legacy.error.name,'StorageUnknownError');assert.ok(legacy.error.originalError instanceof Response);
+ assert.equal(await storage.download('question-staging','fixture.webp'),null);
+ status=404;body={code:'NoSuchKey',message:'The resource was not found'};
+ assert.equal(await storage.download('question-staging','fixture.webp'),null);
+ status=400;body={statusCode:'404',error:'not_found',message:'Bucket not found'};
+ await assert.rejects(storage.download('question-staging','fixture.webp'),/Storage unavailable/);
+ status=403;body={message:'Access denied'};
+ await assert.rejects(storage.download('question-staging','fixture.webp'),/Storage unavailable/);
+});
 test('decode the complete WebP and validate dimensions; headers alone are insufficient',async()=>{
  const header=imageHeader(image,1920),decoded=await decodeWebp(image);assert.deepEqual(header,{width:1920,height:960});assert.equal(decoded.width,header.width);assert.equal(decoded.height,header.height);
  await assert.rejects(decodeWebp(image.subarray(0,30)));assert.throws(()=>imageHeader(image,1600),/dimensions/);

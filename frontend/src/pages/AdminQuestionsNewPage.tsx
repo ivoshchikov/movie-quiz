@@ -26,6 +26,12 @@ const bytes = (n: number) =>
   n >= 1048576
     ? `${(n / 1048576).toFixed(1)} MiB`
     : `${(n / 1024).toFixed(1)} KiB`;
+const imageDestinations: Record<number, string> = {
+  1: "general/g_#####.webp",
+  2: "actors/act_#####.webp",
+  3: "actresses/actr_#####.webp",
+  4: "series/tv_#####.webp",
+};
 export default function AdminQuestionsNewPage() {
   const { user } = useAuth();
   return (
@@ -360,6 +366,11 @@ function QuestionUploader({ owner }: { owner: string }) {
       );
       return true;
     }
+    mutate((all) =>
+      all.map((c) =>
+        c.id === card.id ? { ...c, imagePath: status.image_path } : c,
+      ),
+    );
     return false;
   }
   async function check(card: QuestionDraft) {
@@ -392,7 +403,7 @@ function QuestionUploader({ owner }: { owner: string }) {
           c.id === card.id
             ? {
                 ...c,
-                phase: "Checking status",
+                phase: "Failed",
                 message:
                   "Status could not be checked. Try again when the connection returns.",
               }
@@ -492,10 +503,7 @@ function QuestionUploader({ owner }: { owner: string }) {
                 c.id === id
                   ? {
                       ...c,
-                      phase:
-                        error instanceof ImportError && error.kind === "invalid"
-                          ? "Failed"
-                          : "Checking status",
+                      phase: "Failed",
                       locked: !(
                         error instanceof ImportError &&
                         error.kind === "invalid" &&
@@ -515,7 +523,7 @@ function QuestionUploader({ owner }: { owner: string }) {
                 c.id === id
                   ? {
                       ...c,
-                      phase: "Checking status",
+                      phase: "Failed",
                       message:
                         "Saving could not be confirmed. Check status or retry when the connection returns.",
                     }
@@ -670,6 +678,13 @@ function QuestionUploader({ owner }: { owner: string }) {
         )}
       </div>
       {notice && <p role="alert">{notice}</p>}
+      {!running && failed.length > 0 && (
+        <p className="hq-bank-warning" role="alert">
+          {failed.length} question{failed.length === 1 ? " still needs" : "s still need"}{" "}
+          confirmation. Use Retry unconfirmed questions to continue the same
+          uploads. Only cards marked Added are confirmed in the bank.
+        </p>
+      )}
       <div className="hq-upload-toolbar">
         <span>
           {cards.length} cards ·{" "}
@@ -821,7 +836,11 @@ function DraftCard({
         <span
           className={`hq-upload-status phase-${card.phase.toLowerCase().replace(/ /g, "-")}`}
         >
-          {card.phase === "Ready" && !draftIsReady(card) ? "Draft" : card.phase}
+          {card.phase === "Ready" && !draftIsReady(card)
+            ? "Draft"
+            : card.phase === "Failed" && card.locked && !card.questionId
+              ? "Not confirmed"
+              : card.phase}
         </span>
       </header>
       <p className="hq-upload-file">{card.name}</p>
@@ -841,12 +860,14 @@ function DraftCard({
       )}
       {!card.imagePath && (
         <p className="hq-upload-file">
-          A unique image path is assigned when you add this question.
+          Destination: <code>movies/{imageDestinations[card.category]}</code>.
+          The server assigns the next available number when you add this question.
         </p>
       )}
       {card.imagePath && (
         <p className="hq-upload-file">
-          <code>{card.imagePath}</code>
+          {card.phase === "Added" ? "Saved image: " : "Reserved image: "}
+          <code>movies/{card.imagePath}</code>
         </p>
       )}
       {card.processed && (

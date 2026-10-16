@@ -1,6 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.52.0';
 import { createHandler } from './handler.js';
 import { decodeWebp } from './image.js';
+import { createStorageAdapter } from './storage.js';
 
 const url = Deno.env.get('SUPABASE_URL')!;
 const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS') || '{}').default;
@@ -22,24 +23,7 @@ const handler = createHandler({
     if (error) throw new Error(error.message);
     return data;
   },
-  storage: {
-    async download(bucket: string, path: string) {
-      const { data, error } = await service.storage.from(bucket).download(path);
-      if (error) {
-        if ('statusCode' in error && ['400','404'].includes(String(error.statusCode))) return null;
-        throw new Error('Storage unavailable');
-      }
-      return new Uint8Array(await data.arrayBuffer());
-    },
-    async upload(bucket: string, path: string, bytes: Uint8Array, metadata: Record<string, string>) {
-      const { error } = await service.storage.from(bucket).upload(path, bytes, { contentType: 'image/webp', cacheControl: '31536000', upsert: false, metadata });
-      if (error) throw new Error('Storage upload interrupted');
-    },
-    async remove(bucket: string, path: string) {
-      const { error } = await service.storage.from(bucket).remove([path]);
-      if (error) throw new Error('Storage cleanup interrupted');
-    },
-  },
+  storage: createStorageAdapter(service.storage),
   decode: decodeWebp,
 });
 Deno.serve(handler);
