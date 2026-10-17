@@ -1,6 +1,6 @@
 # Growth analytics v2
 
-GROW-02, 16 October 2026. This describes the branch implementation, not a confirmed production release or GA4 ingestion result. No database migration is required.
+GROW-02, updated 18 October 2026 (Asia/Nicosia). The implementation and release evidence are tracked in [PR #34](https://github.com/ivoshchikov/movie-quiz/pull/34). Implementation, collection configuration, deployment and GA4 ingestion are distinct checks. No database migration is required.
 
 ## Collection boundary
 
@@ -46,7 +46,9 @@ The article CTA associates with the next matching-mode start/continue in the sam
 
 ## Remaining GA4 configuration and release verification
 
-The Windsor connection supplied report data, not verified GA4 Editor access. No property settings were changed.
+GA4 Editor access was verified on 18 October 2026 for property **501658455**, web stream **12044923441**, URL **https://hard-quiz.com**, measurement ID **G-Q0QH7XCD8B**. Only **Page changes based on browser history events** was disabled; reopening the editor confirmed the saved state. The refreshed official configured tag produced **4 manual / 4 outgoing pageviews** for home → Blog → Daily → Back, with no page errors. A separate isolated normal-game wire check produced start=1, first answer=1, answers=3, qualified play=1, end=1, retained article association and exposed no server capabilities. These intercepted wire checks do not by themselves prove GA4 receipt.
+
+Nine event-scoped dimensions were created: `analytics_version`, `game_mode`, `criterion`, `article_slug`, `outcome`, `reason`, `is_logged_in`, `category_id`, `difficulty_id`. Sending historical parameters does not backfill newly registered definitions. `run_id` and `cta_id` were deliberately not registered. Any release diagnostic uses source `qa`, medium `internal`, campaign `grow02_release_check_20261018` and debug mode; exclude it from growth cohorts. The receipt and production evidence below are completed in the PR release record.
 
 1. Check Enhanced measurement → Page views → advanced history setting. The application sends manual SPA pageviews: disable automatic history pageviews for this implementation, then verify one view per navigation in DebugView/network. `send_page_view=false` alone does not prove the separate history setting is disabled. See [manual pageviews](https://developers.google.com/analytics/devguides/collection/ga4/views) and [SPA verification](https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications).
 2. Verify no extra Google tag/GTM is injected outside this repository, and confirm the production measurement ID.

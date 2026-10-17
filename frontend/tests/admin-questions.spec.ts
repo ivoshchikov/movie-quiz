@@ -192,16 +192,25 @@ async function fixture(
         contentType: "application/json",
         body: '{"status":"duplicate","question_id":41}',
       });
-    if (data.failImport)
+    const folder = ({ 1: "general/g", 2: "actors/act", 3: "actresses/actr", 4: "series/tv" } as Record<number, string>)[p.category_id];
+    const previous = data.statuses.get(p.id) as { image_path: string } | undefined;
+    const imagePath = previous?.image_path ?? `${folder}_${String(100 + data.imports.length).padStart(5, "0")}.webp`;
+    if (data.failImport) {
+      data.statuses.set(p.id, {
+        status: "reserved",
+        question_id: null,
+        image_path: imagePath,
+      });
       return r.fulfill({
         status: 503,
         contentType: "application/json",
         body: '{"error":"unconfirmed"}',
       });
+    }
     const result = {
       status: "committed",
       question_id: p.edit_question_id ?? 300 + data.imports.length,
-      image_path: `general/g_${String(100 + data.imports.length).padStart(5, "0")}.webp`,
+      image_path: imagePath,
     };
     if (p.edit_question_id) { const q = data.rows.find(q => q.id === p.edit_question_id)!; q.image_url = result.image_path; q.options_json = p.options; q.correct_answer = p.options[p.correct_index]; q.admin_revision++; }
     data.statuses.set(p.id, result);
@@ -429,6 +438,9 @@ test("unconfirmed questions retry the same operation; duplicate upload needs an 
   await expect(
     page.getByRole("button", { name: "Retry this question", exact: true }),
   ).toBeEnabled();
+  await expect(page.getByText("Not confirmed", { exact: true })).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: "still needs confirmation" })).toBeVisible();
+  await expect(page.getByText("Reserved image:")).toContainText("movies/general/g_00101.webp");
   data.failImport = false;
   await page
     .getByRole("button", { name: "Retry this question", exact: true })
@@ -449,6 +461,32 @@ test("unconfirmed questions retry the same operation; duplicate upload needs an 
   await page.getByRole("button", { name: "Add this image again" }).click();
   await expect(page.getByText("Added", { exact: true })).toBeVisible();
   expect(data.imports.at(-1)?.allow_duplicate).toBe(true);
+});
+test("a reserved series upload survives reload and retries the original operation without auto-publishing", async ({ page }) => {
+  const { data } = await fixture(page);
+  data.failImport = true;
+  await page.goto("/admin/questions/new");
+  await expect(page.getByLabel("Choose images", { exact: true })).toBeEnabled();
+  await page.getByLabel("Default category", { exact: true }).selectOption("4");
+  await attach(page);
+  await fill(page);
+  await expect(page.getByText("Destination:")).toContainText("movies/series/tv_#####.webp");
+  await page.getByRole("button", { name: "Add 1 ready question", exact: true }).click();
+  await expect(page.getByText("Not confirmed", { exact: true })).toBeVisible();
+  await expect(page.getByText("Reserved image:")).toContainText("movies/series/tv_00101.webp");
+  await expect(page.getByText("Drafts saved securely in this browser.")).toBeVisible();
+  const original = data.imports[0];
+  await page.reload();
+  await page.getByRole("button", { name: "Restore 1 saved drafts" }).click();
+  await expect(page.getByText("Not confirmed", { exact: true })).toBeVisible();
+  await expect(page.getByText("Reserved image:")).toContainText("movies/series/tv_00101.webp");
+  await expect(page.getByLabel("Answer A", { exact: true })).toHaveValue(answers[0]);
+  expect(data.imports).toHaveLength(1);
+  data.failImport = false;
+  await page.getByRole("button", { name: "Retry this question", exact: true }).click();
+  await expect(page.getByText("Added", { exact: true })).toBeVisible();
+  expect(data.imports[1]).toEqual(original);
+  await expect(page.getByText("Saved image:")).toContainText("movies/series/tv_00101.webp");
 });
 test("encrypted drafts restore only by choice, retain processed image and never auto-publish", async ({
   page,

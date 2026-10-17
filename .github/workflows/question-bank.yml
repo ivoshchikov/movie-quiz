@@ -25,11 +25,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install isolated SQL client
-        run: npm install --prefix "$RUNNER_TEMP/hq-sql-test" --no-package-lock --no-save pg@8.13.3
+      - name: Install isolated SQL client and pinned Edge SDK
+        run: npm install --prefix "$RUNNER_TEMP/hq-sql-test" --no-package-lock --no-save pg@8.13.3 @supabase/supabase-js@2.52.0
       - name: Verify privacy, imports and concurrent reservations
         env:
           HQ_SQL_TEST_URL: postgresql://postgres:ui13-test-only@localhost:5432/hardquiz_ui13_test
         run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-sql-test/node_modules/pg/lib/index.js" node --test supabase/tests/question_bank.test.mjs
       - name: Verify image decoding and upload recovery
-        run: node --test supabase/tests/question_import.test.mjs
+        run: HQ_SUPABASE_SDK_MODULE="$RUNNER_TEMP/hq-sql-test/node_modules/@supabase/supabase-js/dist/main/index.js" node --test supabase/tests/question_import.test.mjs
