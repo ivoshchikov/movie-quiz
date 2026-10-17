@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
@@ -11,7 +11,7 @@ import ThemeSlider from "./ThemeSlider";
 import HalloweenDecorations from "./HalloweenDecorations";
 import SiteNavigation from "./SiteNavigation";
 import PageErrorBoundary from "./PageErrorBoundary";
-import { loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
+import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
@@ -39,9 +39,10 @@ export default function Layout() {
   const [nicknameNotice, setNicknameNotice] = useState<{ owner: string; nickname: string; alreadyChosen: boolean } | null>(null);
   const [admin, setAdmin] = useState<{ owner: string; value: boolean } | null>(null);
   const [dailyPlaying, setDailyPlaying] = useState(false);
+  const authReturnReported = useRef(false);
   const isProfileSetup = pathname === "/setup-profile";
   const isPlaying = pathname === "/play";
-  const isAdministration = pathname.startsWith('/admin/');
+  const isAdministration = /^\/admin(?:\/|$)/.test(pathname);
   const isGameView = isPlaying || (pathname === "/daily" && dailyPlaying);
   const owner = user?.id ?? "";
   const loadProfile = useCallback((signal: AbortSignal) => getProfile(owner, signal), [owner]);
@@ -95,7 +96,9 @@ export default function Layout() {
   }, [authLoading, owner, profileReady, nickname, isProfileSetup, isGameView, pathname, loc.pathname, loc.search, loc.hash, navigate]);
 
   useEffect(() => {
+    if (!authReturned) { authReturnReported.current = false; return; }
     if (!user || authLoading || !authReturned) return;
+    if (!authReturnReported.current) authReturnReported.current = gaEvent("login_success");
     const saved = consumeAuthReturn();
     finishAuthReturn(); setShowLogin(false);
     // A direct callback destination wins over another attempt's fallback.
@@ -111,7 +114,13 @@ export default function Layout() {
   const analyticsBlocked = authLoading || isAdministration || owner === '112743d7-f683-4bbb-8117-068e89a00f22';
   // Disable the tag for the owner on every route, including automatic history measurement.
   useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked]);
-  useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`); }, [pathname, search, analyticsBlocked]);
+  useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`, loc.key); }, [pathname, search, loc.key, analyticsBlocked]);
+  const loginViewed = useRef(false);
+  const loginVisible = !user && (showLogin || pathname === "/login");
+  useEffect(() => {
+    if (!loginVisible) { loginViewed.current = false; return; }
+    if (!analyticsBlocked && !loginViewed.current) loginViewed.current = gaEvent("login_view", { placement: showLogin ? "modal" : "page" });
+  }, [loginVisible, showLogin, analyticsBlocked]);
   const orgJsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Hard Quiz", url: CANON_BASE, logo: `${CANON_BASE}/favicon.svg` };
 
   return <div className={`hq-site${isGameView ? " hq-site-playing" : ""}`}>

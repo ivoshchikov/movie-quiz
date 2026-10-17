@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getCategories, getDifficultyLevels } from "../api";
 import type { Category, DifficultyLevel, Question } from "../api";
 import { useAuth } from "../AuthContext";
-import { gaEvent } from "../analytics/ga";
+import { attemptAnalytics } from "../analytics/attempts";
 import { gameRequest, roundQuestion } from "./server";
 import type { ServerGame } from "./server";
 import { checkpointGame, confirmedGameResult, lastGameResult, recoverInterruptedGame, retainGameResult, saveGameResult } from "./resultStorage";
@@ -44,6 +44,8 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
   useEffect(() => {
     if (authLoading || categoryId == null || difficultyId == null) return;
     const catId = categoryId, diffId = difficultyId;
+    const analytics = attemptAnalytics("normal", `${playKey}:${ownerId ?? "guest"}`);
+    const analyticSettings = { category_id: catId, difficulty_id: diffId, is_logged_in: !!ownerId };
     recoverInterruptedGame();
     const previous = lastGameResult(sessionRef.current?.user.id ?? null);
     if (previous?.playKey === playKey) { navigate("/result", { replace: true, state: previous }); return; }
@@ -73,7 +75,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       ended = true;
       const result = retainGameResult(server?.status === "finished" ? confirmedGameResult(baseResult(reason), server) : baseResult(reason));
       if (server?.status !== "finished") void saveGameResult(result, sessionRef.current, keepalive, keepalive ? Promise.resolve() : answerInFlight);
-      gaEvent("quiz_end", { category_id: catId, difficulty_id: diffId, score: result.score, elapsed_secs: result.elapsedSecs, finish_reason: result.finishReason });
+      analytics.end({ ...analyticSettings, score: result.score, elapsed_secs: result.elapsedSecs, finish_reason: result.finishReason, result_confirmed: server?.status === "finished" });
       update({ phase: "finished" });
       if (show && mounted) navigate("/result", { replace: true, state: result });
     }
@@ -115,7 +117,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
         sync(value); checkpointGame(game);
         if (value.bank_size === 0) { update({ phase: "empty" }); return; }
         if (value.status === "finished") { finish(value.finish_reason!); return; }
-        gaEvent("quiz_start", { category_id: catId, difficulty_id: diffId });
+        analytics.start(analyticSettings);
         busy = false; void loadQuestion();
       } catch { if (mounted && !ended) update({ phase: "setup-error" }); }
       finally { busy = false; }
@@ -127,10 +129,14 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       update({ phase: "checking", selected });
       try {
         const value = await gameRequest("quiz_answer", { p_session: id, p_round: server.round.id, p_answer: selected });
+        // Count only accepted server outcomes, including a late response after leaving the view.
+        if (value.id === id && value.category_id === catId && value.difficulty_id === diffId &&
+          value.round && value.round.outcome && value.round.outcome !== "abandoned") {
+          analytics.answer(value.round.number, value.round.outcome, { ...analyticSettings, question_id: value.round.question_id });
+        }
         if (!mounted || ended) return;
         sync(value);
         if (value.round?.outcome) feedback(value); else update({ phase: "playing" });
-        gaEvent("quiz_answer", { question_id: value.round?.question_id, correct: value.round?.outcome === "correct" });
       } catch { if (mounted && !ended) update({ phase: "answer-error" }); }
     }
     function sendAnswer(selected: string | null, retry = false) { answerInFlight = answer(selected, retry); }
