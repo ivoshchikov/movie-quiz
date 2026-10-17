@@ -41,10 +41,24 @@ test("a slow tag loads/configures once and SPA visits have one sanitized pagevie
   const views = await events(page, "page_view");
   expect(views[1].page_referrer).toBe("http://localhost:5173/?utm_source=x&utm_medium=social");
   expect((await commands(page)).filter(args => args[0] === "config")).toHaveLength(1);
+  expect((await commands(page)).find(args => args[0] === "config")?.[2]).not.toHaveProperty("debug_mode");
+  expect(views.every(view => !("debug_mode" in view))).toBe(true);
   expect(scripts).toBe(1);
   expect(JSON.stringify(await commands(page))).not.toMatch(/private-code|private-token/);
   expect(await page.evaluate(() => window.dataLayer.every(entry => Object.prototype.toString.call(entry) === "[object Arguments]"))).toBe(true);
   release();
+});
+
+test("debug mode is explicit and does not leak into ordinary visits after reload", async ({ page }) => {
+  await mockQuizApi(page);
+  await page.goto("/?debug_mode=1");
+  await expect.poll(async () => (await events(page, "page_view")).length).toBe(1);
+  expect((await commands(page)).find(args => args[0] === "config")?.[2]).toHaveProperty("debug_mode", true);
+  expect((await events(page, "page_view"))[0]).toHaveProperty("debug_mode", true);
+  await page.goto("/");
+  await expect.poll(async () => (await events(page, "page_view")).length).toBe(1);
+  expect((await commands(page)).find(args => args[0] === "config")?.[2]).not.toHaveProperty("debug_mode");
+  expect((await events(page, "page_view"))[0]).not.toHaveProperty("debug_mode");
 });
 
 test("QA opt-out survives navigation and reload and can be explicitly cleared", async ({ page }) => {

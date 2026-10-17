@@ -19,7 +19,7 @@ const GA_ID = import.meta.env?.VITE_GA_ID || import.meta.env?.VITE_GA_MEASUREMEN
 const fixture = GA_ID === "G-QUIZFIXTURE" && import.meta.env?.VITE_ANALYTICS_TEST_MODE === "true";
 const allowedHost = browser && (["hard-quiz.com", "www.hard-quiz.com"].includes(location.hostname) ||
   fixture && ["localhost", "127.0.0.1"].includes(location.hostname));
-const debug = fixture || browser && new URLSearchParams(location.search).get("debug_mode") === "1";
+const debug = browser && new URLSearchParams(location.search).get("debug_mode") === "1";
 const optOutKey = "hq_analytics_opt_out";
 const optOut = (() => {
   if (!browser) return true;
@@ -59,7 +59,7 @@ const canTrack = () => !!GA_ID && !blocked && allowedHost && !optOut && !/^\/adm
 const pageContext = () => ({
   page_title: document.title,
   page_location: location.origin + analyticsPath(location.pathname + location.search),
-  ...referral, page_referrer: virtualReferrer, debug_mode: debug, analytics_version: 2,
+  ...referral, page_referrer: virtualReferrer, ...(debug ? { debug_mode: true } : {}), analytics_version: 2,
 });
 
 export function setAnalyticsBlocked(value: boolean) {
@@ -93,7 +93,11 @@ export function loadGA() {
 export function event(name: string, params: AnalyticsParameters = {}): boolean {
   if (!canTrack()) return false;
   loadGA();
-  window.gtag?.("event", name, { ...pageContext(), ...params, debug_mode: debug, analytics_version: 2 });
+  const payload: AnalyticsParameters = { ...pageContext(), ...params, analytics_version: 2 };
+  // Google treats presence as debugging; false does not disable it.
+  if (debug) payload.debug_mode = true;
+  else delete payload.debug_mode;
+  window.gtag?.("event", name, payload);
   return !!window.gtag;
 }
 
