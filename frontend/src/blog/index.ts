@@ -3,6 +3,7 @@ import type { BlogPost } from "./types";
 import { estimateReadingMinutes } from "./reading";
 
 // Посты
+import november2026Movies  from "./entries/november-2026-movie-releases";
 import whalefallBook       from "./entries/is-whalefall-based-on-a-book";
 import horror2026          from "./entries/best-horror-movies-2026";
 import september2025Movies from "./entries/september-2025-new-movies"; // ← NEW
@@ -11,6 +12,7 @@ import why239              from "./entries/why-2-39-feels-more-cinematic";
 
 export const posts: BlogPost[] = [
   // Самый свежий — сверху (в любом случае список на /blog сортируется по дате)
+  november2026Movies,
   whalefallBook,
   horror2026,
   september2025Movies,
