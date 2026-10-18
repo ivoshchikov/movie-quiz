@@ -63,7 +63,7 @@ test("query filters retain focus and do not reset the page", async ({ page }) =>
   await expect(page).toHaveURL(/category=2/);
   await page.getByRole("link", { name: "Blog", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Blog", exact: true })).toBeFocused();
-  const guides = page.getByRole("button", { name: /Movie guides, 4 articles/ });
+  const guides = page.getByRole("button", { name: /^Movie guides, \d+ articles?$/ });
   await guides.click();
   await expect(guides).toBeFocused();
   await expect(page).toHaveURL(/topic=streaming/);
