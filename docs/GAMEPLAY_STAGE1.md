@@ -4,9 +4,9 @@ Approved scope: the nine items in roadmap Stage 1. No new game modes. Implementa
 
 ## Guest resource controls
 
-New guest sessions have server-enforced sliding limits: 12/minute and 120/hour per network source, 120/minute and 1,200/hour across all guests. Their retained round snapshots share a 25,000-row admission budget. The global advisory lock covers admission and snapshot creation, so simultaneous requests and changing session IDs cannot overshoot the budget. A retry of an existing session does not consume another start.
+New guest sessions have server-enforced sliding limits: 12/minute and 120/hour per network source, 120/minute and 1,200/hour across all guests. Their retained round snapshots share a 25,000-row admission budget. The global advisory lock covers admission and snapshot creation, so simultaneous requests and changing session IDs cannot overshoot the budget. A retry of an existing session does not consume another start. The actual snapshot total is checked again before commit in case the eligible bank changed during admission.
 
-The source is a SHA-256 pseudonym of the normalized forwarded IP, a private random salt and the Chicago date. Raw addresses are not stored. Missing/invalid headers share an unknown-source bucket. Source identity is a resource-control hint, not proof of a person: shared networks can share limits and forged/changing headers do not bypass the global controls. Account limits remain 12/minute and 240/hour; guest games never become ranked account games.
+The source is a SHA-256 pseudonym of the normalized forwarded IP, a private random salt and the Chicago date. Raw addresses are not stored. The current and previous date’s pseudonyms share the sliding-window check, so midnight does not reset a network’s quota. Missing/invalid headers share an unknown-source bucket. Source identity is a resource-control hint, not proof of a person: shared networks can share limits and forged/changing headers do not bypass the global controls. Account limits remain 12/minute and 240/hour; guest games never become ranked account games.
 
 ## Outcomes and question statistics
 

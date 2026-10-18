@@ -18,7 +18,7 @@ create index game_sessions_guest_source on hq_private.game_sessions(guest_source
 
 create function hq_private.guard_guest_start(p_category integer,p_difficulty integer) returns text
 language plpgsql set search_path=pg_catalog as $$
-declare cfg hq_private.gameplay_settings; headers jsonb; address text; source text; t timestamptz:=clock_timestamp(); n bigint;
+declare cfg hq_private.gameplay_settings; headers jsonb; address text; source text; previous_source text; day date; t timestamptz:=clock_timestamp(); n bigint;
 begin
   -- The global lock/budgets cannot be bypassed with a forged or changing source header.
   perform pg_advisory_xact_lock(721107,1);
@@ -32,9 +32,12 @@ begin
   exception when others then headers:='{}'::jsonb; end;
   address:=left(btrim(split_part(coalesce(headers->>'x-forwarded-for',''),',',1)),128);
   begin address:=host(address::inet); exception when others then address:='unknown'; end;
-  source:=encode(sha256(convert_to(cfg.guest_salt||':'||public.us_central_today()::text||':'||coalesce(address,'unknown'),'UTF8')),'hex');
-  if (select count(*) from hq_private.game_sessions where owner is null and guest_source=source and started_at>t-interval '1 minute')>=cfg.guest_source_minute
-    or (select count(*) from hq_private.game_sessions where owner is null and guest_source=source and started_at>t-interval '1 hour')>=cfg.guest_source_hour then
+  day:=(t at time zone 'America/Chicago')::date;
+  source:=encode(sha256(convert_to(cfg.guest_salt||':'||day::text||':'||coalesce(address,'unknown'),'UTF8')),'hex');
+  previous_source:=encode(sha256(convert_to(cfg.guest_salt||':'||(day-1)::text||':'||coalesce(address,'unknown'),'UTF8')),'hex');
+  -- Rotation at midnight must not reset either sliding window.
+  if (select count(*) from hq_private.game_sessions where owner is null and guest_source in(source,previous_source) and started_at>t-interval '1 minute')>=cfg.guest_source_minute
+    or (select count(*) from hq_private.game_sessions where owner is null and guest_source in(source,previous_source) and started_at>t-interval '1 hour')>=cfg.guest_source_hour then
     raise exception 'Too many new games from this network. Please wait a minute.' using errcode='PT429';
   end if;
   select count(*) into n from public.question q where q.retired_at is null and q.category_id=p_category
@@ -356,7 +359,7 @@ begin
   end if;
   v_now:=clock_timestamp();
   perform hq_private.prune_gameplay();
-  if uid is null then v_source:=hq_private.guard_guest_start(p_category_id,p_difficulty_id); end if;
+  if uid is null then v_source:=hq_private.guard_guest_start(p_category_id,p_difficulty_id); v_now:=clock_timestamp(); end if;
   if uid is not null and ((select count(*) from hq_private.game_sessions where owner=uid and started_at>v_now-interval '1 minute')>=12
     or (select count(*) from hq_private.game_sessions where owner=uid and started_at>v_now-interval '1 hour')>=240) then
     raise exception 'Too many new games. Please wait a minute';
@@ -377,6 +380,10 @@ begin
     from public.question q where q.retired_at is null and q.category_id=p_category_id and q.difficulty_level_id=p_difficulty_id
       and hq_private.valid_question(q.options_json,q.correct_answer);
   get diagnostics level.mistakes_allowed = row_count;
+  if uid is null and (select count(*) from hq_private.game_rounds r join hq_private.game_sessions g on g.id=r.session_id where g.owner is null)
+    >(select guest_round_budget from hq_private.gameplay_settings) then
+    raise exception 'Guest games are temporarily busy. Please try again shortly.' using errcode='PT429';
+  end if;
   update hq_private.game_sessions set bank_size=level.mistakes_allowed where id=p_session;
   if level.mistakes_allowed=0 then
     update hq_private.game_sessions set finished_at=clock_timestamp(),finish_reason='completed' where id=p_session;

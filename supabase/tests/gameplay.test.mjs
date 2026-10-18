@@ -427,3 +427,20 @@ test('all legacy Daily ranking aliases lose PUBLIC, guest and account execution 
   for(const name of ['get_daily_fastest','get_daily_best_time_records','get_daily_streak_leaderboard','get_daily_total_correct_leaderboard'])await assert.rejects(db.query(`select public.${name}()`),/permission denied/);
  }finally{await db.exec('reset role');}}
 });
+
+test('rotating a guest network pseudonym at Chicago midnight cannot reset the rolling hour quota',async()=>{
+ await reset();try {
+  await uid(null);await db.exec('update hq_private.gameplay_settings set guest_source_hour=1');
+  await setTime('2053-01-01T05:59:00Z');await start();
+  await setTime('2053-01-01T06:01:00Z');await assert.rejects(start(),/network/);
+  await setTime('2053-01-01T07:00:00Z');assert.equal((await start()).status,'active');
+ }finally{await setTime(null);}
+});
+test('the guest snapshot budget still holds when the eligible bank grows during admission',async()=>{
+ await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_round_budget=1');
+ await db.exec(`create function hq_private.fixture_grow_bank() returns trigger language plpgsql as $$begin
+  insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id) values(504,'growth.webp','One','["One","Two","Three","Four"]',1,1);return new;end$$;
+  create trigger fixture_grow_bank before insert on hq_private.game_sessions for each row execute function hq_private.fixture_grow_bank();`);
+ try {await assert.rejects(start(),/temporarily busy/);assert.equal(await value('select count(*) v from hq_private.game_sessions'),0);assert.equal(await value('select count(*) v from public.question where id=504'),0);}
+ finally {await db.exec('drop trigger fixture_grow_bank on hq_private.game_sessions; drop function hq_private.fixture_grow_bank()');}
+});
