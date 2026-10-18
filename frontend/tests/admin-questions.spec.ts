@@ -52,6 +52,7 @@ async function fixture(
       body: JSON.stringify(data.rights),
     }),
   );
+  await page.route("**/rest/v1/rpc/admin_question_metrics", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ since: "2026-10-18T12:00:00Z", legacy: { total_attempts: 20, correct_attempts: 12 }, cohorts: [{ revision: 1, mode: "normal", cohort: "first_account", correct: 2, wrong: 1, timeouts: 1, abandoned: 2, response_ms: 9000, timed_answers: 3 }] }) }));
   await page.route("**/rest/v1/rpc/admin_draft_key", (r) =>
     r.fulfill({
       status: data.failKey ? 503 : 200,
@@ -501,7 +502,7 @@ test("encrypted drafts restore only by choice, retain processed image and never 
   await expect(
     page.getByText("Drafts saved securely in this browser."),
   ).toBeVisible();
-  const saved = await page.evaluate(async (owner) => {
+  const readSaved = () => page.evaluate(async (owner) => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
       const r = indexedDB.open("hq_private_question_drafts_v1");
       r.onsuccess = () => resolve(r.result);
@@ -520,6 +521,10 @@ test("encrypted drafts restore only by choice, retain processed image and never 
       },
     );
   }, owner);
+  // A previous draft can already have a success message while the edited image
+  // snapshot is still inside the persistence debounce. Wait for the actual blob.
+  await expect.poll(async () => (await readSaved()).cipher).toBeGreaterThan(1000);
+  const saved = await readSaved();
   expect(saved.cipher).toBeGreaterThan(1000);
   expect(saved.plaintext).toBe(false);
   await page.reload();

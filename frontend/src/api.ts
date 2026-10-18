@@ -67,8 +67,8 @@ export class NicknameSelectionError extends Error {
 // Initial selection only; the database also enforces nickname immutability and folded uniqueness.
 export async function chooseInitialNickname(userId: string, nickname: string, signal: AbortSignal,
   onWriting?: () => void): Promise<ProfileDetails> {
-  const nick = nickname.trim();
-  if (nick.length < 3 || nick.length > 20) throw new Error("invalid-nickname");
+  const nick = normalizeNickname(nickname);
+  if (nicknameProblem(nick)) throw new Error("invalid-nickname");
   let profile: ProfileDetails | null;
   try { profile = await getProfile(userId, signal); }
   catch { throw new NicknameSelectionError("profile"); }
@@ -366,3 +366,4 @@ export async function getDailyHistoryAdmin(limit = 30, offset = 0): Promise<Dail
   for (const r of rows) if (r?.image_url) r.image_url = getPublicUrl(String(r.image_url));
   return rows;
 }
+import { nicknameProblem, normalizeNickname } from "./profile/nicknameValidation";

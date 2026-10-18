@@ -26,6 +26,9 @@ export async function mockAdmin(page: Page, signedIn = true) {
   const otherCalls = await mockQuizApi(page);
   if (signedIn) await mockSignedIn(page);
   const state = {
+    cancelled: false,
+    cancellationReason: null as string | null,
+    cancellationMode: "success" as "success" | "lost-saved" | "lost-unknown",
     admin: true,
     rightsError: false,
     assignmentError: false,
@@ -64,6 +67,8 @@ export async function mockAdmin(page: Page, signedIn = true) {
     if (
       ![
         "is_admin",
+        "admin_daily_cancellation",
+        "admin_cancel_daily",
         "get_daily_history_admin",
         "get_daily_assignment_admin",
         "admin_daily_question_snapshot",
@@ -81,6 +86,13 @@ export async function mockAdmin(page: Page, signedIn = true) {
       },
     ];
     let body: unknown;
+    if (name === "admin_daily_cancellation") body = { date: payload.p_date, cancelled: state.cancelled, reason: state.cancellationReason };
+    if (name === "admin_cancel_daily") {
+      if (state.cancellationMode === "lost-unknown") return route.abort("failed");
+      state.cancelled = true; state.cancellationReason = String(payload.p_reason);
+      if (state.cancellationMode === "lost-saved") return route.abort("failed");
+      body = { date: payload.p_date, cancelled: true, reason: state.cancellationReason };
+    }
     if (name === "is_admin") {
       if (state.rightsError) return error(route);
       body = state.admin;

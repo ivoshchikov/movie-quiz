@@ -115,7 +115,7 @@ export async function gameFixture(
   await page.route("**/rest/v1/rpc/quiz_*", async (route) => {
     const name = new URL(route.request().url()).pathname.split("/").pop()!;
     if (
-      !["quiz_start", "quiz_next", "quiz_answer", "quiz_finish"].includes(name)
+      !["quiz_start", "quiz_next", "quiz_answer", "quiz_finish", "quiz_status"].includes(name)
     )
       return route.fallback();
     const p = route.request().postDataJSON();
@@ -127,7 +127,7 @@ export async function gameFixture(
           ? data.failNext
           : name === "quiz_answer"
             ? data.failAnswer
-            : data.failFinish;
+            : name === "quiz_finish" ? data.failFinish : false;
     if (fail)
       return route.fulfill({
         status: 503,

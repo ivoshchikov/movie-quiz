@@ -3,7 +3,7 @@ import { parseServerGame } from "./server";
 import type { ServerGame } from "./server";
 import type { PersonalBest } from "../api";
 
-export type FinishReason = "out-of-lives" | "completed" | "exit";
+export type FinishReason = "out-of-lives" | "completed" | "exit" | "inactive";
 export type SaveStatus = "saved" | "pending" | "device" | "memory";
 export type RecordOutcome = "first" | "new";
 export interface GameResult {
@@ -55,7 +55,7 @@ export function isGameResult(value: unknown): value is GameResult {
     (result.userId === null || typeof result.userId === "string") && Number.isInteger(result.categoryId) &&
     Number.isInteger(result.difficultyId) && Number.isInteger(result.score) && (result.score ?? -1) >= 0 &&
     Number.isInteger(result.elapsedSecs) && (result.elapsedSecs ?? -1) >= 0 &&
-    ["out-of-lives", "completed", "exit"].includes(result.finishReason ?? "") &&
+    ["out-of-lives", "completed", "exit", "inactive"].includes(result.finishReason ?? "") &&
     ["saved", "pending", "device", "memory"].includes(result.saveStatus ?? "") &&
     (result.categoryName === undefined || typeof result.categoryName === "string") &&
     (result.difficultyName === undefined || typeof result.difficultyName === "string") &&

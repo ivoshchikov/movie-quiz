@@ -10,6 +10,7 @@ import Seo from "../components/Seo";
 import AdminAccess from "../admin/AdminAccess";
 import AdminImage from "../admin/AdminImage";
 import QuestionEditor from "../admin/QuestionEditor";
+import QuestionMetrics from "../admin/QuestionMetrics";
 import { loadBank, loadQuestion } from "../admin/questionsApi";
 import type { BankFilters } from "../admin/questionsApi";
 import "../admin-daily.css";
@@ -563,6 +564,7 @@ function QuestionDetail({
         </div>
       </dl>
       <p role="status">{copy}</p>
+      <QuestionMetrics key={`${id}:${row.admin_revision}`} owner={owner} id={id} />
       {editing ? (
         <QuestionEditor
           key={`${row.id}:${row.admin_revision}`}

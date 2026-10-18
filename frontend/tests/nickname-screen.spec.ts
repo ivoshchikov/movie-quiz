@@ -503,3 +503,13 @@ test("setup metadata is unique and excludes callback and return parameters", asy
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://hard-quiz.com/setup-profile");
 });
+
+for (const name of ["Film\u200bFan", "Film\u202eFan", "Film\u034fFan", "Film\u0600Fan", "Film\u2800Fan"]) test(`invisible Unicode nickname is blocked before availability or save: ${JSON.stringify(name)}`, async ({ page }) => {
+  const { data } = await fixture(page);await openSetup(page);await field(page).fill(name);await field(page).blur();
+  await expect(page.getByRole('alert')).toContainText('Invisible and control');await expect(save(page)).toBeDisabled();expect(data.heads).toEqual([]);expect(data.writes).toEqual([]);
+});
+test('nickname preview and save use the same normalized spelling',async({page})=>{
+ const {data}=await fixture(page);await openSetup(page,'/profile');await field(page).fill('  Ｆｉｌｍ  Fan  ');
+ await expect(page.locator('.hq-nickname-preview strong')).toHaveText('Film Fan');await expect(page.locator('.hq-nickname-availability')).toContainText('Looks available');await save(page).click();
+ await expect.poll(() => data.writes.length).toBe(1);expect(data.writes[0].body.nickname).toBe('Film Fan');
+});

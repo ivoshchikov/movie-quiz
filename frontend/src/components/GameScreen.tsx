@@ -54,7 +54,7 @@ export default function GameScreen() {
     {(!validSelection || game.phase === "setup" || game.phase === "setup-error" || game.phase === "empty") ?
       <section className="hq-game-placeholder" aria-live="polite"><SiteIcon name="film" />
         <h1>{!validSelection ? "Ready to play?" : game.phase === "empty" ? "More questions are on the way" : error ? "Let’s try that again" : "Getting your quiz ready"}</h1>
-        <p role={error ? "alert" : undefined}>{instructions}</p>
+        <p role={error ? "alert" : undefined}>{game.setupError ?? instructions}</p>
         {game.phase === "setup-error" && <button className="hq-secondary" onClick={() => game.actions.current?.retry()}>Try again</button>}
         {(!validSelection || game.phase === "empty") && <Link className="hq-primary" to="/">Choose a quiz</Link>}
       </section> :

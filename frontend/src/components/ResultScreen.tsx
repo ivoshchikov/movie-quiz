@@ -36,7 +36,7 @@ function ResultCard({ result }: { result: GameResult }) {
   const finishedAt = typeof result.finishedAt === "number" && Number.isFinite(result.finishedAt) && result.finishedAt > 0 ? new Date(result.finishedAt) : null;
   const title = !fresh ? "Last quiz result" : completed ? "All questions completed!" : result.finishReason === "exit" ? "Quiz ended" : "Your result";
   const explanation = completed ? "Every question played, and lives still left. Congratulations!" :
-    result.finishReason === "out-of-lives" ? "All lives used. Ready for another round?" : "This quiz ended before completion.";
+    result.finishReason === "out-of-lives" ? "All lives used. Ready for another round?" : result.finishReason === "inactive" ? "This quiz ended after 15 minutes without activity. Accepted answers were saved by the server." : "This quiz ended before completion.";
 
   useEffect(() => () => dismissRecentGameResult(result.id), [result.id]);
   useEffect(() => {

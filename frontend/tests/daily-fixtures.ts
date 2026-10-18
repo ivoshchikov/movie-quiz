@@ -26,6 +26,8 @@ export async function dailyFixture(
     calls: [] as { name: string; payload: Record<string, unknown> }[],
     results: new Map<string, FixtureResult>(),
     starts: new Map<string, string>(),
+    cancelled: false,
+    cancellationReason: "The question has incorrect answer options.",
     failStatus: false,
     failStart: false,
     failSubmit: false,
@@ -50,10 +52,12 @@ export async function dailyFixture(
       key = `fixture-user:${payload.p_date ?? date}`;
     const status = () => ({
       date,
+      cancelled: data.cancelled,
+      cancellation_reason: data.cancelled ? data.cancellationReason : null,
       server_now: new Date(now).toISOString(),
       closes_at: new Date(nextDailyReset(now)).toISOString(),
       started_at: data.starts.get(`fixture-user:${date}`) ?? null,
-      result: data.results.get(`fixture-user:${date}`)?.is_answered
+      result: !data.cancelled && data.results.get(`fixture-user:${date}`)?.is_answered
         ? data.results.get(`fixture-user:${date}`)
         : null,
     });
@@ -71,9 +75,9 @@ export async function dailyFixture(
           data.failQuestion ||
           data.noQuestion ||
           payload.p_date !== date;
-        if (!fail && !data.starts.has(key))
+        if (!fail && !data.cancelled && !data.starts.has(key))
           data.starts.set(key, new Date(now).toISOString());
-        body = {
+        body = data.cancelled ? status() : {
           ...status(),
           question: {
             id: 700,
@@ -89,7 +93,7 @@ export async function dailyFixture(
         fail =
           data.failStatus || (data.failConfirmation && data.results.has(key));
         body = [
-          data.results.get(key) ?? {
+          (!data.cancelled && data.results.get(key)) || {
             is_answered: false,
             is_correct: null,
             time_spent: null,
@@ -98,7 +102,7 @@ export async function dailyFixture(
         ];
         break;
       case "submit_daily_answer":
-        fail = data.failSubmit || payload.p_date !== date;
+        fail = data.cancelled || data.failSubmit || payload.p_date !== date;
         body = null;
         if (!fail && !data.results.has(key))
           data.results.set(key, {

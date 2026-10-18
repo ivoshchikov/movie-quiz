@@ -5,6 +5,8 @@ create function auth.uid() returns uuid language sql stable as $$select nullif(c
 grant usage on schema public,auth to anon,authenticated,service_role;
 create table public.admin_users(user_id uuid primary key,created_at timestamptz default now());
 create table public.profiles(user_id uuid primary key,nickname text,avatar_url text,created_at timestamptz default now());
+create policy fixture_profile_insert on public.profiles for insert to authenticated with check(user_id=auth.uid());
+create policy fixture_profile_update on public.profiles for update to authenticated using(user_id=auth.uid()) with check(user_id=auth.uid());
 create table public.category(id integer primary key,name text);
 create table public.difficulty_level(id integer primary key,name text,key text,time_limit_secs integer,lives integer,mistakes_allowed integer,sort_order integer);
 create table public.question(id serial primary key,image_url text not null,correct_answer text not null,options_json jsonb not null,category_id integer,difficulty_level_id integer not null);

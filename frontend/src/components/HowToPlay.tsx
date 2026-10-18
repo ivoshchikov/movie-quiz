@@ -82,6 +82,7 @@ export default function HowToPlay() {
       <section className="hq-howto-section" aria-labelledby="howto-end">
         <h2 id="howto-end">When a quiz ends</h2>
         <p>A regular quiz ends when you lose your last life, reach the end of the available questions, or choose to exit. Leaving, reloading or closing the page also ends that run.</p>
+        <p>If your browser cannot send an exit, the server closes the quiz after 15 minutes without activity. Its current question still counts as a timeout if its deadline passed. Starting another signed-in quiz ends your previous run; returning to its tab shows the saved result.</p>
         <p>You can revisit your last result and start a new quiz. A regular quiz cannot be resumed.</p>
       </section>
 
@@ -103,10 +104,11 @@ export default function HowToPlay() {
 
       <section className="hq-howto-daily" aria-labelledby="howto-daily">
         <div className="hq-howto-daily-heading"><SiteIcon name="calendar" /><h2 id="howto-daily">Daily Challenge</h2></div>
-        <p>A separate challenge: one question and one answer per day. An account is required.</p>
+        <p>A separate challenge: one movie, TV series or actor question and one answer per day. An account is required.</p>
         <ul>
           <li><strong>Until midnight US Central.</strong> Answer time runs from the first server start until the server accepts your answer, including loading, connection delays and time away. Continuing on another device keeps the original start.</li>
           <li><strong>Build a streak.</strong> Correct answers on consecutive days extend your streak.</li>
+          <li><strong>Cancelled days are neutral.</strong> If an incorrect Daily is cancelled, it is cancelled for everyone. It does not break a streak or add a correct day.</li>
           <li><strong>A new question at midnight.</strong> Daily resets in America/Chicago (US Central), which may differ from your local date. Yesterday’s question closes immediately; unsent or late answers cannot be saved after the reset.</li>
         </ul>
         <Link to="/daily" className="hq-howto-daily-link">View Daily & its reset countdown <SiteIcon name="arrow" /></Link>

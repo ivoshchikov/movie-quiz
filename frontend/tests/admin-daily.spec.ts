@@ -539,3 +539,25 @@ test("built initial admin HTML and routing are noindex and absent from the sitem
   expect(route.dest).toBe("/admin/daily.html");
   expect(route.headers["X-Robots-Tag"]).toBe("noindex, nofollow");
 });
+
+test("Daily cancellation needs a reason and explicit confirmation, then disables assignment changes", async ({ page }) => {
+  const { state } = await mockAdmin(page);state.current = 800;
+  await page.goto("/admin/daily");await page.getByLabel("Reason shown to players").fill("The correct option is missing.");
+  await page.getByRole("button", { name: "Review cancellation", exact: true }).click();
+  const dialog=page.getByRole("dialog");await expect(dialog).toContainText("every player");
+  expect(state.calls.filter(c=>c.name==='admin_cancel_daily')).toHaveLength(0);
+  await dialog.getByRole("button", {name:"Confirm cancellation for everyone"}).click();
+  await expect(page.getByText("Cancelled for everyone: The correct option is missing.")).toBeVisible();
+  expect(state.calls.filter(c=>c.name==='admin_cancel_daily')).toHaveLength(1);
+  await selectAdminQuestion(page);await expect(page.getByRole("button",{name:"Review replacement",exact:true})).toBeDisabled();
+});
+test("an unknown cancellation retries the same operation and keeps its reason locked", async ({ page }) => {
+  const { state }=await mockAdmin(page);state.current=800;state.cancellationMode="lost-unknown";
+  await page.goto('/admin/daily');await page.getByLabel('Reason shown to players').fill('The correct option is missing.');
+  await page.getByRole('button',{name:'Review cancellation',exact:true}).click();await page.getByRole('button',{name:'Confirm cancellation for everyone'}).click();
+  // Close the confirmation; the same operation stays available after an unknown response.
+  await page.getByRole('button',{name:'Keep Daily'}).click();await expect(page.getByLabel('Reason shown to players')).toBeDisabled();
+  state.cancellationMode='success';await page.getByRole('button',{name:'Retry same cancellation'}).click();
+  await expect(page.getByText('Cancelled for everyone: The correct option is missing.')).toBeVisible();
+  const writes=state.calls.filter(c=>c.name==='admin_cancel_daily');expect(writes).toHaveLength(2);expect(writes[0].payload).toEqual(writes[1].payload);
+});

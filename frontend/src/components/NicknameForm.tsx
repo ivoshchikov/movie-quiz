@@ -3,6 +3,7 @@ import { chooseInitialNickname, getProfile, isNicknameTaken, NicknameSelectionEr
 import { READ_TIMEOUT } from "../hooks/useReadRequest";
 import { clearNicknameDraft, nicknameDestination, nicknameDraft, storeNicknameDraft } from "../profile/nickname";
 import SiteIcon from "./SiteIcon";
+import { nicknameProblem, normalizeNickname } from "../profile/nicknameValidation";
 
 type Availability = { nickname: string; state: "checking" | "available" | "taken" | "error" };
 type FormError = { text: string; taken?: boolean };
@@ -17,11 +18,12 @@ export default function NicknameForm({ userId, destination, onSaved, onCancel, o
   const [touched, setTouched] = useState(false), [availability, setAvailability] = useState<Availability | null>(null);
   const [checkAttempt, retryCheck] = useState(0);
   const request = useRef<AbortController | null>(null), mounted = useRef(false), input = useRef<HTMLInputElement>(null);
-  const id = useId(), nick = nickname.trim();
-  const valid = nick.length >= 3 && nick.length <= 20;
+  const id = useId(), nick = normalizeNickname(nickname);
+  const problem = nicknameProblem(nick);
+  const valid = problem === null;
   const checkState = valid && availability?.nickname === nick ? availability.state : valid ? "checking" : null;
   const taken = !!error?.taken || checkState === "taken";
-  const lengthError = nick.length > 20 ? "Use no more than 20 characters." : touched && nick.length < 3 ? "Use at least 3 characters." : null;
+  const lengthError = touched || Array.from(nick).length >= 3 ? problem : null;
 
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; request.current?.abort(); }; }, []);
   useEffect(() => { storeNicknameDraft(userId, nickname); }, [userId, nickname]);
@@ -114,7 +116,7 @@ export default function NicknameForm({ userId, destination, onSaved, onCancel, o
         placeholder="e.g. FilmFan" value={nickname} disabled={busy}
         aria-invalid={!!lengthError || taken} aria-describedby={`${id}-rules ${id}-warning ${lengthError ? `${id}-length ` : ""}${error ? `${id}-error ` : ""}${id}-availability`}
         onBlur={() => setTouched(true)} onChange={event => { setNickname(event.target.value); setError(null); }} />
-      <div className="hq-nickname-rules" id={`${id}-rules`}><span>3–20 characters. Outer spaces are removed.</span><span aria-hidden="true">{nick.length}/20</span></div>
+      <div className="hq-nickname-rules" id={`${id}-rules`}><span>3–20 visible characters. Equivalent characters and spaces are normalized.</span><span aria-hidden="true">{Array.from(nick).length}/20</span></div>
       <div className="hq-nickname-validation">{lengthError && <p id={`${id}-length`} className="hq-nickname-error" role="alert">{lengthError}</p>}</div>
       <div id={`${id}-availability`} className={`hq-nickname-availability${checkState === "taken" ? " hq-nickname-error" : ""}`} role="status" aria-live="polite" aria-atomic="true">
         {!busy && !uncertain && valid && (checkState === "checking" ? "Checking availability…" : checkState === "available" ? "Looks available. We’ll check again when you save." : checkState === "taken" ? "This nickname is taken. Choose another one." : checkState === "error" ? <><span>Availability could not be checked.</span> <button className="hq-inline-action" type="button" onClick={() => retryCheck(value => value + 1)}>Retry check</button></> : null)}

@@ -675,3 +675,10 @@
   color: var(--hq-error);
   border-color: var(--hq-error-border);
 }
+.hq-bank-metrics { margin-block: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--hq-border); }
+.hq-bank-metrics h3 { font-weight: 600; }
+.hq-bank-metrics p { margin-block: .75rem; font-size: .8rem; }
+.hq-bank-metrics-scroll { overflow-x: auto; }
+.hq-bank-metrics table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: .75rem; }
+.hq-bank-metrics caption { text-align: left; margin-block: .75rem; }
+.hq-bank-metrics th,.hq-bank-metrics td { padding: .6rem; text-align: left; border-bottom: 1px solid var(--hq-border); }

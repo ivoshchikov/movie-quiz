@@ -8,11 +8,13 @@ import { useReadRequest, READ_TIMEOUT } from "../hooks/useReadRequest";
 import { categoryLabel } from "../hooks/useQuizCatalog";
 import { dailyDate, dailyDateLabel } from "../daily/time";
 import AdminImage from "../admin/AdminImage";
+import DailyCancellationPanel from "../admin/DailyCancellationPanel";
 import { AdminNavigation } from "../admin/AdminAccess";
 import "../admin-questions.css";
 import {
   checkAdminRights,
   getAdminAssignment,
+  getDailyCancellation,
   getAdminDailySnapshot,
   getAdminHistory,
   getAdminQuestion,
@@ -215,6 +217,8 @@ function AdminDailyWorkspace({
     validDailyDate(date),
   );
   const currentId = assignment.value?.question_id ?? null;
+  const loadCancellation = useCallback((signal: AbortSignal) => getDailyCancellation(date, signal), [date]);
+  const cancellation = useReadRequest(`${owner}:${date}`, loadCancellation, validDailyDate(date));
   const loadCurrent = useCallback(
     (signal: AbortSignal) => getAdminDailySnapshot(date, signal),
     [date],
@@ -258,6 +262,7 @@ function AdminDailyWorkspace({
   const imageKey = `${selectedId}:${preview.value?.image_url ?? ""}`;
   const locked = saveStatus.kind === "saving" || saveStatus.kind === "unknown";
   const canSave =
+    !!cancellation.value && !cancellation.value.cancelled && !cancellation.loading && !cancellation.error &&
     validDailyDate(date) &&
     date >= today &&
     !!assignment.value &&
@@ -575,6 +580,10 @@ function AdminDailyWorkspace({
           )
         )}
       </section>
+      {validDailyDate(date) && <DailyCancellationPanel key={`${owner}:${date}`} owner={owner} date={date} today={today}
+        version={assignment.value?.question_id ? assignment.value.version : undefined}
+        status={cancellation.value} loading={cancellation.loading} error={cancellation.error} retry={cancellation.retry}
+        confirmed={value => { cancellation.confirm(value); assignment.retry(); refreshHistory(); }} />}
       <section
         className="hq-admin-section"
         aria-labelledby="daily-search-title"

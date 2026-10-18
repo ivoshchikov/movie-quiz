@@ -19,7 +19,7 @@ await db.exec(await readFile(new URL('./fixtures/gameplay.sql', import.meta.url)
 if (native) await db.exec('create extension pgcrypto with schema extensions');
 else await db.exec("create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec(`create schema if not exists hq_private; create table hq_private.test_clock_state(at timestamptz); insert into hq_private.test_clock_state values(null); create function hq_private.test_clock() returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$;`);
-for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay']) {
+for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1']) {
   if (file.endsWith('authoritative_gameplay')) { await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8')); await db.exec("insert into public.daily_session(user_id,d) values('00000000-0000-0000-0000-000000000003',(clock_timestamp() at time zone 'America/Chicago')::date+1)"); }
   await db.exec('begin');
   try { await db.exec((await readFile(new URL(`../migrations/${file}.sql`,import.meta.url),'utf8')).replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
@@ -33,8 +33,9 @@ const next = id => value('select public.quiz_next($1) v',[id]);
 const answer = (g,a) => value('select public.quiz_answer($1,$2,$3) v',[g.id,g.round.id,a]);
 const finish = id => value('select public.quiz_finish($1) v',[id]);
 async function reset() {
-  await db.exec('truncate hq_private.answer_events,hq_private.question_metrics,hq_private.game_sessions cascade; truncate public.user_best,public.question_stats,public.daily_result,public.daily_session;');
+  await db.exec('truncate hq_private.question_first_outcomes,hq_private.question_cohort_metrics,hq_private.daily_cancellations,hq_private.answer_events,hq_private.question_metrics,hq_private.game_sessions cascade; truncate public.user_best,public.question_stats,public.daily_result,public.daily_session;');
   await uid(player);
+  await db.exec("update hq_private.gameplay_settings set guest_source_minute=12,guest_source_hour=120,guest_global_minute=120,guest_global_hour=1200,guest_round_budget=25000; select set_config('request.headers','{}',false)");
 }
 test('server snapshots a bank, issues one timed round and never returns correct answers or future rounds',async()=>{
   await reset(); const s=await start(); assert.equal(s.round,null); assert.equal(s.bank_size,1);
@@ -67,7 +68,8 @@ test('early timeout reports spend no life; actual deadline is exclusive and late
 test('voluntary exit counts the issued unanswered round as abandoned and retries cannot improve its time',async()=>{
   await reset();const g=await next((await start()).id);const done=await finish(g.id);assert.equal(done.finish_reason,'exit');assert.equal(done.score,0);
   assert.equal(done.round.outcome,'abandoned');const retry=await finish(g.id);assert.equal(retry.time_secs,done.time_secs);
-  await assert.rejects(answer(g,'One'),/finished/);
+  assert.equal((await answer(g,'One')).time_secs,done.time_secs);
+  assert.equal(await value('select count(*) v from hq_private.answer_events'),1);
   assert.equal(await value("select abandoned v from hq_private.question_metrics where question_id=1"),1);
 });
 test('a new ranked run closes the previous one; replaying start is idempotent and cannot reset clocks',async()=>{
@@ -174,6 +176,7 @@ test('server enforces feedback delay; clients cannot skip animations to improve 
 });
 test('weighted draws reduce #175 relative to each ordinary question, without removing it from the bank',async()=>{
  await reset();await uid(null);let first=0;
+ await db.exec('update hq_private.gameplay_settings set guest_source_minute=300,guest_source_hour=300,guest_global_minute=300,guest_global_hour=300');
  for(let i=0;i<250;i++) {const g=await start(2,1);if((await next(g.id)).round.question_id===175)first++;}
  assert.ok(first>=5 && first<=45,`weighted first draws: ${first}/250`);
 });
@@ -253,4 +256,191 @@ test('every real account participates in the normal ranking, including the forme
  await reset();const admin='112743d7-f683-4bbb-8117-068e89a00f22';
  await db.query('insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time) values($1,1,1,11,9),($2,1,1,10,8)',[admin,player]);
  const board=await value('select public.quiz_leaderboard(1,1,1) v');assert.equal(board.total,2);assert.equal(board.top.length,1);assert.equal(board.top[0].user_id,admin);assert.equal(board.me.rank,2);
+});
+
+const admin='112743d7-f683-4bbb-8117-068e89a00f22';
+const status = id => value('select public.quiz_status($1) v',[id]);
+async function assignDaily(d,qid=1) {
+ await db.query('insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) select $1,id,category_id,difficulty_level_id from public.question where id=$2 on conflict(d) do nothing',[d,qid]);
+ return value('select admin_revision v from public.daily_challenge where d=$1',[d]);
+}
+const cancel = (d,rev,op=randomUUID(),reason='Incorrect question in isolated test') => value('select public.admin_cancel_daily($1,$2,$3,$4,$5) v',[d,reason,rev,op,admin]);
+test('guest network quotas preserve idempotent retries and normalize addresses without storing a raw IP',async()=>{
+ await reset();await uid(null);
+ await db.exec('update hq_private.gameplay_settings set guest_source_minute=2');
+ await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-forwarded-for':'2001:db8:0:0:0:0:0:1, 192.0.2.2'})]);
+ const a=await start();
+ await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-forwarded-for':'2001:db8::1'})]);
+ await start();await assert.rejects(start(),/network/);
+ assert.equal((await start(1,1,a.id)).started_at,a.started_at);
+ assert.equal(await value('select count(distinct guest_source) v from hq_private.game_sessions'),1);
+ assert.match(await value('select guest_source v from hq_private.game_sessions limit 1'),/^[a-f0-9]{64}$/);
+});
+test('global guest quotas and snapshot budgets hold even when headers and session IDs change',async()=>{
+ await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_global_minute=2');
+ for(const ip of ['192.0.2.1','192.0.2.2']) {await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-forwarded-for':ip})]);await start();}
+ await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-forwarded-for':'192.0.2.3'})]);
+ await assert.rejects(start(),/guest games/);
+ await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_round_budget=1');
+ const g=await start();await assert.rejects(start(),/temporarily busy/);assert.equal((await start(1,1,g.id)).id,g.id);
+ assert.equal(await value('select count(*) v from hq_private.game_sessions'),1);
+});
+test('guest hourly limit survives minute rollover and account games use their own limits',async()=>{
+ await reset();try {
+  await setTime('2050-01-01T12:00:00Z');await uid(null);await db.exec('update hq_private.gameplay_settings set guest_source_hour=1');await start();
+  await setTime('2050-01-01T12:02:00Z');await assert.rejects(start(),/network/);
+  await uid(player);assert.equal((await start()).status,'active');
+  await uid(null);await setTime('2050-01-01T13:00:01Z');assert.equal((await start()).status,'active');
+ } finally {await setTime(null);}
+});
+test('cohorts split guests, account repeats and first outcomes without duplicate retry increments',async()=>{
+ await reset();const g=await next((await start()).id);await answer(g,'One');await answer(g,'One');
+ const b=await next((await start()).id);await answer(b,'Two');
+ await uid(null);const c=await next((await start()).id);await answer(c,'One');
+ const rows=(await db.query("select cohort,correct,wrong from hq_private.question_cohort_metrics where question_id=1 and mode='normal' order by cohort")).rows;
+ assert.deepEqual(rows,[{cohort:'account',correct:1,wrong:1},{cohort:'first_account',correct:1,wrong:0},{cohort:'guest',correct:1,wrong:0}]);
+ assert.equal(await value('select total_attempts v from public.question_stats where question_id=1'),3);
+ assert.equal(await value('select count(*) v from hq_private.question_first_outcomes'),1);
+ await uid(player);await assert.rejects(value('select public.admin_question_metrics(1) v'),/owner|admin|forbidden/i);
+ await uid(admin);const metrics=await value('select public.admin_question_metrics(1) v');assert.equal(metrics.cohorts.length,3);assert.equal(metrics.legacy.total_attempts,3);
+});
+test('first outcomes are separate for a changed revision and for Daily',async()=>{
+ await reset();try {
+  await setTime('2050-01-02T12:00:00Z');const a=await next((await start()).id);await answer(a,'One');
+  await db.exec("update public.question set options_json='[\"One\",\"Four\",\"Two\",\"Three\"]' where id=1");
+  const b=await next((await start()).id);await answer(b,'One');assert.equal(await value('select count(*) v from hq_private.question_first_outcomes'),2);
+  const d='2050-01-02';await assignDaily(d);await value('select public.daily_begin($1) v',[d]);await db.query("select public.submit_daily_answer($1,$2,'One',0)",[player,d]);
+  assert.equal(await value("select correct v from hq_private.question_cohort_metrics where question_id=1 and mode='daily' and cohort='first_account'"),1);
+ } finally {await setTime(null);await db.exec("update public.question set options_json='[\"One\",\"Two\",\"Three\",\"Four\"]' where id=1");}
+});
+test('Unicode controls and invisible names are rejected, NFKC collisions are unique and chosen names stay immutable',async()=>{
+ await reset();await db.query('delete from public.profiles where user_id=$1',[other]);
+ for(const nick of ['ab\u200bc','ab\u202ec','\u115f\u115f\u115f','ab\u034fc','ab\u0001c','ab\uFE0Fc','ab\u0600c','ab\u2800c','ab\u1680c'])
+  await assert.rejects(db.query('insert into public.profiles(user_id,nickname) values($1,$2)',[other,nick]),/visible/);
+ await assert.rejects(db.query("insert into public.profiles(user_id,nickname) values($1,'Ｐｌａｙｅｒ')",[other]),/duplicate key/);
+ await uid(other);await db.exec('set role authenticated');
+ try { await db.query("insert into public.profiles(user_id,nickname) values($1,'  Кино  Фан  ')",[other]); }
+ finally {await db.exec('reset role');await uid(player);}
+ assert.equal(await value('select nickname v from public.profiles where user_id=$1',[other]),'Кино Фан');
+ assert.equal(await value("select public.is_nickname_taken('КИНО  ФАН') v"),true);
+ await assert.rejects(db.query("update public.profiles set nickname='Other' where user_id=$1",[other]),/cannot be changed/);
+ await db.query('delete from public.profiles where user_id=$1',[other]);
+});
+test('inactivity cutoff is authoritative, commits once and does not reset on a stale answer',async()=>{
+ await reset();try {
+  await setTime('2050-01-03T12:00:00Z');const g=await next((await start()).id);
+  await setTime('2050-01-03T12:15:00Z');const done=await status(g.id);
+  assert.equal(done.finish_reason,'inactive');assert.equal(done.time_secs,900);assert.equal(done.round.outcome,'timeout');assert.equal(done.lives,2);
+  await setTime('2050-01-03T13:00:00Z');assert.equal((await answer(g,'One')).score,0);assert.equal((await finish(g.id)).time_secs,900);
+  await db.exec('select hq_private.maintain_gameplay()');assert.equal(await value('select count(*) v from hq_private.answer_events'),1);
+  assert.equal(await value('select best_time v from public.user_best where user_id=$1',[player]),900);
+ } finally {await setTime(null);}
+});
+test('scheduled maintenance ends an abandoned Hard at its last-life deadline and preserves accepted score',async()=>{
+ await reset();try {
+  await setTime('2050-01-04T12:00:00Z');const g=await next((await start(1,3)).id);
+  // This fixture adds a real eligible Hard question only inside the isolated database.
+  assert.equal(g.bank_size,0);
+  await db.exec("insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id) values(501,'hard.webp','One','[\"One\",\"Two\",\"Three\",\"Four\"]',1,3)");
+  const hard=await next((await start(1,3)).id);await setTime('2050-01-04T12:16:00Z');await db.exec('select hq_private.maintain_gameplay()');
+  const done=await status(hard.id);assert.equal(done.finish_reason,'out-of-lives');assert.equal(done.time_secs,30);assert.equal(done.round.outcome,'timeout');
+  await reset();await setTime('2050-01-04T12:30:00Z');
+  await db.exec("insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id) values(503,'extra.webp','One','[\"One\",\"Two\",\"Three\",\"Four\"]',1,1)");
+  const accepted=await next((await start()).id);await answer(accepted,'One');await setTime('2050-01-04T12:46:00Z');await db.exec('select hq_private.maintain_gameplay()');
+  assert.equal((await status(accepted.id)).score,1);assert.equal(await value('select count(*) v from hq_private.answer_events'),1);
+  await reset();await setTime('2050-01-04T13:00:00Z');const noRound=await start();await setTime('2050-01-04T13:16:00Z');await db.exec('select hq_private.maintain_gameplay()');
+  assert.equal((await status(noRound.id)).finish_reason,'inactive');assert.equal(await value('select count(*) v from hq_private.answer_events'),0);
+ } finally {await setTime(null);await db.exec('delete from public.question where id in (501,503)');}
+});
+test('cancelling Daily is admin-only, stale-safe and idempotent; raw results remain but trusted counts exclude it',async()=>{
+ await reset();try {
+  await setTime('2050-01-05T12:00:00Z');const d='2050-01-05',rev=await assignDaily(d);
+  await value('select public.daily_begin($1) v',[d]);await db.query("select public.submit_daily_answer($1,$2,'One',0)",[player,d]);
+  await assert.rejects(cancel(d,rev),/owner|admin|forbidden/i);
+  await uid(admin);await assert.rejects(cancel(d,rev+1),/changed/);
+  await assert.rejects(cancel(d,rev,randomUUID(),null),/reason/);
+  const op=randomUUID();assert.equal((await cancel(d,rev,op)).cancelled,true);assert.equal((await cancel(d,rev,op)).cancelled,true);
+  await assert.rejects(cancel(d,rev),/already cancelled/);
+  assert.equal(await value('select count(*) v from public.daily_result'),1);assert.equal(await value('select total_attempts v from public.question_stats where question_id=1'),1);
+  assert.equal(await value("select count(*) v from hq_private.question_cohort_metrics where mode='daily'"),0);
+  assert.equal(await value('select count(*) v from hq_private.question_first_outcomes'),1);
+  await uid(player);const s=await value('select public.daily_status() v');assert.equal(s.cancelled,true);assert.equal(s.result,null);assert.equal(s.started_at,null);
+  assert.equal((await value('select public.daily_begin($1) v',[d])).question,undefined);
+  await assert.rejects(db.query("select public.submit_daily_answer($1,$2,'One',0)",[player,d]),/cancelled/);
+  assert.equal((await db.query('select * from public.get_my_daily_result($1,$2)',[player,d])).rows[0].is_answered,false);
+  const calendar=(await value('select public.my_game_stats() v')).daily_calendar.at(-1);assert.equal(calendar.outcome,'cancelled');assert.equal(calendar.time_spent,null);
+  await uid(admin);await assert.rejects(db.query('delete from public.daily_challenge where d=$1',[d]),/read only/);
+  await assert.rejects(cancel('2050-01-06',0),/Future/);
+ } finally {await setTime(null);}
+});
+test('neutral Daily dates bridge streaks without adding correct days or reviving an already missed active day',async()=>{
+ await reset();try {
+  await setTime('2050-02-04T12:00:00Z');
+  for(const d of ['2050-02-02','2050-02-04'])await assignDaily(d);
+  await db.query("insert into public.daily_result(user_id,d,is_correct,time_spent) values($1,'2050-02-01',true,1),($1,'2050-02-02',false,1),($1,'2050-02-03',true,1)",[player]);
+  await uid(admin);await cancel('2050-02-02',0);await cancel('2050-02-04',0);
+  await uid(player);let s=(await db.query('select * from public.get_daily_user_streak($1)',[player])).rows[0];assert.equal(s.current_streak,2);assert.equal(s.longest_streak,2);assert.equal(s.total_correct,2);
+  const board=await value('select public.daily_leaderboard(true,5) v');assert.equal(board.me.streak,2);
+  await setTime('2050-02-05T12:00:00Z');s=(await db.query('select * from public.get_daily_user_streak($1)',[player])).rows[0];assert.equal(s.current_streak,2);
+  await setTime('2050-02-06T12:00:00Z');await assignDaily('2050-02-06');await uid(admin);await cancel('2050-02-06',0);await uid(player);
+  assert.equal((await db.query('select * from public.get_daily_user_streak($1)',[player])).rows[0].current_streak,0);
+  assert.equal((await value('select public.daily_leaderboard(true,5) v')).me,null);
+ } finally {await setTime(null);}
+});
+test('automatic Daily selection accepts TV series and still excludes retired or ineligible questions',async()=>{
+ await reset();try {
+  await setTime('2051-03-01T12:00:00Z');await db.exec('update public.question set daily_eligible=false');
+  await db.exec("insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id) values(502,'series.webp','One','[\"One\",\"Two\",\"Three\",\"Four\"]',4,1)");
+  const s=await value("select public.daily_begin('2051-03-01') v");assert.equal(s.question.id,502);assert.equal(s.question.category_id,4);
+ } finally {await setTime(null);await db.exec('delete from public.question where id=502; update public.question set daily_eligible=(id<>175)');}
+});
+test('new server helpers, maintenance and cohort data stay private; normal receipt is owner-only',async()=>{
+ await reset();const g=await start();await uid(other);await assert.rejects(status(g.id),/unavailable/);await uid(player);
+ for(const role of ['anon','authenticated']) {
+  await db.exec(`set role ${role}`);try {
+   for(const sql of ['select hq_private.maintain_gameplay()','select * from hq_private.daily_cancellations','select * from hq_private.question_cohort_metrics','select * from hq_private.question_first_outcomes'])await assert.rejects(db.query(sql),/permission denied/);
+   if(role==='authenticated') {assert.equal((await status(g.id)).id,g.id);await assert.rejects(value("select public.admin_daily_cancellation('2050-01-01') v"),/owner|admin|forbidden/i);}
+  } finally {await db.exec('reset role');}
+ }
+});
+test('simultaneous guest starts cannot overshoot the shared quota',{skip:!native},async()=>{
+ await reset();await db.exec('update hq_private.gameplay_settings set guest_global_minute=1');const clients=[new Client({connectionString:native}),new Client({connectionString:native})];
+ try {for(const c of clients){await c.connect();await c.query("select set_config('request.jwt.claim.sub','',false)");}
+  const r=await Promise.allSettled(clients.map(c=>c.query('select public.quiz_start($1,1,1)',[randomUUID()])));assert.equal(r.filter(x=>x.status==='fulfilled').length,1);assert.equal(await value('select count(*) v from hq_private.game_sessions'),1);
+ } finally {for(const c of clients)await c.end();}
+});
+test('Daily cancellation serializes against an in-flight answer and excludes it from trusted counts',{skip:!native},async()=>{
+ await reset();const a=new Client({connectionString:native}),b=new Client({connectionString:native});await a.connect();await b.connect();
+ try {
+  await setTime('2052-01-01T12:00:00Z');const d='2052-01-01',rev=await assignDaily(d);await value('select public.daily_begin($1) v',[d]);
+  await a.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);await b.query("select set_config('request.jwt.claim.sub',$1,false)",[admin]);
+  await a.query('begin');await a.query("select public.submit_daily_answer($1,$2,'One',0)",[player,d]);
+  const waiting=b.query('select public.admin_cancel_daily($1,$2,$3,$4,$5) v',[d,'Incorrect question in isolated test',rev,randomUUID(),admin]);
+  for(let i=0;i<100;i++) {if(await value("select count(*) v from pg_stat_activity where wait_event='advisory' and query like 'select public.admin_cancel_daily%'"))break;if(i===99)throw Error('Cancellation did not wait for the in-flight answer');await new Promise(r=>setTimeout(r,10));}
+  await a.query('commit');assert.equal((await waiting).rows[0].v.cancelled,true);assert.equal(await value('select count(*) v from public.daily_result'),1);
+  assert.equal(await value("select count(*) v from hq_private.question_cohort_metrics where mode='daily'"),0);
+ } finally {await a.query('rollback');await a.end();await b.end();await setTime(null);}
+});
+
+test('all legacy Daily ranking aliases lose PUBLIC, guest and account execution rights',async()=>{
+ await reset();for(const role of ['anon','authenticated']) {await db.exec(`set role ${role}`);try {
+  for(const name of ['get_daily_fastest','get_daily_best_time_records','get_daily_streak_leaderboard','get_daily_total_correct_leaderboard'])await assert.rejects(db.query(`select public.${name}()`),/permission denied/);
+ }finally{await db.exec('reset role');}}
+});
+
+test('rotating a guest network pseudonym at Chicago midnight cannot reset the rolling hour quota',async()=>{
+ await reset();try {
+  await uid(null);await db.exec('update hq_private.gameplay_settings set guest_source_hour=1');
+  await setTime('2053-01-01T05:59:00Z');await start();
+  await setTime('2053-01-01T06:01:00Z');await assert.rejects(start(),/network/);
+  await setTime('2053-01-01T07:00:00Z');assert.equal((await start()).status,'active');
+ }finally{await setTime(null);}
+});
+test('the guest snapshot budget still holds when the eligible bank grows during admission',async()=>{
+ await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_round_budget=1');
+ await db.exec(`create function hq_private.fixture_grow_bank() returns trigger language plpgsql as $$begin
+  insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id) values(504,'growth.webp','One','["One","Two","Three","Four"]',1,1);return new;end$$;
+  create trigger fixture_grow_bank before insert on hq_private.game_sessions for each row execute function hq_private.fixture_grow_bank();`);
+ try {await assert.rejects(start(),/temporarily busy/);assert.equal(await value('select count(*) v from hq_private.game_sessions'),0);assert.equal(await value('select count(*) v from public.question where id=504'),0);}
+ finally {await db.exec('drop trigger fixture_grow_bank on hq_private.game_sessions; drop function hq_private.fixture_grow_bank()');}
 });

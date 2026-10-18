@@ -23,7 +23,7 @@ export interface ServerGame {
   started_at: string;
   server_now: string;
   time_secs: number;
-  finish_reason: "out-of-lives" | "completed" | "exit" | null;
+  finish_reason: "out-of-lives" | "completed" | "exit" | "inactive" | null;
   round: ServerRound | null;
   previous_best: PersonalBest | null;
   personal_best: PersonalBest | null;
@@ -70,7 +70,7 @@ export function parseServerGame(value: unknown): ServerGame {
     !timestamp(g.started_at) ||
     !timestamp(g.server_now) ||
     (g.status === "finished" &&
-      !["exit", "completed", "out-of-lives"].includes(g.finish_reason ?? ""))
+      !["exit", "completed", "out-of-lives", "inactive"].includes(g.finish_reason ?? ""))
   )
     throw new Error("invalid-game");
   if (
@@ -94,7 +94,7 @@ export function parseServerGame(value: unknown): ServerGame {
   return g;
 }
 export async function gameRequest(
-  name: "quiz_start" | "quiz_next" | "quiz_answer" | "quiz_finish",
+  name: "quiz_start" | "quiz_next" | "quiz_answer" | "quiz_finish" | "quiz_status",
   payload: Record<string, unknown>,
 ) {
   return parseServerGame(await gameplayRpc(name, payload));
@@ -111,6 +111,8 @@ export function roundQuestion(g: ServerGame): Question | null {
     : null;
 }
 export interface DailyStatus {
+  cancelled?: boolean;
+  cancellation_reason?: string | null;
   date: string;
   server_now: string;
   closes_at: string;
@@ -132,6 +134,8 @@ function parseDaily(value: unknown): DailyStatus {
   const d = value as DailyStatus;
   if (
     !d ||
+    (d.cancelled !== undefined && typeof d.cancelled !== "boolean") ||
+    (d.cancellation_reason !== undefined && d.cancellation_reason !== null && typeof d.cancellation_reason !== "string") ||
     typeof d.date !== "string" ||
     !/^\d{4}-\d{2}-\d{2}$/.test(d.date) ||
     !timestamp(d.server_now) ||
@@ -154,7 +158,7 @@ export async function dailyBegin(date: string, signal?: AbortSignal) {
     await gameplayRpc("daily_begin", { p_date: date }, signal),
   );
   if (
-    !d.result &&
+    !d.result && !d.cancelled &&
     (!d.started_at ||
       !d.question ||
       !Number.isInteger(d.question.id) ||
@@ -171,5 +175,5 @@ export async function dailyBegin(date: string, signal?: AbortSignal) {
   return d;
 }
 export function dailyReceipt(status: DailyStatus): MyDailyResult | null {
-  return status.result ? { is_answered: true, ...status.result } : null;
+  return !status.cancelled && status.result ? { is_answered: true, ...status.result } : null;
 }
