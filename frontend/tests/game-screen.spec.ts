@@ -402,3 +402,20 @@ test('signing out in another tab never transfers the running account session to 
  const other=await context.newPage();const {mockQuizApi}=await import('./fixtures');await mockQuizApi(other);await other.goto('/');await other.getByRole('button',{name:'Account menu'}).click();await other.getByRole('menuitem',{name:'Log out'}).click();
  await expect(page.locator('.hq-game-stat strong')).toHaveText('0');await expect(page.getByText('Question 1',{exact:true})).toBeVisible();expect(d.games.size).toBe(2);await other.close();
 });
+
+test("a stale tab reconciles another tab's closed run into its confirmed result", async ({ page }) => {
+  const data = await gameFixture(page, { signedIn: true }); await start(page);
+  const g = [...data.games.values()][0]; g.status = "finished"; g.finish_reason = "exit"; g.time_secs = 14;
+  if (g.round) g.round.outcome = "abandoned";
+  await page.evaluate(() => window.dispatchEvent(new StorageEvent("storage", { key: "hq:quiz:activity:fixture-user", newValue: "another-run" })));
+  await expect(page).toHaveURL(/\/result$/); await expect(page.locator(".hq-result-stats dd").first()).toHaveText("00:14");
+  expect(data.calls.some(c => c.name === "quiz_status")).toBe(true); expect(data.finishes).toBe(0);
+});
+test("a resumed tab displays the authoritative inactive result without submitting another answer", async ({ page }) => {
+  const data = await gameFixture(page, { signedIn: true }); await start(page);
+  const g = [...data.games.values()][0]; g.status = "finished"; g.finish_reason = "inactive"; g.time_secs = 900;
+  if (g.round) g.round.outcome = "timeout";
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(page).toHaveURL(/\/result$/); await expect(page.getByText(/15 minutes without activity/)).toBeVisible();
+  await expect(page.locator(".hq-result-stats dd").first()).toHaveText("15:00");expect(data.accepted).toBe(0);
+});

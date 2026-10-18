@@ -120,3 +120,9 @@ CREATE OR REPLACE FUNCTION public.us_central_today()
  LANGUAGE sql
  STABLE
 AS $function$ select (now() at time zone 'America/Chicago')::date $function$;;
+
+-- Retired aliases existed before Stage 1; grants must be removed for every signature.
+create function public.get_daily_fastest() returns integer language sql as $$ select 1 $$;
+create function public.get_daily_best_time_records() returns integer language sql as $$ select 1 $$;
+create function public.get_daily_streak_leaderboard() returns integer language sql as $$ select 1 $$;
+create function public.get_daily_total_correct_leaderboard() returns integer language sql as $$ select 1 $$;

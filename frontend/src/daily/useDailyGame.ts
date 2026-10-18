@@ -11,11 +11,11 @@ import type { DailyRun } from "./dailyStorage";
 import { dailyDate, nextDailyReset } from "./time";
 
 type Phase = "loading" | "guest" | "ready" | "load-error" | "empty" | "image-loading" | "image-error" |
-  "starting" | "start-error" | "playing" | "saving" | "save-error" | "result";
+  "starting" | "start-error" | "playing" | "saving" | "save-error" | "result" | "cancelled";
 interface DailyView {
   owner: string | null; phase: Phase; date: string; today: string; question: Question | null;
   options: string[]; run: DailyRun | null; result: MyDailyResult | null; elapsed: number; startedAt: string | null;
-  imageAttempt: number; resetIn: number; storageAvailable: boolean; refreshKey: number;
+  cancellationReason: string | null; imageAttempt: number; resetIn: number; storageAvailable: boolean; refreshKey: number;
 }
 interface Actions {
   start: () => void; imageReady: (id: number, attempt: number) => void; imageFailed: (id: number, attempt: number) => void;
@@ -23,7 +23,7 @@ interface Actions {
 }
 function initial(owner: string | null): DailyView {
   return { owner, phase: "loading", date: dailyDate(), today: dailyDate(), question: null, options: [], run: null,
-    result: null, elapsed: 0, startedAt: null, imageAttempt: 0, resetIn: Math.ceil((nextDailyReset() - Date.now()) / 1000), storageAvailable: true, refreshKey: 0 };
+    result: null, elapsed: 0, startedAt: null, cancellationReason: null, imageAttempt: 0, resetIn: Math.ceil((nextDailyReset() - Date.now()) / 1000), storageAvailable: true, refreshKey: 0 };
 }
 async function withDailyLock<T>(key: string, work: () => Promise<T>): Promise<T> {
   return navigator.locks ? navigator.locks.request(key, work) : work();
@@ -42,9 +42,17 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
     function sync(status: DailyStatus) {
       serverAt = Date.parse(status.server_now); receivedAt = performance.now(); closesAt = Date.parse(status.closes_at);
       update({ date: status.date, today: status.date, startedAt: status.started_at, resetIn: Math.max(0, Math.ceil((closesAt - now()) / 1000)) });
+      if (status.cancelled) {
+        if (userId) clearDailyRun(userId, status.date);
+        update({ phase: "cancelled", question: null, options: [], run: null, result: null,
+          cancellationReason: status.cancellation_reason ?? "This Daily was cancelled for everyone.", refreshKey: state.refreshKey + 1 });
+        return true;
+      }
+      return false;
     }
     function confirmed(result: MyDailyResult) {
       if (!userId || !result.is_answered) return;
+      if (state.phase === "result" && state.result?.answered_at === result.answered_at) return;
       clearDailyRun(userId, state.date);
       update({ phase: "result", run: null, question: null, options: [], result,
         elapsed: result.time_spent ?? 0, refreshKey: state.refreshKey + 1 });
@@ -57,7 +65,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
       try {
         const status = await dailyStatus(lifetime.signal);
         if (!valid(id)) return;
-        sync(status);
+        if (sync(status)) return;
         if (userId && previousDate !== status.date) clearDailyRun(userId, previousDate);
         const viewKey = `${status.date}:${userId ?? "guest"}`;
         if (viewed.current !== viewKey && gaEvent("daily_view", { d: status.date, game_mode: "daily", is_logged_in: !!userId })) viewed.current = viewKey;
@@ -79,7 +87,7 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
       try {
         const status = await withDailyLock(dailyRunKey(userId, date), () => dailyBegin(date, lifetime.signal));
         if (!valid(id)) return;
-        sync(status);
+        if (sync(status)) return;
         const receipt = dailyReceipt(status);
         if (receipt) { confirmed(receipt); return; }
         const q = status.question!;
@@ -104,6 +112,10 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
       if (now() >= closesAt) { clearDailyRun(userId, run.date); void boot(); return; }
       update({ phase: "saving", elapsed: pending.seconds });
       try {
+        const status = await dailyStatus(lifetime.signal);
+        if (!valid(id)) return;
+        if (status.date !== run.date) { void boot(); return; }
+        if (sync(status)) return;
         const result = await withDailyLock(dailyRunKey(userId, run.date), async () => {
           const prior = await getMyDailyResult(userId, run.date, lifetime.signal);
           if (!valid(id)) throw new Error("inactive-daily");
@@ -117,7 +129,12 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
         if (!valid(id)) return;
         confirmed(result);
         attemptAnalytics("daily", `${userId}:${run.date}:${run.startedAt}`).submit({ d: run.date, ok: result.is_correct ?? false, elapsed: result.time_spent ?? 0, is_logged_in: true });
-      } catch { if (valid(id)) { if (now() >= closesAt) { clearDailyRun(userId, run.date); void boot(); } else update({ phase: "save-error" }); } }
+      } catch {
+        if (valid(id)) {
+          try { const status = await dailyStatus(lifetime.signal); if (!valid(id)) return; if (status.cancelled && sync(status)) return; } catch { /* Keep the same pending choice for retry. */ }
+          if (now() >= closesAt) { clearDailyRun(userId, run.date); void boot(); } else update({ phase: "save-error" });
+        }
+      }
     }
     actions.current = {
       start: () => { void begin(); },
@@ -149,12 +166,13 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
       update({ resetIn: Math.max(0, Math.ceil((closesAt - t) / 1000)),
         elapsed: state.run && !state.run.pending ? Math.max(0, Math.floor((t - state.run.startedAt) / 1000)) : state.elapsed });
       if (t >= closesAt && !["loading", "load-error"].includes(state.phase)) {
-        if (state.phase === "result") {
+        if (state.phase === "result" || state.phase === "cancelled") {
           if (!refreshing) { refreshing = true; void dailyStatus(lifetime.signal).then(s => { if (mounted) { serverAt = Date.parse(s.server_now); receivedAt = performance.now(); closesAt = Date.parse(s.closes_at); update({ today: s.date }); } }).catch(() => {}).finally(() => { refreshing = false; }); }
         } else { if (userId) clearDailyRun(userId, state.date); void boot(); }
       }
     }
     function focus() {
+      if (document.visibilityState === "hidden") return;
       tick();
       // Refresh the authoritative calendar on return from a suspended tab or another device.
       if (!refreshing && !["loading", "starting", "saving"].includes(state.phase)) {
@@ -162,8 +180,8 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
         const id = revision;
         void dailyStatus(lifetime.signal).then(s => {
           if (!valid(id)) return;
-          if (s.date !== state.date && state.phase !== "result") { void boot(); return; }
-          if (s.date === state.date) { sync(s); const receipt = dailyReceipt(s); if (receipt) confirmed(receipt); }
+          if (s.date !== state.date && state.phase !== "result" && state.phase !== "cancelled") { void boot(); return; }
+          if (s.date === state.date) { if (sync(s)) return; const receipt = dailyReceipt(s); if (receipt) confirmed(receipt); }
         }).catch(() => {}).finally(() => { refreshing = false; });
       }
     }
@@ -174,11 +192,12 @@ export function useDailyGame(userId: string | null, authLoading: boolean) {
       focus();
     }
     const interval = window.setInterval(tick, 250);
+    const refreshInterval = window.setInterval(focus, 30000);
     window.addEventListener("focus", focus); window.addEventListener("pageshow", focus);
     document.addEventListener("visibilitychange", focus); window.addEventListener("storage", storage);
     void boot();
     return () => {
-      mounted = false; revision++; lifetime.abort(); actions.current = null; window.clearInterval(interval);
+      mounted = false; revision++; lifetime.abort(); actions.current = null; window.clearInterval(interval); window.clearInterval(refreshInterval);
       window.removeEventListener("focus", focus); window.removeEventListener("pageshow", focus);
       document.removeEventListener("visibilitychange", focus); window.removeEventListener("storage", storage);
     };

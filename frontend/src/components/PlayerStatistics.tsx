@@ -22,7 +22,7 @@ interface Stats {
   trend: { d: string; correct: number; wrong: number; timeouts: number }[];
   daily_calendar: {
     d: string;
-    outcome: "correct" | "wrong" | "missed" | "started" | "not-played";
+    outcome: "correct" | "wrong" | "missed" | "started" | "not-played" | "cancelled";
     time_spent: number | null;
   }[];
 }
@@ -102,7 +102,7 @@ export default function PlayerStatistics({
             Regular quiz statistics since{" "}
             {new Date(s.tracking_since).toLocaleDateString("en-US")}. Earlier
             records and Daily results are preserved. Accuracy includes timeouts;
-            unfinished questions are listed separately.
+            unfinished questions are listed separately. Average time uses submitted answers only. The best correct streak continues across quizzes and ends at a wrong, timed-out or abandoned question. Unique questions include every question with a recorded outcome.
           </p>
           <dl className="hq-stat-grid">
             <div>
@@ -134,11 +134,11 @@ export default function PlayerStatistics({
               </dd>
             </div>
             <div>
-              <dt>Best correct streak</dt>
+              <dt>Best correct streak across quizzes</dt>
               <dd>{n.best_streak}</dd>
             </div>
             <div>
-              <dt>Unique questions seen</dt>
+              <dt>Unique questions with an outcome</dt>
               <dd>{n.unique_questions}</dd>
             </div>
             {[7, 30].map((days) => {
@@ -196,7 +196,7 @@ export default function PlayerStatistics({
           <h3>Daily · last 30 days</h3>
           <p className="hq-profile-note">
             Results only. Correct, wrong and started-but-missed days are shown
-            without past questions or answers.
+            without past questions or answers. Cancelled days are neutral and preserve streaks without adding a correct day.
           </p>
           <ol className="hq-daily-calendar" aria-label="Daily result calendar">
             {s.daily_calendar.map((d) => (

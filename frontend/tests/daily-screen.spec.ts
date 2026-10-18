@@ -220,7 +220,7 @@ test("Chicago midnight removes an unanswered question and discards pending answe
   page,
 }) => {
   const d = await dailyFixture(page);
-  await page.clock.setSystemTime(new Date("2026-10-08T04:59:58Z"));
+  await page.clock.pauseAt(new Date("2026-10-08T04:59:58Z"));
   d.failSubmit = true;
   await start(page);
   await page
@@ -428,3 +428,19 @@ for (const [width, height] of [
     });
   });
 }
+
+for (const moment of ["before-start", "playing", "saved"] as const) test(`cancelled Daily is neutral and clears its content: ${moment}`, async ({ page }) => {
+  const data = await dailyFixture(page); if (moment === "before-start") data.cancelled = true;
+  await page.goto("/daily");
+  if (moment !== "before-start") {
+    await page.getByRole("button", { name: "Start Daily", exact: true }).click();
+    await expect(page.getByRole("button", { name: dailyChoices[0], exact: true })).toBeEnabled();
+    if (moment === "saved") { await page.getByRole("button", { name: dailyChoices[0], exact: true }).click(); await expect(page.locator(".hq-daily-result")).toBeVisible(); }
+    data.cancelled = true; await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  }
+  await expect(page.getByRole("heading", { name: "Daily cancelled" })).toBeVisible();
+  await expect(page.getByText(data.cancellationReason, { exact: true })).toBeVisible();
+  await expect(page.locator(".hq-daily-question img")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: dailyChoices[0], exact: true })).toHaveCount(0);
+  expect(data.calls.filter(c => c.name === "submit_daily_answer")).toHaveLength(moment === "saved" ? 1 : 0);
+});

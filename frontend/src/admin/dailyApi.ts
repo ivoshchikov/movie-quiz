@@ -258,3 +258,30 @@ export async function getAdminDailySnapshot(
   if (error) throw error;
   return parsePreview(data);
 }
+
+export interface DailyCancellation {
+  date: string;
+  cancelled: boolean;
+  reason: string | null;
+}
+function cancellation(data: unknown, date: string): DailyCancellation {
+  if (!record(data) || data.date !== date || typeof data.cancelled !== "boolean" ||
+    !(data.reason === null || typeof data.reason === "string") ||
+    (data.cancelled && !data.reason)) throw new Error("invalid-daily-cancellation");
+  return data as unknown as DailyCancellation;
+}
+export async function getDailyCancellation(date: string, signal: AbortSignal) {
+  const { data, error } = await supabase.rpc("admin_daily_cancellation", { p_date: date }).abortSignal(signal);
+  if (error) throw error;
+  return cancellation(data, date);
+}
+export async function cancelDaily(date: string, reason: string, version: number, operation: string, owner: string, signal: AbortSignal) {
+  const { data, error } = await supabase.rpc("admin_cancel_daily", {
+    p_date: date, p_reason: reason.trim(), p_expected_revision: version,
+    p_operation: operation, p_expected_owner: owner,
+  }).abortSignal(signal);
+  if (error) throw error;
+  const result = cancellation(data, date);
+  if (!result.cancelled) throw new Error("unconfirmed-daily-cancellation");
+  return result;
+}

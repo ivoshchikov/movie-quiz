@@ -52,6 +52,7 @@ async function fixture(
       body: JSON.stringify(data.rights),
     }),
   );
+  await page.route("**/rest/v1/rpc/admin_question_metrics", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ since: "2026-10-18T12:00:00Z", legacy: { total_attempts: 20, correct_attempts: 12 }, cohorts: [{ revision: 1, mode: "normal", cohort: "first_account", correct: 2, wrong: 1, timeouts: 1, abandoned: 2, response_ms: 9000, timed_answers: 3 }] }) }));
   await page.route("**/rest/v1/rpc/admin_draft_key", (r) =>
     r.fulfill({
       status: data.failKey ? 503 : 200,

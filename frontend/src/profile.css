@@ -91,3 +91,4 @@
 
 .hq-stats-scroll-hint { display: none; }
 @media (max-width: 600px) { .hq-stats-scroll-hint { display: block; font-size: 11px; color: var(--hq-muted); margin-bottom: 8px; } }
+.hq-daily-calendar .hq-calendar-cancelled { border-style: dashed; color: var(--hq-muted); background: var(--hq-surface-soft); }

@@ -444,3 +444,11 @@ The owner supplied 28 Years Later The Bone Temple(1).png. The new shot is accept
 ## Question upload recovery — 16 October 2026 (UTC)
 
 Preserve the existing movies bucket, category namespaces, transactional numbering and same-operation retries. Handle only positively identified missing objects as absent; missing buckets and access errors remain failures. Display unconfirmed additions clearly and retain explicit encrypted-draft restoration without automatic publication. Implementation and verification: [QUESTION_UPLOAD_RECOVERY.md](QUESTION_UPLOAD_RECOVERY.md); publication remains pending confirmation.
+
+## GAME-02 — первый этап доработки действующих режимов
+
+Дата: 2026-10-18 Asia/Nicosia. Владелец разрешил реализацию всех девяти пунктов, тестирование и production-выпуск. Реализованы серверные лимиты гостевых запусков и общего объёма снимков, отдельные когорты статистики вопросов, Unicode-проверка ников, завершение после 15 минут бездействия с ежеминутной серверной задачей, восстановление устаревшей вкладки, закрытие четырёх старых Daily-рейтингов, административная отмена ошибочного Daily, автоматический Daily с сериалами и уточнение подписей статистики.
+
+Отмена Daily делает дату нейтральной для всех: принятые строки остаются в истории, но день не добавляет правильный ответ и не разрывает серию. Уже пропущенный обычный день не восстанавливается. Причина публичная; подтверждение, версия назначения и идентификатор операции защищают от случайного повторения и устаревшей админки. Новые когорты начинаются с даты миграции; история не получает выдуманного разделения на гостей и аккаунты. Первые исходы аккаунта — подмножество всех исходов аккаунта.
+
+Параметры, ограничения, миграция и порядок проверки — [GAMEPLAY_STAGE1.md](GAMEPLAY_STAGE1.md). Реализация находится в `feat/gameplay-stage1`; фактические результаты CI и публикации фиксируются в PR этой ветки. Правила GAME-01 (сортировка по очкам/времени, разрешённый выход, #175, America/Chicago, общий банк и старые рекорды) сохраняются. Новые режимы и голосования в этот этап не входят.

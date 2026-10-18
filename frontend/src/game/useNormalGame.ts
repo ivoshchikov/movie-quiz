@@ -49,11 +49,11 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     recoverInterruptedGame();
     const previous = lastGameResult(sessionRef.current?.user.id ?? null);
     if (previous?.playKey === playKey) { navigate("/result", { replace: true, state: previous }); return; }
-    let mounted = true, ended = false, state = { ...initial }, busy = false, restoring = false;
+    let mounted = true, ended = false, state = { ...initial }, busy = false, restoring = false, reconciling = false;
     let game: ActiveGame | null = null, server: ServerGame | null = null;
     let serverAt = 0, receivedAt = 0, feedbackAt = 0;
     let answerInFlight: Promise<void> = Promise.resolve();
-    let pendingAnswer: string | null = null;
+    let pendingAnswer: string | null = null, serverRevision = 0;
     const id = sessionId(`${playKey}:${ownerId ?? "guest"}`);
     const originalIndex = window.history.state?.idx as number | undefined;
     const now = () => serverAt + Math.max(0, performance.now() - receivedAt);
@@ -88,7 +88,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     }
     async function loadQuestion() {
       if (busy || ended || !mounted) return;
-      busy = true; update({ phase: "loading", selected: null, feedback: null });
+      busy = true; serverRevision++; update({ phase: "loading", selected: null, feedback: null });
       try {
         const value = await gameRequest("quiz_next", { p_session: id });
         if (!mounted || ended) return;
@@ -118,6 +118,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
         if (value.bank_size === 0) { update({ phase: "empty" }); return; }
         if (value.status === "finished") { finish(value.finish_reason!); return; }
         analytics.start(analyticSettings);
+        if (ownerId) { try { localStorage.setItem(`hq:quiz:activity:${ownerId}`, crypto.randomUUID()); } catch { /* Focus and server receipts still synchronize this run. */ } }
         busy = false; void loadQuestion();
       } catch { if (mounted && !ended) update({ phase: "setup-error" }); }
       finally { busy = false; }
@@ -125,7 +126,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     async function answer(selected: string | null, retry = false) {
       if (ended || !mounted || !server?.round || (retry ? state.phase !== "answer-error" : !["playing", "image-loading", "image-error"].includes(state.phase))) return;
       if (selected !== null && !state.options.includes(selected)) return;
-      pendingAnswer = selected;
+      pendingAnswer = selected; serverRevision++;
       update({ phase: "checking", selected });
       try {
         const value = await gameRequest("quiz_answer", { p_session: id, p_round: server.round.id, p_answer: selected });
@@ -136,8 +137,31 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
         }
         if (!mounted || ended) return;
         sync(value);
-        if (value.round?.outcome) feedback(value); else update({ phase: "playing" });
-      } catch { if (mounted && !ended) update({ phase: "answer-error" }); }
+        if (value.status === "finished" && (!value.round?.outcome || value.round.outcome === "abandoned")) finish(value.finish_reason!);
+        else if (value.round?.outcome) feedback(value); else update({ phase: "playing" });
+      } catch { if (mounted && !ended) { update({ phase: "answer-error" }); void reconcile(); } }
+    }
+    async function reconcile() {
+      if (!mounted || ended || !game || busy || reconciling || state.phase === "checking") return;
+      reconciling = true;
+      const revision = serverRevision;
+      try {
+        const value = await gameRequest("quiz_status", { p_session: id });
+        if (!mounted || ended || revision !== serverRevision) return;
+        const previousRound = server?.round?.id;
+        sync(value);
+        if (value.status === "finished") { finish(value.finish_reason!); return; }
+        if (value.round?.outcome) feedback(value);
+        else if (value.round && value.round.id !== previousRound) {
+          const question = roundQuestion(value)!;
+          update({ phase: "image-loading", question, options: question.options, number: value.round.number, imageAttempt: 0, selected: null, feedback: null });
+        }
+      } catch { /* An unconfirmed choice remains retryable; no local result is promoted. */ }
+      finally { reconciling = false; }
+    }
+    function focus() { if (document.visibilityState === "visible") { tick(); void reconcile(); } }
+    function storage(event: StorageEvent) {
+      if (ownerId && (event.key === `hq:quiz:activity:${ownerId}` || event.key === `hq:quiz:last:${ownerId}`)) void reconcile();
     }
     function sendAnswer(selected: string | null, retry = false) { answerInFlight = answer(selected, retry); }
     function tick() {
@@ -180,13 +204,14 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     const interval = window.setInterval(tick, 100);
     window.addEventListener("pagehide", pageHide); window.addEventListener("pageshow", pageShow); window.addEventListener("beforeunload", beforeUnload);
     const release = guardGameNavigation(popState);
-    document.addEventListener("visibilitychange", tick);
+    document.addEventListener("visibilitychange", focus);
+    window.addEventListener("focus", focus); window.addEventListener("storage", storage);
     void setup();
     return () => {
       if (window.location.pathname !== "/play" || window.history.state?.key !== playKey) finish("exit", false, true);
       mounted = false; window.clearInterval(interval); actions.current = null;
       window.removeEventListener("pagehide", pageHide); window.removeEventListener("pageshow", pageShow); window.removeEventListener("beforeunload", beforeUnload);
-      document.removeEventListener("visibilitychange", tick); release();
+      document.removeEventListener("visibilitychange", focus); window.removeEventListener("focus", focus); window.removeEventListener("storage", storage); release();
     };
   }, [authLoading, categoryId, difficultyId, playKey, navigate, ownerId]);
   return { ...view, actions };

@@ -76,3 +76,5 @@
   .hq-admin-assignment { padding: 13px; gap: 11px; }
   .hq-admin-access { padding: 22px; }
 }
+.hq-admin-field textarea { display: block; min-width: 0; width: 100%; border: 1px solid var(--hq-border); border-radius: 9px; background: var(--hq-surface); color: var(--hq-text); padding: 10px 12px; font-size: 16px; resize: vertical; }
+.hq-admin-field textarea:focus-visible { outline: 3px solid var(--hq-purple); outline-offset: 3px; }
