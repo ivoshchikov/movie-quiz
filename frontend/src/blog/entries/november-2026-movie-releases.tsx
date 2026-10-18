@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
+import FilmStill from "../components/FilmStill";
 import { formatBlogDate } from "../presentation";
 
 const coverPath = "/blog-assets/november-2026-movie-releases-cover.webp";
@@ -35,6 +36,79 @@ type ReleaseFilm = {
   source: string;
   sourceLabel: string;
   body: ReactNode;
+};
+
+const filmImages: Record<string, { src: string; width: number; height: number; alt: string; caption: string }> = {
+  "the-cat-in-the-hat": {
+    "src": "/blog-assets/november-2026-the-cat-in-the-hat-still.webp",
+    "width": 1200,
+    "height": 732,
+    "alt": "Two blue-haired characters in red outfits stand beside a boy and a goldfish in a bowl.",
+    "caption": "The Cat in the Hat (2026): scene from the film."
+  },
+  "godzilla-minus-zero": {
+    "src": "/blog-assets/november-2026-godzilla-minus-zero-poster.webp",
+    "width": 512,
+    "height": 745,
+    "alt": "Godzilla surrounded by fire on a poster advertising November 3 IMAX early-access screenings.",
+    "caption": "Godzilla Minus Zero (2026): poster."
+  },
+  "wild-horse-nine": {
+    "src": "/blog-assets/november-2026-wild-horse-nine-still.webp",
+    "width": 1200,
+    "height": 669,
+    "alt": "Two men stand in tall grass between large moai statues on Easter Island.",
+    "caption": "Wild Horse Nine (2026): scene from the film."
+  },
+  "ebenezer": {
+    "src": "/blog-assets/november-2026-ebenezer-still.webp",
+    "width": 985,
+    "height": 859,
+    "alt": "A man in a blue coat and top hat holds a cane in a wooden doorway.",
+    "caption": "Ebenezer (2026): scene from the film."
+  },
+  "how-to-rob-a-bank": {
+    "src": "/blog-assets/november-2026-how-to-rob-a-bank-still.webp",
+    "width": 1200,
+    "height": 704,
+    "alt": "Armed robbers wearing animal masks climb out of the back of a green van.",
+    "caption": "How to Rob a Bank (2026): scene from the film."
+  },
+  "paper-tiger": {
+    "src": "/blog-assets/november-2026-paper-tiger-poster.webp",
+    "width": 629,
+    "height": 787,
+    "alt": "Spanish-language Paper Tiger poster with three cast portraits and the title Tigre de Papel.",
+    "caption": "Paper Tiger (2026): poster."
+  },
+  "sunrise-on-the-reaping": {
+    "src": "/blog-assets/november-2026-sunrise-on-the-reaping-poster.webp",
+    "width": 594,
+    "height": 882,
+    "alt": "Sunrise on the Reaping poster showing a pointed monument and figures in a flower-filled mountain valley.",
+    "caption": "The Hunger Games: Sunrise on the Reaping (2026): poster."
+  },
+  "i-play-rocky": {
+    "src": "/blog-assets/november-2026-i-play-rocky-still.webp",
+    "width": 1200,
+    "height": 708,
+    "alt": "A young man in gray sweats jogs along a beach with a dog on a leash.",
+    "caption": "I Play Rocky (2026): scene from the film."
+  },
+  "hexed": {
+    "src": "/blog-assets/november-2026-hexed-still.webp",
+    "width": 1200,
+    "height": 568,
+    "alt": "Three animated witches wearing pointed hats stand on a sunlit path.",
+    "caption": "Hexed (2026): scene from the film."
+  },
+  "focker-in-law": {
+    "src": "/blog-assets/november-2026-focker-in-law-poster.webp",
+    "width": 481,
+    "height": 810,
+    "alt": "Focker-In-Law poster with three cast portraits against a red background.",
+    "caption": "Focker-In-Law (2026): poster."
+  }
 };
 
 const films: ReleaseFilm[] = [
@@ -204,6 +278,7 @@ const post: BlogPost = {
         <div><dt>Director</dt><dd>{film.director}</dd></div>
         <div><dt>{film.castLabel || "Starring"}</dt><dd>{film.cast}</dd></div>
       </dl>
+      {filmImages[film.id] && <FilmStill {...filmImages[film.id]} />}
       {film.body}
       <p className="hq-watchlist-facts"><a href={film.source}>{film.sourceLabel}: film details</a></p>
     </section>)}

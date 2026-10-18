@@ -1,0 +1,247 @@
+{
+  "received": "2026-10-18",
+  "article": "https://hard-quiz.com/blog/november-2026-movie-releases",
+  "processing": "EXIF orientation applied; converted to RGB; fit within 1200\u00d71200 without upscaling or cropping; WebP quality 83, method 6. Metadata stripped. Existing FilmStill component preserves aspect ratio and uses lazy decoding/loading.",
+  "images": [
+    {
+      "film": "The Cat in the Hat",
+      "kind": "still",
+      "uploadedFile": "The Cat in the Hat.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        1323,
+        807
+      ],
+      "originalSha256": "fdf7b4e05452094b3cea016aeffb78a156c34600dbeb770e1498b87a71090f0a",
+      "asset": {
+        "src": "/blog-assets/november-2026-the-cat-in-the-hat-still.webp",
+        "width": 1200,
+        "height": 732,
+        "alt": "Two blue-haired characters in red outfits stand beside a boy and a goldfish in a bowl.",
+        "caption": "The Cat in the Hat (2026): scene from the film."
+      },
+      "bytes": 55260,
+      "sha256": "2a744eaed094cebe164244fef2b9bcc1a368d81ed3d3f4620ca3a73d38de2e95"
+    },
+    {
+      "film": "Godzilla Minus Zero",
+      "kind": "poster",
+      "uploadedFile": "Godzilla Minus Zero.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        512,
+        745
+      ],
+      "originalSha256": "a4be91bf3a258d2e20e3819376b91182c91c78f03aff31c0da04fc78993d4e9e",
+      "asset": {
+        "src": "/blog-assets/november-2026-godzilla-minus-zero-poster.webp",
+        "width": 512,
+        "height": 745,
+        "alt": "Godzilla surrounded by fire on a poster advertising November 3 IMAX early-access screenings.",
+        "caption": "Godzilla Minus Zero (2026): poster."
+      },
+      "bytes": 58812,
+      "sha256": "29f17d7c35f02e7967c4a78aa0b06f5d3367aeac1c91fea63e8204976d027bbf"
+    },
+    {
+      "film": "Wild Horse Nine",
+      "kind": "still",
+      "uploadedFile": "Wild Horse Nine.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        1328,
+        740
+      ],
+      "originalSha256": "e9020032518ca2a5124939f7a0a2bdd251bd716db861b3d38809ef326e9ae7fe",
+      "asset": {
+        "src": "/blog-assets/november-2026-wild-horse-nine-still.webp",
+        "width": 1200,
+        "height": 669,
+        "alt": "Two men stand in tall grass between large moai statues on Easter Island.",
+        "caption": "Wild Horse Nine (2026): scene from the film."
+      },
+      "bytes": 102242,
+      "sha256": "7181a0fbc8adc4702a39d29477475562c1ee0db47514226cea942ce591c77189"
+    },
+    {
+      "film": "Ebenezer",
+      "kind": "still",
+      "uploadedFile": "Ebenezer.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        985,
+        859
+      ],
+      "originalSha256": "4ab5410280f5e11f0479669f1793e33d3003610542670f013534a5e5e0836bb3",
+      "asset": {
+        "src": "/blog-assets/november-2026-ebenezer-still.webp",
+        "width": 985,
+        "height": 859,
+        "alt": "A man in a blue coat and top hat holds a cane in a wooden doorway.",
+        "caption": "Ebenezer (2026): scene from the film."
+      },
+      "bytes": 158064,
+      "sha256": "37092a98b615412e012a61b8e5c5882688252dc68cb2a41e890a8e40f97c0cdf"
+    },
+    {
+      "film": "How to Rob a Bank",
+      "kind": "still",
+      "uploadedFile": "How to Rob a Bank.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        1326,
+        778
+      ],
+      "originalSha256": "4583c8dbd636a29fc3908eecf4668315717b495f0ab6e440492978546d686ddb",
+      "asset": {
+        "src": "/blog-assets/november-2026-how-to-rob-a-bank-still.webp",
+        "width": 1200,
+        "height": 704,
+        "alt": "Armed robbers wearing animal masks climb out of the back of a green van.",
+        "caption": "How to Rob a Bank (2026): scene from the film."
+      },
+      "bytes": 103246,
+      "sha256": "4e34b4d875ee5a0c24bf5ffd36ec97db2e36a0bd3607a65f3c9318fbcaede8ee"
+    },
+    {
+      "film": "Paper Tiger",
+      "kind": "poster",
+      "uploadedFile": "Paper Tiger.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        629,
+        787
+      ],
+      "originalSha256": "3b348982ee6a8f36e71950271d1395586ebd54a1e8415a262582f5e85674dad2",
+      "asset": {
+        "src": "/blog-assets/november-2026-paper-tiger-poster.webp",
+        "width": 629,
+        "height": 787,
+        "alt": "Spanish-language Paper Tiger poster with three cast portraits and the title Tigre de Papel.",
+        "caption": "Paper Tiger (2026): poster."
+      },
+      "bytes": 56488,
+      "sha256": "649a48013804be72f473af94fd6c91f0e147bfc20934f99fc61d387c6de2e9bf"
+    },
+    {
+      "film": "The Hunger Games: Sunrise on the Reaping",
+      "kind": "poster",
+      "uploadedFile": "The Hunger Games Sunrise on the Reaping.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        594,
+        882
+      ],
+      "originalSha256": "323a439c2b67ed3e58639c4e802b9e9533f0b3005a30b909a55c66fd0a29a295",
+      "asset": {
+        "src": "/blog-assets/november-2026-sunrise-on-the-reaping-poster.webp",
+        "width": 594,
+        "height": 882,
+        "alt": "Sunrise on the Reaping poster showing a pointed monument and figures in a flower-filled mountain valley.",
+        "caption": "The Hunger Games: Sunrise on the Reaping (2026): poster."
+      },
+      "bytes": 74926,
+      "sha256": "f318182450f229dfac90dd1b4072fd59da0e42ef0b0c1ea15d5d1215160e7c20"
+    },
+    {
+      "film": "I Play Rocky",
+      "kind": "still",
+      "uploadedFile": "I Play Rocky.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        1326,
+        782
+      ],
+      "originalSha256": "ea4f2234f65fef733e2e51a3c405c0de130795f07ef0fd3e450c7711b4f75bd1",
+      "asset": {
+        "src": "/blog-assets/november-2026-i-play-rocky-still.webp",
+        "width": 1200,
+        "height": 708,
+        "alt": "A young man in gray sweats jogs along a beach with a dog on a leash.",
+        "caption": "I Play Rocky (2026): scene from the film."
+      },
+      "bytes": 75422,
+      "sha256": "199d4ab018b9c9fc07d2f4298f5d0cd6ea750787cb4e64dcb59490d16b8484ff"
+    },
+    {
+      "film": "Hexed",
+      "kind": "still",
+      "uploadedFile": "Hexed.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        1628,
+        770
+      ],
+      "originalSha256": "2f4f86df2ba41550a7e26d922dd2004b8f840dbd595ddbde3c9047caff52df81",
+      "asset": {
+        "src": "/blog-assets/november-2026-hexed-still.webp",
+        "width": 1200,
+        "height": 568,
+        "alt": "Three animated witches wearing pointed hats stand on a sunlit path.",
+        "caption": "Hexed (2026): scene from the film."
+      },
+      "bytes": 50914,
+      "sha256": "ab9db050878be744132525c61b1cdacf8f76e1264a918606d627d2ac736e14ea"
+    },
+    {
+      "film": "Focker-In-Law",
+      "kind": "poster",
+      "uploadedFile": "Focker-In-Law.png",
+      "source": "Owner-supplied Archive(1).zip, received October 18, 2026",
+      "externalSourceUrl": null,
+      "creator": null,
+      "license": null,
+      "rightsNote": "Submitted by the owner for insertion in the article. No external source, creator credit, license or independent authorship claim was supplied with this archive; none is inferred.",
+      "originalDimensions": [
+        481,
+        810
+      ],
+      "originalSha256": "d116a505a7c2a3ae84af1588c9dbc6d1364d41cef297b6d4cac66f700982a8b4",
+      "asset": {
+        "src": "/blog-assets/november-2026-focker-in-law-poster.webp",
+        "width": 481,
+        "height": 810,
+        "alt": "Focker-In-Law poster with three cast portraits against a red background.",
+        "caption": "Focker-In-Law (2026): poster."
+      },
+      "bytes": 53868,
+      "sha256": "7241287f5876b4b36c5907578bbf903a0fae0c030da8288f634209383fddb986"
+    }
+  ]
+}
