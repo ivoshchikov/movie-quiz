@@ -1,6 +1,6 @@
 # November 2026 Movie Releases: US Theater Dates
 
-Status: prepared in `feat/blog-november-2026-releases`; not yet merged or verified in production.
+Editorial and local-validation record for [PR #37](https://github.com/ivoshchikov/movie-quiz/pull/37), prepared in `feat/blog-november-2026-releases`. The PR maintains the current CI, merge, deployment and production-verification evidence.
 
 The owner requested research, an English article, SEO implementation and publication on October 18, 2026 (Asia/Nicosia). This is the next selected topic in the existing editorial queue.
 
@@ -64,10 +64,10 @@ Recheck the linked distributors shortly before November begins and when a date c
 Local validation completed on October 18, 2026, against main `93724d36ef809e40da3087608511e775598cde6d`:
 
 - Production build and postbuild SEO generation pass. Both TypeScript projects pass; ESLint reports zero warnings. Vite also reports the large-chunk and duplicate image-encoder sourcemap warnings; the build completes successfully.
-- All 66 existing blog collection/article browser scenarios pass in 23.2 seconds. Their chronological counts, latest related title and isolated image fixture now include the sixth publication. No test behavior is removed or skipped to accommodate the post.
+- All 83 existing blog collection/article and cross-site browser scenarios pass in 30.0 seconds. Their chronological counts, latest related title and isolated image fixture now include the sixth publication. The cross-site focus scenario selects the counted Movie guides label independently of its current number; exact collection counts remain asserted in the blog suite. No test behavior is removed or skipped to accommodate the post.
 - Generated article HTML without JavaScript: approximately 1,900 words in the prose region, ten linked film rows, fifteen source references, correct dates and consistent limited/wide notes. Title, 144-character description, canonical, OG/Twitter, BlogPosting and native links pass.
 - Sitemap and RSS include the new canonical; the six-item prerendered blog list and Whalefall's related links include it. Both article routing rules cover the new slug.
 - Browser checks pass at 1440 and 768 px in dark mode, 390 px in light mode, 320 px in dark mode and 390 px in Halloween mode. No horizontal overflow or page errors; the graphic decodes at 1200×675 without distortion. Contents links move focus to the target heading. Desktop, mobile date tables and Halloween prose screenshots were visually inspected, as were both original cover variants.
 - The custom checks use isolated local API origins and block outside requests. Real players, scores, Daily attempts and production analytics are not created.
 
-CI, main merge, Vercel production and public HTTP checks remain pending at this preparation stage. Concrete release evidence will be recorded in the pull request after verification; this scoped editorial record accompanies the existing project documentation without replacing other chats' operational records.
+Remote CI, main merge, Vercel production and public HTTP results are tracked in [PR #37](https://github.com/ivoshchikov/movie-quiz/pull/37). The preparation checks above do not by themselves assert a production release. This scoped editorial record accompanies the existing project documentation without replacing other chats' operational records.
