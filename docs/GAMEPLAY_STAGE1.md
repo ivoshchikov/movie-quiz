@@ -1,6 +1,6 @@
 # GAME-02 — Regular quiz and Daily hardening
 
-Approved scope: the nine items in roadmap Stage 1. No new game modes. Implementation is on `feat/gameplay-stage1`; CI, production migration and deployment evidence are recorded in its pull request.
+Approved scope: the nine items in roadmap Stage 1. No new game modes. Implementation is on `feat/gameplay-stage1`; CI, production migration and deployment evidence are recorded in [PR #39](https://github.com/ivoshchikov/movie-quiz/pull/39).
 
 ## Guest resource controls
 

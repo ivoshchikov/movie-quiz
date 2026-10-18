@@ -1,3 +1,36 @@
+// Unicode 17 control/format, line/paragraph separators, default-ignorable
+// code points, plus Ogham/Braille blanks. Keep identical to valid_nickname in SQL.
+const hiddenRanges: readonly (readonly [number, number])[] = [
+  [0, 31],
+  [127, 159],
+  [173, 173],
+  [847, 847],
+  [1536, 1541],
+  [1564, 1564],
+  [1757, 1757],
+  [1807, 1807],
+  [2192, 2193],
+  [2274, 2274],
+  [4447, 4448],
+  [5760, 5760],
+  [6068, 6069],
+  [6155, 6159],
+  [8203, 8207],
+  [8232, 8238],
+  [8288, 8303],
+  [10240, 10240],
+  [12644, 12644],
+  [65024, 65039],
+  [65279, 65279],
+  [65440, 65440],
+  [65520, 65531],
+  [69821, 69821],
+  [69837, 69837],
+  [78896, 78911],
+  [113824, 113827],
+  [119155, 119162],
+  [917504, 921599],
+];
 export function normalizeNickname(value: string) {
   return value.normalize("NFKC").trim().replace(/ +/g, " ");
 }
@@ -5,14 +38,9 @@ export function nicknameProblem(value: string): string | null {
   const chars = Array.from(value);
   if (chars.length < 3) return "Use at least 3 characters.";
   if (chars.length > 20) return "Use no more than 20 characters.";
-  for (const char of chars) {
-    const c = char.codePointAt(0)!;
-    if (c < 32 || c >= 127 && c <= 159 || [173, 847, 1564, 4447, 4448, 12644, 65279, 65440].includes(c) ||
-      c >= 6068 && c <= 6069 || c >= 6155 && c <= 6159 || c >= 8203 && c <= 8207 ||
-      c >= 8232 && c <= 8238 || c >= 8288 && c <= 8303 || c >= 65024 && c <= 65039 ||
-      c >= 113824 && c <= 113827 || c >= 119155 && c <= 119162 || c >= 917504 && c <= 921599) {
-      return "Use visible characters only. Invisible and control characters are not allowed.";
-    }
-  }
+  if (chars.some(char => {
+    const code = char.codePointAt(0)!;
+    return hiddenRanges.some(([start, end]) => code >= start && code <= end);
+  })) return "Use visible characters only. Invisible and control characters are not allowed.";
   return null;
 }

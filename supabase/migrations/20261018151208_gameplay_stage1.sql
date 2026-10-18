@@ -56,10 +56,15 @@ begin
   if nick is null or char_length(nick) not between 3 and 20 or nick<>btrim(nick) then return false; end if;
   for i in 1..char_length(nick) loop
     c:=ascii(substr(nick,i,1));
-    if c<32 or c between 127 and 159 or c in (173,847,1564,4447,4448,12644,65279,65440)
-      or c between 6068 and 6069 or c between 6155 and 6159 or c between 8203 and 8207
-      or c between 8232 and 8238 or c between 8288 and 8303 or c between 65024 and 65039
-      or c between 113824 and 113827 or c between 119155 and 119162 or c between 917504 and 921599 then return false; end if;
+    -- Same Unicode 17 ranges as nicknameValidation.ts.
+    if c between 0 and 31 or c between 127 and 159 or c=173 or c=847
+      or c between 1536 and 1541 or c=1564 or c=1757 or c=1807
+      or c between 2192 and 2193 or c=2274 or c between 4447 and 4448 or c=5760
+      or c between 6068 and 6069 or c between 6155 and 6159 or c between 8203 and 8207 or c between 8232 and 8238
+      or c between 8288 and 8303 or c=10240 or c=12644 or c between 65024 and 65039
+      or c=65279 or c=65440 or c between 65520 and 65531 or c=69821
+      or c=69837 or c between 78896 and 78911 or c between 113824 and 113827 or c between 119155 and 119162
+      or c between 917504 and 921599 then return false; end if;
   end loop;
   return true;
 end $$;

@@ -315,7 +315,7 @@ test('first outcomes are separate for a changed revision and for Daily',async()=
 });
 test('Unicode controls and invisible names are rejected, NFKC collisions are unique and chosen names stay immutable',async()=>{
  await reset();await db.query('delete from public.profiles where user_id=$1',[other]);
- for(const nick of ['ab\u200bc','ab\u202ec','\u115f\u115f\u115f','ab\u034fc','ab\u0001c','ab\uFE0Fc'])
+ for(const nick of ['ab\u200bc','ab\u202ec','\u115f\u115f\u115f','ab\u034fc','ab\u0001c','ab\uFE0Fc','ab\u0600c','ab\u2800c','ab\u1680c'])
   await assert.rejects(db.query('insert into public.profiles(user_id,nickname) values($1,$2)',[other,nick]),/visible/);
  await assert.rejects(db.query("insert into public.profiles(user_id,nickname) values($1,'Ｐｌａｙｅｒ')",[other]),/duplicate key/);
  await uid(other);await db.exec('set role authenticated');

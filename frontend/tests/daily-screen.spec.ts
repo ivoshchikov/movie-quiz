@@ -435,7 +435,7 @@ for (const moment of ["before-start", "playing", "saved"] as const) test(`cancel
   if (moment !== "before-start") {
     await page.getByRole("button", { name: "Start Daily", exact: true }).click();
     await expect(page.getByRole("button", { name: dailyChoices[0], exact: true })).toBeEnabled();
-    if (moment === "saved") { await page.getByRole("button", { name: dailyChoices[0], exact: true }).click(); await expect(page.locator(".hq-daily-result")).toBeVisible(); }
+    if (moment === "saved") { await page.getByRole("button", { name: dailyChoices[0], exact: true }).click(); await expect(page.getByRole("heading", { name: "Correct!", exact: true })).toBeVisible(); }
     data.cancelled = true; await page.evaluate(() => window.dispatchEvent(new Event("focus")));
   }
   await expect(page.getByRole("heading", { name: "Daily cancelled" })).toBeVisible();

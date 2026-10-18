@@ -502,7 +502,7 @@ test("encrypted drafts restore only by choice, retain processed image and never 
   await expect(
     page.getByText("Drafts saved securely in this browser."),
   ).toBeVisible();
-  const saved = await page.evaluate(async (owner) => {
+  const readSaved = () => page.evaluate(async (owner) => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
       const r = indexedDB.open("hq_private_question_drafts_v1");
       r.onsuccess = () => resolve(r.result);
@@ -521,6 +521,10 @@ test("encrypted drafts restore only by choice, retain processed image and never 
       },
     );
   }, owner);
+  // A previous draft can already have a success message while the edited image
+  // snapshot is still inside the persistence debounce. Wait for the actual blob.
+  await expect.poll(async () => (await readSaved()).cipher).toBeGreaterThan(1000);
+  const saved = await readSaved();
   expect(saved.cipher).toBeGreaterThan(1000);
   expect(saved.plaintext).toBe(false);
   await page.reload();
