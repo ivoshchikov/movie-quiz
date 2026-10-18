@@ -65,7 +65,7 @@ const films: ReleaseFilm[] = [
     cast: "John Malkovich, Sam Rockwell, Steve Buscemi",
     source: sources.wildHorse, sourceLabel: "Searchlight Pictures",
     body: <>
-      <p>Shortly before the 1973 Chilean coup, two CIA agents are sent from Santiago to Easter Island. Their partnership brings its own history of mistrust, and a connection with two local students adds another complication. John Malkovich and Sam Rockwell play the agents; Steve Buscemi is their bureau chief.</p>
+      <p>Shortly before the 1973 Chilean coup, two CIA agents are sent from Santiago to Easter Island. They bring troubled pasts and current conspiracies with them, and a connection with two students adds another complication. John Malkovich and Sam Rockwell play the agents; Steve Buscemi is their bureau chief.</p>
       <p>Martin McDonagh writes and directs. The premise offers a different sort of tension from November's monsters and arena spectacle: a small group of people, old grievances and a politically charged setting. Put it on your list if those shifting loyalties are the part of a story that usually interests you.</p>
     </>,
   },
