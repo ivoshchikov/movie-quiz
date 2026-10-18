@@ -419,3 +419,11 @@ test("a resumed tab displays the authoritative inactive result without submittin
   await expect(page).toHaveURL(/\/result$/); await expect(page.getByText(/15 minutes without activity/)).toBeVisible();
   await expect(page.locator(".hq-result-stats dd").first()).toHaveText("15:00");expect(data.accepted).toBe(0);
 });
+
+test('guest admission limits explain the wait and retry the same attempt without a fabricated result',async({page})=>{
+ const data=await gameFixture(page);let limited=true;
+ await page.route('**/rest/v1/rpc/quiz_start',route=>limited?route.fulfill({status:429,contentType:'application/json',body:JSON.stringify({code:'PT429',message:'Too many new guest games'})}):route.fallback());
+ await page.goto('/');await page.getByRole('button',{name:'Play Movie Stills'}).click();
+ await expect(page.getByRole('alert')).toHaveText('Guest games are temporarily busy. Please wait and try again.');expect(data.games.size).toBe(0);
+ limited=false;await page.getByRole('button',{name:'Try again',exact:true}).click();await expect(page.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();expect(data.games.size).toBe(1);
+});

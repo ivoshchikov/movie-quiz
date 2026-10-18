@@ -14,6 +14,7 @@ type Phase = "setup" | "loading" | "image-loading" | "playing" | "checking" | "f
   "setup-error" | "question-error" | "image-error" | "answer-error" | "empty" | "finished";
 type Feedback = "correct" | "wrong" | "timeout" | null;
 interface GameView {
+  setupError: string | null;
   phase: Phase; category: Category | null; level: DifficultyLevel | null; question: Question | null;
   options: string[]; number: number; score: number; lives: number; seconds: number; remaining: number;
   elapsed: number; selected: string | null; feedback: Feedback; imageAttempt: number;
@@ -22,7 +23,7 @@ interface Actions {
   answer: (answer: string) => void; imageReady: (id: number, attempt: number) => void;
   imageFailed: (id: number, attempt: number) => void; retry: () => void; finish: () => void;
 }
-const initial: GameView = { phase: "setup", category: null, level: null, question: null, options: [],
+const initial: GameView = { setupError: null, phase: "setup", category: null, level: null, question: null, options: [],
   number: 0, score: 0, lives: 0, seconds: 0, remaining: 1, elapsed: 0, selected: null, feedback: null, imageAttempt: 0 };
 const playIds = new Map<string, string>();
 function sessionId(key: string) {
@@ -103,7 +104,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
     }
     async function setup() {
       if (busy || ended || !mounted) return;
-      busy = true; update({ phase: "setup" });
+      busy = true; update({ phase: "setup", setupError: null });
       try {
         const [categories, levels] = await Promise.all([getCategories(), getDifficultyLevels()]);
         if (!mounted || ended) return;
@@ -120,7 +121,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
         analytics.start(analyticSettings);
         if (ownerId) { try { localStorage.setItem(`hq:quiz:activity:${ownerId}`, crypto.randomUUID()); } catch { /* Focus and server receipts still synchronize this run. */ } }
         busy = false; void loadQuestion();
-      } catch { if (mounted && !ended) update({ phase: "setup-error" }); }
+      } catch (error) { if (mounted && !ended) update({ phase: "setup-error", setupError: error && typeof error === "object" && "code" in error && error.code === "PT429" ? "Guest games are temporarily busy. Please wait and try again." : null }); }
       finally { busy = false; }
     }
     async function answer(selected: string | null, retry = false) {
