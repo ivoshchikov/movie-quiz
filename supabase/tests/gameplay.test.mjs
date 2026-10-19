@@ -16,13 +16,15 @@ if (native) {
 }
 after(() => db.close());
 await db.exec(await readFile(new URL('./fixtures/gameplay.sql', import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('./fixtures/this-that-platform.sql', import.meta.url),'utf8'));
 if (native) await db.exec('create extension pgcrypto with schema extensions');
-else await db.exec("create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
+// PGlite-only crypto stand-in; native CI uses actual pgcrypto HMAC.
+else await db.exec("create function extensions.hmac(data text,key text,kind text)returns bytea language sql as $$select decode(md5(key||data)||md5(data||key),'hex')$$;create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec(`create schema if not exists hq_private; create table hq_private.test_clock_state(at timestamptz); insert into hq_private.test_clock_state values(null); create function hq_private.test_clock() returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$;`);
-for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack']) {
+for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history']) {
   if (file.endsWith('authoritative_gameplay')) { await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8')); await db.exec("insert into public.daily_session(user_id,d) values('00000000-0000-0000-0000-000000000003',(clock_timestamp() at time zone 'America/Chicago')::date+1)"); }
   await db.exec('begin');
-  try { await db.exec((await readFile(new URL(`../migrations/${file}.sql`,import.meta.url),'utf8')).replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
+  try { await db.exec((await readFile(new URL(`../migrations/${file}.sql`,import.meta.url),'utf8')).replace('create extension if not exists pg_net with schema extensions;', '').replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
   catch(e) { await db.exec('rollback'); throw e; }
 }
 const player='00000000-0000-0000-0000-000000000002', other='00000000-0000-0000-0000-000000000003';

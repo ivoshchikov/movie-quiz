@@ -12,6 +12,8 @@ import PrivateRoute        from "./PrivateRoute";
 import DailyPage from "./pages/DailyPage";
 // ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
 import NotFound            from "./components/NotFound";
+const ThisThatPage = lazy(() => import("./pages/ThisThatPage"));
+const ThisThatPlayPage = lazy(() => import("./pages/ThisThatPlayPage"));
 const TimeAttackPage = lazy(() => import("./pages/TimeAttackPage"));
 const TimeAttackPlayPage = lazy(() => import("./pages/TimeAttackPlayPage"));
 const GameScreen = lazy(() => import("./components/GameScreen"));
@@ -46,6 +48,8 @@ export default function App() {
           <Route path="how-to-play"   element={<HowToPlay />} />
           <Route path="login"         element={<LoginScreen />} />
           <Route path="setup-profile" element={<ProfileSetupScreen />} />
+          <Route path="this-or-that" element={<ThisThatPage />} />
+          <Route path="this-or-that/play" element={<ThisThatPlayPage />} />
           <Route path="time-attack" element={<TimeAttackPage />} />
           <Route path="time-attack/play" element={<TimeAttackPlayPage />} />
           <Route path="play"          element={<GameScreen />} />

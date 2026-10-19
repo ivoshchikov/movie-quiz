@@ -66,6 +66,7 @@ export default function StartScreen() {
             {loading ? "Loading…" : error || !category || !level || availability.error ? "Play quiz" : count === 0 ? "Coming soon" : count == null ? "Checking questions…" : `Play ${categoryLabel(category)}`}
             <SiteIcon name="arrow" />
           </button>
+          <Link className="hq-text-action hq-home-attack-link" to="/this-or-that">This or That · Choose your favourite actors <SiteIcon name="arrow" /></Link>
           <Link className="hq-text-action hq-home-attack-link" to="/time-attack">Try Time Attack <SiteIcon name="timer" /></Link>
         </section>
         <section className="hq-panel hq-daily-panel" aria-labelledby="daily-heading">
