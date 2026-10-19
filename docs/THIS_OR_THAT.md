@@ -2,7 +2,7 @@
 
 First release: [PR #41](https://github.com/ivoshchikov/movie-quiz/pull/41). Production backend verification is complete; the PR records the frontend deployment and final publication evidence.
 
-The first release compares actors from the current actor photo/name bank. Actresses have an independent board under the same server contract and appear only when at least two approved participants exist. Movies and TV series are outside this release.
+The first release compares actors from the current actor photo/name bank. A future actress board has an independent server contract under the same rules; the first-release interface offers actors only. Movies and TV series are outside this release.
 
 ## Player experience
 
@@ -26,7 +26,7 @@ The rating calculator is deployed privately as `this-that-ranking`. Its numerica
 
 ## Operations
 
-Migrations: `20261019200201_this_or_that.sql`, `20261019202710_this_that_net_privacy.sql` and `20261019203942_this_that_bounded_refresh.sql`. Requires Supabase Auth, pg_net and the existing pg_cron installation. Adds `hq-this-that-maintenance` without replacing gameplay maintenance. Guest admission and storage budgets are shared with normal/Time Attack. Old guest snapshots and completed old cycles are pruned; immutable account votes and private preferences remain.
+Migrations: `20261019200201_this_or_that.sql`, `20261019202710_this_that_net_privacy.sql` `20261019203942_this_that_bounded_refresh.sql` and `20261019204920_this_that_private_history.sql`. Requires Supabase Auth, pg_net and the existing pg_cron installation. Adds `hq-this-that-maintenance` without replacing gameplay maintenance. Guest admission and storage budgets are shared with normal/Time Attack. Old guest snapshots and completed old cycles are pruned; immutable account votes and private preferences remain.
 
 Administrator-only RPCs `admin_this_that_voter` and `admin_this_that_person` support audited voter holds and revision-checked participant approval. Service-only refresh RPCs cannot be called by anonymous or authenticated browser clients. The Edge entrypoint performs its own project API-key/cron authentication, validates origins and bounded request bodies, and never returns service credentials or internal errors.
 
@@ -36,8 +36,10 @@ The new routes are `/this-or-that` (indexable initial HTML and sitemap) and `/th
 
 Local SQL fixtures mock only platform Auth/pg_net/pg_cron infrastructure; application migrations and RPCs run in PostgreSQL/PGlite. GitHub Actions runs both legacy gameplay and This or That contracts in separate fresh PostgreSQL 17 services, including concurrent transactions. Browser fixtures use an isolated API origin and cover retries, reloads, tabs, neutral choices, photos, ten-pair stopping, imports, rankings, SEO and responsive layouts. Production verification uses passive reads, without QA votes or competitive results.
 
-Validation before UI rollout: 540 browser regression scenarios plus two additional visibility/multiple-guest-tab scenarios pass locally; 72 local SQL checks pass with ten native concurrency cases covered by PostgreSQL CI. The private calculator/handler has 22 passing checks and a separate one-million-ballot stress run. Production migration and publication are verified separately.
+Validation before UI rollout: 540 browser regression scenarios plus two additional visibility/multiple-guest-tab scenarios pass locally; 73 local SQL checks pass with ten native concurrency cases covered by PostgreSQL CI. The private calculator/handler has 22 passing checks and a separate one-million-ballot stress run. Production migration and publication are verified separately.
 
 The production API enables pg-safeupdate. Refresh and invalidation updates explicitly target the singleton state row; snapshot replacement explicitly targets known participant IDs. This is also verified by exercising the deployed ranking HTTP endpoint, since plain PostgreSQL fixtures do not reproduce the API role’s safety guard.
 
 Deployed calculator: `this-that-ranking` v3, source fingerprint `71618c0262f512f1b6149bab66eae41699955106f28cce6e04030d3ffa5cc321`, deployment bundle `d63543f0c441fae2b8eb26187ed5e6d514a4dd63be82cfca5269c26284139a41`. The retrieved deployed files match the privately saved source. Actual public HTTP refresh and signed scheduled refresh both return 200; raw/private RPCs reject browser callers. Pre/post migration hashes of the 320 questions, eight legacy best records, 31 Daily results and 43 Daily assignments match. No QA profiles, rounds or votes were created on production.
+
+Private imported favourites retain known participant IDs even during a temporary withdrawal; unavailable actors stay hidden from the personal top until reapproved. This never creates a public vote.
