@@ -1,7 +1,7 @@
 import { gaEvent } from "./ga";
 import type { AnalyticsParameters } from "./ga";
 
-type Mode = "normal" | "daily";
+type Mode = "normal" | "daily" | "time_attack";
 interface ArticleOrigin { article_slug: string; cta_position: "footer"; cta_id: string; }
 interface Attempt {
   runId: string; sent: string[]; resolved: number[]; answered: number[];
@@ -60,13 +60,13 @@ export function attemptAnalytics(mode: Mode, localKey: string) {
   function start(params: AnalyticsParameters = {}, resumed = false) {
     record.origin ??= takeOrigin(mode);
     if (resumed) { if (gaEvent("daily_resume", { ...common(), ...params })) persist(key, record); }
-    else once(mode === "normal" ? "quiz_start" : "daily_start", params);
+    else once(mode === "daily" ? "daily_start" : "quiz_start", params);
   }
   return {
     start,
-    answer(number: number, outcome: "correct" | "wrong" | "timeout", params: AnalyticsParameters) {
+    answer(number: number, outcome: "correct" | "wrong" | "timeout" | "skipped", params: AnalyticsParameters) {
       if (record.resolved.includes(number)) return;
-      const explicit = outcome !== "timeout", count = record.answered.length + Number(explicit);
+      const explicit = outcome === "correct" || outcome === "wrong", count = record.answered.length + Number(explicit);
       if (!gaEvent("quiz_answer", { ...common(), ...params, question_number: number, outcome,
         correct: outcome === "correct", answer_count: count, resolved_count: record.resolved.length + 1 })) return;
       record.resolved.push(number); if (explicit) record.answered.push(number); persist(key, record);

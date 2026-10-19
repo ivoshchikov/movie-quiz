@@ -12,6 +12,8 @@ import PrivateRoute        from "./PrivateRoute";
 import DailyPage from "./pages/DailyPage";
 // ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
 import NotFound            from "./components/NotFound";
+const TimeAttackPage = lazy(() => import("./pages/TimeAttackPage"));
+const TimeAttackPlayPage = lazy(() => import("./pages/TimeAttackPlayPage"));
 const GameScreen = lazy(() => import("./components/GameScreen"));
 const HowToPlay = lazy(() => import("./components/HowToPlay"));
 const BlogIndex = lazy(() => import("./pages/BlogIndex"));
@@ -44,6 +46,8 @@ export default function App() {
           <Route path="how-to-play"   element={<HowToPlay />} />
           <Route path="login"         element={<LoginScreen />} />
           <Route path="setup-profile" element={<ProfileSetupScreen />} />
+          <Route path="time-attack" element={<TimeAttackPage />} />
+          <Route path="time-attack/play" element={<TimeAttackPlayPage />} />
           <Route path="play"          element={<GameScreen />} />
           <Route path="result"        element={<ResultScreen />} />
           <Route path="blog"          element={<BlogIndex />} />

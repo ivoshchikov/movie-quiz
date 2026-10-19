@@ -37,5 +37,16 @@
     "description": "Sign in to view your saved movie and actor quiz personal bests.",
     "url": "https://hard-quiz.com/profile",
     "noindex": true
+  },
+  "time-attack": {
+    "title": "Movie & Actor Time Attack Quiz | Hard Quiz",
+    "description": "Race the clock in Time Attack. Identify movies and actors, earn 2 points for each correct answer and compare your score on the leaderboard.",
+    "url": "https://hard-quiz.com/time-attack"
+  },
+  "time-attack/play": {
+    "title": "Play Time Attack | Hard Quiz",
+    "description": "Race the clock in the movie and actor quiz.",
+    "url": "https://hard-quiz.com/time-attack/play",
+    "noindex": true
   }
 }

@@ -19,7 +19,7 @@ await db.exec(await readFile(new URL('./fixtures/gameplay.sql', import.meta.url)
 if (native) await db.exec('create extension pgcrypto with schema extensions');
 else await db.exec("create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec(`create schema if not exists hq_private; create table hq_private.test_clock_state(at timestamptz); insert into hq_private.test_clock_state values(null); create function hq_private.test_clock() returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$;`);
-for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1']) {
+for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack']) {
   if (file.endsWith('authoritative_gameplay')) { await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8')); await db.exec("insert into public.daily_session(user_id,d) values('00000000-0000-0000-0000-000000000003',(clock_timestamp() at time zone 'America/Chicago')::date+1)"); }
   await db.exec('begin');
   try { await db.exec((await readFile(new URL(`../migrations/${file}.sql`,import.meta.url),'utf8')).replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
@@ -33,7 +33,7 @@ const next = id => value('select public.quiz_next($1) v',[id]);
 const answer = (g,a) => value('select public.quiz_answer($1,$2,$3) v',[g.id,g.round.id,a]);
 const finish = id => value('select public.quiz_finish($1) v',[id]);
 async function reset() {
-  await db.exec('truncate hq_private.question_first_outcomes,hq_private.question_cohort_metrics,hq_private.daily_cancellations,hq_private.answer_events,hq_private.question_metrics,hq_private.game_sessions cascade; truncate public.user_best,public.question_stats,public.daily_result,public.daily_session;');
+  await db.exec('truncate hq_private.time_attack_bests,hq_private.time_attack_sessions cascade; truncate hq_private.question_first_outcomes,hq_private.question_cohort_metrics,hq_private.daily_cancellations,hq_private.answer_events,hq_private.question_metrics,hq_private.game_sessions cascade; truncate public.user_best,public.question_stats,public.daily_result,public.daily_session;');
   await uid(player);
   await db.exec("update hq_private.gameplay_settings set guest_source_minute=12,guest_source_hour=120,guest_global_minute=120,guest_global_hour=1200,guest_round_budget=25000; select set_config('request.headers','{}',false)");
 }
@@ -443,4 +443,173 @@ test('the guest snapshot budget still holds when the eligible bank grows during 
   create trigger fixture_grow_bank before insert on hq_private.game_sessions for each row execute function hq_private.fixture_grow_bank();`);
  try {await assert.rejects(start(),/temporarily busy/);assert.equal(await value('select count(*) v from hq_private.game_sessions'),0);assert.equal(await value('select count(*) v from public.question where id=504'),0);}
  finally {await db.exec('drop trigger fixture_grow_bank on hq_private.game_sessions; drop function hq_private.fixture_grow_bank()');}
+});
+
+const attackStart = (category=1,level='easy',id=randomUUID()) => value('select public.time_attack_start($1,$2,$3) v',[id,category,level]);
+const attackStatus = id => value('select public.time_attack_status($1) v',[id]);
+const attackAction = (g,action='answer',answer='One') => value('select public.time_attack_action($1,$2,$3,$4) v',[g.id,g.round.id,action,action==='skip'?null:answer]);
+const attackNext = g => value('select public.time_attack_next($1,$2) v',[g.id,g.round.id]);
+const attackFinish = id => value('select public.time_attack_finish($1) v',[id]);
+const attackEpoch='2055-04-10T12:00:00.000Z';
+const attackClock = ms => setTime(new Date(Date.parse(attackEpoch)+ms).toISOString());
+async function attackBank() {
+ await reset(); await attackClock(0);
+ await db.exec(`insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id)
+ select i,'attack-'||i||'.webp','One','["One","Two","Three","Four"]',1,case (i-12001)%5 when 0 then 1 when 1 then 1 when 4 then 3 else 2 end
+ from generate_series(12001,12040) i`);
+}
+async function attackCleanup(){await setTime(null);await db.exec('delete from public.question where id between 12001 and 12040');}
+
+test('Time Attack has 120/90/60 server clocks and an immutable mixed snapshot with no repeated or unrevealed questions',async()=>{
+ await attackBank(); try {
+  const catalog=await value('select public.time_attack_catalog() v');assert.deepEqual(catalog.levels.map(x=>x.duration_secs),[120,90,60]);assert.deepEqual(catalog.categories.map(x=>x.id),[1,2]);
+  for(const [level,seconds] of [['easy',120],['medium',90],['hard',60]]){
+   const g=await attackStart(1,level);assert.equal(g.duration_secs,seconds);assert.equal(g.bank_size,42);assert.equal(g.round.number,1);
+   assert.equal(Date.parse(g.deadline_at)-Date.parse(g.started_at),seconds*1000);assert.equal(g.round.issued_at,g.started_at);
+   assert.equal(JSON.stringify(g).includes('correct_answer'),false);assert.equal(JSON.stringify(g).includes('attack-12002'),g.round.question_id===12002);
+   const rows=(await db.query('select r.number,r.question_id,d.key from hq_private.time_attack_rounds r join public.difficulty_level d on d.id=r.difficulty_id where session_id=$1 order by number',[g.id])).rows;
+   assert.equal(new Set(rows.map(r=>r.question_id)).size,42);
+   for(let i=0;i<40;i+=5){assert.deepEqual(rows.slice(i,i+5).map(r=>r.key).sort(),['easy','easy','hard','normal','normal']);}
+   await attackClock(10);const resumed=await attackStart(1,level,g.id);assert.equal(resumed.started_at,g.started_at);assert.deepEqual(resumed.round,g.round);
+   assert.equal((await attackNext(g)).round.id,g.round.id);await assert.rejects(attackStart(1,level==='easy'?'hard':'easy',g.id),/unavailable/);
+  }
+  const g=await attackStart();const original=await value('select correct_answer v from hq_private.time_attack_rounds where id=$1',[g.round.id]);
+  await db.query("update public.question set correct_answer='Two' where id=$1",[g.round.question_id]);
+  assert.equal((await attackAction(g,'answer',original)).score,2);
+  await db.query("update public.question set correct_answer='One' where id=$1",[g.round.question_id]);
+ } finally {await attackCleanup();}
+});
+test('Time Attack locks one action, enforces 500ms feedback and charges each skip only once',async()=>{
+ await attackBank();try{
+  const g=await attackStart();await attackClock(1000);const correct=await attackAction(g);assert.equal(correct.score,2);assert.equal(correct.correct,1);
+  assert.equal((await attackAction(g)).score,2);await assert.rejects(attackAction(g,'answer','Two'),/already accepted/);await assert.rejects(attackAction(g,'skip'),/already accepted/);
+  await attackClock(1499);assert.equal((await attackNext(g)).round.id,g.round.id);await attackClock(1500);const second=await attackNext(g);assert.equal(second.round.number,2);
+  assert.equal((await attackNext(g)).round.id,second.round.id);
+  await attackClock(2000);const skipped=await attackAction(second,'skip');assert.equal(skipped.score,2);assert.equal(skipped.skipped,1);assert.equal(Date.parse(skipped.deadline_at)-Date.parse(g.deadline_at),-3000);
+  assert.equal((await attackAction(second,'skip')).deadline_at,skipped.deadline_at);await assert.rejects(attackAction(second),/already accepted/);
+  await attackClock(2500);const third=await attackNext(second);await attackClock(3000);const wrong=await attackAction(third,'answer','Two');assert.equal(wrong.score,1);
+  await attackClock(3500);const fourth=await attackNext(third);await attackClock(117000);const done=await attackAction(fourth);assert.equal(done.status,'finished');assert.equal(done.finish_reason,'time-up');
+  assert.equal(done.score,1);assert.equal(done.score_time_ms,3000);assert.equal(done.elapsed_ms,117000);assert.equal(done.round.outcome,'abandoned');
+  assert.equal(await value("select count(*) v from hq_private.answer_events where mode='time_attack'"),4);
+  assert.equal(await value('select sum(total_attempts)::int v from public.question_stats'),2);
+  assert.equal(await value("select sum(skipped)::int v from hq_private.question_cohort_metrics where mode='time_attack' and cohort='account'"),1);
+  assert.equal((await value('select public.my_game_stats() v')).normal.correct,0);
+ }finally{await attackCleanup();}
+});
+test('Time Attack keeps negative scores, ignores unanswered expiry and ends a last-second skip at its actual time',async()=>{
+ await attackBank();try{
+  let g=await attackStart(1,'hard');await attackClock(1000);g=await attackAction(g,'answer','Two');assert.equal(g.score,-1);
+  await attackClock(1500);g=await attackNext(g);await attackClock(59999);g=await attackAction(g,'skip');assert.equal(g.status,'finished');assert.equal(g.elapsed_ms,59999);assert.equal(g.score,-1);assert.equal(g.score_time_ms,1000);
+  assert.equal(g.skipped,1);assert.equal(g.round.settled_at,undefined);const best=await value("select public.my_time_attack_bests() v");assert.equal(best[0].score,-1);
+  await attackClock(70000);g=await attackStart(1,'hard');await attackClock(130000);const late=await attackAction(g,'answer','One');assert.equal(late.score,0);assert.equal(late.correct,0);assert.equal(late.round.outcome,'abandoned');assert.equal(late.elapsed_ms,60000);
+  const saved=await attackFinish(g.id);assert.equal(saved.score_time_ms,60000);await attackClock(999999);assert.equal((await attackFinish(g.id)).elapsed_ms,60000);
+ }finally{await attackCleanup();}
+});
+test('Time Attack exhausts the remaining bank, never repeats after a skip and creates no record for an empty category',async()=>{
+ await reset();await attackClock(0);try{
+  let g=await attackStart();const seen=new Set();
+  while(g.status==='active'){assert.equal(seen.has(g.round.question_id),false);seen.add(g.round.question_id);g=await attackAction(g,'skip');await attackClock(seen.size*500);if(g.status==='active')g=await attackNext(g);}
+  assert.equal(seen.size,2);assert.equal(g.finish_reason,'completed');assert.equal(g.skipped,2);assert.equal(g.score,0);
+  await db.exec('update public.question set retired_at=hq_private.test_clock() where category_id=1');
+  try{const empty=await attackStart();assert.equal(empty.bank_size,0);assert.equal(empty.record_outcome,null);assert.equal(empty.personal_best,null);assert.equal(await value('select count(*) v from hq_private.time_attack_bests'),1);}finally{await db.exec('update public.question set retired_at=null where category_id=1');}
+ }finally{await setTime(null);}
+});
+test('Time Attack is owner-bound, guest runs cannot become ranked and only valid actions on issued rounds are accepted',async()=>{
+ await attackBank();try{
+  const g=await attackStart();await assert.rejects(attackAction(g,'answer','Missing'),/available answer/);
+  await assert.rejects(value('select public.time_attack_action($1,$2,null,null) v',[g.id,g.round.id]),/Invalid action/);
+  const future=await value('select id v from hq_private.time_attack_rounds where session_id=$1 and number=2',[g.id]);
+  await assert.rejects(value("select public.time_attack_action($1,$2,'skip',null) v",[g.id,future]),/unavailable/);
+  await uid(other);for(const call of [()=>attackStatus(g.id),()=>attackAction(g),()=>attackNext(g),()=>attackFinish(g.id),()=>attackStart(1,'easy',g.id)])await assert.rejects(call(),/unavailable|nickname/);
+  await uid(null);await assert.rejects(attackStatus(g.id),/unavailable/);const guest=await attackStart();assert.equal(guest.owner,null);const ended=await attackFinish(guest.id);assert.equal(ended.personal_best,null);
+  await uid(player);await assert.rejects(attackStart(1,'easy',guest.id),/unavailable/);assert.equal(await value('select count(*) v from hq_private.time_attack_bests'),0);
+ }finally{await attackCleanup();}
+});
+test('starting either signed-in game closes the other format; active resume keeps its original deadline',async()=>{
+ await attackBank();try{
+  const regular=await next((await start()).id);const attack=await attackStart();assert.equal((await finish(regular.id)).status,'finished');
+  const active=await value('select public.time_attack_active() v');assert.equal(active.id,attack.id);assert.equal(active.deadline_at,attack.deadline_at);
+  const second=await attackStart();assert.equal((await attackStatus(attack.id)).finish_reason,'exit');assert.equal((await value('select public.time_attack_active() v')).id,second.id);
+  await start();assert.equal((await attackStatus(second.id)).finish_reason,'exit');assert.equal(await value('select public.time_attack_active() v'),null);
+ }finally{await attackCleanup();}
+});
+test('normal and Time Attack starts share guest minute/hour quotas and the combined snapshot budget',async()=>{
+ await reset();await uid(null);try{
+  await db.exec('update hq_private.gameplay_settings set guest_global_minute=1');const g=await start();await assert.rejects(attackStart(),/Too many new guest games/);assert.equal((await start(1,1,g.id)).id,g.id);
+  await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_source_hour=1');const attack=await attackStart();await assert.rejects(start(),/network/);assert.equal((await attackStart(1,'easy',attack.id)).id,attack.id);
+  await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_round_budget=2');await start();await assert.rejects(attackStart(),/temporarily busy/);assert.equal(await value('select count(*) v from hq_private.time_attack_sessions'),0);
+  await reset();await uid(null);await db.exec('update hq_private.gameplay_settings set guest_round_budget=2');await attackStart();await assert.rejects(start(),/temporarily busy/);assert.equal(await value('select count(*) v from hq_private.game_sessions'),0);
+ }finally{await reset();}
+});
+test('Time Attack private data/helpers and direct record writes stay closed, intended RPC grants work',async()=>{
+ await attackBank();try{
+  const g=await attackStart();
+  for(const role of ['anon','authenticated']){
+   await db.exec(`set role ${role}`);try{
+    for(const sql of ['select * from hq_private.time_attack_sessions','select * from hq_private.time_attack_rounds','select * from hq_private.time_attack_bests','select hq_private.guest_round_count()',"select hq_private.finish_time_attack(gen_random_uuid(),'exit',now())"]){await assert.rejects(db.query(sql),/permission denied/);}
+    assert.equal((await value('select public.time_attack_catalog() v')).levels.length,3);
+    if(role==='authenticated'){assert.equal((await attackStatus(g.id)).id,g.id);assert.deepEqual(await value('select public.my_time_attack_bests() v'),[]);}
+    else{await assert.rejects(value('select public.my_time_attack_bests() v'),/permission denied/);}
+   }finally{await db.exec('reset role');}
+  }
+  assert.equal(await value("select count(*) v from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='hq_private' and c.relname like 'time_attack_%' and c.relkind='r' and not c.relrowsecurity"),0);
+ }finally{await attackCleanup();}
+});
+test('Time Attack ranks all players including negative records, returns only bounded top and the exact caller position',async()=>{
+ await reset();try{
+  await db.exec(`insert into public.profiles(user_id,nickname) select ('00000000-0000-0000-0000-'||lpad((8000+i)::text,12,'0'))::uuid,'AttackPlayer'||i from generate_series(1,23) i;
+   insert into hq_private.time_attack_bests(owner,category_id,level,score,score_time_ms,updated_at,session_id)
+   select user_id,1,'hard',case when nickname='AttackPlayer23' then -2 else 10 end,replace(nickname,'AttackPlayer','')::int*1000,now(),gen_random_uuid() from public.profiles where nickname like 'AttackPlayer%';`);
+  const who='00000000-0000-0000-0000-000000008015';await uid(who);const ranking=await value("select public.time_attack_leaderboard(1,'hard',5) v");assert.equal(ranking.total,23);assert.equal(ranking.top.length,5);assert.equal(ranking.me.rank,15);
+  assert.deepEqual(ranking.top.map(x=>x.score_time_ms),[1000,2000,3000,4000,5000]);assert.equal(JSON.stringify(ranking).includes('session_id'),false);
+  await uid(null);assert.equal((await value("select public.time_attack_leaderboard(1,'hard',10000) v")).top.length,23);assert.equal((await value("select public.time_attack_leaderboard(1,'hard',10000) v")).top.at(-1).score,-2);
+  assert.equal((await value("select public.time_attack_leaderboard(1,'easy',5) v")).total,0);
+  assert.equal(await value('select count(*) v from public.user_best'),0);
+ }finally{await db.exec("delete from hq_private.time_attack_bests where owner in(select user_id from public.profiles where nickname like 'AttackPlayer%'); delete from public.profiles where nickname like 'AttackPlayer%'");await uid(player);}
+});
+test('scheduled maintenance finalizes Time Attack at its deadline, preserves accepted score time and prunes snapshots without erasing ranked records',async()=>{
+ await attackBank();try{
+  const g=await attackStart();await attackClock(1234);await attackAction(g);await attackClock(120000);await db.exec('select hq_private.maintain_gameplay()');
+  const done=await attackStatus(g.id);assert.equal(done.elapsed_ms,120000);assert.equal(done.score_time_ms,1234);assert.equal(done.score,2);
+  await attackClock(40*86400000);await db.exec('select hq_private.prune_gameplay()');assert.equal(await value('select count(*) v from hq_private.time_attack_rounds where session_id=$1',[g.id]),0);
+  const receipt=await attackStatus(g.id);assert.equal(receipt.score,2);assert.equal(receipt.personal_best.score,2);assert.equal(receipt.round,null);
+  assert.equal((await value('select public.my_time_attack_bests() v'))[0].score,2);
+ }finally{await attackCleanup();}
+});
+test('simultaneous Time Attack choices, skip retries and next requests settle and advance exactly once',{skip:!native},async()=>{
+ await attackBank();const clients=[new Client({connectionString:native}),new Client({connectionString:native})];try{
+  for(const c of clients){await c.connect();await c.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);}
+  const g=await attackStart();await attackClock(1000);
+  const r=await Promise.allSettled(clients.map((c,i)=>c.query('select public.time_attack_action($1,$2,$3,$4) v',[g.id,g.round.id,i?'skip':'answer',i?null:'One'])));
+  assert.equal(r.filter(x=>x.status==='fulfilled').length,1);assert.equal(await value("select count(*) v from hq_private.answer_events where mode='time_attack'"),1);
+  await attackClock(1500);const advanced=await Promise.all(clients.map(c=>c.query('select public.time_attack_next($1,$2) v',[g.id,g.round.id])));assert.equal(advanced[0].rows[0].v.round.number,2);assert.equal(advanced[1].rows[0].v.round.number,2);
+  const second=advanced[0].rows[0].v;const before=Date.parse(second.deadline_at);
+  const skipped=await Promise.all(clients.map(c=>c.query("select public.time_attack_action($1,$2,'skip',null) v",[g.id,second.round.id])));assert.equal(Date.parse(skipped[0].rows[0].v.deadline_at),before-3000);assert.equal(skipped[0].rows[0].v.skipped,skipped[1].rows[0].v.skipped);
+ }finally{for(const c of clients)await c.end();await attackCleanup();}
+});
+test('a Time Attack answer waiting for a lock cannot be accepted after the deadline',{skip:!native},async()=>{
+ await attackBank();const a=new Client({connectionString:native}),b=new Client({connectionString:native});try{
+  await a.connect();await b.connect();await b.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);const g=await attackStart(1,'hard');
+  await a.query('begin');await a.query('select pg_advisory_xact_lock(721105,hashtext($1))',[player]);
+  const waiting=b.query("select public.time_attack_action($1,$2,'answer','One') v",[g.id,g.round.id]);
+  for(let i=0;i<100;i++){if(await value("select count(*) v from pg_stat_activity where wait_event='advisory' and query like 'select public.time_attack_action%'"))break;if(i===99)throw Error('Answer did not wait for owner lock');await new Promise(r=>setTimeout(r,10));}
+  await attackClock(60000);await a.query('commit');const done=(await waiting).rows[0].v;assert.equal(done.score,0);assert.equal(done.finish_reason,'time-up');assert.equal(done.round.outcome,'abandoned');
+ }finally{await a.query('rollback');await a.end();await b.end();await attackCleanup();}
+});
+test('mixed simultaneous guest starts cannot bypass the combined admission quota',{skip:!native},async()=>{
+ await reset();await db.exec('update hq_private.gameplay_settings set guest_global_minute=1');const clients=[new Client({connectionString:native}),new Client({connectionString:native})];
+ try{for(const c of clients){await c.connect();await c.query("select set_config('request.jwt.claim.sub','',false)");}
+  const results=await Promise.allSettled([clients[0].query('select public.quiz_start($1,1,1)',[randomUUID()]),clients[1].query("select public.time_attack_start($1,1,'hard')",[randomUUID()])]);assert.equal(results.filter(x=>x.status==='fulfilled').length,1);assert.equal(await value('select count(*) v from hq_private.game_admissions'),1);
+ }finally{for(const c of clients)await c.end();}
+});
+
+test('a simultaneous Time Attack answer and exit freeze one immutable score and best',{skip:!native},async()=>{
+ await attackBank();const clients=[new Client({connectionString:native}),new Client({connectionString:native})];try{
+  for(const c of clients){await c.connect();await c.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);}
+  const g=await attackStart();await attackClock(1000);
+  await Promise.all([clients[0].query("select public.time_attack_action($1,$2,'answer','One') v",[g.id,g.round.id]),clients[1].query('select public.time_attack_finish($1) v',[g.id])]);
+  const done=await attackStatus(g.id);assert.equal(done.status,'finished');assert.equal(done.finish_reason,'exit');assert.ok([0,2].includes(done.score));
+  assert.equal(done.personal_best.score,done.score);assert.equal(done.personal_best.score_time_ms,1000);assert.equal(await value("select count(*) v from hq_private.answer_events where mode='time_attack'"),1);
+  await attackClock(10000);const retried=await attackFinish(g.id);assert.equal(retried.score,done.score);assert.equal(retried.score_time_ms,1000);
+ }finally{for(const c of clients)await c.end();await attackCleanup();}
 });

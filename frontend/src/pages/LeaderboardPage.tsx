@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { RadioGroup } from "@headlessui/react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import { LEADERBOARD_TIMEOUT } from "../leaderboard/useLeaderboard";
 import Leaderboard from "../components/Leaderboard";
@@ -51,6 +51,7 @@ export default function LeaderboardPage() {
               <div className="hq-leaderboard-level-options">{difficulties.map(level => <RadioGroup.Option as="button" type="button" key={level.id} value={level.id} className="hq-leaderboard-filter">{({ checked }) => <><span>{level.name}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div>
             </RadioGroup>
           </div>
+          <p><Link className="hq-inline-action" to="/time-attack#ranking">View Time Attack leaderboard</Link></p>
           <Leaderboard categoryId={category.id} difficultyId={difficulty.id} categoryLabel={categoryLabel(category)} difficultyLabel={difficulty.name} />
         </>}
     </section>

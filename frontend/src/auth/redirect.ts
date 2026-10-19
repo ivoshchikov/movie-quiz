@@ -1,6 +1,6 @@
 const RETURN_KEY = "hq_auth_return_v1";
 const RETURN_TTL = 60 * 60 * 1000;
-const destinations = new Set(["/", "/daily", "/profile", "/result", "/leaderboard", "/how-to-play", "/blog", "/admin/daily", "/admin/questions", "/admin/questions/new"]);
+const destinations = new Set(["/time-attack", "/", "/daily", "/profile", "/result", "/leaderboard", "/how-to-play", "/blog", "/admin/daily", "/admin/questions", "/admin/questions/new"]);
 const authParameters = ["access_token", "refresh_token", "provider_token", "provider_refresh_token", "code", "error", "error_code", "error_description"];
 let lastConsumed: string | null = null;
 

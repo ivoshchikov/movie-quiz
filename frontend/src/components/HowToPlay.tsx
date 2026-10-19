@@ -102,6 +102,21 @@ export default function HowToPlay() {
         <div className="hq-howto-links"><Link to="/profile">Your records <SiteIcon name="arrow" /></Link><Link to="/leaderboard">Leaderboard <SiteIcon name="arrow" /></Link></div>
       </section>
 
+      <section id="time-attack" className="hq-howto-section" aria-labelledby="howto-time-attack">
+        <h2 id="howto-time-attack">Time Attack</h2>
+        <p>A fixed-time race for Movie Stills or Actors. Easy gives you 120 seconds, Medium 90, and Hard 60. All three use the same mixed question bank: two Easy, two Medium and one Hard question in each shuffled block while those questions remain. When a difficulty runs out, the remaining questions continue without repeats.</p>
+        <ul>
+          <li>Correct answer: +2 points. Wrong answer: −1 point. Scores can go below zero.</li>
+          <li>Skip: −3 seconds, once per question. You cannot come back to a skipped question. A skip with less than three seconds left ends the run immediately.</li>
+          <li>No lives or per-question timer. The overall clock runs during image loading, network requests, the 0.5-second feedback pause and time in another tab.</li>
+          <li>The run ends at the server deadline, when the bank is exhausted, or when you choose End run. An unanswered final question costs no points.</li>
+          <li>Reloading or leaving the page keeps the original run and deadline. Continue from the Time Attack page on this browser, or use your account on another device. Starting a new signed-in quiz ends your previous active quiz.</li>
+          <li>Sign in before starting to save a personal best. Guest results stay guest results. Records are separate from regular quizzes, per category, time pressure and this fixed-time format.</li>
+          <li>Higher scores rank first. Equal scores use server time to the last accepted answer that forms the final score, including wrong answers. If you submit no answers, the run duration is used. Exact ties keep the earlier record first, then a stable player order. Connection speed can affect time.</li>
+        </ul>
+        <Link className="hq-text-action" to="/time-attack">Play Time Attack <SiteIcon name="arrow" /></Link>
+      </section>
+
       <section className="hq-howto-daily" aria-labelledby="howto-daily">
         <div className="hq-howto-daily-heading"><SiteIcon name="calendar" /><h2 id="howto-daily">Daily Challenge</h2></div>
         <p>A separate challenge: one movie, TV series or actor question and one answer per day. An account is required.</p>
