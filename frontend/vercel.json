@@ -15,6 +15,32 @@
       }
     },
     {
+      "src": "^/(this-or-that/play)\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/$1"
+      }
+    },
+    {
+      "src": "^/(this-or-that/play)/?$",
+      "dest": "/$1.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/(this-or-that)\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/$1"
+      }
+    },
+    {
+      "src": "^/(this-or-that)/?$",
+      "dest": "/$1.html"
+    },
+    {
       "src": "^/(time-attack/play)\\.html$",
       "status": 301,
       "headers": {

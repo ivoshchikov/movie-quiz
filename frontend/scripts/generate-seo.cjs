@@ -95,7 +95,7 @@ const ensureDir =
   fs.writeFileSync(path.join(DEST_DIR, "feed.xml"), rss, "utf8");
 
   // Sitemap
-  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/daily", "/time-attack"];
+  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/daily", "/time-attack", "/this-or-that"];
   const paths = [...staticPaths.map(url => ({ url })), ...sorted.map(post => ({ url: `/blog/${post.slug}`, lastmod: post.modified || post.date }))];
   const urls = paths
     .map(
@@ -138,7 +138,7 @@ ${urls}
     const { renderPublicPage } = require(publicBundle);
     const pageStyles = (html, name) => {
       // Lazy route CSS must also style the content served before JavaScript starts.
-      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"] }[name] || [];
+      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || [];
       const assetDir = path.join(DEST_DIR, "assets");
       if (!fs.existsSync(assetDir)) return html;
       const tags = fs.readdirSync(assetDir).filter(file => file.endsWith(".css") && prefixes.some(prefix => file.startsWith(prefix + "-"))).map(file => `<link rel="stylesheet" crossorigin href="/assets/${file}" />`).join("");
@@ -217,7 +217,7 @@ ${urls}
       ensureDir(path.dirname(path.join(DEST_DIR, `${name}.html`)));
       fs.writeFileSync(path.join(DEST_DIR, name === "home" ? "index.html" : `${name}.html`), pageStyles(withArticleMetadata(metadata, body, structured, !!meta.noindex).replace('property="og:type" content="article"', 'property="og:type" content="website"'), name), "utf8");
     }
-    for (const entry of ["/", "/play", "/result", "/daily", "/leaderboard", "/profile", "/time-attack", "/time-attack/play"]) {
+    for (const entry of ["/", "/play", "/result", "/daily", "/leaderboard", "/profile", "/time-attack", "/time-attack/play", "/this-or-that", "/this-or-that/play"]) {
       const route = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(entry));
       if (!route || route.status || route.dest !== (entry === "/" ? "/index.html" : "/$1.html")) throw new Error(`Missing application entry route for ${entry} in vercel.json`);
     }

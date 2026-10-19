@@ -5,6 +5,9 @@ on:
     branches: [main]
 jobs:
   gameplay:
+    strategy:
+      matrix:
+        suite: [gameplay, this_that]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -30,4 +33,4 @@ jobs:
       - name: Test ownership, deadlines, Chicago rollover, ranking and concurrent writes
         env:
           HQ_SQL_TEST_URL: postgresql://postgres:gameplay-test-only@localhost:5432/hardquiz_gameplay_test
-        run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-gameplay-test/node_modules/pg/lib/index.js" node --test supabase/tests/gameplay.test.mjs
+        run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-gameplay-test/node_modules/pg/lib/index.js" node --test supabase/tests/${{ matrix.suite }}.test.mjs

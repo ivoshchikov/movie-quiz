@@ -48,5 +48,16 @@
     "description": "Race the clock in the movie and actor quiz.",
     "url": "https://hard-quiz.com/time-attack/play",
     "noindex": true
+  },
+  "this-or-that": {
+    "title": "This or That \u2014 Choose Your Favourite Actors | Hard Quiz",
+    "description": "Two actors. Your choice. Pick your favourites in random pairs, build your private top and help shape the community actor ranking. Free to play, with no timer.",
+    "url": "https://hard-quiz.com/this-or-that"
+  },
+  "this-or-that/play": {
+    "title": "This or That \u2014 Your Choices | Hard Quiz",
+    "description": "Compare random actor pairs and choose your favourites.",
+    "url": "https://hard-quiz.com/this-or-that/play",
+    "noindex": true
   }
 }

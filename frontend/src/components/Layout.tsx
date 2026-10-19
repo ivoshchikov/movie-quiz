@@ -41,7 +41,7 @@ export default function Layout() {
   const [dailyPlaying, setDailyPlaying] = useState(false);
   const authReturnReported = useRef(false);
   const isProfileSetup = pathname === "/setup-profile";
-  const isPlaying = pathname === "/play" || pathname === "/time-attack/play";
+  const isPlaying = pathname === "/play" || pathname === "/time-attack/play" || pathname === "/this-or-that/play";
   const isAdministration = /^\/admin(?:\/|$)/.test(pathname);
   const isGameView = isPlaying || (pathname === "/daily" && dailyPlaying);
   const owner = user?.id ?? "";
