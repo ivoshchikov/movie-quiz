@@ -17,12 +17,18 @@ export function useTimeAttack(run: AttackRun | null, ready: boolean) {
     if (!ready || !run) return;
     let mounted = true, busy = false, state = { ...initial }, game: AttackGame | null = null;
     let descriptor = { ...run }, imageReady: string | null = null, serverAt = 0, receivedAt = 0;
-    let pending: PendingAction | undefined = descriptor.pending, retryFinish = false, expiryChecked = false;
+    let pending: PendingAction | undefined = descriptor.pending, retryFinish = false, expiryChecked = false, reconcileAgain = false;
     const analytics = attemptAnalytics("time_attack", run.id);
     const settings = { category_id: run.category, difficulty_id: { easy: 1, medium: 2, hard: 3 }[run.level], is_logged_in: !!run.owner };
     const now = () => serverAt + Math.max(0, performance.now() - receivedAt);
     function update(patch: Partial<View>) { state = { ...state, ...patch }; if (mounted) setView(state); }
-    function setBusy(value: boolean) { busy = value; update({ working: value }); }
+    function setBusy(value: boolean) {
+      busy = value; update({ working: value });
+      if (!value && reconcileAgain && mounted) {
+        reconcileAgain = false;
+        void Promise.resolve().then(reconcile);
+      }
+    }
     function remember() {
       descriptor = { ...descriptor, pending };
       // An old tab must not replace the pointer to a newer run on the same device.
@@ -36,10 +42,14 @@ export function useTimeAttack(run: AttackRun | null, ready: boolean) {
       if (value.id !== descriptor.id || value.owner !== descriptor.owner || value.category_id !== descriptor.category || value.level !== descriptor.level) throw new Error("unexpected-time-attack");
       if (game && (value.version < game.version || value.version === game.version && Date.parse(value.server_now) < Date.parse(game.server_now))) return;
       const changedRound = value.round?.id !== game?.round?.id;
+      const advanced = !game || value.version > game.version;
       game = value; serverAt = Date.parse(value.server_now); receivedAt = performance.now();
       descriptor.confirmed = true;
       if (pending && (value.status === "finished" || value.round?.id !== pending.round || value.round?.outcome)) pending = undefined;
       remember();
+      // A different tab may already have written the same descriptor. Signal server
+      // revisions separately so accepted score/clock changes cannot lose their notification.
+      if (advanced) { try { localStorage.setItem(`${attackStorageKey(descriptor.owner)}:activity`, crypto.randomUUID()); } catch { /* Focus also reconciles. */ } }
       if (changedRound) imageReady = null;
       let phase: Phase = value.status === "finished" ? "finished" : value.round?.outcome ? "feedback" : imageReady === value.round?.id ? "playing" : "image-loading";
       if (!changedRound && state.phase === "image-error" && phase === "image-loading") phase = "image-error";
@@ -68,7 +78,8 @@ export function useTimeAttack(run: AttackRun | null, ready: boolean) {
       if (mounted && pending && game?.status === "active") void submit();
     }
     async function reconcile() {
-      if (busy || !mounted || !game || game.status === "finished") return;
+      if (!mounted || !game || game.status === "finished") return;
+      if (busy) { reconcileAgain = true; return; }
       setBusy(true);
       try { const value = await attackRequest("time_attack_status", { p_session: descriptor.id }); if (mounted) apply(value); }
       catch { if (state.seconds === 0) failure("Your final result could not be confirmed. Reconnect and retry; the server deadline still applies."); }
@@ -129,7 +140,7 @@ export function useTimeAttack(run: AttackRun | null, ready: boolean) {
       },
     };
     function focus() { if (document.visibilityState === "visible") { tick(); void reconcile(); } }
-    function storage(e: StorageEvent) { if (e.key === attackStorageKey(descriptor.owner) || e.key === `hq:quiz:activity:${descriptor.owner}`) void reconcile(); }
+    function storage(e: StorageEvent) { if (e.key === attackStorageKey(descriptor.owner) || e.key === `${attackStorageKey(descriptor.owner)}:activity` || e.key === `hq:quiz:activity:${descriptor.owner}`) void reconcile(); }
     function beforeUnload(e: BeforeUnloadEvent) { if (game?.status === "active") { e.preventDefault(); e.returnValue = ""; } }
     const interval = window.setInterval(tick, 100);
     window.addEventListener("focus", focus); window.addEventListener("online", focus); window.addEventListener("storage", storage);

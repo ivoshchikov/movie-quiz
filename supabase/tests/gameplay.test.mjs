@@ -602,3 +602,14 @@ test('mixed simultaneous guest starts cannot bypass the combined admission quota
   const results=await Promise.allSettled([clients[0].query('select public.quiz_start($1,1,1)',[randomUUID()]),clients[1].query("select public.time_attack_start($1,1,'hard')",[randomUUID()])]);assert.equal(results.filter(x=>x.status==='fulfilled').length,1);assert.equal(await value('select count(*) v from hq_private.game_admissions'),1);
  }finally{for(const c of clients)await c.end();}
 });
+
+test('a simultaneous Time Attack answer and exit freeze one immutable score and best',{skip:!native},async()=>{
+ await attackBank();const clients=[new Client({connectionString:native}),new Client({connectionString:native})];try{
+  for(const c of clients){await c.connect();await c.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);}
+  const g=await attackStart();await attackClock(1000);
+  await Promise.all([clients[0].query("select public.time_attack_action($1,$2,'answer','One') v",[g.id,g.round.id]),clients[1].query('select public.time_attack_finish($1) v',[g.id])]);
+  const done=await attackStatus(g.id);assert.equal(done.status,'finished');assert.equal(done.finish_reason,'exit');assert.ok([0,2].includes(done.score));
+  assert.equal(done.personal_best.score,done.score);assert.equal(done.personal_best.score_time_ms,1000);assert.equal(await value("select count(*) v from hq_private.answer_events where mode='time_attack'"),1);
+  await attackClock(10000);const retried=await attackFinish(g.id);assert.equal(retried.score,done.score);assert.equal(retried.score_time_ms,1000);
+ }finally{for(const c of clients)await c.end();await attackCleanup();}
+});

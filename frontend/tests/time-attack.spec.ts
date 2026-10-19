@@ -23,7 +23,7 @@ test('the server clock expires during image loading and unanswered expiry costs 
  const d=await attackFixture(page);let release=()=>{};const held=new Promise<void>(r=>release=r);
  await page.route('**/ta-image-1.svg',async route=>{await held;await route.fallback();});
  await page.goto('/time-attack');await page.getByRole('radio',{name:'Hard · 60 s',exact:true}).click();await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();
- await expect(page.getByText('Loading image… The clock keeps running.',{exact:true})).toBeVisible();await page.clock.runFor(60000);await expect(page.getByRole('heading',{name:'Time Attack result'})).toBeVisible();await expect(page.getByLabel('Score 0',{exact:true})).toBeVisible();expect(d.accepted).toBe(0);release();
+ await expect(page.getByText('Loading image… The clock keeps running.',{exact:true})).toBeVisible();await page.clock.runFor(61000);await expect(page.getByRole('heading',{name:'Time Attack result'})).toBeVisible();await expect(page.getByLabel('Score 0',{exact:true})).toBeVisible();expect(d.accepted).toBe(0);release();
 });
 test('reload restores the original run, accepted answers and deadline without creating another attempt',async({page})=>{
  const d=await attackFixture(page);await start(page);await page.getByRole('button',{name:answers[0],exact:true}).click();await expect(page.getByText('Correct! +2 points')).toBeVisible();
@@ -51,7 +51,7 @@ test('signed-in results use server records and top ten plus own rank without exp
 });
 test('a failed next request can recover the current question instead of getting stuck on feedback',async({page})=>{
  const d=await attackFixture(page);await start(page);await page.getByRole('button',{name:answers[0],exact:true}).click();await expect(page.getByText('Correct! +2 points')).toBeVisible();d.failNext=true;
- await page.clock.runFor(600);await expect(page.getByRole('button',{name:'Retry Time Attack'})).toBeVisible();d.failNext=false;await page.getByRole('button',{name:'Retry Time Attack'}).click();await expect(page.getByText('Correct! +2 points')).toBeVisible();await page.clock.runFor(600);await expect(page.getByText('Question 2',{exact:true})).toBeVisible();
+ await page.clock.runFor(1000);await expect(page.getByRole('button',{name:'Retry Time Attack'})).toBeVisible();d.failNext=false;await page.getByRole('button',{name:'Retry Time Attack'}).click();await expect(page.getByText('Correct! +2 points')).toBeVisible();await page.clock.runFor(1000);await expect(page.getByText('Question 2',{exact:true})).toBeVisible();
 });
 test('image failure can be retried or skipped while the same server timer runs',async({page})=>{
  const d=await attackFixture(page);await page.route('**/ta-image-1.svg',route=>route.abort());await page.goto('/time-attack');await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();
@@ -67,4 +67,18 @@ for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:320
 test('Time Attack is indexed with initial HTML and its live route is noindex',async({page})=>{
  await attackFixture(page);await page.goto('/time-attack');await expect(page.getByRole('button',{name:'Start Time Attack',exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page).toHaveTitle('Movie & Actor Time Attack Quiz | Hard Quiz');await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://hard-quiz.com/time-attack');
  await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();await expect(page.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content','noindex, nofollow');
+});
+
+test('two tabs share the same run, accepted score and shortened deadline',async({page,context})=>{
+ const d=await attackFixture(page);await start(page);const second=await context.newPage();await attackFixture(second,{games:d.games});await second.goto('/time-attack/play');
+ await expect(second.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();
+ await page.getByRole('button',{name:answers[0],exact:true}).click();await expect(page.getByText('Correct! +2 points')).toBeVisible();await expect(second.locator('.hq-game-stat strong')).toHaveText('2');
+ await page.clock.runFor(600);await expect(page.getByText('Question 2',{exact:true})).toBeVisible();await second.clock.runFor(600);
+ await page.getByRole('button',{name:'Skip · −3 s'}).click();await expect(page.getByText('Skipped. −3 seconds')).toBeVisible();
+ const remaining=await page.locator('.hq-game-timer-label strong').textContent();await expect(second.locator('.hq-game-timer-label strong')).toHaveText(remaining!);expect(d.games.size).toBe(1);await second.close();
+});
+test('a receipt finished in another tab replaces the active view after reconciliation',async({page})=>{
+ const d=await attackFixture(page,{signedIn:true});await start(page);const g=[...d.games.values()][0];g.status='finished';g.finish_reason='exit';g.score_time_ms=0;g.elapsed_ms=0;g.version++;
+ await page.evaluate(()=>window.dispatchEvent(new StorageEvent('storage',{key:'hq:quiz:activity:fixture-user',newValue:'another-run'})));
+ await expect(page.getByRole('heading',{name:'Time Attack result'})).toBeVisible();await expect(page.getByText('Run ended.',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:answers[0],exact:true})).toHaveCount(0);
 });
