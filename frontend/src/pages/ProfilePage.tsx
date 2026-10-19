@@ -1,3 +1,4 @@
+import AttackProfileRecords from "../timeAttack/AttackProfileRecords";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { countQuestions, getDailyUserStreak, getMyBest } from "../api";
@@ -90,6 +91,7 @@ export default function ProfilePage() {
         {daily.value ? <dl><div><dt>Current streak</dt><dd>{daily.value.current_streak}<span> {daily.value.current_streak === 1 ? "day" : "days"}</span></dd></div><div><dt>Best streak</dt><dd>{daily.value.longest_streak}<span> {daily.value.longest_streak === 1 ? "day" : "days"}</span></dd></div></dl>
           : !daily.error && <p role="status" className="hq-profile-message">Loading your streak…</p>}
       </section>
+      <AttackProfileRecords owner={owner} refresh={availabilityRefresh} />
       <PlayerStatistics owner={owner} refresh={availabilityRefresh} categories={catalog.categories} difficulties={catalog.difficulties} />
       <section className="hq-profile-results" aria-labelledby="profile-bests-title" aria-busy={bests.loading}>
         <div className="hq-profile-section-heading"><h2 id="profile-bests-title">Personal bests{bests.value !== undefined && <span className="hq-profile-count">{rows.length}</span>}</h2><button className="hq-profile-refresh hq-text-action" onClick={refresh} disabled={refreshing}>{refreshing ? "Refreshing…" : "Refresh results"}</button></div>
