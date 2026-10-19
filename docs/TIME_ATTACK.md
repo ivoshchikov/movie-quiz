@@ -1,6 +1,6 @@
 # Time Attack — GAME-03
 
-Owner approved implementation, tests and production publication on 19 October 2026 (Asia/Nicosia), following the fixed-time recommendation. This document describes the implementation; PR and deployment evidence are recorded separately before the release is called published.
+Owner approved implementation, tests and production publication on 19 October 2026 (Asia/Nicosia), following the fixed-time recommendation. Implementation: [PR #40](https://github.com/ivoshchikov/movie-quiz/pull/40). Its release verification records the final tested source, migration and confirmed deployment; prepared code alone does not mean it is published.
 
 ## Rules
 
@@ -20,7 +20,7 @@ Migration: `supabase/migrations/20261019104507_time_attack.sql`.
 
 Private tables hold sessions, immutable question/option/answer snapshots, and personal bests. RLS is enabled and direct client privileges revoked. Public RPCs explicitly grant only the intended roles and check ownership; guest sessions are random UUID capabilities. Private helpers are not executable by client roles. Every privileged function fixes its search path.
 
-Owner and row locks serialize starts, answers, skips, next, exit and maintenance. Clocks are read after waiting for locks. A round accepts one action; conflicting later actions fail, matching retries return the existing receipt. `time_attack_next` includes the previous round ID, so duplicated or delayed requests cannot advance past a new question. Receipts contain a monotonic version; the client drops older responses. Future questions and correct answers are never returned.
+Owner and row locks serialize starts, answers, skips, next, exit and maintenance. Clocks are read after waiting for locks. A round accepts one action; conflicting later actions fail, matching retries return the existing receipt. `time_attack_next` includes the previous round ID, so duplicated or delayed requests cannot advance past a new question. Receipts contain a monotonic version; the client drops older responses. Accepted revisions signal other tabs independently of the local resume descriptor, and a notification received during a request is reconciled afterwards. Future questions and correct answers are never returned.
 
 Guest normal/Time Attack starts share the admission lock, per-network and global sliding quotas, rotating source pseudonyms and exact combined 25,000 snapshot budget from GAME-02. Account starts share existing 12/minute, 240/hour caps. Storage loss, changing session IDs or switching modes do not reset server quotas.
 
@@ -35,3 +35,5 @@ Accepted outcomes join the existing event/cohort system under `time_attack`. Ski
 ## Validation and publication
 
 Run the existing isolated SQL fixture with the new migration, including native PostgreSQL concurrent choices/skip/next, a blocked answer crossing its deadline, and mixed-mode admission races. Browser fixtures use the test Supabase origin and intercept analytics, covering score/clock/skip, loss/retry, reload, signed-in records, own rank, image errors and four viewport sizes. Production verification must use passive pages, metadata, catalog/ranking reads and schema/ACL checks; do not create test attempts or records in production.
+
+Native PostgreSQL 17 verification on application commit `d3be1a7505e47b90a13140cd81b05d61662eade3`: 60 contracts passed, zero failures/skips, including nine real concurrency cases (Actions run `39242370650`). Local PGlite: 51 passed with the nine native-only cases skipped. Typecheck, lint, build and the 16 Time Attack browser scenarios pass. Full regression and deployment evidence are recorded in PR #40. An illustrative 90-second balance simulation (not player telemetry) favored 80%-accurate 2.5-second recognition over 0.1-second random guessing; negative scoring and the paid skip remain as approved. Real-player balance still needs observation after launch.
