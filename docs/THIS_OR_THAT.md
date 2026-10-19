@@ -26,7 +26,7 @@ The rating calculator is deployed privately as `this-that-ranking`. Its numerica
 
 ## Operations
 
-Migrations: `20261019200201_this_or_that.sql` and `20261019202710_this_that_net_privacy.sql`. Requires Supabase Auth, pg_net and the existing pg_cron installation. Adds `hq-this-that-maintenance` without replacing gameplay maintenance. Guest admission and storage budgets are shared with normal/Time Attack. Old guest snapshots and completed old cycles are pruned; immutable account votes and private preferences remain.
+Migrations: `20261019200201_this_or_that.sql` , `20261019202710_this_that_net_privacy.sql` and `20261019203942_this_that_bounded_refresh.sql`. Requires Supabase Auth, pg_net and the existing pg_cron installation. Adds `hq-this-that-maintenance` without replacing gameplay maintenance. Guest admission and storage budgets are shared with normal/Time Attack. Old guest snapshots and completed old cycles are pruned; immutable account votes and private preferences remain.
 
 Administrator-only RPCs `admin_this_that_voter` and `admin_this_that_person` support audited voter holds and revision-checked participant approval. Service-only refresh RPCs cannot be called by anonymous or authenticated browser clients. The Edge entrypoint performs its own project API-key/cron authentication, validates origins and bounded request bodies, and never returns service credentials or internal errors.
 
@@ -37,3 +37,5 @@ The new routes are `/this-or-that` (indexable initial HTML and sitemap) and `/th
 Local SQL fixtures mock only platform Auth/pg_net/pg_cron infrastructure; application migrations and RPCs run in PostgreSQL/PGlite. GitHub Actions runs both legacy gameplay and This or That contracts in separate fresh PostgreSQL 17 services, including concurrent transactions. Browser fixtures use an isolated API origin and cover retries, reloads, tabs, neutral choices, photos, ten-pair stopping, imports, rankings, SEO and responsive layouts. Production verification uses passive reads, without QA votes or competitive results.
 
 Validation before UI rollout: 540 browser regression scenarios plus two additional visibility/multiple-guest-tab scenarios pass locally; 72 local SQL checks pass with ten native concurrency cases covered by PostgreSQL CI. The private calculator/handler has 22 passing checks and a separate one-million-ballot stress run. Production migration and publication are verified separately.
+
+The production API enables pg-safeupdate. Refresh and invalidation updates explicitly target the singleton state row; snapshot replacement explicitly targets known participant IDs. This is also verified by exercising the deployed ranking HTTP endpoint, since plain PostgreSQL fixtures do not reproduce the API role’s safety guard.
