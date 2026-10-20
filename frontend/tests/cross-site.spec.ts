@@ -81,6 +81,8 @@ test("keyboard users can skip the header and continue into quiz controls", async
   await expect(page.getByRole("main")).toBeFocused();
   await expect(page.getByRole("main")).toHaveCSS("outline-style", "none");
   await page.keyboard.press("Tab");
+  await expect(page.getByRole("radio", { name: "Classic", exact: true })).toBeFocused();
+  await page.keyboard.press("Tab");
   await expect(page.getByRole("radio", { name: /Movie Stills/ })).toBeFocused();
   await expect(page.getByRole("radio", { name: /Movie Stills/ })).toHaveCSS("outline-style", "solid");
 });
@@ -167,10 +169,10 @@ test("primary text remains readable on hover and article actions are styled butt
     expect((Math.max(light, dark) + .05) / (Math.min(light, dark) + .05)).toBeGreaterThanOrEqual(4.5);
   }
   await page.goto(article);
-  const choose = page.getByRole("link", { name: "Choose a quiz", exact: true });
+  const choose = page.getByRole("link", { name: "Choose a game", exact: true });
   expect(await choose.evaluate(element => getComputedStyle(element).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
   expect(await choose.evaluate(element => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
-  await expect(page.getByRole("link", { name: "Try Daily", exact: true })).toBeVisible();
+  await expect(page.locator(".hq-article-cta")).toContainText("Classic, Time Attack, This or That or Daily.");
 });
 
 for (const width of [320, 375, 768, 1440]) {

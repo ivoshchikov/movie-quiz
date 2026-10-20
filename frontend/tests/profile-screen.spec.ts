@@ -59,7 +59,9 @@ test("records group in catalog order, with a count, correct duration and a fixed
   await expect(page.locator(".hq-profile-count")).toHaveText("3");
   await expect(page.getByRole("cell", { name: "00:00", exact: true })).toBeVisible();
   await expect(page.getByRole("cell", { name: "01:05", exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd")).toHaveText(["3 days", "7 days"]);
+  await page.getByRole("radio", { name: "Classic", exact: true }).click();
   await expect(page.locator('meta[name="robots"][data-rh="true"]')).toHaveAttribute("content", "noindex, nofollow");
   await expect(page.getByRole("button", { name: /Change nickname/ })).toHaveCount(0);
   await page.getByRole("button", { name: "Account menu" }).click();
@@ -107,7 +109,9 @@ test("a catalog failure keeps records and Daily visible, with its own retry", as
   await page.goto("/profile");
   await expect(page.getByRole("button", { name: "Retry quiz details", exact: true })).toBeVisible();
   await expect(page.getByRole("cell", { name: "01:05", exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("3 days");
+  await page.getByRole("radio", { name: "Classic", exact: true }).click();
   data.failCatalog = false;
   await page.getByRole("button", { name: "Retry quiz details", exact: true }).click();
   await expect(page.getByRole("link", { name: "Play again: Movie Stills — Hard", exact: true })).toBeVisible();
@@ -118,7 +122,9 @@ test("a results failure leaves identity and Daily available and is never an empt
   await page.goto("/profile");
   await expect(page.getByRole("button", { name: "Retry results", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "MovieFan", exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("3 days");
+  await page.getByRole("radio", { name: "Classic", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Your first personal best is waiting" })).toHaveCount(0);
   data.failBests = false;
   await page.getByRole("button", { name: "Retry results", exact: true }).click();
@@ -128,16 +134,20 @@ test("a results failure leaves identity and Daily available and is never an empt
 test("Daily can fail and retry without hiding personal bests", async ({ page }) => {
   const { data } = await fixture(page); data.failDaily = true;
   await loaded(page);
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.getByRole("button", { name: "Retry Daily stats", exact: true })).toBeVisible();
   await expect(page.locator(".hq-profile-daily dd")).toHaveCount(0);
   data.failDaily = false;
   await page.getByRole("button", { name: "Retry Daily stats", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd")).toHaveText(["3 days", "7 days"]);
+  await page.getByRole("radio", { name: "Classic", exact: true }).click();
 });
 
 test("no Daily history is a legitimate zero streak with a link to Daily", async ({ page }) => {
   const { data } = await fixture(page); data.streak = null;
   await loaded(page);
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd")).toHaveText(["0 days", "0 days"]);
   await expect(page.getByRole("link", { name: "View Daily", exact: true })).toHaveAttribute("href", "/daily");
 });
@@ -147,7 +157,7 @@ test("empty results explain how to earn a record and offer a working quiz entry"
   await page.goto("/profile");
   await expect(page.getByRole("heading", { name: "Your first personal best is waiting" })).toBeVisible();
   await expect(page.locator(".hq-profile-count")).toHaveText("0");
-  await expect(page.getByText(/after it is saved/)).toBeVisible();
+  await expect(page.getByText(/save your first record/)).toBeVisible();
   await page.getByRole("link", { name: "Start a quiz", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
@@ -178,6 +188,7 @@ test("duplicate record keys are rejected while an invalid date uses an honest pl
 for (const invalid of [{ current_streak: -1, longest_streak: 7, total_correct: 12 }, false, 0, ""]) test(`malformed streak data ${JSON.stringify(invalid)} is an error instead of zero`, async ({ page }) => {
   const { data } = await fixture(page); data.streak = invalid;
   await loaded(page);
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.getByRole("button", { name: "Retry Daily stats", exact: true })).toBeVisible();
   await expect(page.locator(".hq-profile-daily dd")).toHaveCount(0);
 });
@@ -372,7 +383,9 @@ test("a held read times out; its late response cannot replace a retried result",
   await page.goto("/profile");
   await expect(page.getByText("Loading your results…", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "MovieFan", exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("3 days");
+  await page.getByRole("radio", { name: "Classic", exact: true }).click();
   await page.clock.runFor(10100);
   await page.getByRole("button", { name: "Retry results", exact: true }).click();
   await expect(page.getByRole("cell", { name: "01:05", exact: true })).toBeVisible();
@@ -422,6 +435,7 @@ test("switching accounts isolates identity, records and Daily from late response
   await expect(page.getByRole("heading", { name: "SecondPlayer", exact: true })).toBeVisible();
   await expect(page.locator(".hq-account-name")).toHaveText("SecondPlayer");
   await expect(page.getByRole("cell", { name: "00:18", exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd")).toHaveText(["1 day", "2 days"]);
   release();
   await expect(page.getByRole("heading", { name: "MovieFan", exact: true })).toHaveCount(0);
@@ -437,6 +451,7 @@ test("Chicago midnight refreshes Daily statistics without playing an attempt", a
   const before = data.dailyCalls;
   data.streak = { current_streak: 0, longest_streak: 7, total_correct: 12 };
   await page.clock.runFor(3000);
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
   await expect(page.locator(".hq-profile-daily dd").first()).toHaveText("0 days");
   expect(data.dailyCalls).toBeGreaterThan(before);
   expect(calls.some(call => ["daily_begin", "daily_begin", "submit_daily_answer"].includes(call.name))).toBe(false);

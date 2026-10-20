@@ -203,10 +203,10 @@ test("filtered metadata keeps the complete canonical collection and working imag
 
 test("the primary and Daily links select a next step without starting a game", async ({ page }) => {
   const calls = await open(page);
-  await page.getByRole("link", { name: "Play a movie quiz", exact: true }).click();
+  await page.getByRole("link", { name: "Choose a game", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
   await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
-  await page.goBack(); await page.getByRole("link", { name: "Daily Challenge", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click(); await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/daily");
   expect(calls.filter(call => ["quiz_start", "daily_begin", "submit_daily_answer", "quiz_finish"].includes(call.name))).toEqual([]);
 });
@@ -218,7 +218,7 @@ for (const size of [{ width: 1440, height: 900 }, { width: 768, height: 1024 }, 
   expect(columns).toBe(size.width <= 580 ? 1 : size.width <= 850 ? 2 : 3);
   for (const button of await page.locator(".hq-blog-topics button").all()) expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   for (const link of await page.locator(".hq-blog-play-actions a").all()) { await link.scrollIntoViewIfNeeded(); expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44); }
-  await expect(page.getByRole("link", { name: "Daily Challenge", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Choose a game", exact: true })).toBeVisible();
 });
 
 test("reduced motion and large text preserve titles, focus and all actions", async ({ page }) => {

@@ -138,9 +138,8 @@ export default function Layout() {
       <div className="hq-shell hq-header-inner">
         <Link to="/" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>
         <nav className="hq-nav" aria-label="Main navigation">
-          <NavLink to="/" end className="hq-nav-link">Play</NavLink>
-          <NavLink to="/daily" className="hq-nav-link">Daily</NavLink>
-          <NavLink to="/leaderboard" className="hq-nav-link">Leaderboard</NavLink>
+          <Link to="/" className="hq-nav-link" aria-current={["/", "/daily", "/time-attack", "/this-or-that"].includes(pathname) ? "page" : undefined}>Games</Link>
+          <NavLink to="/leaderboard" className="hq-nav-link">Rankings</NavLink>
           <NavLink to="/blog" className="hq-nav-link">Blog</NavLink>
         </nav>
         <div className="hq-header-actions"><ThemeSlider />

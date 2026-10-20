@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { mockQuizApi } from "./fixtures";
 
 const origin = "https://hard-quiz.com";
-const publicPages = [{ path: "/", file: "index", heading: "How well do you know cinema?" }, { path: "/daily", file: "daily", heading: "One image. One daily challenge." }, { path: "/leaderboard", file: "leaderboard", heading: "Leaderboard" }, { path: "/how-to-play", file: "how-to-play", heading: "How to play" }];
+const publicPages = [{ path: "/", file: "index", heading: "Choose your game" }, { path: "/daily", file: "daily", heading: "One image. One daily challenge." }, { path: "/leaderboard", file: "leaderboard", heading: "Rankings" }, { path: "/how-to-play", file: "how-to-play", heading: "How to play" }];
 for (const entry of publicPages) test(`first response for ${entry.path} has readable content and unique metadata`, async ({ browser }) => {
   test.skip(!existsSync(`dist/${entry.file}.html`), "Generated HTML is checked in the build job");
   const context = await browser.newContext({ javaScriptEnabled: false });
@@ -52,7 +52,7 @@ test("filters stay in URL while canonical remains clean and indexability resets 
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", origin + "/leaderboard");
   await page.goto("/login?returnTo=%2Fdaily");
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
-  await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Play", exact: true }).click();
+  await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Games", exact: true }).click();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", origin + "/");
 });

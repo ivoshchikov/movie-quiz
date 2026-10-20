@@ -33,11 +33,13 @@ export default function PlayerStatistics({
   refresh,
   categories,
   difficulties,
+  view = "classic",
 }: {
   owner: string;
   refresh: number;
   categories: Category[];
   difficulties: DifficultyLevel[];
+  view?: "classic" | "daily";
 }) {
   const load = useCallback(async (signal: AbortSignal) => {
     const s = await gameplayRpc<Stats>("my_game_stats", {}, signal);
@@ -78,7 +80,7 @@ export default function PlayerStatistics({
       aria-busy={stats.loading}
     >
       <div className="hq-profile-section-heading">
-        <h2 id="player-statistics-title">Playing statistics</h2>
+        <h2 id="player-statistics-title">{view === "daily" ? "Daily history" : "Playing statistics"}</h2>
         <button
           className="hq-inline-action"
           onClick={stats.retry}
@@ -98,12 +100,13 @@ export default function PlayerStatistics({
       {!s && !stats.error && <p role="status">Loading playing statistics…</p>}
       {s && n && (
         <>
-          <p className="hq-profile-note">
-            Regular quiz statistics since{" "}
+          {view === "classic" && <>
+          <details className="hq-copy-details"><summary>What these statistics include</summary><p className="hq-profile-note">
+            Classic statistics since{" "}
             {new Date(s.tracking_since).toLocaleDateString("en-US")}. Earlier
             records and Daily results are preserved. Accuracy includes timeouts;
             unfinished questions are listed separately. Average time uses submitted answers only. The best correct streak continues across quizzes and ends at a wrong, timed-out or abandoned question. Unique questions include every question with a recorded outcome.
-          </p>
+          </p></details>
           <dl className="hq-stat-grid">
             <div>
               <dt>Finished quizzes</dt>
@@ -158,7 +161,7 @@ export default function PlayerStatistics({
             <div className="hq-stats-table-wrap" role="region" aria-label="Statistics by quiz" tabIndex={0}>
               <p className="hq-stats-scroll-hint">Scroll the table to see all columns.</p>
               <table className="hq-stats-table">
-                <caption>Regular quizzes by category and difficulty</caption>
+                <caption>Classic quizzes by category and difficulty</caption>
                 <thead>
                   <tr>
                     <th>Quiz</th>
@@ -193,6 +196,8 @@ export default function PlayerStatistics({
               </table>
             </div>
           )}
+          </>}
+          {view === "daily" && <>
           <h3>Daily · last 30 days</h3>
           <p className="hq-profile-note">
             Results only. Correct, wrong and started-but-missed days are shown
@@ -211,6 +216,7 @@ export default function PlayerStatistics({
               </li>
             ))}
           </ol>
+          </>}
         </>
       )}
     </section>

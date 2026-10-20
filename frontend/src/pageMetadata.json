@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "Movie & Actor Quiz | Hard Quiz",
-    "description": "Guess movies from stills and recognize famous actors. Choose a difficulty, beat the timer, or take on today's Daily Challenge.",
+    "description": "Play movie and actor quizzes your way: Classic, Time Attack, This or That or Daily Challenge. Choose a mode and start playing.",
     "url": "https://hard-quiz.com/",
     "jsonLd": {
       "@context": "https://schema.org",
@@ -16,8 +16,8 @@
     "url": "https://hard-quiz.com/daily"
   },
   "leaderboard": {
-    "title": "Movie Quiz Leaderboard | Hard Quiz",
-    "description": "See all-time Hard Quiz personal bests for movie stills and actors. Compare scores by category and difficulty, then play the quiz.",
+    "title": "Quiz Rankings & Actor Favourites | Hard Quiz",
+    "description": "Explore Classic and Time Attack records, Daily streaks and the This or That actor favourites ranking. Choose a mode to see its results.",
     "url": "https://hard-quiz.com/leaderboard"
   },
   "play": {
@@ -50,12 +50,12 @@
     "noindex": true
   },
   "this-or-that": {
-    "title": "This or That \u2014 Choose Your Favourite Actors | Hard Quiz",
+    "title": "This or That — Choose Your Favourite Actors | Hard Quiz",
     "description": "Two actors. Your choice. Pick your favourites in random pairs, build your private top and help shape the community actor ranking. Free to play, with no timer.",
     "url": "https://hard-quiz.com/this-or-that"
   },
   "this-or-that/play": {
-    "title": "This or That \u2014 Your Choices | Hard Quiz",
+    "title": "This or That — Your Choices | Hard Quiz",
     "description": "Compare random actor pairs and choose your favourites.",
     "url": "https://hard-quiz.com/this-or-that/play",
     "noindex": true

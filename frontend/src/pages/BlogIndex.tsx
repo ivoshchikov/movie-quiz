@@ -49,8 +49,8 @@ export default function BlogIndex() {
         </article>)}
       </div> : <section className="hq-blog-empty" aria-labelledby="blog-empty-title"><h2 id="blog-empty-title">No articles in this topic yet</h2><p>Explore the other movie guides and film explainers.</p><button type="button" className="hq-primary" onClick={() => chooseTopic("all")}>Show all articles</button></section>}
       <section className="hq-blog-play" aria-labelledby="blog-play-title">
-        <div><h2 id="blog-play-title">Put your movie knowledge to the test</h2><p>Choose a quiz, or try today’s Daily Challenge.</p></div>
-        <div className="hq-blog-play-actions"><Link to="/" className="hq-primary">Play a movie quiz</Link><Link to="/daily" className="hq-secondary">Daily Challenge</Link></div>
+        <div><h2 id="blog-play-title">Choose your next game</h2><p>Classic, Time Attack, This or That or Daily.</p></div>
+        <div className="hq-blog-play-actions"><Link to="/" className="hq-primary">Choose a game</Link></div>
       </section>
     </div>
   </>;

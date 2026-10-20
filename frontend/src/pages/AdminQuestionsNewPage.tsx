@@ -585,9 +585,7 @@ function QuestionUploader({ owner }: { owner: string }) {
       <div className="hq-bank-heading">
         <div>
           <h1>Add questions</h1>
-          <p>
-            Attach images, review four answers, then add the ready questions.
-          </p>
+
         </div>
         <Link className="hq-secondary" to="/admin/questions">
           Back to bank
@@ -632,7 +630,7 @@ function QuestionUploader({ owner }: { owner: string }) {
               ))}
             </select>
           </label>
-          <p>Defaults apply to cards without an individual override.</p>
+          <details className="hq-copy-details"><summary>About defaults</summary><p>Defaults apply to cards without an individual override.</p></details>
         </div>
       )}
       <label className={`hq-upload-drop${dragging ? " is-dragging" : ""}`}>
@@ -655,11 +653,7 @@ function QuestionUploader({ owner }: { owner: string }) {
       </label>
       <div className="hq-upload-drafts">
         <p role="status">{draftMessage}</p>
-        <p>
-          Recovery: same browser and account, up to 7 days and 50 MiB. Drafts
-          store processed images. Clearing browser data removes recovery. Avoid
-          editing the same card in two tabs.
-        </p>
+        <details className="hq-copy-details"><summary>Draft recovery limits</summary><p>Recovery: same browser and account, up to 7 days and 50 MiB. Drafts store processed images. Clearing browser data removes recovery. Avoid editing the same card in two tabs.</p></details>
         {saved.length > 0 && (
           <button
             className="hq-secondary"

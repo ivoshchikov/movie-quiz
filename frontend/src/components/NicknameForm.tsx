@@ -116,12 +116,11 @@ export default function NicknameForm({ userId, destination, onSaved, onCancel, o
         placeholder="e.g. FilmFan" value={nickname} disabled={busy}
         aria-invalid={!!lengthError || taken} aria-describedby={`${id}-rules ${id}-warning ${lengthError ? `${id}-length ` : ""}${error ? `${id}-error ` : ""}${id}-availability`}
         onBlur={() => setTouched(true)} onChange={event => { setNickname(event.target.value); setError(null); }} />
-      <div className="hq-nickname-rules" id={`${id}-rules`}><span>3–20 visible characters. Equivalent characters and spaces are normalized.</span><span aria-hidden="true">{Array.from(nick).length}/20</span></div>
+      <div className="hq-nickname-rules" id={`${id}-rules`}><span>3–20 characters</span><span aria-hidden="true">{Array.from(nick).length}/20</span></div>
       <div className="hq-nickname-validation">{lengthError && <p id={`${id}-length`} className="hq-nickname-error" role="alert">{lengthError}</p>}</div>
       <div id={`${id}-availability`} className={`hq-nickname-availability${checkState === "taken" ? " hq-nickname-error" : ""}`} role="status" aria-live="polite" aria-atomic="true">
-        {!busy && !uncertain && valid && (checkState === "checking" ? "Checking availability…" : checkState === "available" ? "Looks available. We’ll check again when you save." : checkState === "taken" ? "This nickname is taken. Choose another one." : checkState === "error" ? <><span>Availability could not be checked.</span> <button className="hq-inline-action" type="button" onClick={() => retryCheck(value => value + 1)}>Retry check</button></> : null)}
+        {!busy && !uncertain && valid && (checkState === "checking" ? "Checking availability…" : checkState === "available" ? "Available now" : checkState === "taken" ? "This nickname is taken. Choose another one." : checkState === "error" ? <><span>Availability could not be checked.</span> <button className="hq-inline-action" type="button" onClick={() => retryCheck(value => value + 1)}>Retry check</button></> : null)}
       </div>
-      {valid && <p className="hq-nickname-preview">Your player name: <strong>{nick}</strong></p>}
     </div>
     {error && <p id={`${id}-error`} className="hq-nickname-error" role="alert">{error.text}</p>}
     <p className="hq-nickname-next">After saving, you’ll return to {nicknameDestination(destination)}.{destination.split(/[?#]/)[0] === "/daily" && " Start Daily when you’re ready."}</p>

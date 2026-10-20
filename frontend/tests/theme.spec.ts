@@ -67,7 +67,8 @@ test("storage denial keeps switching and route changes working without an except
   await mockQuizApi(page);
   await page.goto("/");
   await changeTheme(page);
-  await page.getByRole("link", { name: "Daily", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
+  await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
   await changeTheme(page);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
@@ -206,6 +207,9 @@ for (const theme of ["light", "halloween"] as const) test(`the saved ${theme} th
 
 test("the slider supports dragging through three stops and removes Halloween decoration on exit", async ({ page }) => {
   await mockQuizApi(page); await page.goto("/");
+  // The account placeholder can move the slider while the header settles.
+  await expect(page.getByRole("button", { name: "Log in", exact: true })).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
   const box = await slider(page).boundingBox();
   const y = box!.y + box!.height / 2;
   await page.mouse.move(box!.x + box!.width / 2, y); await page.mouse.down();
