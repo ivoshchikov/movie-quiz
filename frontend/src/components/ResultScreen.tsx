@@ -87,7 +87,7 @@ function ResultCard({ result }: { result: GameResult }) {
       </dl>
       <div className="hq-result-actions">
         {canReplay && <Link className="hq-primary" to="/play" state={{ categoryId: result.categoryId, difficultyId: result.difficultyId }}><SiteIcon name="replay" />Play again</Link>}
-        <Link className="hq-secondary" to="/">Back to home</Link>
+        <Link className="hq-secondary" to="/">Choose another game</Link>
       </div>
       <div className="hq-result-save" role="status" aria-live="polite" aria-atomic="true">
         <p>{statusText}{failed && <button className="hq-inline-action" onClick={() => { void saveGameResult(result, session); }}>Retry</button>}</p>

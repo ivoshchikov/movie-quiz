@@ -12,7 +12,7 @@ const originKey = `${prefix}article`;
 const ttl = 24 * 60 * 60 * 1000;
 const attempts = new Map<string, Attempt>();
 
-export function articleToQuiz(slug: string, mode: Mode) {
+export function articleToQuiz(slug: string, mode: Mode | "games") {
   const origin: ArticleOrigin = { article_slug: slug, cta_position: "footer", cta_id: crypto.randomUUID() };
   if (!gaEvent("article_to_quiz_click", { ...origin, game_mode: mode })) return;
   try { sessionStorage.setItem(originKey, JSON.stringify({ ...origin, mode, at: Date.now() })); } catch { /* Attribution is optional. */ }
@@ -20,7 +20,7 @@ export function articleToQuiz(slug: string, mode: Mode) {
 function takeOrigin(mode: Mode): ArticleOrigin | undefined {
   try {
     const value = JSON.parse(sessionStorage.getItem(originKey) || "null");
-    if (!value || value.mode !== mode || typeof value.at !== "number" || Date.now() - value.at < 0 || Date.now() - value.at > 30 * 60 * 1000) return;
+    if (!value || (value.mode !== mode && value.mode !== "games") || typeof value.at !== "number" || Date.now() - value.at < 0 || Date.now() - value.at > 30 * 60 * 1000) return;
     sessionStorage.removeItem(originKey);
     if (typeof value.article_slug === "string" && typeof value.cta_id === "string" && value.cta_position === "footer") {
       return { article_slug: value.article_slug, cta_position: "footer", cta_id: value.cta_id };

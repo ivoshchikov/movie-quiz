@@ -32,7 +32,7 @@ export default function ProfileSetupScreen() {
         : authLoading ? <p role="status" className="hq-nickname-message">Checking your sign-in status…</p>
           : !user ? <div className="hq-nickname-guest"><p>A nickname is chosen once for your account. Log in to complete this step and continue.</p>
             <Link className="hq-primary" to={`/login?redirect=${encodeURIComponent(nicknameSetupDestination(destination))}`}>Log in to choose a nickname</Link>
-            <Link className="hq-inline-action" to="/">Play a regular quiz as a guest</Link></div>
+            <Link className="hq-inline-action" to="/">Play as a guest</Link></div>
             : profileError ? <div className="hq-nickname-message"><p role="alert">Your account could not be checked.</p><button className="hq-primary" onClick={retryProfile}>Retry profile</button></div>
               : !profileReady || nickname ? <p role="status" className="hq-nickname-message">Checking your profile…</p>
                 : <NicknameForm key={user.id} userId={user.id} destination={destination} onCancel={() => navigate(destination, { replace: true })}

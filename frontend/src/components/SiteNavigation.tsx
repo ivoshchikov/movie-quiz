@@ -81,6 +81,10 @@ export default function SiteNavigation() {
         try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
         const section = document.getElementById(id);
         if (section) {
+          // Guide and ranking anchors remain reachable inside optional details.
+          for (let parent = section.parentElement; parent; parent = parent.parentElement) {
+            if (parent instanceof HTMLDetailsElement) parent.open = true;
+          }
           // Native fragment navigation may already have focused the section;
           // don't pull focus back after the user has tabbed into its controls.
           const alreadyFocused = document.activeElement === section || section.contains(document.activeElement);

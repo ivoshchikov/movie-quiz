@@ -293,7 +293,7 @@ for (const size of [
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBeTruthy();
-    for (const name of ["Play again", "Back to home", "View leaderboard"]) {
+    for (const name of ["Play again", "Choose another game", "View leaderboard"]) {
       const link = page.getByRole("link", { name, exact: true });
       await link.scrollIntoViewIfNeeded();
       const box = await link.boundingBox();
@@ -315,7 +315,7 @@ for (const size of [
         path: test.info().outputPath("result-mobile.png"),
         fullPage: true,
       });
-    await page.getByRole("link", { name: "Back to home", exact: true }).click();
+    await page.getByRole("link", { name: "Choose another game", exact: true }).click();
     await expect(
       page.getByRole("button", { name: "Play Movie Stills" }),
     ).toBeVisible();

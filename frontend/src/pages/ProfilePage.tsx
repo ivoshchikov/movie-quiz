@@ -2,7 +2,7 @@ import PersonalTop from "../thisThat/PersonalTop";
 import "../this-that.css";
 import AttackProfileRecords from "../timeAttack/AttackProfileRecords";
 import { useCallback, useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext, useSearchParams } from "react-router-dom";
 import { countQuestions, getDailyUserStreak, getMyBest } from "../api";
 import type { Category, DifficultyLevel, UserBestRow } from "../api";
 import { useAuth } from "../AuthContext";
@@ -15,6 +15,9 @@ import type { SiteOutletContext } from "../components/Layout";
 import SiteIcon from "../components/SiteIcon";
 import PlayerStatistics from "../components/PlayerStatistics";
 import Seo from "../components/Seo";
+import ModeSwitcher from "../components/ModeSwitcher";
+import { gameMode } from "../games/modes";
+import "../modes.css";
 import "../profile.css";
 
 const EMPTY: UserBestRow[] = [];
@@ -44,6 +47,8 @@ function RecordRow({ row, category, difficulty, refresh, metadataLoading }: { ro
 }
 
 export default function ProfilePage() {
+  const [params, setParams] = useSearchParams();
+  const mode = gameMode(params.get("mode"));
   const { user } = useAuth();
   const owner = user?.id ?? "";
   const { nickname, profileReady, profileError, retryProfile, chooseNickname } = useOutletContext<SiteOutletContext>();
@@ -78,31 +83,35 @@ export default function ProfilePage() {
   return <div className="hq-profile-page">
     <Seo title="My Results | Hard Quiz" noindex />
     <section className="hq-panel hq-profile-panel" aria-labelledby="profile-title">
-      <header className="hq-profile-heading"><div><h1 id="profile-title">My results</h1><p>Your personal bests, in one place.</p></div><span className="hq-profile-symbol"><SiteIcon name="chart" /></span></header>
+      <header className="hq-profile-heading"><div><h1 id="profile-title">My results</h1></div><span className="hq-profile-symbol"><SiteIcon name="chart" /></span></header>
       <div className="hq-profile-identity" aria-label="Player identity">
         <span className="hq-profile-avatar" aria-hidden="true">{(nickname || "U").slice(0, 1).toUpperCase()}</span>
         <div>{profileError ? <p role="alert">Player details could not be loaded. <button className="hq-inline-action" onClick={retryProfile}>Retry profile</button></p>
           : !profileReady ? <p role="status">Loading player details…</p>
-          : nickname ? <><h2>{nickname}</h2><p>Your leaderboard nickname</p></>
+          : nickname ? <><h2>{nickname}</h2></>
           : <><h2>Choose your player name</h2><button className="hq-inline-action" onClick={chooseNickname}>Choose nickname</button></>}
         </div>
       </div>
+      <ModeSwitcher label="Results mode" value={mode} onChange={value => { const next = new URLSearchParams(params); next.set("mode", value); setParams(next, { preventScrollReset: true }); }} />
+      {mode === "daily" && <>
       <section className="hq-profile-daily" aria-labelledby="profile-daily-title">
         <div className="hq-profile-section-heading"><h2 id="profile-daily-title">Daily Challenge</h2><Link className="hq-text-action" to="/daily">View Daily <SiteIcon name="arrow" /></Link></div>
         {daily.error && <p role="alert" className="hq-profile-message">Your Daily stats could not be loaded. <button className="hq-inline-action" onClick={daily.retry}>Retry Daily stats</button></p>}
         {daily.value ? <dl><div><dt>Current streak</dt><dd>{daily.value.current_streak}<span> {daily.value.current_streak === 1 ? "day" : "days"}</span></dd></div><div><dt>Best streak</dt><dd>{daily.value.longest_streak}<span> {daily.value.longest_streak === 1 ? "day" : "days"}</span></dd></div></dl>
           : !daily.error && <p role="status" className="hq-profile-message">Loading your streak…</p>}
       </section>
-      <PersonalTop key={owner} owner={owner} refresh={availabilityRefresh} />
-      <AttackProfileRecords owner={owner} refresh={availabilityRefresh} />
-      <PlayerStatistics owner={owner} refresh={availabilityRefresh} categories={catalog.categories} difficulties={catalog.difficulties} />
+        <PlayerStatistics owner={owner} refresh={availabilityRefresh} categories={catalog.categories} difficulties={catalog.difficulties} view="daily" />
+      </>}
+      {mode === "this-or-that" && <><PersonalTop key={owner} owner={owner} refresh={availabilityRefresh} /><Link className="hq-secondary" to="/this-or-that">Play This or That <SiteIcon name="arrow" /></Link></>}
+      {mode === "time-attack" && <AttackProfileRecords owner={owner} refresh={availabilityRefresh} />}
+      {mode === "classic" && <>
       <section className="hq-profile-results" aria-labelledby="profile-bests-title" aria-busy={bests.loading}>
         <div className="hq-profile-section-heading"><h2 id="profile-bests-title">Personal bests{bests.value !== undefined && <span className="hq-profile-count">{rows.length}</span>}</h2><button className="hq-profile-refresh hq-text-action" onClick={refresh} disabled={refreshing}>{refreshing ? "Refreshing…" : "Refresh results"}</button></div>
-        <p className="hq-profile-note">One saved record per category and difficulty. Score is the number of correct answers; Quiz duration is the total time of that run.</p>
+        <p className="hq-profile-note">One record per category and difficulty.</p>
         {catalog.error && <p role="alert" className="hq-profile-message">Quiz names could not be loaded. Your saved records are still shown. <button className="hq-inline-action" onClick={catalog.reload}>Retry quiz details</button></p>}
         {bests.error && <p role="alert" className="hq-profile-message">{bests.value === undefined ? "Your results could not be loaded." : "Your results could not be refreshed. Showing previously loaded records."} <button className="hq-inline-action" onClick={bests.retry}>Retry results</button></p>}
         {bests.value === undefined ? !bests.error && <div className="hq-profile-skeleton"><p role="status">Loading your results…</p><div aria-hidden="true" /><div aria-hidden="true" /></div>
-          : !rows.length ? <div className="hq-profile-empty"><SiteIcon name="trophy" /><h3>Your first personal best is waiting</h3><p>Play a regular quiz while logged in. Your best score for each quiz will appear here after it is saved.</p><Link className="hq-primary" to="/">Start a quiz <SiteIcon name="arrow" /></Link></div>
+          : !rows.length ? <div className="hq-profile-empty"><SiteIcon name="trophy" /><h3>Your first personal best is waiting</h3><p>Play Classic while logged in to save your first record.</p><Link className="hq-primary" to="/">Start a quiz <SiteIcon name="arrow" /></Link></div>
           : groups.map(id => {
             const category = catalog.categories.find(cat => cat.id === id);
             const label = category ? categoryLabel(category) : `Category ${id}`;
@@ -115,6 +124,8 @@ export default function ProfilePage() {
             </section>;
           })}
       </section>
+      <details className="hq-copy-details"><summary>Classic playing statistics</summary><PlayerStatistics owner={owner} refresh={availabilityRefresh} categories={catalog.categories} difficulties={catalog.difficulties} /></details>
+      </>}
     </section>
   </div>;
 }

@@ -248,10 +248,10 @@ for (const missing of ["not-a-real-article", "nested/missing", "_not-found.html"
 
 test("article actions explain guest access and do not start a quiz or Daily attempt", async ({ page }) => {
   const calls = await open(page);
-  await expect(page.locator(".hq-article-cta")).toContainText("Movie quizzes are open to guests. Daily requires an account.");
-  await page.getByRole("link", { name: "Choose a quiz", exact: true }).click();
+  await expect(page.locator(".hq-article-cta")).toContainText("Classic, Time Attack, This or That or Daily.");
+  await page.getByRole("link", { name: "Choose a game", exact: true }).click();
   await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
-  await page.goBack(); await page.getByRole("link", { name: "Try Daily", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click(); await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/daily");
   expect(calls.filter(call => ["quiz_start", "daily_begin", "submit_daily_answer", "quiz_finish"].includes(call.name))).toEqual([]);
 });
@@ -284,8 +284,8 @@ test("large text reflows in the smallest layout without clipping facts, comparis
     await page.addStyleTag({ content: ".hq-article-prose, .hq-movie-facts, .hq-release-index th, .hq-release-index td { font-size: 26px !important } .hq-article h1 { font-size: 42px !important } .hq-article-meta { font-size: 24px !important }" });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[index].title);
-    await page.getByRole("link", { name: "Choose a quiz", exact: true }).scrollIntoViewIfNeeded();
-    await expect(page.getByRole("link", { name: "Choose a quiz", exact: true })).toBeInViewport();
+    await page.getByRole("link", { name: "Choose a game", exact: true }).scrollIntoViewIfNeeded();
+    await expect(page.getByRole("link", { name: "Choose a game", exact: true })).toBeInViewport();
   }
 });
 

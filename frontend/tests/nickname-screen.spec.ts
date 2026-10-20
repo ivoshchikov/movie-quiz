@@ -65,8 +65,8 @@ for (const value of ["", "ab", "   ", "abcdefghijklmnopqrstu"]) test(`invalid le
 for (const value of ["  Film Fan  ", "Кино_Фан", "Film%Fan", "abcdefghijklmnopqrst"]) test(`valid names preserve their spelling and show the exact trimmed preview: ${value}`, async ({ page }) => {
   const { data } = await fixture(page); await openSetup(page, "/leaderboard?category=2&difficulty=3");
   await field(page).fill(value);
-  await expect(page.locator(".hq-nickname-preview strong")).toHaveText(value.trim());
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-preview")).toHaveCount(0);
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   await save(page).click();
   await expect(page).toHaveURL(/\/leaderboard\?category=2&difficulty=3$/);
   await expect(page.locator(".hq-account-name")).toHaveText(value.trim());
@@ -79,7 +79,7 @@ for (const value of ["  Film Fan  ", "Кино_Фан", "Film%Fan", "abcdefghijk
 test("availability is debounced, literal, case insensitive and rechecked on save", async ({ page }) => {
   const { data } = await fixture(page); await openSetup(page);
   await field(page).fill("Film_Fan");
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   expect(data.heads).toEqual(["Film_Fan"]);
   data.taken.add("film_fan");
   await save(page).click();
@@ -105,7 +105,7 @@ test("late availability for an old input cannot replace the current name’s sta
   });
   await field(page).fill("OldFan"); await expect.poll(() => waiting).toBe(true);
   await field(page).fill("NewFan");
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   release();
   await expect(page.locator(".hq-nickname-availability")).not.toContainText("taken");
   await expect(save(page)).toBeEnabled();
@@ -115,10 +115,10 @@ test("availability failures are retryable and never mean available", async ({ pa
   const { data } = await fixture(page); data.failAvailability = true; await openSetup(page);
   await field(page).fill("FilmFan");
   await expect(page.locator(".hq-nickname-availability")).toContainText("Availability could not be checked");
-  await expect(page.locator(".hq-nickname-availability")).not.toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).not.toContainText("Available now");
   data.failAvailability = false;
   await page.getByRole("button", { name: "Retry check" }).click();
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   expect(data.writes).toEqual([]);
 });
 
@@ -135,7 +135,7 @@ test("a hanging availability check times out and can recover with Retry check", 
   await expect.poll(() => checking).toBe(true); await page.clock.runFor(10_100);
   await expect(page.getByRole("button", { name: "Retry check" })).toBeVisible();
   hang = false; await page.getByRole("button", { name: "Retry check" }).click(); await page.clock.runFor(500);
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   release(); await page.clock.runFor(100);
   await expect(save(page)).toBeEnabled(); expect(data.writes).toEqual([]);
 });
@@ -166,7 +166,8 @@ test("the legacy unowned draft and another account’s draft never prefill this 
 test("Choose later is respected across routes; Daily can explicitly reopen the form", async ({ page }) => {
   const { daily } = await fixture(page); await page.goto("/");
   await page.getByRole("button", { name: "Choose later" }).click();
-  await page.getByRole("link", { name: "Daily", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
+  await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.getByRole("button", { name: "Choose a nickname to play" }).click();
   await field(page).fill("DailyFilmFan"); await save(page).click();
@@ -338,7 +339,7 @@ test("a database uniqueness conflict is a taken name, even after a successful pr
   await page.route("**/rest/v1/profiles?**", route => route.request().method() === "PATCH"
     ? route.fulfill({ status: 409, contentType: "application/json", body: '{"code":"23505","message":"fixture unique conflict"}' }) : route.fallback());
   await openSetup(page); await field(page).fill("RaceFilmFan");
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   await save(page).click(); await expect(page.getByRole("alert")).toContainText("This nickname is taken");
   await expect(field(page)).toHaveValue("RaceFilmFan"); await expect(save(page)).toBeDisabled();
 });
@@ -461,7 +462,7 @@ test("Choose later consumes an internal setup flag instead of reopening the dial
 test("keyboard focus, error descriptions, escape and focus restoration work in the dialog", async ({ page }) => {
   await fixture(page); await page.goto("/blog"); await reopen(page);
   await expect(field(page)).toBeFocused(); await field(page).fill("KeyboardFan");
-  await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+  await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
   expect(await field(page).evaluate(el => el.getAttribute("aria-describedby")!.split(" ").filter(Boolean).every(id => !!document.getElementById(id)))).toBe(true);
   await page.keyboard.press("Tab"); await expect(save(page)).toBeFocused();
   await page.keyboard.press("Tab"); await expect(page.getByRole("button", { name: "Choose later" })).toBeFocused();
@@ -476,7 +477,7 @@ for (const [width, height] of [[1440, 900], [1024, 768], [768, 1024], [390, 844]
     if (modal) { await page.goto("/"); await expect(field(page)).toBeVisible(); }
     else await openSetup(page);
     await field(page).fill("FrameHunter");
-    await expect(page.locator(".hq-nickname-availability")).toContainText("Looks available");
+    await expect(page.locator(".hq-nickname-availability")).toContainText("Available now");
     const card = page.locator(modal ? ".hq-login-dialog .hq-login-card" : ".hq-login-page .hq-login-card");
     await expect(card).toHaveCSS("background-color", "rgb(25, 26, 34)");
     await expect(save(page)).toHaveCSS("background-color", "rgb(114, 88, 239)");
@@ -510,6 +511,6 @@ for (const name of ["Film\u200bFan", "Film\u202eFan", "Film\u034fFan", "Film\u06
 });
 test('nickname preview and save use the same normalized spelling',async({page})=>{
  const {data}=await fixture(page);await openSetup(page,'/profile');await field(page).fill('  Ｆｉｌｍ  Fan  ');
- await expect(page.locator('.hq-nickname-preview strong')).toHaveText('Film Fan');await expect(page.locator('.hq-nickname-availability')).toContainText('Looks available');await save(page).click();
+ await expect(page.locator('.hq-nickname-preview')).toHaveCount(0);await expect(page.locator('.hq-nickname-availability')).toContainText('Available now');await save(page).click();
  await expect.poll(() => data.writes.length).toBe(1);expect(data.writes[0].body.nickname).toBe('Film Fan');
 });

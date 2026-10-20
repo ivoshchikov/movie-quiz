@@ -4,7 +4,7 @@ import { mockQuizApi, mockSignedIn } from './fixtures';
 test('balanced homepage launches the selected category and actual difficulty rules', async ({ page }) => {
   const calls = await mockQuizApi(page);
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'How well do you know cinema?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Choose your game' })).toBeVisible();
   await expect(page.getByRole('radio', { name: /Movie Stills/ })).toHaveAttribute('aria-checked', 'true');
   await expect(page.getByRole('radio', { name: /Actresses/ })).toHaveCount(0);
   await expect(page.getByRole('radio', { name: /TV series/ })).toHaveCount(0);
@@ -92,7 +92,7 @@ test('catalog errors can be retried and newly populated categories appear', asyn
 test('leaderboard is public and its filters use the selected ids', async ({ page }) => {
   const calls = await mockQuizApi(page);
   await page.goto('/');
-  await page.getByRole('link', { name: 'Leaderboard', exact: true }).click();
+  await page.getByRole('link', { name: 'Rankings', exact: true }).click();
   await expect(page).toHaveURL(/\/leaderboard$/);
   await expect(page.getByRole('cell', { name: 'FilmExpert' })).toBeVisible();
   await page.getByRole('radio', { name: /Actors/ }).click();
@@ -132,7 +132,8 @@ test('mobile homepage has no overflow and all primary navigation is reachable', 
   await expect(page.getByRole('button', { name: 'Play Movie Stills' })).toBeEnabled();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   await page.screenshot({ path: test.info().outputPath('homepage-mobile.png'), fullPage: true });
-  for (const name of ['Play', 'Daily', 'Leaderboard', 'Blog']) await expect(page.getByRole('navigation').getByRole('link', { name, exact: true })).toBeVisible();
+  for (const name of ['Games', 'Rankings', 'Blog']) await expect(page.getByRole('navigation').getByRole('link', { name, exact: true })).toBeVisible();
+  await page.getByRole('radio', { name: 'Daily', exact: true }).click();
   await expect(page.getByRole('link', { name: 'Play Daily' })).toHaveAttribute('href', '/daily');
   await expect(page.getByRole('link', { name: 'Is Whalefall Based on a Book? A Spoiler-Free Guide to the Movie' })).toHaveAttribute('href', '/blog/is-whalefall-based-on-a-book');
   await expect(page.getByRole('link', { name: 'How to play' })).toHaveAttribute('href', '/how-to-play');

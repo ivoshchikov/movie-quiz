@@ -16,10 +16,10 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     await page.setViewportSize(viewport);
     const data = await gameFixture(page, { choices: actors, ratio: [2, 3], size: 4 });
     await page.goto("/blog/is-whalefall-based-on-a-book?utm_source=qa&utm_medium=referral");
-    await page.getByRole("link", { name: "Choose a quiz", exact: true }).click();
+    await page.getByRole("link", { name: "Choose a game", exact: true }).click();
     await page.clock.runFor(16);
-    await expect(page.getByText("Play free. No account needed.", { exact: true })).toBeVisible();
-    await expect(page.getByText("Account required. Build your streak one day at a time.", { exact: true })).toBeVisible();
+    await expect(page.locator(".hq-classic-setup")).toContainText("No account needed.");
+    await expect(page.getByRole("radiogroup", { name: "Game mode", exact: true }).getByRole("radio")).toHaveCount(4);
     await page.screenshot({ path: test.info().outputPath(`guest-home-${viewport.width}.png`), fullPage: true });
     await page.getByRole("radio", { name: /Actors/ }).click();
     await page.getByRole("radio", { name: "Medium", exact: true }).click();
@@ -60,8 +60,10 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       return route.fulfill({ contentType: "application/json", body: JSON.stringify({ nickname, avatar_url: null }) });
     });
     await page.goto("/blog/is-whalefall-based-on-a-book");
-    await page.getByRole("link", { name: "Try Daily", exact: true }).click();
-    await expect(page.getByText("Daily requires an account to save your answer and track your streak.", { exact: true })).toBeVisible();
+    await page.getByRole("link", { name: "Choose a game", exact: true }).click();
+    await page.getByRole("radio", { name: "Daily", exact: true }).click();
+    await page.getByRole("link", { name: "Play Daily", exact: true }).click();
+    await expect(page.getByText("Your account saves your answer and streak.", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Log in to play" }).click();
     await page.getByRole("textbox", { name: "Email", exact: true }).fill("guest-session@example.test");
     await page.getByRole("button", { name: "Send sign-in link", exact: true }).click();
@@ -86,7 +88,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     expect(data.calls.filter(call => call.name === "daily_begin")).toHaveLength(1);
     expect(data.calls.filter(call => call.name === "submit_daily_answer")).toHaveLength(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Play", exact: true }).click();
-    await expect(page.getByText("Account required. Build your streak one day at a time.", { exact: true })).toBeVisible();
+    await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Games", exact: true }).click();
+    await expect(page.getByRole("radiogroup", { name: "Game mode", exact: true }).getByRole("radio")).toHaveCount(4);
   });
 }

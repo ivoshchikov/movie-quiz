@@ -112,7 +112,7 @@ for (const [referrer, ignore] of [["https://accounts.google.com/o/oauth2/?code=p
 test("article CTA connects to one three-answer game without internal UTM or capability IDs", async ({ page }) => {
   const data = await gameFixture(page, { size: 3 });
   await page.goto("/blog/is-whalefall-based-on-a-book?utm_source=x&utm_medium=social");
-  await page.getByRole("link", { name: "Choose a quiz", exact: true }).click();
+  await page.getByRole("link", { name: "Choose a game", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
   await page.getByRole("button", { name: "Play Movie Stills" }).click();
   for (let number = 1; number <= 3; number++) {
@@ -125,7 +125,7 @@ test("article CTA connects to one three-answer game without internal UTM or capa
   }
   await expect(page).toHaveURL(/\/result$/);
   const clicked = await events(page, "article_to_quiz_click"), started = await events(page, "quiz_start");
-  expect(clicked).toHaveLength(1); expect(started).toHaveLength(1);
+  expect(clicked).toHaveLength(1); expect(clicked[0]).toMatchObject({ game_mode: "games" }); expect(started).toHaveLength(1);
   expect(started[0]).toMatchObject({ cta_id: clicked[0].cta_id, article_slug: "is-whalefall-based-on-a-book", game_mode: "normal", analytics_version: 2 });
   expect(await events(page, "quiz_answer")).toHaveLength(3);
   expect(await events(page, "quiz_first_answer")).toHaveLength(1);
@@ -244,7 +244,9 @@ test("analytics storage failure cannot prevent a quiz or its first-answer event"
 test("article to Daily survives sign-in and an email request is not a login success", async ({ page }) => {
   await dailyFixture(page, false);
   await page.goto("/blog/is-whalefall-based-on-a-book");
-  await page.getByRole("link", { name: "Try Daily", exact: true }).click();
+  await page.getByRole("link", { name: "Choose a game", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
+  await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await page.getByRole("button", { name: "Log in to play" }).click();
   expect(await events(page, "login_view")).toHaveLength(1);
   await page.getByRole("textbox", { name: "Email", exact: true }).fill("fixture@example.test");

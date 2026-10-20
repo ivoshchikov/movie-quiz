@@ -84,7 +84,7 @@ export default function GameScreen() {
         <div className={`hq-game-feedback${game.feedback ? ` hq-feedback-${game.feedback}` : ""}${game.phase === "answer-error" ? " hq-feedback-error" : ""}`} role={game.phase === "answer-error" ? "alert" : "status"} aria-live="polite">
           {game.phase === "feedback" ? <><strong>{feedbackText}</strong><span>{game.lives === 0 ? "Your result is next" : "Next question coming up…"}</span></> :
             game.phase === "checking" ? <span>Checking your answer…</span> : game.phase === "answer-error" ? <><span>{instructions}</span><button className="hq-inline-action" onClick={() => game.actions.current?.retry()}>Try again</button></> :
-              ready ? <span>{label === "Actors" || label === "Actresses" ? "Who is in the picture?" : "Which title matches the image?"} Choose one answer.</span> : <span>Answers unlock when the image is ready.</span>}
+              ready ? null : <span>Answers unlock when the image is ready.</span>}
         </div>
         <div className="hq-game-stats"><span className="hq-game-stat">Score <strong>{game.score}</strong></span><span className="hq-game-lives"><SiteIcon name="heart" /><span>Lives <strong>{game.lives}<small> / {game.level?.lives}</small></strong></span></span></div>
         <div className="hq-game-footer"><span>Elapsed <strong>{elapsed}</strong></span><span className="hq-game-shortcuts">Use keys <kbd>1</kbd>–<kbd>4</kbd> to answer</span></div>

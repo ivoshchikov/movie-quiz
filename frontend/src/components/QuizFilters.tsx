@@ -19,7 +19,7 @@ export default function QuizFilters({ categories, difficulties, categoryId, diff
       <div className="hq-category-grid">
         {categories.map(category => <RadioGroup.Option as="button" type="button" key={category.id} value={category.id} className="hq-category-option">
           {({ checked }) => <><SiteIcon name={/actor|actress/i.test(category.name) ? "people" : "film"} />
-          <span><span className="hq-category-name">{categoryLabel(category)}</span><span className="hq-category-hint">{/actor|actress/i.test(category.name) ? "Recognize the faces" : "Guess from a frame"}</span></span>
+          <span><span className="hq-category-name">{categoryLabel(category)}</span></span>
           {checked && <SiteIcon name="check" className="hq-category-check" />}</>}
         </RadioGroup.Option>)}
       </div>

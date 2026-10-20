@@ -7,7 +7,7 @@ async function start(page:Page,level='Easy · 120 s'){
 }
 async function end(page:Page){await page.getByRole('button',{name:'End run',exact:true}).click();await page.getByRole('button',{name:'End run & save'}).click();await expect(page.getByRole('heading',{name:'Time Attack result'})).toBeVisible();}
 test('a guest can discover Time Attack, choose its own time pressure and save a negative result',async({page})=>{
- const d=await attackFixture(page);await page.goto('/');await page.getByRole('link',{name:'Try Time Attack'}).click();await page.getByRole('radio',{name:'Hard · 60 s',exact:true}).click();await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();
+ const d=await attackFixture(page);await page.goto('/');await page.getByRole('radio',{name:'Time Attack',exact:true}).click();await page.getByRole('radio',{name:'Hard · 60 s',exact:true}).click();await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();
  await expect(page.getByRole('button',{name:answers[1],exact:true})).toBeEnabled();await page.keyboard.press('2');await expect(page.getByText('Incorrect. −1 point',{exact:true})).toBeVisible();expect(d.accepted).toBe(1);
  await page.clock.runFor(600);await expect(page.getByText('Question 2',{exact:true})).toBeVisible();await end(page);await expect(page.getByLabel('Score -1',{exact:true})).toBeVisible();await expect(page.getByText('Guest result.',{exact:false})).toBeVisible();
  expect(d.calls.find(c=>c.name==='time_attack_start')?.payload.p_level).toBe('hard');expect(d.calls.some(c=>['upsert_user_best','touch_question_stats'].includes(c.name))).toBe(false);
@@ -44,7 +44,7 @@ test('signed-in results use server records and top ten plus own rank without exp
  const d=await attackFixture(page,{signedIn:true,size:1});
  const top=Array.from({length:10},(_,i)=>({rank:i+1,user_id:`player-${i}`,nickname:`Player ${i+1}`,score:20-i,score_time_ms:1000+i,updated_at:'2026-10-19T12:00:00Z'}));
  d.ranking={total:40,top,me:{rank:32,user_id:'fixture-user',nickname:'MovieFan',score:-1,score_time_ms:33000,updated_at:'2026-10-19T12:00:00Z'}};
- await page.goto('/time-attack');await expect(page.getByRole('row')).toHaveCount(12);await expect(page.getByRole('row').last()).toContainText('32');
+ await page.goto('/time-attack');await page.getByText('Time Attack leaderboard',{exact:true}).first().click();await expect(page.getByRole('row')).toHaveCount(12);await expect(page.getByRole('row').last()).toContainText('32');
  await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();await expect(page.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();await page.getByRole('button',{name:answers[0],exact:true}).click();
  await expect(page.getByRole('heading',{name:'Time Attack result'})).toBeVisible();await expect(page.getByText('Saved with your account. Your first record!')).toBeVisible();await expect(page.getByText('Personal best: 2 points',{exact:false})).toBeVisible();
  const g=[...d.games.values()][0];const analytics=await page.evaluate(()=>JSON.stringify(window.dataLayer));expect(analytics).not.toContain(g.id);expect(analytics).not.toContain(g.round!.id);

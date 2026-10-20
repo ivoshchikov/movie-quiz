@@ -37,7 +37,7 @@ test("page and modal share email/Google, a labeled field and guest access", asyn
   await expect(dialog.getByRole("textbox", { name: "Email" })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Continue with Google" })).toBeEnabled();
   await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
-  await page.getByRole("link", { name: /Play a regular quiz as a guest/ }).click();
+  await page.getByRole("link", { name: /Play as a guest/ }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
   expect(calls.filter(call => ["quiz_start", "daily_begin", "quiz_finish"].includes(call.name))).toHaveLength(0);
 });
@@ -230,7 +230,7 @@ test("a fresh root callback uses a validated fallback only once", async ({ page 
   await confirmAccount(page);
   await expect(page).toHaveURL(/\/profile$/);
   expect(await page.evaluate(() => localStorage.getItem("hq_auth_return_v1"))).toBeNull();
-  await page.getByRole("link", { name: "Play", exact: true }).click();
+  await page.getByRole("link", { name: "Games", exact: true }).click();
   await page.reload();
   await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
   await expect(page).toHaveURL("http://localhost:5173/");
@@ -274,7 +274,7 @@ test("return destinations keep filters and remove authentication parameters", as
 test("analytics excludes callback credentials and fragments from every pageview", async ({ page }) => {
   await mockQuizApi(page);
   await page.goto("/leaderboard?category=2&difficulty=3&code=fixture-code&provider_token=fixture-provider#access_token=fixture-access&refresh_token=fixture-refresh&error_description=fixture-private");
-  await expect(page.getByRole("heading", { name: "Leaderboard", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Rankings", exact: true })).toBeVisible();
   // Analytics stays disabled until the asynchronous account check completes.
   await expect.poll(() => page.evaluate(() => window.dataLayer?.filter(entry => {
     const args = Array.from(entry as IArguments);
@@ -412,7 +412,7 @@ test("a stalled SDK initialization refresh is cancelled and can recover on retry
   await expect.poll(() => requests).toBe(1);
   await page.clock.runFor(10_100);
   await expect(page.getByRole("alert").filter({ hasText: "Your sign-in status" })).toContainText("could not be checked");
-  const quiz = page.getByRole("region", { name: "Start a quiz", exact: true });
+  const quiz = page.getByRole("region", { name: "Classic", exact: true });
   await expect(quiz.getByRole("alert")).toContainText("Quiz options could not be loaded.");
   // Let the SDK retry once on the same memoized initialization before recovery.
   await page.clock.runFor(500);
@@ -478,7 +478,7 @@ test("login metadata excludes destination parameters on load and after navigatio
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", metadata.url);
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", metadata.url);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
-  await page.getByRole("link", { name: /Play a regular quiz as a guest/ }).click();
+  await page.getByRole("link", { name: /Play as a guest/ }).click();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
 });
 

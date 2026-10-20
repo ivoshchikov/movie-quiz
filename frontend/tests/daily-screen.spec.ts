@@ -404,7 +404,7 @@ for (const [width, height] of [
     await expect(
       page.getByRole("heading", { name: "Not this time", exact: true }),
     ).toBeFocused();
-    for (const label of ["Play a regular quiz", "Back to home", "Share on X"]) {
+    for (const label of ["Choose another game", "Share on X"]) {
       const link = page.getByRole("link", { name: label, exact: true });
       await link.scrollIntoViewIfNeeded();
       await expect(link).toBeVisible();

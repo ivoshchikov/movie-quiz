@@ -67,7 +67,8 @@ test("storage denial keeps switching and route changes working without an except
   await mockQuizApi(page);
   await page.goto("/");
   await changeTheme(page);
-  await page.getByRole("link", { name: "Daily", exact: true }).click();
+  await page.getByRole("radio", { name: "Daily", exact: true }).click();
+  await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
   await changeTheme(page);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");

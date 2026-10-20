@@ -95,6 +95,6 @@ export default function LoginForm({ returnPath, onClose }: { returnPath: string;
       </form>
     </>}
     {destination === "/result" && <p className="hq-login-help hq-login-result-note">Sign in to save your next quizzes. Your previous guest result stays on this device.</p>}
-    <div className="hq-login-bottom"><Link to="/" onClick={onClose}>Play a regular quiz as a guest <SiteIcon name="arrow" /></Link>{onClose && <button onClick={onClose}>Cancel</button>}</div>
+    <div className="hq-login-bottom"><Link to="/" onClick={onClose}>Play as a guest <SiteIcon name="arrow" /></Link>{onClose && <button onClick={onClose}>Cancel</button>}</div>
   </div>;
 }

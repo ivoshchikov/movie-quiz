@@ -7,18 +7,18 @@ const metadata = JSON.parse(readFileSync(path.resolve("src/howToPlayMetadata.jso
 
 test("instructions and the game use the same current difficulty settings", async ({ page }) => {
   const calls = await mockQuizApi(page);
-  await page.goto("/how-to-play");
-  const table = page.getByRole("table", { name: "Current regular quiz difficulty settings" });
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
+  const table = page.getByRole("table", { name: "Current Classic quiz difficulty settings" });
   await expect(table.getByRole("row")).toHaveCount(4);
   for (const level of difficulties) {
     await expect(table.getByRole("row", { name: `${level.name} ${level.time_limit_secs} s ${level.lives}`, exact: true })).toBeVisible();
   }
-  await expect(page.locator(".hq-howto-intro")).toContainText("actors from photos");
+  await expect(page.locator(".hq-howto-intro")).toContainText("Four ways to play");
   await expect(page.locator(".hq-howto-rule-grid")).toContainText("Every correct answer: +1 point");
   await expect(page.locator(".hq-howto-rule-grid")).toContainText("Wrong answer or timeout: −1 life");
   await expect(page.locator(".hq-howto-clocks")).toContainText("time in the background");
   await expect(page.locator("#howto-end + p")).toContainText("reach the end of the available questions");
-  await expect(page.locator(".hq-howto")).toContainText("A regular quiz cannot be resumed");
+  await expect(page.locator(".hq-howto")).toContainText("A Classic quiz cannot be resumed");
   await expect(page.locator(".hq-howto")).toContainText("logging in later does not add it to your account");
   await expect(page.locator(".hq-howto-daily")).toContainText("Until midnight US Central.");
   await expect(page.locator(".hq-howto-daily")).toContainText("America/Chicago");
@@ -31,9 +31,9 @@ test("difficulty names, values and order come from live data rather than old def
     { ...difficulties[0], name: "Custom challenge", time_limit_secs: 9.5, lives: 7, sort_order: 10 },
     { ...difficulties[1], name: "First level", time_limit_secs: 51, lives: 4, sort_order: 0 },
   ]) }));
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page.locator(".hq-howto-levels tbody tr")).toHaveText(["First level51 s4", "Custom challenge9.5 s7"]);
-  await page.getByRole("link", { name: "Start a quiz", exact: true }).first().click();
+  await page.getByRole("link", { name: "Choose a game", exact: true }).first().click();
   await expect(page.getByRole("radio", { name: "First level", exact: true })).toBeVisible();
   await page.getByRole("radio", { name: "First level", exact: true }).click();
   await expect(page.locator(".hq-rule-summary")).toContainText("51 sec per question");
@@ -44,10 +44,10 @@ test("slow settings do not block the rules or primary actions", async ({ page })
   let release: () => void = () => {};
   const held = new Promise<void>(resolve => { release = resolve; });
   await page.route("**/rest/v1/difficulty_level?**", async route => { await held; await route.fallback(); });
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("status")).toHaveText("Loading difficulty settings…");
   await expect(page.getByRole("heading", { name: "Points & lives" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Start a quiz", exact: true }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Choose a game", exact: true }).first()).toBeVisible();
   await expect(page.getByRole("table")).toHaveCount(0);
   release();
   await expect(page.getByRole("table")).toBeVisible();
@@ -59,7 +59,7 @@ test("a failed read has an independent retry without made-up numbers", async ({ 
   await page.route("**/rest/v1/difficulty_level?**", route => failed
     ? route.fulfill({ status: 503, contentType: "application/json", body: '{"message":"unavailable"}' })
     : route.fallback());
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toContainText("Difficulty settings couldn’t load");
   await expect(page.getByRole("table")).toHaveCount(0);
   await expect(page.locator(".hq-howto-daily")).toBeVisible();
@@ -76,7 +76,7 @@ test("a stalled read times out and a later retry can recover", async ({ page }) 
   let release: () => void = () => {};
   const held = new Promise<void>(resolve => { release = resolve; });
   await page.route("**/rest/v1/difficulty_level?**", async route => { if (stalled) await held; await route.fallback(); });
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("status")).toBeVisible();
   await page.clock.runFor(10100);
   await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toContainText("couldn’t load");
@@ -98,10 +98,10 @@ const invalidSets: [string, unknown][] = [
 for (const [name, body] of invalidSets) test(`invalid difficulty data is rejected: ${name}`, async ({ page }) => {
   await mockQuizApi(page);
   await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(body) }));
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toBeVisible();
   await expect(page.getByRole("table")).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Start a quiz", exact: true }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Choose a game", exact: true }).first()).toBeVisible();
 });
 
 test("empty settings are distinct from a failed request and can be retried", async ({ page }) => {
@@ -109,7 +109,7 @@ test("empty settings are distinct from a failed request and can be retried", asy
   let empty = true;
   await page.route("**/rest/v1/difficulty_level?**", route => empty
     ? route.fulfill({ contentType: "application/json", body: "[]" }) : route.fallback());
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page.getByText("No difficulty settings are available right now.")).toBeVisible();
   await expect(page.getByRole("region", { name: "Difficulty levels", exact: true }).getByRole("alert")).toHaveCount(0);
   empty = false;
@@ -119,13 +119,13 @@ test("empty settings are distinct from a failed request and can be retried", asy
 
 test("the next step chooses a mode and does not auto-start a regular quiz or Daily", async ({ page }) => {
   const calls = await mockQuizApi(page);
-  await page.goto("/how-to-play");
-  await page.getByRole("link", { name: "Start a quiz", exact: true }).last().click();
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
+  await page.getByRole("link", { name: "Choose a game", exact: true }).last().click();
   await expect(page).toHaveURL("http://localhost:5173/");
   await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeVisible();
   expect(calls.filter(call => call.name === "quiz_start")).toHaveLength(0);
   await page.getByRole("link", { name: "How to play", exact: true }).click();
-  await page.getByRole("link", { name: "View Daily", exact: true }).click();
+  await page.getByRole("link", { name: "View Daily & its reset countdown", exact: true }).click();
   await expect(page).toHaveURL(/\/daily$/);
   await expect(page.getByRole("button", { name: "Log in to play", exact: true })).toBeVisible();
   expect(calls.filter(call => ["daily_begin", "submit_daily_answer", "quiz_finish", "touch_question_stats"].includes(call.name))).toHaveLength(0);
@@ -133,7 +133,7 @@ test("the next step chooses a mode and does not auto-start a regular quiz or Dai
 
 test("page metadata has one owner on direct load and after client-side navigation", async ({ page }) => {
   await mockQuizApi(page);
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await expect(page).toHaveTitle(metadata.title);
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", metadata.description);
@@ -143,7 +143,7 @@ test("page metadata has one owner on direct load and after client-side navigatio
   for (const selector of ['meta[property="og:title"]', 'meta[property="og:description"]', 'meta[property="og:image"]', 'meta[name="twitter:title"]', 'meta[name="twitter:description"]', 'meta[name="twitter:card"]', 'meta[name="robots"]']) {
     await expect(page.locator(selector)).toHaveCount(1);
   }
-  await page.getByRole("link", { name: "Start a quiz", exact: true }).first().click();
+  await page.getByRole("link", { name: "Choose a game", exact: true }).first().click();
   await expect(page).toHaveTitle("Movie & Actor Quiz | Hard Quiz");
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
@@ -156,7 +156,7 @@ test("page metadata has one owner on direct load and after client-side navigatio
 
 test("the current screen example is optional, readable and opens from the keyboard", async ({ page }) => {
   await mockQuizApi(page);
-  await page.goto("/how-to-play");
+  await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   const summary = page.locator(".hq-howto-demo summary");
   const image = page.getByAltText(/^Example quiz screen:/);
   await expect(image).not.toBeVisible();
@@ -178,14 +178,14 @@ for (const [width, height] of [[320, 480], [375, 812], [390, 844], [568, 320], [
     await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify([
       { ...difficulties[0], name: "An exceptionally long difficulty name that must remain readable" }, ...difficulties.slice(1),
     ]) }));
-    await page.goto("/how-to-play");
+    await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
     await expect(page.getByRole("table")).toBeVisible();
     await page.locator(".hq-howto-demo summary").click();
     await expect.poll(() => page.locator(".hq-howto-demo img").evaluate(img => (img as HTMLImageElement).complete)).toBe(true);
     const geometry = await page.evaluate(() => ({
       pageWidth: document.documentElement.scrollWidth,
       windowWidth: innerWidth,
-      targets: Array.from(document.querySelectorAll(".hq-howto a, .hq-howto summary")).map(element => {
+      targets: Array.from(document.querySelectorAll(".hq-howto a, .hq-howto summary")).filter(element => element.getBoundingClientRect().height > 0).map(element => {
         const rect = element.getBoundingClientRect();
         return { height: rect.height, left: rect.left, right: rect.right };
       }),
@@ -207,7 +207,7 @@ for (const [width, height] of [[320, 480], [375, 812], [390, 844], [568, 320], [
     await page.locator(".hq-howto-demo summary").click();
     if (width === 1366 || width === 375) {
       await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(difficulties.map(level => ({ ...level, time_limit_secs: 30 }))) }));
-      await page.reload();
+      await page.reload(); await page.getByText("Classic rules & difficulty", { exact: true }).click();
       await expect(page.getByRole("row", { name: "Easy 30 s 3", exact: true })).toBeVisible();
       const file = process.env.HQ_REVIEW_DIR ? path.join(process.env.HQ_REVIEW_DIR, `hard-quiz-how-to-play-${width === 1366 ? "desktop" : "mobile"}.png`) : testInfo.outputPath(`how-to-play-${width}.png`);
       await page.screenshot({ path: file, fullPage: true });
