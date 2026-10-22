@@ -39,8 +39,9 @@ jobs:
           VITE_SUPABASE_ANON_KEY: local-test-placeholder
         run: npm run build
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      - name: Install Playwright Chromium
+        timeout-minutes: 5
+        run: npx playwright install --with-deps chromium
 
       - name: Test publication failure detection
         run: npm run test:publication
