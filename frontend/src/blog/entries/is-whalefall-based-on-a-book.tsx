@@ -75,7 +75,7 @@ const post: BlogPost = {
     <p>The <a href={sources.film}>official US film page</a> lists <strong>October 16, 2026</strong> as the theatrical release date and a <strong>PG-13</strong> rating. Those details refer to the United States; release schedules and age classifications can differ elsewhere.</p>
     <h3>Where can you watch it?</h3>
     <p>At our October 15 check, the studio page listed the US theatrical release and ticket links, rather than a streaming release date. Use its current viewing links and your local cinema listings to check availability. A theatrical opening date does not establish when a film will reach a subscription service.</p>
-    <p>If you want other tense films to consider, our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> sorts seven recommendations by mood and explains which sequels need preparation.</p>
+    <p>If you want other tense films to consider, our <Link to="/blog/best-thriller-movies-2026">best thriller movies of 2026 guide</Link> compares crime stories, psychological suspense and survival films by the kind of tension you want. Our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> offers more frightening options.</p>
 
     <h2 id="true-story" tabIndex={-1}>Is Whalefall based on a true story?</h2>
     <p><em>Whalefall</em> is published as a novel. Jay Gardiner's ordeal should be approached as fiction, rather than an account of a documented survivor. That is a different question from whether its author researched the science.</p>

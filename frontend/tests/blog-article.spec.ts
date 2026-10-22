@@ -10,7 +10,7 @@ const articles = [
   { slug: "september-2025-new-movies-guide", title: "September 2025 Movie Releases: 9 Picks (US)", date: "2025-09-01", films: 9 },
   { slug: "why-2-39-1-feels-more-cinematic", title: "Why 2.39:1 Feels More Cinematic", date: "2025-08-15", films: 0 },
 ];
-const relatedTitle = "November 2026 Movie Releases: US Theater Dates";
+const relatedTitle = "Best Thriller Movies of 2026 So Far: A Spoiler-Free Guide";
 const url = (index: number) => "/blog/" + articles[index].slug;
 async function open(page: Page, index = 0, suffix = "") {
   const calls = await mockQuizApi(page);
