@@ -114,11 +114,14 @@ ${urls}
 
   // Serve page metadata in the first HTTP response, before React.
   if (DEST === "dist") {
+    const revision = process.env.SEO_BUILD_REVISION || process.env.VERCEL_GIT_COMMIT_SHA || process.env.VITE_VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || null;
+    if (revision && !/^[a-f0-9]{40}$/.test(revision)) throw new Error("SEO build revision must be a full Git SHA");
     // Start from an application shell, including when the generator is run twice.
     const template = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8")
       .replace(/<div id="root">[\s\S]*<\/div>\s*(?=<script|<\/body>)/, '<div id="root"></div>\n    ')
       .replace(/<link\b[^>]*rel="canonical"[^>]*>/g, "")
       .replace(/<meta\b[^>]*property="og:url"[^>]*>/g, "")
+      .replace(/<meta\b[^>]*name="hardquiz:revision"[^>]*>/g, "")
       .replace(/<script\b[^>]*type="application\/ld\+json"[^>]*>[^<]*"@type":"WebSite"[^<]*<\/script>/g, "");
     const prerenderBundle = path.join(CACHE_DIR, "blog-prerender.cjs");
     await esbuild.build({
@@ -221,6 +224,25 @@ ${urls}
       const route = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(entry));
       if (!route || route.status || route.dest !== (entry === "/" ? "/index.html" : "/$1.html")) throw new Error(`Missing application entry route for ${entry} in vercel.json`);
     }
+
+    // Public release identity lets the post-deployment check reject an older deploy.
+    // The catalog comes from the same entries as sitemap/RSS; Google index status is separate.
+    const publicationPages = paths.map(({ url }) => ({
+      path: url,
+      file: url === "/" ? "index.html" : `${url.slice(1)}.html`,
+      kind: url.startsWith("/blog/") ? "article" : url === "/blog" ? "collection" : "page",
+      ...(url.startsWith("/blog/") ? (() => {
+        const post = sorted.find(item => url === `/blog/${item.slug}`);
+        return { slug: post.slug, publishedOn: post.date, modifiedOn: post.modified || null };
+      })() : {}),
+    }));
+    for (const entry of publicationPages) {
+      const output = path.join(DEST_DIR, entry.file);
+      if (revision) fs.writeFileSync(output, fs.readFileSync(output, "utf8").replace("</head>", `<meta name="hardquiz:revision" content="${revision}" /></head>`));
+    }
+    fs.writeFileSync(path.join(DEST_DIR, "seo-release.json"), JSON.stringify({
+      schemaVersion: 1, revision, canonicalOrigin: SITE_URL, pages: publicationPages,
+    }, null, 2) + "\n");
 
   }
 

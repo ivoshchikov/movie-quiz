@@ -1,0 +1,73 @@
+name: Verify published SEO
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: >-
+      github.repository == 'ivoshchikov/movie-quiz' &&
+      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production' &&
+       github.event.deployment.creator.login == 'vercel[bot]'))
+    concurrency:
+      group: seo-publication-production
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout trusted main and history
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Select the deployed commit already merged into main
+        env:
+          DEPLOYMENT_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: |
+          [[ "$DEPLOYMENT_SHA" =~ ^[0-9a-f]{40}$ ]]
+          git merge-base --is-ancestor "$DEPLOYMENT_SHA" origin/main
+          git checkout --detach "$DEPLOYMENT_SHA"
+          echo "SEO_BUILD_REVISION=$DEPLOYMENT_SHA" >> "$GITHUB_ENV"
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the expected HTML without production credentials
+        env:
+          VITE_SUPABASE_URL: https://quiz-fixture.supabase.co
+          VITE_SUPABASE_ANON_KEY: local-test-placeholder
+        run: npm run build
+
+      - name: Install HTML and image parser
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify the public production site
+        run: npm run seo:check -- --url https://hard-quiz.com --revision "$SEO_BUILD_REVISION" --wait-seconds 120
+
+      - name: Save the report and derived publication registry
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: frontend/seo-reports/
+          retention-days: 90
+          if-no-files-found: warn
+
