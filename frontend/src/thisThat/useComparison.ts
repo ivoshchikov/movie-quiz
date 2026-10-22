@@ -33,7 +33,8 @@ export function useComparison(initial: Run) {
       const stillPending = unresolved && next.round?.id === unresolved.round && (unresolved.kind === "choose" ? next.round.outcome === null : !next.complete && next.round.outcome !== null);
       const analytics = attemptAnalytics("this_or_that", `${next.id}:${next.owner ?? "guest"}`);
       const settings = { is_logged_in: !!next.owner, board: next.board };
-      if (!run.confirmed && next.round && next.round.outcome === null) analytics.start(settings);
+      // Account opens may return an older profile instead of the requested ID.
+      if (!run.confirmed && next.id === run.id && next.round && next.round.outcome === null) analytics.start(settings);
       if (pending?.kind === "choose" && next.round?.id === pending.round && next.round.outcome === pending.choice &&
         (pending.choice === "left" || pending.choice === "right" || pending.choice === "equal")) {
         analytics.comparisonChoice(pending.round, { ...settings, outcome: pending.choice, pair_number: next.round.number });

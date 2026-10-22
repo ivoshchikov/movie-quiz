@@ -10,7 +10,7 @@ This corrects future collection; it cannot repair historical acquisition sources
 
 ## This or That coverage
 
-- `comparison_start`: the explicit start obtains a usable, newly opened pair. Passive landing pages and restoration of existing comparisons do not create new starts.
+- `comparison_start`: the explicit start obtains a usable, newly opened pair with the requested comparison ID. An account open can instead return an older profile; that restoration, passive landing pages and existing comparisons do not create new starts.
 - `comparison_choice`: the server confirms the pending left/right/equal preference. Failed/unknown responses, skipped/unknown/withdrawn pairs and passive receipt restoration do not create preferences.
 - `comparison_first_choice`: the first observed confirmed preference in that analytical comparison. Repeated requests and reloads reuse the local record when available.
 

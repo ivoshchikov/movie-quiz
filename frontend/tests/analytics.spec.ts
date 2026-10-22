@@ -307,6 +307,33 @@ test("This or That links an article to confirmed preferences without changing qu
   for (const game of data.games.values()) { expect(serialized).not.toContain(game.id); if (game.round) expect(serialized).not.toContain(game.round.id); }
 });
 
+test("a fresh browser restoring an account comparison does not invent a new start", async ({ page, browser }) => {
+  const data = await pickFixture(page, { signedIn: true });
+  await page.goto("/this-or-that");
+  await page.getByRole("button", { name: "Choose my first pair", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Choose Actor 1", exact: true })).toBeEnabled();
+  expect(await events(page, "comparison_start")).toHaveLength(1);
+  const existing = [...data.games.values()][0];
+  const fresh = await browser.newContext({ baseURL: "http://localhost:5173" });
+  try {
+    const second = await fresh.newPage(), restored = await pickFixture(second, { signedIn: true, games: data.games });
+    await second.goto("/blog/is-whalefall-based-on-a-book");
+    await second.getByRole("link", { name: "Choose a game", exact: true }).click();
+    await second.getByRole("radio", { name: "This or That", exact: true }).click();
+    await second.getByRole("button", { name: "Choose my first pair", exact: true }).click();
+    await expect(second.getByRole("button", { name: "Choose Actor 1", exact: true })).toBeEnabled();
+    expect(restored.calls.find(call => call.name === "this_that_open")?.payload.p_id).not.toBe(existing.id);
+    expect(data.games.size).toBe(1);
+    expect(await events(second, "comparison_start")).toHaveLength(0);
+    await second.getByRole("button", { name: "Like both equally", exact: true }).click();
+    await expect(second.getByText("Both equally — saved", { exact: true })).toBeVisible();
+    expect(await events(second, "comparison_choice")).toHaveLength(1);
+    expect((await events(second, "comparison_first_choice"))[0]).toMatchObject({ article_slug: "is-whalefall-based-on-a-book" });
+    expect(await events(second, "qualified_play")).toHaveLength(0);
+    expect(JSON.stringify(await commands(second))).not.toContain(existing.id);
+  } finally { await fresh.close(); }
+});
+
 test("comparison retries count only confirmed preferences; restoration and skips do not invent participation", async ({ page }) => {
   const data = await pickFixture(page);
   await page.goto("/this-or-that");
