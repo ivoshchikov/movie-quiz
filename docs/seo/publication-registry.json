@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "pages": [
+    {
+      "path": "/",
+      "url": "https://hard-quiz.com/",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/how-to-play",
+      "url": "https://hard-quiz.com/how-to-play",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/blog",
+      "url": "https://hard-quiz.com/blog",
+      "kind": "collection",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/leaderboard",
+      "url": "https://hard-quiz.com/leaderboard",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/daily",
+      "url": "https://hard-quiz.com/daily",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "not_indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": "2026-10-22",
+        "requestStatus": "accepted"
+      }
+    },
+    {
+      "path": "/time-attack",
+      "url": "https://hard-quiz.com/time-attack",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/this-or-that",
+      "url": "https://hard-quiz.com/this-or-that",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/blog/best-thriller-movies-2026",
+      "url": "https://hard-quiz.com/blog/best-thriller-movies-2026",
+      "kind": "article",
+      "slug": "best-thriller-movies-2026",
+      "publishedOn": "2026-10-22",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "not_indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": "2026-10-22",
+        "requestStatus": "accepted"
+      }
+    },
+    {
+      "path": "/blog/november-2026-movie-releases",
+      "url": "https://hard-quiz.com/blog/november-2026-movie-releases",
+      "kind": "article",
+      "slug": "november-2026-movie-releases",
+      "publishedOn": "2026-10-18",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "not_indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": "2026-10-22",
+        "requestStatus": "accepted"
+      }
+    },
+    {
+      "path": "/blog/is-whalefall-based-on-a-book",
+      "url": "https://hard-quiz.com/blog/is-whalefall-based-on-a-book",
+      "kind": "article",
+      "slug": "is-whalefall-based-on-a-book",
+      "publishedOn": "2026-10-15",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "not_indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": "2026-10-22",
+        "requestStatus": "accepted"
+      }
+    },
+    {
+      "path": "/blog/best-horror-movies-2026",
+      "url": "https://hard-quiz.com/blog/best-horror-movies-2026",
+      "kind": "article",
+      "slug": "best-horror-movies-2026",
+      "publishedOn": "2026-10-12",
+      "modifiedOn": "2026-10-14",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": "2026-10-21",
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/blog/september-2025-new-movies-guide",
+      "url": "https://hard-quiz.com/blog/september-2025-new-movies-guide",
+      "kind": "article",
+      "slug": "september-2025-new-movies-guide",
+      "publishedOn": "2025-09-01",
+      "modifiedOn": "2026-10-09",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/blog/why-2-39-1-feels-more-cinematic",
+      "url": "https://hard-quiz.com/blog/why-2-39-1-feels-more-cinematic",
+      "kind": "article",
+      "slug": "why-2-39-1-feels-more-cinematic",
+      "publishedOn": "2025-08-15",
+      "modifiedOn": "2026-10-09",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "not_indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": "2026-10-22",
+        "requestStatus": "accepted"
+      }
+    },
+    {
+      "path": "/blog/august-2025-new-movies-guide",
+      "url": "https://hard-quiz.com/blog/august-2025-new-movies-guide",
+      "kind": "article",
+      "slug": "august-2025-new-movies-guide",
+      "publishedOn": "2025-08-13",
+      "modifiedOn": "2026-10-09",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "indexed",
+        "checkedOn": "2026-10-22",
+        "source": "Google Search Console URL Inspection, owner-authorized audit and indexing requests on 2026-10-22",
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    }
+  ]
+}

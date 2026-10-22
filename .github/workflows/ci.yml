@@ -8,9 +8,14 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.54.1-noble@sha256:307ace13c8ba4349f790f4dfbc6eaa9fcafdeb29c218ff36129c7cacebb1e35f
+      options: --ipc=host
 
     defaults:
       run:
+        shell: bash
         working-directory: frontend
 
     steps:
@@ -39,8 +44,11 @@ jobs:
           VITE_SUPABASE_ANON_KEY: local-test-placeholder
         run: npm run build
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      - name: Test publication failure detection
+        run: npm run test:publication
+
+      - name: Check built publication catalog and HTML
+        run: npm run seo:check
 
       # Важно: dev-серверу нужны переменные окружения.
       # Добавь их в GitHub → Settings → Secrets and variables → Actions → New repository secret:
