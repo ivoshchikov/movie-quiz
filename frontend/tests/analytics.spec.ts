@@ -3,6 +3,7 @@ import type { Page } from "@playwright/test";
 import { mockQuizApi, mockSignedIn } from "./fixtures";
 import { gameFixture, gameAnswers } from "./game-fixtures";
 import { dailyFixture, dailyChoices } from "./daily-fixtures";
+import { pickFixture } from "./this-that-fixture";
 
 async function commands(page: Page) {
   return page.evaluate(() => (window.dataLayer ?? []).map(entry => Array.from(entry as IArguments)));
@@ -97,13 +98,20 @@ test("owner visits and administrative paths stay outside analytics", async ({ pa
   expect(await commands(page)).toEqual([]);
 });
 
-for (const [referrer, ignore] of [["https://accounts.google.com/o/oauth2/?code=private-code", true], ["https://www.google.com/search?q=movie+quiz", false]] as const) {
-  test(`referral handling distinguishes ${new URL(referrer).hostname} from search`, async ({ page }) => {
+for (const [referrer, ignore] of [["https://accounts.google.com/o/oauth2/?code=private-code", true], ["https://quiz-fixture.supabase.co/", true], ["https://quiz-fixture.supabase.co/auth/v1/callback?code=private-code", true], ["https://www.google.com/search?q=movie+quiz", false], ["https://www.bing.com/search?q=movie+quiz", false], ["https://cinema.example/guide", false], ["https://quiz-fixture.supabase.co/storage/v1/object/public/guide", false]] as const) {
+  test(`referral handling distinguishes ${new URL(referrer).hostname}${new URL(referrer).pathname} from search`, async ({ page }) => {
     await mockQuizApi(page);
     await page.goto("/?utm_source=partner&utm_campaign=pilot", { referer: referrer });
     await expect.poll(async () => (await events(page, "page_view")).length).toBe(1);
     const config = (await commands(page)).find(args => args[0] === "config")?.[2];
-    expect(config).toMatchObject({ ignore_referrer: ignore, page_referrer: ignore ? "" : "https://www.google.com/search" });
+    const ref = new URL(referrer);
+    expect(config).toMatchObject({ page_referrer: ignore ? "" : ref.origin + ref.pathname });
+    if (ignore) expect(config).toHaveProperty("ignore_referrer", true);
+    else expect(config).not.toHaveProperty("ignore_referrer");
+    for (const view of await events(page, "page_view")) {
+      if (ignore) expect(view).toHaveProperty("ignore_referrer", true);
+      else expect(view).not.toHaveProperty("ignore_referrer");
+    }
     expect((await events(page, "page_view"))[0].page_location).toContain("utm_source=partner");
     expect(JSON.stringify(await commands(page))).not.toContain("private-code");
   });
@@ -273,4 +281,58 @@ test("restoring an existing account does not invent a successful login", async (
   await expect(page.getByRole("button", { name: "Start Daily", exact: true })).toBeEnabled();
   expect(await events(page, "login_success")).toHaveLength(0);
   expect(await events(page, "login_view")).toHaveLength(0);
+});
+
+test("This or That links an article to confirmed preferences without changing quiz qualification", async ({ page }) => {
+  const data = await pickFixture(page);
+  await page.goto("/blog/is-whalefall-based-on-a-book");
+  await page.getByRole("link", { name: "Choose a game", exact: true }).click();
+  await page.getByRole("radio", { name: "This or That", exact: true }).click();
+  expect(await events(page, "comparison_start")).toHaveLength(0);
+  await page.getByRole("button", { name: "Choose my first pair", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Choose Actor 1", exact: true })).toBeEnabled();
+  for (let number = 1; number <= 3; number++) {
+    await page.getByRole("button", { name: `Choose Actor ${number * 2 - 1}`, exact: true }).click();
+    await expect(page.getByText("Choice saved", { exact: true })).toBeVisible();
+    if (number < 3) { await page.clock.runFor(1250); await expect(page.getByRole("button", { name: `Choose Actor ${number * 2 + 1}`, exact: true })).toBeEnabled(); }
+  }
+  const started = await events(page, "comparison_start"), choices = await events(page, "comparison_choice");
+  expect(started).toHaveLength(1); expect(choices).toHaveLength(3);
+  expect(started[0]).toMatchObject({ game_mode: "this_or_that", article_slug: "is-whalefall-based-on-a-book", cta_id: (await events(page, "article_to_quiz_click"))[0].cta_id });
+  expect(choices.every(row => row.run_id === started[0].run_id && row.article_slug === started[0].article_slug)).toBe(true);
+  expect(await events(page, "comparison_first_choice")).toHaveLength(1);
+  expect(await events(page, "qualified_play")).toHaveLength(0);
+  expect(await events(page, "quiz_start")).toHaveLength(0);
+  const serialized = JSON.stringify(await commands(page));
+  for (const game of data.games.values()) { expect(serialized).not.toContain(game.id); if (game.round) expect(serialized).not.toContain(game.round.id); }
+});
+
+test("comparison retries count only confirmed preferences; restoration and skips do not invent participation", async ({ page }) => {
+  const data = await pickFixture(page);
+  await page.goto("/this-or-that");
+  await page.getByRole("button", { name: "Choose my first pair", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Choose Actor 1", exact: true })).toBeEnabled();
+  data.loseChoose = true;
+  await page.getByRole("button", { name: "Like both equally", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Retry", exact: true })).toBeVisible();
+  expect(await events(page, "comparison_choice")).toHaveLength(0);
+  await page.getByRole("button", { name: "Retry", exact: true }).click();
+  await expect(page.getByText("Both equally — saved", { exact: true })).toBeVisible();
+  expect(await events(page, "comparison_choice")).toHaveLength(1);
+  expect(await events(page, "comparison_first_choice")).toHaveLength(1);
+  await page.reload();
+  await expect(page.getByText("Both equally — saved", { exact: true })).toBeVisible();
+  await page.clock.runFor(1300);
+  await expect(page.getByRole("button", { name: "Skip this pair", exact: true })).toBeEnabled();
+  expect(await events(page, "comparison_start")).toHaveLength(0);
+  expect(await events(page, "comparison_choice")).toHaveLength(0);
+  await page.getByRole("button", { name: "Skip this pair", exact: true }).click();
+  await expect(page.getByText("Pair skipped", { exact: true })).toBeVisible();
+  expect(await events(page, "comparison_choice")).toHaveLength(0);
+  await page.clock.runFor(1250);
+  await expect(page.getByRole("button", { name: "Choose Actor 5", exact: true })).toBeEnabled();
+  await page.getByRole("button", { name: "Choose Actor 5", exact: true }).click();
+  await expect(page.getByText("Choice saved", { exact: true })).toBeVisible();
+  expect(await events(page, "comparison_choice")).toHaveLength(1);
+  expect(await events(page, "comparison_first_choice")).toHaveLength(0);
 });

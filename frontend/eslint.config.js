@@ -9,7 +9,7 @@ export default tseslint.config(
     ignores: ['dist/**', 'exports/**', '.cache/**', 'playwright-report/**', 'test-results/**', 'blob-report/**'],
   },
   {
-    files: ['scripts/verify-publication.cjs', 'scripts/__tests__/publication-check.test.cjs'],
+    files: ['scripts/verify-publication.cjs', 'scripts/__tests__/publication-check.test.cjs', 'scripts/report-growth.cjs', 'scripts/__tests__/growth-report.test.cjs'],
     languageOptions: { ecmaVersion: 2022, sourceType: 'commonjs', globals: { ...globals.node, ...globals.browser } },
     rules: { ...js.configs.recommended.rules, 'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }] },
   },

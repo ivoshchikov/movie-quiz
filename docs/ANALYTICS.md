@@ -11,6 +11,8 @@ GROW-02, updated 18 October 2026 (Asia/Nicosia). The implementation and release 
 - Repeated effects for the same router visit/public URL produce one manual pageview. Real later visits, including Back, can produce another. Callback credentials, fragments, return destinations, email parameters and arbitrary query text are excluded from explicit configuration/event URLs; campaign parameters and public filters remain.
 - Virtual referrers use the previous sanitized page. `accounts.google.com` and the configured Supabase `/auth/v1/` referrer use `ignore_referrer`; Google Search and external UTM remain eligible. This affects future collection, not historical attribution.
 
+SEO stage 3 correction (22 October): ordinary referrers now **omit** `ignore_referrer`; false is not used to enable referrals. Authentication sends true only, including origin-only referrers from the configured auth host. The reporting procedure and separate This or That participation contract are documented in [growth measurement](seo/growth-analytics.md).
+
 ## Event contract
 
 All explicit events include `analytics_version=2`, sanitized `page_location`. Only explicitly opted-in diagnostic documents (`?debug_mode=1`) send `debug_mode=true`; ordinary documents omit the parameter, including after a full reload without the diagnostic query. A false value does not disable Google debug mode, so it is never sent. See [Google DebugView guidance](https://support.google.com/analytics/answer/7201382?hl=en). A queued command is not a delivery acknowledgement.

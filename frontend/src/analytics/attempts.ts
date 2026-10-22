@@ -1,10 +1,10 @@
 import { gaEvent } from "./ga";
 import type { AnalyticsParameters } from "./ga";
 
-type Mode = "normal" | "daily" | "time_attack";
+type Mode = "normal" | "daily" | "time_attack" | "this_or_that";
 interface ArticleOrigin { article_slug: string; cta_position: "footer"; cta_id: string; }
 interface Attempt {
-  runId: string; sent: string[]; resolved: number[]; answered: number[];
+  runId: string; sent: string[]; resolved: (number | string)[]; answered: number[];
   origin?: ArticleOrigin; updatedAt: number;
 }
 const prefix = "hq:analytics:v2:";
@@ -60,10 +60,18 @@ export function attemptAnalytics(mode: Mode, localKey: string) {
   function start(params: AnalyticsParameters = {}, resumed = false) {
     record.origin ??= takeOrigin(mode);
     if (resumed) { if (gaEvent("daily_resume", { ...common(), ...params })) persist(key, record); }
-    else once(mode === "daily" ? "daily_start" : "quiz_start", params);
+    else once(mode === "daily" ? "daily_start" : mode === "this_or_that" ? "comparison_start" : "quiz_start", params);
   }
   return {
     start,
+    comparisonChoice(localRoundKey: string, params: AnalyticsParameters) {
+      if (mode !== "this_or_that" || record.resolved.includes(localRoundKey)) return;
+      record.origin ??= takeOrigin(mode);
+      if (!gaEvent("comparison_choice", { ...common(), ...params })) return;
+      // Round capabilities are local deduplication inputs, never event values.
+      record.resolved.push(localRoundKey); persist(key, record);
+      once("comparison_first_choice", params);
+    },
     answer(number: number, outcome: "correct" | "wrong" | "timeout" | "skipped", params: AnalyticsParameters) {
       if (record.resolved.includes(number)) return;
       const explicit = outcome === "correct" || outcome === "wrong", count = record.answered.length + Number(explicit);
