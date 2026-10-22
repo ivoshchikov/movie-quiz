@@ -49,9 +49,11 @@ function initialReferrer() {
   try {
     const ref = new URL(document.referrer);
     const authHost = new URL(import.meta.env?.VITE_SUPABASE_URL || location.origin).hostname;
-    const authentication = ref.hostname === "accounts.google.com" || ref.hostname === authHost && ref.pathname.startsWith("/auth/v1/");
-    return { page_referrer: authentication ? "" : ref.origin + ref.pathname, ignore_referrer: authentication };
-  } catch { return { page_referrer: "", ignore_referrer: false }; }
+    const authentication = ref.hostname === "accounts.google.com" || ref.hostname === authHost && (ref.pathname === "/" || ref.pathname.startsWith("/auth/v1/"));
+    // Google ignores the referrer whenever this parameter is present, even false.
+    // Strict-origin referrers from our auth host may omit /auth/v1/ entirely.
+    return { page_referrer: authentication ? "" : ref.origin + ref.pathname, ...(authentication ? { ignore_referrer: true } : {}) };
+  } catch { return { page_referrer: "" }; }
 }
 const referral = initialReferrer();
 let virtualReferrer = referral.page_referrer;

@@ -12,6 +12,8 @@
     "seo:check": "node scripts/verify-publication.cjs",
     "seo:sync": "node scripts/verify-publication.cjs --sync-registry",
     "test:publication": "node --test scripts/__tests__/publication-check.test.cjs",
+    "growth:report": "node scripts/report-growth.cjs",
+    "test:growth": "node --test scripts/__tests__/growth-report.test.cjs",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "preview": "vite preview",

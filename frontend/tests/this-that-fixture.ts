@@ -18,6 +18,7 @@ export async function pickFixture(page: Page, options: { signedIn?: boolean; gam
     if (name === 'this_that_active') return route.fulfill({ json: [...games.values()].find(g => g.owner === pickOwner) ?? null });
     const t = await page.evaluate(() => Date.now());
     let g = games.get(p.p_id);
+    if (name === 'this_that_open' && options.signedIn) g = [...games.values()].find(item => item.owner === pickOwner && item.board === p.p_board) ?? g;
     if (name === 'this_that_open' && !g) {
       g = { id: p.p_id, owner: options.signedIn ? pickOwner : null, board: 'actors', version: 1, series: 1, cycle: 1, server_now: new Date(t).toISOString(), complete: false, summary: { choices: 0, settled: 0 }, round: round(1, 1) };
       games.set(g.id, g);

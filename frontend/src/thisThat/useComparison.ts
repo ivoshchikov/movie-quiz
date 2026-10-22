@@ -3,6 +3,7 @@ import { comparisonRequest } from "./api";
 import type { Choice, Comparison } from "./api";
 import { ACTIVITY, fromComparison, readRun, rememberGuest, runKey, signalActivity, writeRun } from "./storage";
 import type { Pending, Run } from "./storage";
+import { attemptAnalytics } from "../analytics/attempts";
 
 type Work = "load" | "retry" | "choose" | "next" | "more";
 export function useComparison(initial: Run) {
@@ -30,6 +31,14 @@ export function useComparison(initial: Run) {
       if (current.current && next.version < current.current.version) return;
       const saved = readRun(run.owner), unresolved = saved?.id === next.id ? saved.pending : undefined;
       const stillPending = unresolved && next.round?.id === unresolved.round && (unresolved.kind === "choose" ? next.round.outcome === null : !next.complete && next.round.outcome !== null);
+      const analytics = attemptAnalytics("this_or_that", `${next.id}:${next.owner ?? "guest"}`);
+      const settings = { is_logged_in: !!next.owner, board: next.board };
+      // Account opens may return an older profile instead of the requested ID.
+      if (!run.confirmed && next.id === run.id && next.round && next.round.outcome === null) analytics.start(settings);
+      if (pending?.kind === "choose" && next.round?.id === pending.round && next.round.outcome === pending.choice &&
+        (pending.choice === "left" || pending.choice === "right" || pending.choice === "equal")) {
+        analytics.comparisonChoice(pending.round, { ...settings, outcome: pending.choice, pair_number: next.round.number });
+      }
       descriptor.current = { ...fromComparison(next), ...(stillPending ? { pending: unresolved } : {}) };
       if (!saved || saved.id === next.id || !run.confirmed) writeRun(descriptor.current); current.current = next; setGame(next); rememberGuest(next);
       if (stillPending) setError(true);

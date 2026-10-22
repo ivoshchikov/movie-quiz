@@ -47,6 +47,9 @@ jobs:
       - name: Test publication failure detection
         run: npm run test:publication
 
+      - name: Test growth report attribution and exclusions
+        run: npm run test:growth
+
       - name: Check built publication catalog and HTML
         run: npm run seo:check
 
