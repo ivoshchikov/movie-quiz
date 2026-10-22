@@ -1,3 +1,5 @@
+import pageMetadata from "../pageMetadata.json";
+
 export default function TimeAttackIntro() {
-  return <header className="hq-mode-heading"><h1>Time Attack</h1><p>Answer as many as you can before the clock runs out.</p></header>;
+  return <header className="hq-mode-heading"><h1>{pageMetadata["time-attack"].heading}</h1><p>{pageMetadata["time-attack"].intro}</p></header>;
 }

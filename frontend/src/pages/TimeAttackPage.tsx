@@ -11,6 +11,7 @@ import { activeAttack, attackCatalog, isLevel } from "../timeAttack/api";
 import type { AttackLevel } from "../timeAttack/api";
 import { readAttackRun, runFromGame, writeAttackRun } from "../timeAttack/storage";
 import ModeSwitcher from "../components/ModeSwitcher";
+import GameModeLinks from "../components/GameModeLinks";
 import ModePreview from "../components/ModePreview";
 import "../modes.css";
 import TimeAttackIntro from "../timeAttack/TimeAttackIntro";
@@ -88,6 +89,6 @@ export default function TimeAttackPage() {
     <ModeSwitcher value="time-attack" onChange={mode => navigate(`/?mode=${mode}`)} />
     <section className="hq-panel hq-mode-panel"><div className="hq-mode-content"><TimeAttackIntro /><TimeAttackSetup /></div><ModePreview mode="time-attack" /></section>
     <details id="ranking" className="hq-panel hq-mode-details" open={hash === "#ranking"}><summary>Time Attack leaderboard</summary>{category ? <AttackLeaderboard category={category.id} level={level} anchorId="attack-ranking-list" /> : catalog.error ? <p role="alert">Ranking options could not load. <button className="hq-inline-action" onClick={catalog.retry}>Retry ranking options</button></p> : catalog.loading ? <p role="status">Loading ranking options…</p> : <p>No quizzes available yet.</p>}</details>
-    <Link className="hq-text-action" to="/">All games <SiteIcon name="arrow" /></Link>
+    <GameModeLinks current="time-attack" />
   </div>;
 }

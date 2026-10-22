@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { mockQuizApi } from "./fixtures";
 
 const origin = "https://hard-quiz.com";
-const publicPages = [{ path: "/", file: "index", heading: "Choose your game" }, { path: "/daily", file: "daily", heading: "One image. One daily challenge." }, { path: "/leaderboard", file: "leaderboard", heading: "Rankings" }, { path: "/how-to-play", file: "how-to-play", heading: "How to play" }];
+const publicPages = [{ path: "/time-attack", file: "time-attack", heading: "Movie & Actor Time Attack" }, { path: "/this-or-that", file: "this-or-that", heading: "This or That: Actor Favourites" }, { path: "/", file: "index", heading: "Movie & Actor Quiz" }, { path: "/daily", file: "daily", heading: "Daily Movie, TV & Actor Quiz" }, { path: "/leaderboard", file: "leaderboard", heading: "Rankings" }, { path: "/how-to-play", file: "how-to-play", heading: "How to play" }];
 for (const entry of publicPages) test(`first response for ${entry.path} has readable content and unique metadata`, async ({ browser }) => {
   test.skip(!existsSync(`dist/${entry.file}.html`), "Generated HTML is checked in the build job");
   const context = await browser.newContext({ javaScriptEnabled: false });
@@ -15,6 +15,12 @@ for (const entry of publicPages) test(`first response for ${entry.path} has read
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", origin + entry.path);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
   await expect(page.getByRole("link", { name: "Blog", exact: true })).toHaveAttribute("href", "/blog");
+  if (["/", "/daily", "/time-attack", "/this-or-that"].includes(entry.path)) {
+    const links = page.getByRole("navigation", { name: "More games", exact: true });
+    for (const target of ["/", "/daily", "/time-attack", "/this-or-that"].filter(path => path !== entry.path)) {
+      await expect(links.locator(`a[href="${target}"]`)).toBeVisible();
+    }
+  }
   if (entry.path === "/daily") expect(readFileSync("dist/daily.html", "utf8")).not.toContain("correct_answer");
   await context.close();
 });

@@ -1,7 +1,9 @@
 {
   "home": {
     "title": "Movie & Actor Quiz | Hard Quiz",
-    "description": "Play movie and actor quizzes your way: Classic, Time Attack, This or That or Daily Challenge. Choose a mode and start playing.",
+    "description": "Guess movies from stills and actors from photos. Play a free Classic quiz without an account, race the clock in Time Attack or try the Daily Challenge.",
+    "heading": "Movie & Actor Quiz",
+    "intro": "Guess movies from stills and actors from photos. Play Classic free, with no account.",
     "url": "https://hard-quiz.com/",
     "jsonLd": {
       "@context": "https://schema.org",
@@ -11,8 +13,10 @@
     }
   },
   "daily": {
-    "title": "Daily Challenge | Hard Quiz",
-    "description": "One image. One answer each day. Log in, solve the Daily and build your streak.",
+    "title": "Daily Movie, TV & Actor Quiz | Hard Quiz",
+    "description": "Guess a movie, TV series or actor from one image each day. Sign in for one Daily Challenge attempt and build your streak with correct answers.",
+    "heading": "Daily Movie, TV & Actor Quiz",
+    "intro": "Guess a movie, TV series or actor from one image. A correct answer adds to your streak.",
     "url": "https://hard-quiz.com/daily"
   },
   "leaderboard": {
@@ -40,7 +44,9 @@
   },
   "time-attack": {
     "title": "Movie & Actor Time Attack Quiz | Hard Quiz",
-    "description": "Race the clock in Time Attack. Identify movies and actors, earn 2 points for each correct answer and compare your score on the leaderboard.",
+    "description": "Play a free movie and actor quiz against one continuous timer. Choose your time pressure, play as a guest or sign in before starting to save a record.",
+    "heading": "Movie & Actor Time Attack",
+    "intro": "Identify movies from stills and actors from photos before one continuous timer runs out.",
     "url": "https://hard-quiz.com/time-attack"
   },
   "time-attack/play": {
@@ -51,7 +57,9 @@
   },
   "this-or-that": {
     "title": "This or That — Choose Your Favourite Actors | Hard Quiz",
-    "description": "Two actors. Your choice. Pick your favourites in random pairs, build your private top and help shape the community actor ranking. Free to play, with no timer.",
+    "description": "Compare actor photos in This or That. Play free as a guest to build your private favourites, or sign in before choosing to contribute to the community ranking.",
+    "heading": "This or That: Actor Favourites",
+    "intro": "Compare actor photos and choose your favourites to build your personal top.",
     "url": "https://hard-quiz.com/this-or-that"
   },
   "this-or-that/play": {

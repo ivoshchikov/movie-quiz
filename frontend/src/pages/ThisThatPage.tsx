@@ -7,6 +7,7 @@ import pageMetadata from "../pageMetadata.json";
 import { activeComparison, comparisonCatalog } from "../thisThat/api";
 import { fromComparison, readRun, writeRun } from "../thisThat/storage";
 import ModeSwitcher from "../components/ModeSwitcher";
+import GameModeLinks from "../components/GameModeLinks";
 import ModePreview from "../components/ModePreview";
 import SiteIcon from "../components/SiteIcon";
 import "../modes.css";
@@ -45,6 +46,6 @@ export default function ThisThatPage() {
     <ModeSwitcher value="this-or-that" onChange={mode => navigate(`/?mode=${mode}`)} />
     <section className="hq-panel hq-mode-panel"><div className="hq-mode-content"><ThisThatIntro /><ThisThatSetup /></div><ModePreview mode="this-or-that" /></section>
     <details className="hq-panel hq-mode-details" open={hash === "#pick-ranking-title"}><summary>Actor favourites</summary><ActorRanking /></details>
-    <Link className="hq-text-action" to="/">All games <SiteIcon name="arrow" /></Link>
+    <GameModeLinks current="this-or-that" />
   </div>;
 }
