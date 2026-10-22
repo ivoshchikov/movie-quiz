@@ -19,9 +19,13 @@ jobs:
       group: seo-publication-production
       cancel-in-progress: true
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.54.1-noble@sha256:307ace13c8ba4349f790f4dfbc6eaa9fcafdeb29c218ff36129c7cacebb1e35f
+      options: --ipc=host
     timeout-minutes: 12
     defaults:
       run:
+        shell: bash
         working-directory: frontend
     steps:
       - name: Checkout trusted main and history
@@ -55,9 +59,6 @@ jobs:
           VITE_SUPABASE_URL: https://quiz-fixture.supabase.co
           VITE_SUPABASE_ANON_KEY: local-test-placeholder
         run: npm run build
-
-      - name: Install HTML and image parser
-        run: npx playwright install --with-deps chromium
 
       - name: Verify the public production site
         run: npm run seo:check -- --url https://hard-quiz.com --revision "$SEO_BUILD_REVISION" --wait-seconds 120

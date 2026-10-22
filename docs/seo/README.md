@@ -37,6 +37,8 @@ The actual Vercel events for this repository use an environment label of Product
 
 No production credentials are used. Fixture build variables are sufficient because application JavaScript is not executed by the check. The revision uses `SEO_BUILD_REVISION` in CI and `VERCEL_GIT_COMMIT_SHA` in the deployed build.
 
+CI and production verification use the official Playwright container, pinned to version 1.54.1 and its manifest digest. The browser and OS dependencies are already present; each run does not depend on Ubuntu package mirrors. When upgrading Playwright in the lockfile, update both workflow images to the same version and digest. Bash is selected explicitly for container steps. The separate existing Playwright workflow is retained.
+
 The check waits up to 120 seconds for the matching release, then verifies:
 
 - all public canonical URLs return real HTML 200 with the expected revision;
@@ -71,5 +73,5 @@ Failed checks exit nonzero, retain prior successful evidence and mark the derive
 
 The checks prove delivery and consistency of this release, not Google inclusion, rankings, editorial accuracy, image licenses or AI citations. They do not replace the existing mobile/interactive suite or Core Web Vitals measurement. At roadmap stage 9, a long-term reporting destination and scheduled index inspection can be added with explicit access and retention limits.
 
-Primary references: [GitHub deployment events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#deployment_status), [Vercel system variables](https://vercel.com/docs/environment-variables/system-environment-variables), [Google recrawl requests](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl).
+Primary references: [GitHub deployment events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#deployment_status), [Vercel system variables](https://vercel.com/docs/environment-variables/system-environment-variables), [Playwright CI containers](https://playwright.dev/docs/ci#via-containers), [Google recrawl requests](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl).
 
