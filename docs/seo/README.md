@@ -39,6 +39,8 @@ No production credentials are used. Fixture build variables are sufficient becau
 
 CI and production verification use the official Playwright container, pinned to version 1.54.1 and its manifest digest. The browser and OS dependencies are already present; each run does not depend on Ubuntu package mirrors. When upgrading Playwright in the lockfile, update both workflow images to the same version and digest. Bash is selected explicitly for container steps. The separate existing Playwright workflow is retained.
 
+The two Git commands after checkout trust the exact `GITHUB_WORKSPACE` directory for that invocation. Container/runner ownership may differ; checkout's temporary Git configuration does not persist to shell steps. No global or wildcard ownership exception is added.
+
 The check waits up to 120 seconds for the matching release, then verifies:
 
 - all public canonical URLs return real HTML 200 with the expected revision;
