@@ -40,8 +40,8 @@ jobs:
           DEPLOYMENT_SHA: ${{ github.event.deployment.sha || github.sha }}
         run: |
           [[ "$DEPLOYMENT_SHA" =~ ^[0-9a-f]{40}$ ]]
-          git merge-base --is-ancestor "$DEPLOYMENT_SHA" origin/main
-          git checkout --detach "$DEPLOYMENT_SHA"
+          git -c safe.directory="$GITHUB_WORKSPACE" merge-base --is-ancestor "$DEPLOYMENT_SHA" origin/main
+          git -c safe.directory="$GITHUB_WORKSPACE" checkout --detach "$DEPLOYMENT_SHA"
           echo "SEO_BUILD_REVISION=$DEPLOYMENT_SHA" >> "$GITHUB_ENV"
 
       - name: Use Node.js
