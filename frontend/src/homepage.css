@@ -37,6 +37,10 @@
 .hq-eyebrow { color: var(--hq-purple); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
 .hq-hero h1 { font-size: clamp(27px, 4.2vw, 39px); line-height: 1.2; letter-spacing: -1.3px; font-weight: 700; margin-bottom: 12px; }
 .hq-hero p { color: var(--hq-muted); font-size: 15px; }
+.hq-game-mode-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; margin-top: 8px; color: var(--hq-muted); font-size: 12px; }
+.hq-game-mode-links > span { font-weight: 600; }
+.hq-game-mode-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
+.hq-game-mode-links a:hover { color: var(--hq-purple); }
 .hq-play-area { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
 .hq-panel { background: var(--hq-surface); border: 1px solid var(--hq-border); border-radius: 16px; }
 .hq-quiz-panel { padding: 25px; }

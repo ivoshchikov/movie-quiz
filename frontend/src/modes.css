@@ -23,7 +23,8 @@
 .hq-mode-panel .hq-secondary { margin-top: 10px; width: 100%; }
 .hq-games-links { display: flex; justify-content: space-between; gap: 16px; margin-top: 8px; }
 .hq-games-home .hq-hero { padding-bottom: 24px; }
-.hq-games-home .hq-hero h1 { font-size: clamp(28px,4vw,36px); margin-bottom: 0; }
+.hq-games-home .hq-hero h1 { font-size: clamp(28px,4vw,36px); margin-bottom: 10px; }
+.hq-games-home .hq-hero p { max-width: 590px; font-size: 14px; line-height: 1.6; }
 .hq-games-home .hq-blog-strip { margin-top: 16px; padding-top: 18px; }
 .hq-mode-details { padding: 18px 22px; margin-block: 18px; }
 .hq-mode-details > summary, .hq-copy-details > summary { cursor: pointer; min-height: 44px; align-content: center; color: var(--hq-muted); font-size: 13px; }

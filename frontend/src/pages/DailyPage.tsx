@@ -11,6 +11,7 @@ import { dailyDateLabel, dailyTime } from "../daily/time";
 import { guardGameNavigation } from "../game/navigationGuard";
 import pageMetadata from "../pageMetadata.json";
 import Seo from "../components/Seo";
+import GameModeLinks from "../components/GameModeLinks";
 import SiteIcon from "../components/SiteIcon";
 import ThemeSlider from "../components/ThemeSlider";
 import YourDailyCard from "../components/YourDailyCard";
@@ -118,7 +119,7 @@ export default function DailyPage() {
             <div className="hq-daily-actions">{previousDay ? <button className="hq-primary" onClick={() => game.actions.current?.openToday()}>Play today’s Daily</button> : <Link className="hq-primary" to="/">Choose another game <SiteIcon name="arrow" /></Link>}</div>
             <a className="hq-secondary hq-daily-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://hard-quiz.com/daily")}`} onClick={() => gaEvent("share_click", { method: "x", game_mode: "daily", d: game.date })} target="_blank" rel="noopener noreferrer"><SiteIcon name="x" />Share on X</a>{next}
           </> : game.phase === "load-error" || game.phase === "start-error" || game.phase === "empty" ? <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.phase === "empty" ? "Today’s challenge is on its way" : "Daily couldn’t load"}</h1><p role={game.phase === "empty" ? "status" : "alert"}>{game.phase === "empty" ? "No question is available for this Daily yet. You can still play a regular quiz." : "We couldn’t check your Daily or load the question. Please try again."}</p><button className="hq-primary" onClick={() => game.actions.current?.retry()}>Try again</button><Link className="hq-inline-action" to="/">All games</Link>{next}</div> : <>
-            <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.startedAt ? "Your Daily is waiting" : "One image. One daily challenge."}</h1><p>{game.startedAt ? "Continue your attempt on any device. Your answer timer has kept running." : "Identify the movie, TV series or actor. Get it right and build your streak, one day at a time."}</p>
+            <div className="hq-daily-content"><span className="hq-daily-symbol"><SiteIcon name="calendar" /></span><h1>{game.startedAt ? "Your Daily is waiting" : pageMetadata.daily.heading}</h1><p>{game.startedAt ? "Continue your attempt on any device. Your answer timer has kept running." : pageMetadata.daily.intro}</p>
               <div className="hq-daily-rules"><span>One answer per day</span><span>Until midnight US Central</span></div>
               {game.phase === "guest" ? <><button className="hq-primary" onClick={openLogin}>Log in to play <SiteIcon name="arrow" /></button><p className="hq-daily-login-note">Your account saves your answer and streak.</p><Link className="hq-inline-action" to="/">Play as a guest</Link></> : profileError ? <p role="alert" className="hq-status">Your account could not be checked. <button className="hq-inline-action" onClick={retryProfile}>Retry profile</button></p> : <button className="hq-primary" disabled={!profileReady} onClick={start}>{!profileReady ? "Checking your profile…" : !hasNickname ? "Choose a nickname to play" : game.startedAt ? "Continue Daily" : "Start Daily"}<SiteIcon name="arrow" /></button>}
             </div>
@@ -126,6 +127,7 @@ export default function DailyPage() {
           </>}
       </section>
       {!pending && game.phase !== "loading" && <div className="hq-daily-ranking"><button className="hq-daily-ranking-toggle" aria-expanded={rankingOpen} aria-controls="daily-streak-list" onClick={() => setRankingOpen(value => !value)}><span><SiteIcon name="trophy" />Streak leaderboard</span><SiteIcon name="chevron" /></button><div id="daily-streak-list" hidden={!rankingOpen}>{rankingOpen && <StreakLeaderboard refreshKey={`${game.today}:${game.refreshKey}`} />}</div></div>}
+      {!compact && <><Link className="hq-text-action" to="/how-to-play#daily">Daily rules <SiteIcon name="arrow" /></Link><GameModeLinks current="daily" /></>}
     </div>}
     <Dialog open={exitOpen} onClose={() => setExitOpen(false)} className="hq-game-dialog-root"><div className="hq-game-dialog-backdrop" aria-hidden="true" /><div className="hq-game-dialog-wrap"><Dialog.Panel className="hq-game-dialog"><Dialog.Title>Leave Daily?</Dialog.Title><Dialog.Description>{active ? exitText : "Your answer hasn’t been submitted. You can come back to today’s challenge."}</Dialog.Description><div><button className="hq-secondary" autoFocus onClick={() => setExitOpen(false)}>Stay here</button><button className="hq-primary" onClick={() => { setExitOpen(false); navigate("/"); }}>Leave Daily</button></div></Dialog.Panel></div></Dialog>
   </>;

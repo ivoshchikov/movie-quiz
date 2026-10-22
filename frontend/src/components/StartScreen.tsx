@@ -9,6 +9,7 @@ import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
 import StatusMessage from "./StatusMessage";
 import ModeSwitcher from "./ModeSwitcher";
+import GameModeLinks from "./GameModeLinks";
 import { gameMode } from "../games/modes";
 import ModePreview from "./ModePreview";
 import DailySetup from "./DailySetup";
@@ -65,9 +66,9 @@ export default function StartScreen() {
   const [params, setParams] = useSearchParams();
   const mode = gameMode(params.get("mode"));
   const titles = { classic: "Classic", "time-attack": "Time Attack", "this-or-that": "This or That", daily: "Daily Challenge" };
-  const copy = { classic: "Recognize movies and faces. Four answers, one right choice.", "time-attack": "Answer as many as you can before the clock runs out.", "this-or-that": "Which actor do you prefer? Your taste decides.", daily: "One question for everyone. Come back each day to build your streak." };
+  const copy = { classic: "Pick the movie title or actor’s name from four answers. Keep guessing while you have lives.", "time-attack": pageMetadata["time-attack"].intro, "this-or-that": pageMetadata["this-or-that"].intro, daily: pageMetadata.daily.intro };
   return <><Seo {...pageMetadata.home} /><div className="hq-home hq-games-home">
-    <header className="hq-hero"><h1>Choose your game</h1></header>
+    <header className="hq-hero"><h1>{pageMetadata.home.heading}</h1><p>{pageMetadata.home.intro}</p></header>
     <ModeSwitcher value={mode} onChange={value => { const next = new URLSearchParams(params); next.set("mode", value); setParams(next, { preventScrollReset: true }); }} />
     <section className="hq-panel hq-mode-panel" aria-labelledby="selected-mode-title">
       <div className="hq-mode-content"><header className="hq-mode-heading"><h2 id="selected-mode-title">{titles[mode]}</h2><p>{copy[mode]}</p></header>
@@ -77,6 +78,7 @@ export default function StartScreen() {
       </div><ModePreview key={mode} mode={mode} />
     </section>
     <div className="hq-games-links"><Link className="hq-text-action" to={`/leaderboard?${new URLSearchParams({ ...Object.fromEntries(params), mode })}`}><SiteIcon name="trophy" />{mode === "this-or-that" ? "Actor favourites" : "View rankings"}</Link></div>
+    <GameModeLinks current="classic" />
     <div className="hq-blog-strip">{featuredPost && <div><p className="hq-blog-label">From the blog</p><Link className="hq-blog-title" to={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link></div>}<Link to="/blog" className="hq-text-action">Explore the blog <SiteIcon name="arrow" /></Link></div>
   </div></>;
 }

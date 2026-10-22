@@ -14,6 +14,27 @@ async function options(page: Page) {
   await page.route('**/functions/v1/this-that-ranking', r => r.fulfill({ json: { rows: [], total: 0, candidates: 200, updated_at: null } }));
   return calls;
 }
+for (const width of [320, 1440]) test(`direct mode links stay passive and open the intended landing at ${width}px`, async ({ page }) => {
+  const calls = await options(page);
+  await page.setViewportSize({ width, height: 900 });
+  await page.goto('/');
+  for (const [label, path] of [['Time Attack', '/time-attack'], ['This or That', '/this-or-that'], ['Daily Challenge', '/daily'], ['Classic quiz', '/']]) {
+    await page.getByRole('navigation', { name: 'More games', exact: true }).getByRole('link', { name: label, exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`${path === '/' ? '/$' : path + '$'}`));
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://hard-quiz.com${path}`);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    if (path === '/daily') {
+      await expect(page.getByRole('button', { name: 'Log in to play', exact: true })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Daily rules', exact: true })).toHaveAttribute('href', '/how-to-play#daily');
+    }
+    if (path === '/time-attack') await expect(page.getByRole('button', { name: 'Start Time Attack', exact: true })).toBeEnabled();
+    if (path === '/this-or-that') await expect(page.getByRole('button', { name: 'Choose my first pair', exact: true })).toBeEnabled();
+    if (path === '/') await expect(page.getByRole('button', { name: 'Play Movie Stills', exact: true })).toBeEnabled();
+    await page.screenshot({ path: test.info().outputPath(`landing-${path.replaceAll('/', '') || 'home'}-${width}.png`), fullPage: true });
+  }
+  expect(calls.filter(c => /^(quiz_start|daily_begin|time_attack_start|this_that_open|submit_daily_answer)$/.test(c.name))).toEqual([]);
+});
 for (const width of [1440, 768, 390, 320]) for (const theme of ['dark', 'light', 'halloween']) {
   test(`four equal modes and passive previews in ${theme}, ${width}px`, async ({ page }, info) => {
     const calls = await options(page);

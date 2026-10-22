@@ -1,3 +1,5 @@
+import pageMetadata from "../pageMetadata.json";
+
 export default function ThisThatIntro() {
-  return <header className="hq-mode-heading"><h1>This or That</h1><p>Which actor do you prefer? Your taste decides.</p></header>;
+  return <header className="hq-mode-heading"><h1>{pageMetadata["this-or-that"].heading}</h1><p>{pageMetadata["this-or-that"].intro}</p></header>;
 }
