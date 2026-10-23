@@ -78,6 +78,7 @@ test('mode, Classic and Time Attack settings survive switching, reload and Back'
 test('keyboard changes mode, preview images have a stable fallback, invalid mode falls back to Classic', async ({ page }) => {
   await options(page);
   await page.route('**/storage/v1/object/public/movies/**', r => r.abort());
+  await page.route('**/blog-assets/responsive/classic-preview-*.webp', r => r.abort());
   await page.goto('/?mode=invalid');
   const classic = page.getByRole('radio', { name: 'Classic', exact: true });
   await expect(classic).toHaveAttribute('aria-checked', 'true');

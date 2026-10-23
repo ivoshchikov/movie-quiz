@@ -1,0 +1,553 @@
+{
+  "generatedAt": "2026-10-23",
+  "encoding": {
+    "format": "webp",
+    "quality": 84,
+    "method": 6,
+    "resize": "Lanczos",
+    "Pillow": "12.3.0"
+  },
+  "images": [
+    {
+      "name": "august-2025-bad-guys-2",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/bad-guys-2.webp",
+      "bytes": 367070,
+      "width": 1086,
+      "height": 1728,
+      "sha256": "0085606b94ef5f423b6a1ef557cdee2875fe9c90303cd0a683783663c55a19d4",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-bad-guys-2-160.webp",
+          "width": 160,
+          "height": 255,
+          "bytes": 11722,
+          "sha256": "57b144fe7d9a8c2b056a573488ebcb97b228e961a3f93d9feb3d25e62d14634c"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-bad-guys-2-320.webp",
+          "width": 320,
+          "height": 509,
+          "bytes": 32288,
+          "sha256": "2eb3f55eaf51b420cb543c9b8a6e481c552fde4c57d4d6c47297bdaca95b4a3b"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-bad-guys-2-640.webp",
+          "width": 640,
+          "height": 1018,
+          "bytes": 86168,
+          "sha256": "46f994e811e02a465a32f035e24833e82eff9e335022c25be21fac70aa8c5f98"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-bad-guys-2-960.webp",
+          "width": 960,
+          "height": 1528,
+          "bytes": 163238,
+          "sha256": "a253f916d5b5c6249ac1810a5c299cd75442e1b68cb0ca50af4b1fb221b8fb13"
+        }
+      ]
+    },
+    {
+      "name": "august-2025-naked-gun-2025",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/naked-gun-2025.webp",
+      "bytes": 412734,
+      "width": 1156,
+      "height": 1726,
+      "sha256": "de633e791614383d56324f935bb767509c7b734c7b510ebe569b08702948ae92",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-naked-gun-2025-160.webp",
+          "width": 160,
+          "height": 239,
+          "bytes": 12056,
+          "sha256": "74d873c7059ea8df70fa4f8cdf01056aa284e5fa6bd5a5ec39cab88e2edc7bcb"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-naked-gun-2025-320.webp",
+          "width": 320,
+          "height": 478,
+          "bytes": 33362,
+          "sha256": "daa2e4651025f0def9484c619b0953a83eea69a8dd8fea73891c438fc9473f72"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-naked-gun-2025-640.webp",
+          "width": 640,
+          "height": 956,
+          "bytes": 85382,
+          "sha256": "79f0106b8dc7fe82a7657faf672f5c2872acb7955a6b2b31f1aad4f25dd021d7"
+        }
+      ]
+    },
+    {
+      "name": "august-2025-freaky-friday-2",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/freaky-friday-2.webp",
+      "bytes": 264102,
+      "width": 1374,
+      "height": 1722,
+      "sha256": "7f3fc710d69008afc378253ce07794a19081b1b6ee014fb58cce332d896f1bb2",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-freaky-friday-2-160.webp",
+          "width": 160,
+          "height": 201,
+          "bytes": 8824,
+          "sha256": "af77a28983e37e1dd876b6608318d4a5c4553e4b0960de14543d758ef4210a45"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-freaky-friday-2-320.webp",
+          "width": 320,
+          "height": 401,
+          "bytes": 23570,
+          "sha256": "27d6ce25ae71839fcec4f24a8937ed8c6617d6223573b79b74b7168e516b9e67"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-freaky-friday-2-640.webp",
+          "width": 640,
+          "height": 802,
+          "bytes": 61608,
+          "sha256": "df0e701ff2d5af63d23f206387d86f887ac796064580da0c9ff35656a3cdffb2"
+        }
+      ]
+    },
+    {
+      "name": "august-2025-weapons-2025",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/weapons-2025.webp",
+      "bytes": 276126,
+      "width": 1166,
+      "height": 1716,
+      "sha256": "5d67c0b0acd9b746d784de2c471ab03fcedf320a3cfee9d45aa34404d9bbbb0b",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-weapons-2025-160.webp",
+          "width": 160,
+          "height": 235,
+          "bytes": 5252,
+          "sha256": "5a6ecae273bbf74beefcd7f61a315378711db9341c215d6431ba5e7944073324"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-weapons-2025-320.webp",
+          "width": 320,
+          "height": 471,
+          "bytes": 16376,
+          "sha256": "297ee05dc63db6379174866dbe74544900828e9d4f06fc3b53986a21378fcc07"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-weapons-2025-640.webp",
+          "width": 640,
+          "height": 942,
+          "bytes": 54496,
+          "sha256": "39f5add535bd4bd0e6cbc914dd060f4a30f67a805d8b199c76d977f21b05d774"
+        }
+      ]
+    },
+    {
+      "name": "august-2025-nobody-2",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/nobody-2.webp",
+      "bytes": 435796,
+      "width": 1084,
+      "height": 1722,
+      "sha256": "2be5b7ea038645c23d1f2d711100a52fa4f11161471b217499679eb49d48da7d",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-nobody-2-160.webp",
+          "width": 160,
+          "height": 254,
+          "bytes": 12122,
+          "sha256": "5bb6b4f13260fc14994706f65addb775b948d05927dd18cf7b0c382705e2aa8d"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-nobody-2-320.webp",
+          "width": 320,
+          "height": 508,
+          "bytes": 37268,
+          "sha256": "4b4c2858d76101e1d57e275c4e688038441ca16ddc70a3c0927d25df5ab045a3"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-nobody-2-640.webp",
+          "width": 640,
+          "height": 1017,
+          "bytes": 113710,
+          "sha256": "59015dee91a8f6d62a7750c220ce7f2dd5a17b02305b900747a659710f41a025"
+        }
+      ]
+    },
+    {
+      "name": "august-2025-honey-dont",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/honey-dont.webp",
+      "bytes": 290472,
+      "width": 1160,
+      "height": 1720,
+      "sha256": "e8012363f9be5476ffa8a98e44c641e9a53bba47a46222b9a08d904e471d3ea5",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-honey-dont-160.webp",
+          "width": 160,
+          "height": 237,
+          "bytes": 9916,
+          "sha256": "ee16983ac3e2ebf59d45c7acae9322819ff49195d350f4d3ec9fa764cb4b73a2"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-honey-dont-320.webp",
+          "width": 320,
+          "height": 474,
+          "bytes": 28974,
+          "sha256": "0d2036218a0a859bf923f638061585d1d0ec934885535e3ddd307c0291ca2be5"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-honey-dont-640.webp",
+          "width": 640,
+          "height": 949,
+          "bytes": 89692,
+          "sha256": "ed3eefe918813dc2020f03fa3a0ba92b100771b44faeb734c9b2b01a4980b89e"
+        }
+      ]
+    },
+    {
+      "name": "august-2025-ne-zha-2",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/ne-zha-2.webp",
+      "bytes": 701170,
+      "width": 1216,
+      "height": 1722,
+      "sha256": "52dd4e0620da21845c6cf209499be3cc85efeba18c25f2003d90ac389a70574d",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/august-2025-ne-zha-2-160.webp",
+          "width": 160,
+          "height": 227,
+          "bytes": 15986,
+          "sha256": "0ccb4bc1cb6b182fce027e049ada2ea72ffbac229a987fea8f4083821762ea85"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-ne-zha-2-320.webp",
+          "width": 320,
+          "height": 453,
+          "bytes": 54414,
+          "sha256": "66e00de01c2f6ce8fb9f0a62cf0104c101bf73a6f764293e8edf284fbf9af288"
+        },
+        {
+          "src": "/blog-assets/responsive/august-2025-ne-zha-2-640.webp",
+          "width": 640,
+          "height": 906,
+          "bytes": 171952,
+          "sha256": "ed2d851ed09b10bb7b07f07ec311186a50155ebfc7742f2aea987ca6ed36b726"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-the-conjuring-last-rites",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-conjuring-last-rites.webp",
+      "bytes": 348790,
+      "width": 1372,
+      "height": 1722,
+      "sha256": "d93199e6e5ab75fd1f5df974ef954500de14a344acd6a90e1c468a8a9f33e9fe",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-160.webp",
+          "width": 160,
+          "height": 201,
+          "bytes": 8730,
+          "sha256": "e357e7c9257d67c7b93d4c10c9f75e2b280b98222e8c7b61c75a17823412a39f"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-320.webp",
+          "width": 320,
+          "height": 402,
+          "bytes": 27276,
+          "sha256": "46dfb77d109a5ec188816d59f89d9f3ca75c9349d1ee33862c49de04f9a57d17"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp",
+          "width": 640,
+          "height": 803,
+          "bytes": 82358,
+          "sha256": "2cf819d7f1315b73f4bd500457f24c89c7e1c99108ce9cd6c6ad6831c1c0a93e"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-960.webp",
+          "width": 960,
+          "height": 1205,
+          "bytes": 143808,
+          "sha256": "d7fd3764b12dffa95bf62387c86ce7f1304dcbc1e41592f6f5a7d7fdf90e9001"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-demon-slayer-infinity-castle",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/demon-slayer-infinity-castle.webp",
+      "bytes": 496408,
+      "width": 1220,
+      "height": 1722,
+      "sha256": "482b3b793e9db646d26e3139894d48d6972de0d3297dd431c9d6caab9d0d7e9e",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-160.webp",
+          "width": 160,
+          "height": 226,
+          "bytes": 13754,
+          "sha256": "505eeca02b9fd37411ba30e1917a13eb09dead5a4f2e5255f3fb50d42acf1368"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-320.webp",
+          "width": 320,
+          "height": 452,
+          "bytes": 43624,
+          "sha256": "ae21aeb7974ead23979850ecff17a27cd61a2983d430b0418e829db646cfb9b6"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp",
+          "width": 640,
+          "height": 903,
+          "bytes": 131182,
+          "sha256": "1d34da55e8a43fa85403227e761dffcf16b7a02a4a335e4b112db53fd0d6d541"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-downton-abbey-the-grand-finale",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/downton-abbey-the-grand-finale.webp",
+      "bytes": 267136,
+      "width": 1160,
+      "height": 1722,
+      "sha256": "f1a3af7b7f1e9fa3854913e549af6dca36bf20259b3d47005140db9bc680882a",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-160.webp",
+          "width": 160,
+          "height": 238,
+          "bytes": 8238,
+          "sha256": "5a87d90cd696ec64ef5e92cf444e9f0f1724a8a700a8654c6c82900f3cb61895"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-320.webp",
+          "width": 320,
+          "height": 475,
+          "bytes": 25152,
+          "sha256": "b6f9104b532ee952b4b7eab81053451e5ecac89a8f6d31b6c940fe7e3769223f"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp",
+          "width": 640,
+          "height": 950,
+          "bytes": 75694,
+          "sha256": "10bc4e1f355c610b7b15a58a6a48dd64b8181ad0407706f45874580f7c4a5aa4"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-spinal-tap-ii",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/spinal-tap-ii.webp",
+      "bytes": 288668,
+      "width": 1148,
+      "height": 1722,
+      "sha256": "d2c467fed7428409d45f049e962259c411c1df133f899d8580e8e66c6757ad8d",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9008,
+          "sha256": "31cb094c8a936e7a894377316d74f4ab645705736591a849b3238ea2205b6ca7"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 26764,
+          "sha256": "879b5c759e021832be0349a9840b25da326ca108fc17460c2bb69dfca119d50c"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 75362,
+          "sha256": "5a353c4ae52a2e40246bf67006aa937edb252db1a689d1af095f56bc23ac692d"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-the-long-walk",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-long-walk.webp",
+      "bytes": 565400,
+      "width": 1160,
+      "height": 1722,
+      "sha256": "e396daf84a9ca43a3fe800fe2cc240bd8943832d8b618e536b4790f54bcf8bea",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-the-long-walk-160.webp",
+          "width": 160,
+          "height": 238,
+          "bytes": 10276,
+          "sha256": "4e21cdb27db69f93c23ee6978e7700c47fc04822ae6e38df8eca6a95dee6d408"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-long-walk-320.webp",
+          "width": 320,
+          "height": 475,
+          "bytes": 32108,
+          "sha256": "8cee9a0afc118e4cbf282754330530fdc4883ba72afaadf651cb0bdb4a9685ba"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-long-walk-640.webp",
+          "width": 640,
+          "height": 950,
+          "bytes": 111734,
+          "sha256": "3946f03f46f8013c98ec591f6b3a667ad2c19c686a1d5ea70aea20dc6951b1a2"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-a-big-bold-beautiful-journey",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/a-big-bold-beautiful-journey.webp",
+      "bytes": 138504,
+      "width": 1166,
+      "height": 1730,
+      "sha256": "e852fb7e28332fc5e07b985b259adecd031f8f9eb76ecb5f1349d57b607c3d52",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-160.webp",
+          "width": 160,
+          "height": 237,
+          "bytes": 7196,
+          "sha256": "5a00b926a70eb5eb3467f47c912b39af7bfd95be8d6c18838b5487ead59fb350"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-320.webp",
+          "width": 320,
+          "height": 475,
+          "bytes": 17942,
+          "sha256": "9ee47ee9ae08474250cde9defaac2ff49a769be884e32ed0b303eb443c80b9be"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp",
+          "width": 640,
+          "height": 950,
+          "bytes": 41692,
+          "sha256": "88fd95b6ccaa378cd595da7e37b9c503e62363aed2f8132b931660e35bf061ad"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-him-2025",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/him-2025.webp",
+      "bytes": 241178,
+      "width": 1082,
+      "height": 1722,
+      "sha256": "03231e12d98bc668d9446fd4d497b41cb42702954dc9107a45dce13c34b3ff76",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-him-2025-160.webp",
+          "width": 160,
+          "height": 255,
+          "bytes": 7350,
+          "sha256": "382b773c57ff037fdb53416d067131754b6f304ff54134ff4be5ffc2969ccb6b"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-him-2025-320.webp",
+          "width": 320,
+          "height": 509,
+          "bytes": 21294,
+          "sha256": "bb572206b09200e5c834f911b27295a9789b08c62316a90eb63950595844abab"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-him-2025-640.webp",
+          "width": 640,
+          "height": 1019,
+          "bytes": 61114,
+          "sha256": "4a37b2486d98448c2bc19b3c7875b354f89e5c3021328044feaccdb1f600710c"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-the-strangers-chapter-2",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-strangers-chapter-2.webp",
+      "bytes": 347006,
+      "width": 1372,
+      "height": 1722,
+      "sha256": "f08d6bce2ec6ef706f9fb03c591e6c07fd064ad41e94f6161ec6f638e00282a8",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-160.webp",
+          "width": 160,
+          "height": 201,
+          "bytes": 5392,
+          "sha256": "99c2e3b179bad25ae97784f65b1ec905e173dd34711449c72328b925e96ebdc3"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-320.webp",
+          "width": 320,
+          "height": 402,
+          "bytes": 15834,
+          "sha256": "bcdfbaa957feec6e83d71bc4eb1c4b8bad4bacf1eff19e2c2748206f5e66b562"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp",
+          "width": 640,
+          "height": 803,
+          "bytes": 51822,
+          "sha256": "6352d79cf4f5d7dde661c064925144100d427065c26c25eafcc97dc486f4a487"
+        }
+      ]
+    },
+    {
+      "name": "september-2025-gabbys-dollhouse-the-movie",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/gabbys-dollhouse-the-movie.webp",
+      "bytes": 489474,
+      "width": 1092,
+      "height": 1730,
+      "sha256": "f3be3b2003c3a238ab5f695cb750c7ad5785f54348da92b9e1a4dbad7e3b7987",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-160.webp",
+          "width": 160,
+          "height": 253,
+          "bytes": 14226,
+          "sha256": "fc452a1f2bdcc5dfc226091b55000808e71cae59ef6461fccaeebbf3994fe472"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-320.webp",
+          "width": 320,
+          "height": 507,
+          "bytes": 45162,
+          "sha256": "b01fe7e8909757954a8a1b2b8cc667ebb9e5cadfc0eaf1272a2ff22f7e100bd0"
+        },
+        {
+          "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp",
+          "width": 640,
+          "height": 1014,
+          "bytes": 134832,
+          "sha256": "94be83deb5c090cb78aa4911a592bb98a08b4bfc99e69b5d33a8872ad7156cbf"
+        }
+      ]
+    },
+    {
+      "name": "classic-preview",
+      "url": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/movies/general/g_00001.webp",
+      "bytes": 211344,
+      "width": 3324,
+      "height": 1848,
+      "sha256": "13d79389f9a351dad2b9b57ef86835582a2d3bde045b92e4c8d60412288dc3a0",
+      "variants": [
+        {
+          "src": "/blog-assets/responsive/classic-preview-320.webp",
+          "width": 320,
+          "height": 178,
+          "bytes": 7926,
+          "sha256": "aa6e561d4f7f1aac1c93bf666ba2822d202c7c47a3e27091a1ab4ab552d708d4"
+        },
+        {
+          "src": "/blog-assets/responsive/classic-preview-640.webp",
+          "width": 640,
+          "height": 356,
+          "bytes": 20090,
+          "sha256": "ae95681df724424ac42f886397e4393389be162c30f4f4cb5941dde4f6054121"
+        },
+        {
+          "src": "/blog-assets/responsive/classic-preview-960.webp",
+          "width": 960,
+          "height": 534,
+          "bytes": 32160,
+          "sha256": "2d264feca2cb238315fcb7015dc147b2d2d816920403f43f93179cde15c4df26"
+        }
+      ]
+    }
+  ]
+}
