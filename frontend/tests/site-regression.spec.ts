@@ -120,10 +120,10 @@ test('article posters remain available without gallery data and reset on navigat
   await page.getByRole('link', { name: 'August 2025 Movie Releases: 7 Picks (US)', exact: true }).click();
   await expect(page.locator('.hq-movie-poster img')).toHaveCount(7);
   const poster = page.locator('.hq-movie-poster img').first();
-  await expect(poster).toHaveAttribute('src', /bad-guys-2\.webp/);
+  await expect(poster).toHaveAttribute('src', /bad-guys-2(?:-\d+)?\.webp$/);
   await page.getByRole('link', { name: /September 2025 Movie Releases: 9 Picks/ }).click();
   await expect(page.locator('.hq-movie-poster img')).toHaveCount(9);
-  await expect(poster).toHaveAttribute('src', /the-conjuring-last-rites\.webp/);
+  await expect(poster).toHaveAttribute('src', /the-conjuring-last-rites(?:-\d+)?\.webp$/);
   expect(errors).toEqual([]);
 });
 

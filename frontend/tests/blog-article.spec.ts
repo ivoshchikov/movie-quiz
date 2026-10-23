@@ -179,7 +179,7 @@ test("a configured origin agrees across generated article metadata, RSS and site
 test("a failed image reserves its space, stops requests and resets on article navigation", async ({ page }) => {
   await mockQuizApi(page);
   let requests = 0;
-  await page.route("**/bad-guys-2.webp", route => { requests++; return route.abort(); });
+  await page.route("**/*bad-guys-2*.webp", route => { requests++; return route.abort(); });
   await page.goto(url(0));
   const figure = page.getByRole("region", { name: "The Bad Guys 2", exact: true }).locator("figure");
   await figure.scrollIntoViewIfNeeded();

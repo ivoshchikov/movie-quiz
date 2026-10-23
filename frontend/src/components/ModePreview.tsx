@@ -1,13 +1,15 @@
 import { useState } from "react";
 import type { GameMode } from "../games/modes";
 import SiteIcon from "./SiteIcon";
+import { responsiveImage } from "../blog/imageSources";
 
 // Public images only. No question payloads, answer keys or gameplay requests.
 const images = "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/movies/";
 function Photo({ path }: { path: string }) {
   const [failed, setFailed] = useState(false);
+  const image = responsiveImage(images + path);
   return failed ? <span className="hq-preview-photo-fallback"><SiteIcon name="film" /></span>
-    : <img src={images + path} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} />;
+    : <img {...image} sizes={image.srcSet ? "(max-width: 680px) calc((100vw - 108px) * 0.616), 360px" : undefined} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} />;
 }
 const descriptions: Record<GameMode, string> = {
   classic: "A film still with four answer choices.",

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "baselineRevision": "91e461e61bb5ed51ad256a3140d434be38ace168",
+  "tool": "Lighthouse",
+  "version": "13.5.0",
+  "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+  "settings": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "onlyCategories": [
+      "performance"
+    ],
+    "blockedUrlPatterns": [
+      "*google-analytics.com/*",
+      "*googletagmanager.com/*",
+      "*analytics.google.com/*",
+      "*doubleclick.net/*"
+    ],
+    "disableStorageReset": false
+  },
+  "runs": [
+    {
+      "phase": "before",
+      "name": "home",
+      "run": 1,
+      "url": "https://hard-quiz.com/?analytics=off",
+      "fetchTime": "2026-10-23T08:40:56.820Z",
+      "lighthouseVersion": "13.5.0",
+      "score": 0.89,
+      "metrics": {
+        "first-contentful-paint": 1867.9790000000044,
+        "largest-contentful-paint": 1878.4790000000044,
+        "speed-index": 10655.708457793295,
+        "total-blocking-time": 23.5,
+        "cumulative-layout-shift": 0.034124540191059365,
+        "total-byte-weight": 409508
+      },
+      "warnings": []
+    },
+    {
+      "phase": "before",
+      "name": "september",
+      "run": 1,
+      "url": "https://hard-quiz.com/blog/september-2025-new-movies-guide?analytics=off",
+      "fetchTime": "2026-10-23T08:41:16.674Z",
+      "lighthouseVersion": "13.5.0",
+      "score": 0.89,
+      "metrics": {
+        "first-contentful-paint": 1885.2215000000092,
+        "largest-contentful-paint": 2200.8515000000107,
+        "speed-index": 9113.844550000074,
+        "total-blocking-time": 18.5,
+        "cumulative-layout-shift": 0,
+        "total-byte-weight": 3427729
+      },
+      "warnings": []
+    },
+    {
+      "phase": "before",
+      "name": "home",
+      "run": 2,
+      "url": "https://hard-quiz.com/?analytics=off",
+      "fetchTime": "2026-10-23T08:41:35.213Z",
+      "lighthouseVersion": "13.5.0",
+      "score": 0.89,
+      "metrics": {
+        "first-contentful-paint": 1897.690999999999,
+        "largest-contentful-paint": 1897.690999999999,
+        "speed-index": 10263.680348000073,
+        "total-blocking-time": 21.5,
+        "cumulative-layout-shift": 0.034124540191059365,
+        "total-byte-weight": 409433
+      },
+      "warnings": []
+    },
+    {
+      "phase": "before",
+      "name": "september",
+      "run": 2,
+      "url": "https://hard-quiz.com/blog/september-2025-new-movies-guide?analytics=off",
+      "fetchTime": "2026-10-23T08:41:54.098Z",
+      "lighthouseVersion": "13.5.0",
+      "score": 0.92,
+      "metrics": {
+        "first-contentful-paint": 963.7345000000013,
+        "largest-contentful-paint": 963.7345000000013,
+        "speed-index": 8923.248414413416,
+        "total-blocking-time": 12,
+        "cumulative-layout-shift": 0,
+        "total-byte-weight": 3427798
+      },
+      "warnings": []
+    },
+    {
+      "phase": "before",
+      "name": "home",
+      "run": 3,
+      "url": "https://hard-quiz.com/?analytics=off",
+      "fetchTime": "2026-10-23T08:42:12.816Z",
+      "lighthouseVersion": "13.5.0",
+      "score": 0.89,
+      "metrics": {
+        "first-contentful-paint": 1895.7590000000073,
+        "largest-contentful-paint": 1895.7590000000073,
+        "speed-index": 10252.078436000022,
+        "total-blocking-time": 29.5,
+        "cumulative-layout-shift": 0.034124540191059365,
+        "total-byte-weight": 409473
+      },
+      "warnings": []
+    },
+    {
+      "phase": "before",
+      "name": "september",
+      "run": 3,
+      "url": "https://hard-quiz.com/blog/september-2025-new-movies-guide?analytics=off",
+      "fetchTime": "2026-10-23T08:42:31.698Z",
+      "lighthouseVersion": "13.5.0",
+      "score": 0.89,
+      "metrics": {
+        "first-contentful-paint": 1833.9625000000003,
+        "largest-contentful-paint": 2087.9625000000005,
+        "speed-index": 9113.15645200004,
+        "total-blocking-time": 27,
+        "cumulative-layout-shift": 0,
+        "total-byte-weight": 3427746
+      },
+      "warnings": []
+    }
+  ],
+  "fieldCheck": {
+    "httpStatus": 429,
+    "message": "PageSpeed Insights API daily query quota exceeded; no current field measurements returned.",
+    "status": "RESOURCE_EXHAUSTED"
+  }
+}

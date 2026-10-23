@@ -121,9 +121,9 @@ test("covers use all declared assets, reserved space and lazy decoding", async (
   await expect(images.nth(1)).toHaveAttribute("src", /november-2026-movie-releases-cover\.webp$/);
   await expect(images.nth(2)).toHaveAttribute("src", /whalefall-book-to-film-cover\.webp$/);
   await expect(images.nth(3)).toHaveAttribute("src", /best-horror-movies-2026-cover\.webp$/);
-  await expect(images.nth(4)).toHaveAttribute("src", /the-conjuring-last-rites\.webp$/);
+  await expect(images.nth(4)).toHaveAttribute("src", /the-conjuring-last-rites-640\.webp$/);
   await expect(images.nth(5)).toHaveAttribute("src", /flat-vs-scope\.webp$/);
-  await expect(images.nth(6)).toHaveAttribute("src", /bad-guys-2\.webp$/);
+  await expect(images.nth(6)).toHaveAttribute("src", /bad-guys-2-640\.webp$/);
   await expect(images.nth(0)).toHaveAttribute("loading", "eager");
   await expect(images.nth(1)).toHaveAttribute("loading", "lazy");
   await expect(images.nth(2)).toHaveAttribute("decoding", "async");
@@ -134,9 +134,9 @@ test("covers use all declared assets, reserved space and lazy decoding", async (
 
 test("one failed cover falls back to an existing gallery image", async ({ page }) => {
   await mockQuizApi(page);
-  await page.route("**/the-conjuring-last-rites.webp", route => route.abort());
+  await page.route("**/*the-conjuring-last-rites*.webp", route => route.abort());
   await page.goto("/blog");
-  await expect(cards(page).filter({ hasText: september }).locator("img")).toHaveAttribute("src", /demon-slayer-infinity-castle\.webp$/);
+  await expect(cards(page).filter({ hasText: september }).locator("img")).toHaveAttribute("src", /demon-slayer-infinity-castle-640\.webp$/);
   await cards(page).filter({ hasText: september }).locator(".hq-blog-excerpt").click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(september);
 });
