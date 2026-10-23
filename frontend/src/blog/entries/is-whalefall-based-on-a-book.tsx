@@ -19,6 +19,7 @@ const post: BlogPost = {
   seoTitle: "Is Whalefall Based on a Book? Movie & Novel Guide",
   excerpt: "Whalefall adapts Daniel Kraus's 2023 novel. Get the book details, cast and US release date, plus spoiler-free advice on reading it before the movie.",
   date: "2026-10-15",
+  modified: "2026-10-23",
   tags: ["Streaming & New Releases", "Thriller", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
@@ -74,7 +75,7 @@ const post: BlogPost = {
     <p><strong>Austin Abrams plays Jay Gardiner, and Josh Brolin plays his father, Mitt.</strong> The studio's cast list also includes Elisabeth Shue, John Ortiz, Jane Levy and Emily Rudd. Brian Duffield directs the survival thriller.</p>
     <p>The <a href={sources.film}>official US film page</a> lists <strong>October 16, 2026</strong> as the theatrical release date and a <strong>PG-13</strong> rating. Those details refer to the United States; release schedules and age classifications can differ elsewhere.</p>
     <h3>Where can you watch it?</h3>
-    <p>At our October 15 check, the studio page listed the US theatrical release and ticket links, rather than a streaming release date. Use its current viewing links and your local cinema listings to check availability. A theatrical opening date does not establish when a film will reach a subscription service.</p>
+    <p>At our October 23 check, <em>Whalefall</em> was playing in US theaters, according to <a href={sources.film}>20th Century Studios' official film page</a>. The page provides ticket links and lists the film as <strong>PG-13</strong>. Use those links and your local cinema listings to check screenings. The studio page does not announce a subscription-streaming date, so the theatrical release should not be treated as one.</p>
     <p>If you want other tense films to consider, our <Link to="/blog/best-thriller-movies-2026">best thriller movies of 2026 guide</Link> compares crime stories, psychological suspense and survival films by the kind of tension you want. Our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> offers more frightening options.</p>
 
     <h2 id="true-story" tabIndex={-1}>Is Whalefall based on a true story?</h2>
@@ -87,7 +88,7 @@ const post: BlogPost = {
 
     <h2>A movie question before your next watch</h2>
     <p>Enjoy recognizing a film from a single image? Try <Link to="/">Hard Quiz's movie and actor quizzes</Link>, or visit the <Link to="/daily">Daily Challenge</Link> for the day's shared challenge. The regular quiz can be played as a guest; Daily requires an account.</p>
-    <p><small>This guide was prepared with AI assistance using publisher information, studio credits and interviews with Daniel Kraus. It is a source-based guide, not a review based on a screening. Book and release details were checked on October 15, 2026.</small></p>
+    <p><small>This guide was prepared with AI assistance using publisher information, studio credits and interviews with Daniel Kraus. It is a source-based guide, not a review based on a screening. Book and release details were checked on October 15, 2026. US viewing information was checked again on October 23, 2026.</small></p>
   </>,
 };
 

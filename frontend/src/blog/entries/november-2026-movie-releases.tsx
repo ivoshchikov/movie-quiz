@@ -201,7 +201,7 @@ const films: ReleaseFilm[] = [
     source: sources.hexed, sourceLabel: "Disney",
     body: <>
       <p>Teenager Billie Doe discovers magical abilities that send her from suburbia into Hexe, a realm of witches. Her cautious mother, Alice, comes along, making the mother-daughter relationship central to the adventure. Hailee Steinfeld and Rashida Jones voice Billie and Alice; Jodie Foster voices Queen Celeste.</p>
-      <p>This original Disney fantasy opens on the Wednesday before Thanksgiving. It is an option for a group looking for a new animated world to explore without franchise preparation. At our October 18 check, Disney's page still listed <strong>Not Yet Rated</strong>, so check the eventual rating and content guidance before choosing it for younger children.</p>
+      <p>This original Disney fantasy opens on the Wednesday before Thanksgiving. It is an option for a group looking for a new animated world to explore without franchise preparation. Disney now lists <em>Hexed</em> as <strong>PG</strong> on its <a href={sources.hexed}>official US film page</a>. Check the detailed content guidance before choosing it for younger children.</p>
     </>,
   },
   {
@@ -225,6 +225,7 @@ const post: BlogPost = {
   title: "November 2026 Movie Releases: US Theater Dates",
   excerpt: "Plan November 2026 at the movies: ten US releases, from Godzilla Minus Zero to The Hunger Games and Hexed, with dates and spoiler-free previews.",
   date: "2026-10-18",
+  modified: "2026-10-23",
   tags: ["Streaming & New Releases", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
@@ -302,7 +303,7 @@ const post: BlogPost = {
 
     <h2>More to watch before November</h2>
     <p>If you are choosing a tense watch for tonight, our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> sorts seven films by mood and explains sequel preparation. For another book-to-screen release, our <Link to="/blog/is-whalefall-based-on-a-book">Whalefall novel and movie guide</Link> explains what the adaptation is based on without revealing the ending.</p>
-    <p><small>Prepared with AI assistance from studio, distributor and exhibition-industry sources, plus reporting on the Focker-In-Law trailer. This is a release-planning guide, not a review based on screenings. Release details were checked on October 18, 2026.</small></p>
+    <p><small>Prepared with AI assistance from studio, distributor and exhibition-industry sources, plus reporting on the Focker-In-Law trailer. This is a release-planning guide, not a review based on screenings. Release details were checked on October 18, 2026. The US rating for Hexed was checked again on October 23, 2026.</small></p>
   </>,
 };
 
