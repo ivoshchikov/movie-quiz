@@ -44,6 +44,8 @@
 .hq-release-index tbody th { padding-block: 0; font-weight: 600; }
 .hq-release-index a { display: flex; align-items: center; min-height: 48px; padding-block: 12px; color: var(--hq-purple); text-decoration: underline; text-decoration-color: var(--hq-purple); text-underline-offset: 3px; }
 .hq-release-index a:hover { color: var(--hq-text); text-decoration-color: currentColor; }
+.hq-release-index.hq-viewing-index th:first-child { width: 38%; }
+.hq-release-index.hq-viewing-index th:nth-child(2) { width: 62%; }
 .hq-release-note { display: block; margin-top: 5px; color: var(--hq-muted); font-size: 12px; }
 .hq-movie { display: grid; grid-template-columns: 152px minmax(0, 1fr); gap: 18px 24px; padding-block: 28px; border-top: 1px solid var(--hq-border); }
 .hq-movie-heading { grid-column: 1 / -1; }
