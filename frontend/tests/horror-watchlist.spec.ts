@@ -18,7 +18,10 @@ test("the new watchlist serves its complete text, own share image and canonical 
   await page.goto(`/blog/${slug}`);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
   await expect(page.locator(".hq-watchlist-entry")).toHaveCount(7);
-  await expect(page.locator(".hq-release-index tbody tr")).toHaveCount(7);
+  await expect(page.locator('[aria-labelledby="quick-picks"] tbody tr')).toHaveCount(7);
+  const viewing = page.getByRole("region", { name: "Where to watch these horror movies in the US", exact: true });
+  await expect(viewing.getByRole("row")).toHaveCount(8);
+  await expect(viewing.getByRole("table")).toHaveAccessibleName("US viewing options checked October 24, 2026");
   await expect(page).toHaveTitle("Best Horror Movies of 2026 So Far | Hard Quiz");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://hard-quiz.com/blog/${slug}`);
   for (const selector of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) await expect(page.locator(selector)).toHaveAttribute("content", "https://hard-quiz.com" + socialImage);
@@ -33,7 +36,7 @@ test("the new watchlist serves its complete text, own share image and canonical 
     await expect(still).toHaveAttribute("height", /^[1-9]\d+$/);
   }
   const json = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || "{}")).find(item => item["@type"] === "BlogPosting"));
-  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-10-14", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
+  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-10-24", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
   const sharePage = await context.newPage();
   await sharePage.route("**" + socialImage, route => route.fulfill({ contentType: "image/webp", path: "public" + socialImage }));
   await sharePage.setContent('<img src="https://hard-quiz.com' + socialImage + '" alt="Social cover">');
@@ -55,7 +58,7 @@ for (const width of [1440, 390, 320]) test(`watchlist links, image and compariso
   await page.setViewportSize({ width, height: 900 });
   await page.goto(`/blog/${slug}`);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
-  const rows = page.locator(".hq-release-index tbody tr");
+  const rows = page.locator('[aria-labelledby="quick-picks"] tbody tr');
   for (const row of await rows.all()) {
     const hash = await row.getByRole("link").getAttribute("href");
     await expect(page.locator(hash!)).toHaveCount(1);
@@ -63,6 +66,17 @@ for (const width of [1440, 390, 320]) test(`watchlist links, image and compariso
   await rows.first().getByRole("link").click();
   await expect(page.locator("#resident-evil")).toBeFocused();
   await expect(page.locator("#resident-evil")).toBeInViewport();
+  await page.locator('.hq-article-contents summary').click();
+  await page.getByRole("link", { name: "Where to watch in the US", exact: true }).click();
+  await expect(page.locator("#where-to-watch")).toBeFocused();
+  await expect(page.locator("#where-to-watch")).toBeInViewport();
+  const viewing = page.getByRole("region", { name: "Where to watch these horror movies in the US", exact: true });
+  await expect(viewing.getByRole("row")).toHaveCount(8);
+  for (const link of await viewing.getByRole("link").all()) {
+    const box = await link.boundingBox();
+    expect(box!.width).toBeGreaterThanOrEqual(44);
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+  }
   for (const still of await page.locator(".hq-film-still img").all()) {
     await still.scrollIntoViewIfNeeded();
     await expect.poll(() => still.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);

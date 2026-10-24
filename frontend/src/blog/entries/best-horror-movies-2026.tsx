@@ -22,31 +22,57 @@ const official = {
   backrooms: "https://a24films.com/films/backrooms",
   boneTemple: "https://www.sonypictures.com/movies/28yearslaterthebonetemple",
   primate: "https://paramountglobalcontent.com/title/primate",
+  obsessionPeacock: "https://www.peacocktv.com/stream-movies/obsession",
+  obsessionStreaming: "https://www.peacocktv.com/blog/when-is-obsession-streaming-on-peacock",
+  hokumHulu: "https://www.hulu.com/movie/hokum-0e6c86c5-34e4-485a-8be9-71bf90d044b3",
+  primateStreaming: "https://www.paramountplus.com/sneak-peak/where-to-watch-primate-2026/",
 };
 
 const picks = [
-  { id: "resident-evil", title: "Resident Evil (2026)", mood: "Action and survival horror", preparation: "New story; start here" },
-  { id: "obsession", title: "Obsession", mood: "A wish with a terrible price", preparation: "None" },
-  { id: "hokum", title: "Hokum", mood: "Haunted rooms and folk tales", preparation: "None" },
-  { id: "send-help", title: "Send Help", mood: "Survival with dark comedy", preparation: "None" },
-  { id: "backrooms", title: "Backrooms", mood: "Uncanny spaces and disorientation", preparation: "No online lore required" },
-  { id: "the-bone-temple", title: "28 Years Later: The Bone Temple", mood: "Infection, cults and human cruelty", preparation: "Watch 28 Years Later first" },
-  { id: "primate", title: "Primate", mood: "A contained creature feature", preparation: "None" },
+  {
+    id: "resident-evil", title: "Resident Evil (2026)", mood: "Action and survival horror", preparation: "New story; start here",
+    viewing: <>In theaters. <a href={official.residentEvil}>Sony's 2026 film page</a></>,
+  },
+  {
+    id: "obsession", title: "Obsession", mood: "A wish with a terrible price", preparation: "None",
+    viewing: <>Peacock lists it for subscription streaming. <a href={official.obsessionPeacock}>Peacock's US listing</a><a href={official.obsession}>Focus home-viewing options</a></>,
+  },
+  {
+    id: "hokum", title: "Hokum", mood: "Haunted rooms and folk tales", preparation: "None",
+    viewing: <>Hulu subscription. <a href={official.hokumHulu}>Watch Hokum on Hulu</a></>,
+  },
+  {
+    id: "send-help", title: "Send Help", mood: "Survival with dark comedy", preparation: "None",
+    viewing: <>Hulu subscription or digital purchase. <a href={official.sendHelp}>20th Century viewing options</a></>,
+  },
+  {
+    id: "backrooms", title: "Backrooms", mood: "Uncanny spaces and disorientation", preparation: "No online lore required",
+    viewing: <>Digital rental or purchase, including the A24 App. <a href={official.backrooms}>A24 home-viewing options</a></>,
+  },
+  {
+    id: "the-bone-temple", title: "28 Years Later: The Bone Temple", mood: "Infection, cults and human cruelty", preparation: "Watch 28 Years Later first",
+    viewing: <>Digital purchase, 4K UHD or Blu-ray. <a href={official.boneTemple}>Sony home-viewing options</a></>,
+  },
+  {
+    id: "primate", title: "Primate", mood: "A contained creature feature", preparation: "None",
+    viewing: <>Paramount+ subscription. <a href={official.primateStreaming}>Paramount+ viewing guide</a></>,
+  },
 ];
 
 const post: BlogPost = {
   slug: "best-horror-movies-2026",
   title: "Best Horror Movies of 2026 So Far: A Spoiler-Free Watchlist",
   seoTitle: "Best Horror Movies of 2026 So Far",
-  excerpt: "Seven horror films worth watching in 2026, from Resident Evil and Obsession to Hokum. Pick by mood, check sequel requirements, and avoid spoilers.",
+  excerpt: "Seven horror films to watch in 2026, with US viewing options for Halloween, spoiler-free picks by mood, and essential sequel preparation.",
   date: "2026-10-12",
-  modified: "2026-10-14",
+  modified: "2026-10-24",
   tags: ["Streaming & New Releases", "Horror", "Thriller", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
   socialImagePath: "/blog-assets/best-horror-movies-2026-social.webp",
   contents: [
     { id: "quick-picks", label: "Choose a film by mood" },
+    { id: "where-to-watch", label: "Where to watch in the US" },
     ...picks.map(({ id, title }) => ({ id, label: title })),
     { id: "how-we-chose", label: "How we chose the films" },
     { id: "watchlist-questions", label: "Viewing questions" },
@@ -62,6 +88,10 @@ const post: BlogPost = {
     { label: "Sony Pictures — The Bone Temple: official continuity FAQs", url: "https://www.sonypictures.com/movies/28yearslaterthebonetemple/official-faqs" },
     { label: "Paramount Global Content — Primate: US release and cast", url: official.primate },
     { label: "Paramount Press Express — Primate: production credits", url: "https://www.paramountpressexpress.com/paramount-plus/shows/primate/releases/?view=112558-things-are-about-to-get-wild-when-primate-streams-on-paramount-march-25" },
+    { label: "Peacock — Obsession: US streaming listing", url: official.obsessionPeacock },
+    { label: "Peacock — Obsession: July 17, 2026 streaming announcement", url: official.obsessionStreaming },
+    { label: "Hulu — Hokum: US subscription listing", url: official.hokumHulu },
+    { label: "Paramount+ — Primate: subscription viewing guide", url: official.primateStreaming },
     { label: "RogerEbert.com — Katie Rife's Obsession review", url: "https://www.rogerebert.com/reviews/obsession-curry-barker-movie-review-2026" },
     { label: "RogerEbert.com — Brian Tallerico's Hokum review and US opening date", url: "https://www.rogerebert.com/reviews/hokum-adam-scott-film-review-2026" },
     { label: "RogerEbert.com — Brian Tallerico's Backrooms review", url: "https://www.rogerebert.com/reviews/backrooms-chiwetel-ejiofor-renate-reinsve-a24-film-review-2026" },
@@ -73,7 +103,7 @@ const post: BlogPost = {
   ],
   content: () => <>
     <p><strong>Start with <a href="#resident-evil">Resident Evil</a> for an action-driven nightmare, <a href="#hokum">Hokum</a> for haunted-house dread, or <a href="#send-help">Send Help</a> for survival horror with a vicious sense of humor.</strong> If a supernatural wish going wrong sounds more unsettling than a monster chasing you, make <a href="#obsession">Obsession</a> your first pick.</p>
-    <p>This spoiler-free shortlist covers seven of the best horror movies released in the US in 2026 so far, checked on October 12. It is organized around the kind of film you want tonight, with sequel requirements and reasons to choose each one. No endings, surprise appearances or late-film revelations follow.</p>
+    <p>This spoiler-free shortlist covers seven horror films selected from US theatrical releases through October 12, 2026. Pick by mood, check sequel requirements, and use the <a href="#where-to-watch">US viewing guide</a> to plan a Halloween movie night. Viewing information was checked again on <time dateTime="2026-10-24">October 24, 2026</time>. No endings, surprise appearances or late-film revelations follow.</p>
 
     <figure>
       <ArticleImage src={coverPath} alt="Original illustration of a red-lit doorway, a long shadow and a crescent moon, with the words Horror 2026" width={1200} height={675} priority />
@@ -87,6 +117,17 @@ const post: BlogPost = {
         <thead><tr><th scope="col">Film</th><th scope="col">Pick it for</th><th scope="col">Before you watch</th></tr></thead>
         <tbody>{picks.map(pick => <tr key={pick.id}><th scope="row"><a href={`#${pick.id}`}>{pick.title}</a></th><td>{pick.mood}</td><td>{pick.preparation}</td></tr>)}</tbody>
       </table>
+    </section>
+
+    <section className="hq-release-index hq-viewing-index" aria-labelledby="where-to-watch">
+      <h2 id="where-to-watch" tabIndex={-1}>Where to watch these horror movies in the US</h2>
+      <p>For a subscription movie night, start with <em>Hokum</em> or <em>Send Help</em> on Hulu, or <em>Primate</em> on Paramount+. Peacock also lists <em>Obsession</em> for streaming. <em>Backrooms</em> has digital rental and purchase options; Sony lists <em>The Bone Temple</em> on digital and disc and the new <em>Resident Evil</em> in theaters.</p>
+      <table>
+        <caption>US viewing options checked October 24, 2026</caption>
+        <thead><tr><th scope="col">Film</th><th scope="col">US viewing option</th></tr></thead>
+        <tbody>{picks.map(pick => <tr key={pick.id}><th scope="row"><a href={`#${pick.id}`}>{pick.title}</a></th><td>{pick.viewing}</td></tr>)}</tbody>
+      </table>
+      <p>Subscription streaming, a digital rental and a digital purchase are different offers. Check the linked US listing and your plan before paying; catalogs, retailer offers and local showtimes can change. These are selected viewing routes, and availability outside the US can differ.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="resident-evil">
@@ -154,13 +195,13 @@ const post: BlogPost = {
 
     <h2 id="how-we-chose" tabIndex={-1}>How we chose these horror films</h2>
     <p>We started with released films that had favorable critical reception, cross-checking the <a href="https://editorial.rottentomatoes.com/guide/best-new-horror-movies-2026/">Rotten Tomatoes 2026 horror guide</a> against individual reviews and official distributor pages. Then we chose a range of viewing experiences: supernatural unease, folk horror, dark comedy, uncanny spaces, action and creature horror. This is a selective watchlist, rather than a claim that every reader will agree on one winner.</p>
-    <p>“2026” means a US theatrical release by October 12, 2026. Festival dates can be earlier, and release dates elsewhere can differ. Unreleased films are not ranked alongside films audiences can already see. Credits and dates are checked against the sources below; recommendations are editorial judgments based on that research, not claims of firsthand screenings. This article was prepared with AI assistance.</p>
+    <p>“2026” means a US theatrical release by October 12, 2026, the cutoff for this selection and its critical research. Festival dates can be earlier, and release dates elsewhere can differ. US viewing listings were checked again on October 24, 2026. Recommendations are editorial judgments based on the sources below, not claims of firsthand screenings. This article was prepared with AI assistance.</p>
 
     <section className="hq-article-faq" aria-labelledby="watchlist-questions">
       <h2 id="watchlist-questions" tabIndex={-1}>Questions before you build your watchlist</h2>
       <div><h3>Which 2026 horror movie should I watch first?</h3><p>For a standalone ghost-story evening, pick <em>Hokum</em>. For survival horror with comedy, choose <em>Send Help</em>. Try <em>Obsession</em> for a disturbing supernatural premise, or the new <em>Resident Evil</em> for action and horror together. Pick by the kind of tension you enjoy; a single score cannot make that decision for you.</p></div>
       <div><h3>Do I need to watch the old Resident Evil movies?</h3><p>No film-series recap is needed for this pick. Sony presents the 2026 film as an all-new story with Bryan as its protagonist. Knowing the games can add context, but this watchlist recommends it as a starting point, rather than as a continuation of the earlier Alice films.</p></div>
-      <div><h3>Where can I watch these movies?</h3><p>Use the official film pages linked in each entry to find cinema tickets or home-viewing options. At the October 12 check, Sony listed <em>Resident Evil</em> as playing in theaters; A24, NEON and Focus provided home-viewing links for their films. Subscription catalogs and rental offers depend on your country and can change, so an offer in the US is not a promise of availability elsewhere.</p></div>
+      <div><h3>Which picks can I stream with a subscription in the US?</h3><p>At the October 24 check, Hulu listed <em>Hokum</em> and the studio confirmed <em>Send Help</em> on Hulu. Paramount+'s viewing guide listed <em>Primate</em>, and Peacock's US listing and announcement identified <em>Obsession</em>. Use the <a href="#where-to-watch">viewing table and official links</a> to check your plan. An offer to rent or buy a film does not mean it is included in a subscription.</p></div>
       <div><h3>Is this a list of low-gore horror movies?</h3><p>No. <em>Primate</em>, <em>Resident Evil</em> and <em>The Bone Temple</em> have US rating advisories that explicitly include gore. A supernatural or psychological premise also does not guarantee mild content. If you have a specific limit, check the film's detailed content advisory before choosing it.</p></div>
     </section>
 
