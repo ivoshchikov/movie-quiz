@@ -233,7 +233,7 @@ const post: BlogPost = {
           <tr><th scope="row">Gosford Park (2001)</th><td><a href={sources.gosford}>Focus Features — Watch at Home page</a></td></tr>
           <tr><th scope="row">Murder on the Orient Express (1974)</th><td><a href="https://tv.apple.com/us/movie/murder-on-the-orient-express/umc.cmc.3ln4aukghc5sgih8inn2xbf90">Apple TV — Albert Finney version</a></td></tr>
           <tr><th scope="row">Death on the Nile (1978)</th><td><a href="https://tv.apple.com/us/movie/death-on-the-nile/umc.cmc.6mv4ux3hvdswdaga71gvf8vzs">Apple TV — Peter Ustinov version</a></td></tr>
-          <tr><th scope="row">Sleuth (1972)</th><td>No US digital route confirmed. <a href={sources.sleuthViewing}>JustWatch US — current disc listings</a>Check the edition and playback region before buying.</td></tr>
+          <tr><th scope="row">Sleuth (1972)</th><td>No US digital route confirmed. <a href={sources.sleuthViewing}>JustWatch US — current disc listings</a> Check the edition and playback region before buying.</td></tr>
           <tr><th scope="row">Deathtrap (1982)</th><td><a href={sources.deathtrap}>Apple TV — US title listing</a></td></tr>
         </tbody>
       </table>
