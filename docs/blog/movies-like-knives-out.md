@@ -36,24 +36,26 @@ For Sleuth (1972), no US digital route was verified. [JustWatch US](https://www.
 
 The bibliography labels the BFI discussion and Ebert review as containing plot discussion. The article text and proposed still selections omit culprits, concealed identities and solution mechanics. No text or image is copied from another recommendation list.
 
-## Illustration and later stills
+## Illustration and film stills
 
-The first release has an original Hard Quiz illustration of ten anonymous suspect cards around a question mark. The editable SVG, 1200×675 WebP, 480/800 responsive variants, 640×360 listing image and 1200×630 social image are local assets. The symbols are not actor portraits or replicas of film frames. Existing article-image delivery handles dimensions, eager cover loading, responsive sources and failures.
+The article has an original Hard Quiz illustration of ten anonymous suspect cards around a question mark. The editable SVG, 1200×675 WebP, 480/800 responsive variants, 640×360 listing image and 1200×630 social image are local assets. The symbols are not actor portraits or replicas of film frames. Existing article-image delivery handles dimensions, eager cover loading, responsive sources and failures.
 
-Film stills can be added after delivery. No broken image slots or placeholder-film claims are published. Use one landscape frame for each film, preserve its original aspect ratio, avoid subtitles/player UI and reveal no solution. Prefer 1920 px width; 1280 px is adequate when that is the available source. Keep the film/year and source or edition with each supplied image so the final caption and alt text describe the actual frame.
+Ten supplied landscape stills accompany the ten films. The original composition and aspect ratio are preserved; resizing and WebP encoding do not alter the scene content. Captions and alt text describe the actual frame, including the 1974/1978 Christie adaptations, the 1972 Sleuth, and Caine with Dyan Cannon in the Deathtrap frame.
 
-| Suggested filename | Film | Non-spoiler subject |
+| Asset stem after `knives-out-` | Film | Visible subject |
 | --- | --- | --- |
-| `01-glass-onion-2022` | Glass Onion | Blanc or the arriving group on the island, early in the film |
-| `02-wake-up-dead-man-2025` | Wake Up Dead Man | Blanc and Father Jud in the church, without the crime or solution |
-| `03-clue-1985` | Clue | Wadsworth and the guests gathered in the mansion |
-| `04-see-how-they-run-2022` | See How They Run | Stoppard and Stalker in the theatre or foyer |
-| `05-the-last-of-sheila-1973` | The Last of Sheila | The host and guests aboard the yacht before the game's revelations |
-| `06-gosford-park-2001` | Gosford Park | The dinner or an early country-house gathering |
-| `07-murder-on-the-orient-express-1974` | Murder on the Orient Express | Albert Finney's Poirot in the train's dining car |
-| `08-death-on-the-nile-1978` | Death on the Nile | Peter Ustinov's Poirot on the steamer's deck |
-| `09-sleuth-1972` | Sleuth | Olivier and Caine in the initial country-house encounter |
-| `10-deathtrap-1982` | Deathtrap | Caine and Reeve with the script in the study, early in the film |
+| `glass-onion-still` | Glass Onion (2022) | Norton and Craig at the island shore |
+| `wake-up-dead-man-still` | Wake Up Dead Man (2025) | A wooded churchyard and mausoleum |
+| `clue-still` | Clue (1985) | Curry reading a note beside the dinner table |
+| `see-how-they-run-still` | See How They Run (2022) | Rockwell and Ronan with a group in the theatre |
+| `the-last-of-sheila-still` | The Last of Sheila (1973) | Two guests on the yacht deck |
+| `gosford-park-still` | Gosford Park (2001) | Guests and servants at a candlelit dinner |
+| `murder-on-the-orient-express-still` | Murder on the Orient Express (1974) | Finney's Poirot in the dining car |
+| `death-on-the-nile-still` | Death on the Nile (1978) | Ustinov's Poirot with fellow travelers outdoors |
+| `sleuth-still` | Sleuth (1972) | Olivier and Caine beside the hedge maze |
+| `deathtrap-still` | Deathtrap (1982) | Caine addressing Cannon in the writer's home |
+
+Each still has 480, 800 and 1200 px WebP versions in the responsive-image manifest. The ten largest versions total 511,220 bytes (30,228–114,282 bytes each); the ten 480 px versions total 157,526 bytes. All thirty variants together are 978,776 bytes. The ten source PNGs totaled 69,812,046 bytes. The article loads the cover eagerly and stills lazily, reserves their intrinsic proportions, and lets the browser select a version for the display width.
 
 ## Publication checks and follow-up
 
@@ -61,4 +63,4 @@ The entry is registered in the blog, Vercel's explicit article routes and the pu
 
 Before release, run the build, type checking, lint, publication failure-detection suite, local publication checker and relevant blog browser scenarios; visually inspect mobile and desktop. Merge only the validated head against the checked main. Then verify Vercel, the exact published revision, the production SEO workflow and the article/catalog/feed/assets over HTTP without executing production app JavaScript.
 
-First maintenance: 3 November 2026 (+7 days), including links and any supplied stills. First query review: 24 November (+28 days); results may still be sparse. Re-check viewing links when materially updating the article, and conduct a six-month content review. These are editorial dates, not newly created scheduled tasks. N02 and other future articles remain separate work.
+First maintenance: 3 November 2026 (+7 days), including viewing links and image delivery. First query review: 24 November (+28 days); results may still be sparse. Re-check viewing links when materially updating the article, and conduct a six-month content review. These are editorial dates, not newly created scheduled tasks. N02 and other future articles remain separate work.
