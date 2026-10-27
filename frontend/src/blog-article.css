@@ -79,7 +79,7 @@
 .hq-flare-schematic::before { content: ""; position: absolute; width: 85%; height: 3px; border-radius: 50%; background: linear-gradient(90deg, transparent, #4592ee55 12%, #8ec9ff 48%, #fff 50%, #8ec9ff 52%, #4592ee55 88%, transparent); box-shadow: 0 0 10px #689af57a; }
 .hq-flare-schematic span { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle, #fff 0%, #d5efff 22%, #71a3e8aa 45%, transparent 72%); }
 .hq-article-takeaway { padding: 18px 20px; border-radius: 12px; background: var(--hq-surface-soft); border: 1px solid var(--hq-border); }
-.hq-article-takeaway h3 { margin-top: 0; }
+.hq-article-takeaway :is(h2, h3):first-child { margin-top: 0; }
 .hq-article-takeaway p:last-child { margin-bottom: 0; }
 .hq-article-sources { margin-top: 34px; padding-top: 4px; border-top: 1px solid var(--hq-border); }
 .hq-article-sources > p { color: var(--hq-muted); font-size: 14px; line-height: 1.6; }
