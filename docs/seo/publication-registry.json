@@ -135,6 +135,28 @@
       }
     },
     {
+      "path": "/blog/movies-like-knives-out",
+      "url": "https://hard-quiz.com/blog/movies-like-knives-out",
+      "kind": "article",
+      "slug": "movies-like-knives-out",
+      "publishedOn": "2026-10-27",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/best-thriller-movies-2026",
       "url": "https://hard-quiz.com/blog/best-thriller-movies-2026",
       "kind": "article",

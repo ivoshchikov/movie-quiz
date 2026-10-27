@@ -130,14 +130,14 @@
       "dest": "/blog.html"
     },
     {
-      "src": "^/blog/(best-thriller-movies-2026|november-2026-movie-releases|is-whalefall-based-on-a-book|best-horror-movies-2026|august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)\\.html$",
+      "src": "^/blog/(movies-like-knives-out|best-thriller-movies-2026|november-2026-movie-releases|is-whalefall-based-on-a-book|best-horror-movies-2026|august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)\\.html$",
       "status": 301,
       "headers": {
         "Location": "/blog/$1"
       }
     },
     {
-      "src": "^/blog/(best-thriller-movies-2026|november-2026-movie-releases|is-whalefall-based-on-a-book|best-horror-movies-2026|august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)/?$",
+      "src": "^/blog/(movies-like-knives-out|best-thriller-movies-2026|november-2026-movie-releases|is-whalefall-based-on-a-book|best-horror-movies-2026|august-2025-new-movies-guide|september-2025-new-movies-guide|why-2-39-1-feels-more-cinematic)/?$",
       "dest": "/blog/$1.html"
     },
     {

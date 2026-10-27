@@ -3,6 +3,7 @@ import type { BlogPost } from "./types";
 import { estimateReadingMinutes } from "./reading";
 
 // Посты
+import knivesOut          from "./entries/movies-like-knives-out";
 import thriller2026        from "./entries/best-thriller-movies-2026";
 import november2026Movies  from "./entries/november-2026-movie-releases";
 import whalefallBook       from "./entries/is-whalefall-based-on-a-book";
@@ -13,6 +14,7 @@ import why239              from "./entries/why-2-39-feels-more-cinematic";
 
 export const posts: BlogPost[] = [
   // Самый свежий — сверху (в любом случае список на /blog сортируется по дате)
+  knivesOut,
   thriller2026,
   november2026Movies,
   whalefallBook,

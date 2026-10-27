@@ -100,5 +100,71 @@
     "width": 640,
     "height": 356,
     "srcSet": "/blog-assets/responsive/classic-preview-320.webp 320w, /blog-assets/responsive/classic-preview-640.webp 640w, /blog-assets/responsive/classic-preview-960.webp 960w"
+  },
+  "/blog-assets/movies-like-knives-out-cover.webp": {
+    "src": "/blog-assets/movies-like-knives-out-cover.webp",
+    "srcSet": "/blog-assets/movies-like-knives-out-480.webp 480w, /blog-assets/movies-like-knives-out-800.webp 800w, /blog-assets/movies-like-knives-out-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/knives-out-glass-onion-still.webp": {
+    "src": "/blog-assets/knives-out-glass-onion-still.webp",
+    "srcSet": "/blog-assets/knives-out-glass-onion-still-480.webp 480w, /blog-assets/knives-out-glass-onion-still-800.webp 800w, /blog-assets/knives-out-glass-onion-still.webp 1200w",
+    "width": 1200,
+    "height": 636
+  },
+  "/blog-assets/knives-out-wake-up-dead-man-still.webp": {
+    "src": "/blog-assets/knives-out-wake-up-dead-man-still.webp",
+    "srcSet": "/blog-assets/knives-out-wake-up-dead-man-still-480.webp 480w, /blog-assets/knives-out-wake-up-dead-man-still-800.webp 800w, /blog-assets/knives-out-wake-up-dead-man-still.webp 1200w",
+    "width": 1200,
+    "height": 634
+  },
+  "/blog-assets/knives-out-clue-still.webp": {
+    "src": "/blog-assets/knives-out-clue-still.webp",
+    "srcSet": "/blog-assets/knives-out-clue-still-480.webp 480w, /blog-assets/knives-out-clue-still-800.webp 800w, /blog-assets/knives-out-clue-still.webp 1200w",
+    "width": 1200,
+    "height": 662
+  },
+  "/blog-assets/knives-out-see-how-they-run-still.webp": {
+    "src": "/blog-assets/knives-out-see-how-they-run-still.webp",
+    "srcSet": "/blog-assets/knives-out-see-how-they-run-still-480.webp 480w, /blog-assets/knives-out-see-how-they-run-still-800.webp 800w, /blog-assets/knives-out-see-how-they-run-still.webp 1200w",
+    "width": 1200,
+    "height": 636
+  },
+  "/blog-assets/knives-out-the-last-of-sheila-still.webp": {
+    "src": "/blog-assets/knives-out-the-last-of-sheila-still.webp",
+    "srcSet": "/blog-assets/knives-out-the-last-of-sheila-still-480.webp 480w, /blog-assets/knives-out-the-last-of-sheila-still-800.webp 800w, /blog-assets/knives-out-the-last-of-sheila-still.webp 1200w",
+    "width": 1200,
+    "height": 637
+  },
+  "/blog-assets/knives-out-gosford-park-still.webp": {
+    "src": "/blog-assets/knives-out-gosford-park-still.webp",
+    "srcSet": "/blog-assets/knives-out-gosford-park-still-480.webp 480w, /blog-assets/knives-out-gosford-park-still-800.webp 800w, /blog-assets/knives-out-gosford-park-still.webp 1200w",
+    "width": 1200,
+    "height": 505
+  },
+  "/blog-assets/knives-out-murder-on-the-orient-express-still.webp": {
+    "src": "/blog-assets/knives-out-murder-on-the-orient-express-still.webp",
+    "srcSet": "/blog-assets/knives-out-murder-on-the-orient-express-still-480.webp 480w, /blog-assets/knives-out-murder-on-the-orient-express-still-800.webp 800w, /blog-assets/knives-out-murder-on-the-orient-express-still.webp 1200w",
+    "width": 1200,
+    "height": 690
+  },
+  "/blog-assets/knives-out-death-on-the-nile-still.webp": {
+    "src": "/blog-assets/knives-out-death-on-the-nile-still.webp",
+    "srcSet": "/blog-assets/knives-out-death-on-the-nile-still-480.webp 480w, /blog-assets/knives-out-death-on-the-nile-still-800.webp 800w, /blog-assets/knives-out-death-on-the-nile-still.webp 1200w",
+    "width": 1200,
+    "height": 646
+  },
+  "/blog-assets/knives-out-sleuth-still.webp": {
+    "src": "/blog-assets/knives-out-sleuth-still.webp",
+    "srcSet": "/blog-assets/knives-out-sleuth-still-480.webp 480w, /blog-assets/knives-out-sleuth-still-800.webp 800w, /blog-assets/knives-out-sleuth-still.webp 1200w",
+    "width": 1200,
+    "height": 665
+  },
+  "/blog-assets/knives-out-deathtrap-still.webp": {
+    "src": "/blog-assets/knives-out-deathtrap-still.webp",
+    "srcSet": "/blog-assets/knives-out-deathtrap-still-480.webp 480w, /blog-assets/knives-out-deathtrap-still-800.webp 800w, /blog-assets/knives-out-deathtrap-still.webp 1200w",
+    "width": 1200,
+    "height": 669
   }
 }
