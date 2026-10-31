@@ -77,3 +77,31 @@ Remote CI, main merge, Vercel production and public HTTP results are tracked in 
 The owner supplied `Archive(1).zip` for insertion after the image brief: six landscape/square scenes and four vertical posters, one image for each of the ten films. Each is rendered with the existing FilmStill component, an English visual description and a caption that distinguishes scenes from posters. Full compositions and poster lettering are preserved; images are not enlarged. The Godzilla poster advertises November 3 early access, distinct from the November 6 wide release already explained in the text. The Spanish-language Paper Tiger poster is labeled as a poster, not a frame.
 
 File provenance, input/output hashes, dimensions and processing settings are recorded in [november-2026-images.json](november-2026-images.json). The archive contains no source URLs, creator credits or license documentation; those fields remain unknown rather than being invented. Cover, social metadata, publication date, source research and release dates are unchanged. Production status and validation evidence belong in the image-publication PR.
+
+
+## October 31, 2026 — full pre-November review
+
+All ten selected entries were checked for US opening dates, rollout distinctions, directors, principal cast and the premises used in the guide. The original publication date (October 18), URL, title, ten supplied images and compressed assets are retained. The substantive correction uses `modified: 2026-10-31`.
+
+| Film | Date retained or clarified | Evidence checked October 31 |
+|---|---|---|
+| The Cat in the Hat | November 6 North America; international from November 4 | Warner Bros. official site, including director and voice credits. Old October 2 trailer-image text is superseded by the page's release statement. |
+| Godzilla Minus Zero | November 6 wide; November 3 IMAX early access | TOHO's cast/story announcement and October 6 ticket announcement. |
+| Wild Horse Nine | November 6 theatrical opening; nationwide scale not asserted | Searchlight's film page: date, McDonagh, cast and Chile/Easter Island premise. It is absent from the current Cinema United wide calendar; absence is not a delay announcement. |
+| Ebenezer | November 13 US | Paramount US synopsis indexed official text confirms the date and Ti West/cast. Direct extraction exposes only the shell. Keep the current official campaign title. |
+| How to Rob a Bank | November 13 wide; November 11 Harkins early access at participating locations | Verified Amazon MGM trailer description, Cinema United; Harkins indexed exhibitor listing adds the early screening. No nationwide November 11 claim. |
+| Paper Tiger | November 13 opening; November 20 expansion is reported, not newly guaranteed | NEON's film page directly read via its in-theaters directory: date, Gray, cast and synopsis. TheWrap's June 25 announcement report supports November 20. Current Cinema United does not list the film, and NEON does not separately confirm the expansion; do not interpret omission as cancellation. |
+| The Hunger Games: Sunrise on the Reaping | November 20 | Current Cinema United, Lionsgate's North America announcement and production company Stillking's director/cast/story details. |
+| I Play Rocky | November 6 select; November 20 wide | About Amazon's October 22 update and current Cinema United; Farrelly and principal cast match. |
+| Hexed | November 25; PG | Disney US page directly confirms date, rating, directors, voices and premise. |
+| Focker-In-Law | November 25 US | Universal US official indexed synopsis confirms date, Hamburg and principal cast. Direct extraction is empty; People trailer reporting remains separately attributed for Olivia's relationship and the lie detector. |
+
+Narnia remains outside November: Netflix Tudum confirms February 12, 2027 theatrical release and April 2 streaming, with IMAX previews from February 10. Thanksgiving remains November 26. This is a selected ten-film guide, not a complete list of all November releases.
+
+The table and each film's facts now use “US theatrical date” rather than implying every title has a confirmed wide opening. Paper Tiger is placed on its directly confirmed November 13 opening, with the reported November 20 expansion explicitly qualified in the row, preview and FAQ. Wild Horse Nine's scale is qualified. A linked October 31 update explains the changes, and the footer distinguishes directly readable pages from indexed official synopsis checks.
+
+New reader-facing source links: [TheWrap's Paper Tiger announcement](https://www.thewrap.com/creative-content/movies/james-grays-paper-tiger-set-for-november-release-by-neon/) and [Harkins' early-access listing](https://www.harkins.com/movies/how-to-rob-a-bank-early-access-screening/2026-11-11). The existing NEON URL remains valid; it was reached through [NEON's directory](https://www.neonrated.com/films/in-theaters) after the first direct extraction failed.
+
+Validation and publication are recorded in the maintenance pull request. Later checks before November 6/13/20/25 remain due; this review does not establish future local showtimes or Google indexation.
+
+Local validation of this update: production build/postbuild, both TypeScript projects and targeted ESLint passed; 66 existing blog browser scenarios and 15 publication-process tests passed. The local publication checker passed 15 pages / 116 image checks / zero errors. A separate no-JavaScript browser check at 320/390/768/1440 px confirmed ten table/section date pairs, eleven decoded article images, valid anchors, no horizontal overflow and the original publication/current modification dates in BlogPosting. The 320/1440 date tables were visually inspected. Registry comparison confirms that only November's `modifiedOn` changed; all previous publication and Google fields are preserved.

@@ -15,6 +15,8 @@ const sources = {
   ebenezer: "https://www.ebenezermovie.com/synopsis/",
   bank: "https://www.youtube.com/watch?v=ORxw68y3lyw",
   paperTiger: "https://www.neonrated.com/film/paper-tiger",
+  paperTigerExpansion: "https://www.thewrap.com/creative-content/movies/james-grays-paper-tiger-set-for-november-release-by-neon/",
+  bankEarly: "https://www.harkins.com/movies/how-to-rob-a-bank-early-access-screening/2026-11-11",
   rocky: "https://www.aboutamazon.com/news/entertainment/i-play-rocky-trailer-cast-release-date-amazon-mgm-studios",
   hunger: "https://www.stillking.film/the-hunger-games-sunrise-on-the-reaping/",
   hungerDate: "https://investors.lionsgate.com/news-events/news/news-details/2024/LIONSGATE-TO-ADAPT-SUZANNE-COLLINSS-NEWLY-ANNOUNCED-HUNGER-GAMES-NOVEL-SUNRISE-ON-THE-REAPING-INTO-MAJOR-MOTION-PICTURE/",
@@ -136,11 +138,12 @@ const films: ReleaseFilm[] = [
   {
     id: "wild-horse-nine", title: "Wild Horse Nine", genre: "Dark comedy",
     releaseDate: "2026-11-06", director: "Martin McDonagh",
+    releaseNote: <>Theatrical opening; check local availability</>,
     cast: "John Malkovich, Sam Rockwell, Steve Buscemi",
     source: sources.wildHorse, sourceLabel: "Searchlight Pictures",
     body: <>
       <p>Shortly before the 1973 Chilean coup, two CIA agents are sent from Santiago to Easter Island. They bring troubled pasts and current conspiracies with them, and a connection with two students adds another complication. John Malkovich and Sam Rockwell play the agents; Steve Buscemi is their bureau chief.</p>
-      <p>Martin McDonagh writes and directs. The premise offers a different sort of tension from November's monsters and arena spectacle: a small group of people, old grievances and a politically charged setting. Put it on your list if those shifting loyalties are the part of a story that usually interests you.</p>
+      <p>Martin McDonagh writes and directs. The premise offers a different sort of tension from November's monsters and arena spectacle: a small group of people, old grievances and a politically charged setting. Searchlight lists November 6, but does not specify the rollout's scale on its film page. Check your city's listings rather than assuming a nationwide opening.</p>
     </>,
   },
   {
@@ -156,22 +159,23 @@ const films: ReleaseFilm[] = [
   {
     id: "how-to-rob-a-bank", title: "How to Rob a Bank", genre: "Crime action",
     releaseDate: "2026-11-13", director: "David Leitch",
+    releaseNote: <>Select Harkins early access <time dateTime="2026-11-11">Nov 11</time></>,
     cast: "Nicholas Hoult, Zoë Kravitz, Anna Sawai, John C. Reilly",
     source: sources.bank, sourceLabel: "Amazon MGM Studios' official trailer",
     body: <>
       <p>A bank-robbing crew broadcasts its heists and becomes a social-media phenomenon. That visibility also puts the robbers in the sights of an FBI agent and a software engineer. David Leitch directs, with Nicholas Hoult, Zoë Kravitz and Anna Sawai among the cast.</p>
-      <p>The crew's appetite for an audience is the complication to watch: every new viewer is also another witness. That gives the heist setup a question beyond whether the robbers can get away with the money. How much attention can they attract before their fame becomes a liability?</p>
+      <p>The crew's appetite for an audience is the complication to watch: every new viewer is also another witness. The wide opening remains November 13. <a href={sources.bankEarly}>Harkins also lists an early-access screening on November 11</a>; check participating locations and showtimes before booking.</p>
     </>,
   },
   {
     id: "paper-tiger", title: "Paper Tiger", genre: "Crime drama",
-    releaseDate: "2026-11-20",
-    releaseNote: <>Select theaters <time dateTime="2026-11-13">Nov 13</time></>,
+    releaseDate: "2026-11-13",
+    releaseNote: <>Opening; expansion reported for <time dateTime="2026-11-20">Nov 20</time></>,
     director: "James Gray", cast: "Adam Driver, Scarlett Johansson, Miles Teller",
     source: sources.paperTiger, sourceLabel: "NEON",
     body: <>
       <p>Two brothers enter a scheme that promises more than it can safely deliver. Their involvement with the Russian mafia then puts pressure on the family ties they rely on. James Gray directs Adam Driver, Scarlett Johansson and Miles Teller in a story about the point where a financial gamble starts to threaten a family.</p>
-      <p>This is an important one to check by city. <a href={sources.paperTiger}>NEON lists the initial theatrical opening as November 13</a>; <a href={sources.calendar}>Cinema United's wide-release calendar places it on November 20</a>. The earlier date does not mean it will already be playing at your local multiplex. Look for the wider rollout a week later.</p>
+      <p><a href={sources.paperTiger}>NEON's current film page confirms a November 13 theatrical opening</a>. <a href={sources.paperTigerExpansion}>TheWrap reported a November 20 nationwide expansion</a> when the release was announced in June. At our October 31 check, Paper Tiger was absent from Cinema United's wide-release calendar, and NEON's page did not separately confirm that expansion. November 20 remains a reported rollout date, not a guarantee of screenings in your city; check local showtimes. The calendar's omission alone does not establish a delay.</p>
     </>,
   },
   {
@@ -225,7 +229,7 @@ const post: BlogPost = {
   title: "November 2026 Movie Releases: US Theater Dates",
   excerpt: "Plan November 2026 at the movies: ten US releases, from Godzilla Minus Zero to The Hunger Games and Hexed, with dates and spoiler-free previews.",
   date: "2026-10-18",
-  modified: "2026-10-23",
+  modified: "2026-10-31",
   tags: ["Streaming & New Releases", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
@@ -234,18 +238,21 @@ const post: BlogPost = {
     { id: "release-dates", label: "November release calendar" },
     ...films.map(film => ({ id: film.id, label: film.title })),
     { id: "thanksgiving-movies", label: "Planning a Thanksgiving movie trip" },
+    { id: "october-31-update", label: "October 31 calendar update" },
     { id: "release-questions", label: "Release-date questions" },
     { id: "sources", label: "Sources" },
   ],
   sources: [
-    { label: "Cinema United — North American wide-release calendar; nationwide dates for Paper Tiger and I Play Rocky", url: sources.calendar },
+    { label: "Cinema United — North American wide-release calendar; I Play Rocky's November 20 wide opening", url: sources.calendar },
     { label: "Warner Bros. — The Cat in the Hat: US and international openings, story and credits", url: sources.cat },
     { label: "TOHO / Godzilla — Minus Zero: sequel setting, returning cast and November 6 opening", url: sources.godzilla },
     { label: "TOHO / Godzilla — November 3 IMAX early access and November 6 wide release", url: sources.godzillaEarly },
     { label: "Searchlight Pictures — Wild Horse Nine: November 6 date, synopsis and credits", url: sources.wildHorse },
     { label: "Paramount — Ebenezer: current title, November 13 opening and credits", url: sources.ebenezer },
     { label: "Amazon MGM Studios — How to Rob a Bank: official trailer description, release date and credits", url: sources.bank },
+    { label: "Harkins — How to Rob a Bank: November 11 early-access listing at participating theaters", url: sources.bankEarly },
     { label: "NEON — Paper Tiger: November 13 opening, synopsis and cast", url: sources.paperTiger },
+    { label: "TheWrap — June 25 report of Paper Tiger's November 20 nationwide expansion; not separately reconfirmed by NEON's current page", url: sources.paperTigerExpansion },
     { label: "Amazon MGM Studios / About Amazon — I Play Rocky: select-theater opening, story and cast", url: sources.rocky },
     { label: "Stillking Film — The Hunger Games: Sunrise on the Reaping: adaptation, director and cast", url: sources.hunger },
     { label: "Lionsgate — Sunrise on the Reaping: announced November 20 North American opening and story timeline", url: sources.hungerDate },
@@ -256,13 +263,13 @@ const post: BlogPost = {
   ],
   content: () => <>
     <p><strong>November 2026's US movie releases include <em>Godzilla Minus Zero</em> on November 6, <em>The Hunger Games: Sunrise on the Reaping</em> on November 20, and <em>Hexed</em> and <em>Focker-In-Law</em> on November 25.</strong> Between them are a Christmas ghost story, two very different crime films and the story behind <em>Rocky</em>.</p>
-    <p>These ten selected theatrical releases give you a way to plan the month by date and mood. The calendar uses nationwide US opening dates, with earlier select-theater runs and special screenings marked separately. Dates were checked on <time dateTime="2026-10-18">October 18, 2026</time>; confirm local showtimes before booking.</p>
+    <p>These ten selected theatrical releases give you a way to plan the month by date and mood. The calendar distinguishes wide openings, earlier select-theater runs and special screenings; it does not promise that every film will open nationwide. The ten film entries and release details were reviewed on <time dateTime="2026-10-31">October 31, 2026</time>. Paper Tiger's reported expansion needs a local check; see the <a href="#october-31-update">update below</a>.</p>
 
     <section className="hq-release-index" aria-labelledby="release-dates">
       <h2 id="release-dates" tabIndex={-1}>November 2026 movie release dates at a glance</h2>
       <table>
-        <caption>Selected US wide releases · earlier limited runs and special screenings noted</caption>
-        <thead><tr><th scope="col">Movie</th><th scope="col">US wide release</th><th scope="col">Genre</th></tr></thead>
+        <caption>Selected US theatrical dates · rollout details and early screenings noted</caption>
+        <thead><tr><th scope="col">Movie</th><th scope="col">US date</th><th scope="col">Genre</th></tr></thead>
         <tbody>{films.map(film => <tr key={film.id}><th scope="row"><a href={"#" + film.id}>{film.title}</a></th><td>{renderReleaseDate(film)}</td><td>{film.genre}</td></tr>)}</tbody>
       </table>
     </section>
@@ -275,7 +282,7 @@ const post: BlogPost = {
     {films.map(film => <section key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{film.title}</h2>
       <dl className="hq-movie-facts">
-        <div><dt>US wide release</dt><dd>{renderReleaseDate(film)}</dd></div>
+        <div><dt>US theatrical date</dt><dd>{renderReleaseDate(film)}</dd></div>
         <div><dt>Director</dt><dd>{film.director}</dd></div>
         <div><dt>{film.castLabel || "Starring"}</dt><dd>{film.cast}</dd></div>
       </dl>
@@ -289,12 +296,20 @@ const post: BlogPost = {
     <p><strong>For an established series, choose the history you want to revisit.</strong> <em>Sunrise on the Reaping</em> returns to Panem, <em>Godzilla Minus Zero</em> continues the Shikishima family's story, and <em>Focker-In-Law</em> revisits Greg and Jack. Those are different kinds of preparation: a previous film can supply emotional context as well as plot.</p>
     <p><strong>For a group drawn to crime stories, compare the premises.</strong> <em>How to Rob a Bank</em> has a crew turning robbery into a public spectacle; <em>Paper Tiger</em> starts with brothers drawn into a dangerous scheme. <em>Wild Horse Nine</em> moves toward intelligence work, political intrigue and a troubled partnership. These are choices by setup, not a ranking of films we have screened.</p>
 
+    <h2 id="october-31-update" tabIndex={-1}>What changed in our October 31 check?</h2>
+    <p>The selected films retain their announced November openings. This update corrects the distinction between a theatrical opening and a confirmed wide release:</p>
+    <ul>
+      <li><strong>Paper Tiger:</strong> the table now leads with NEON's confirmed November 13 opening. The November 20 expansion is attributed to TheWrap's announcement report, with its current confirmation limit explained above.</li>
+      <li><strong>Wild Horse Nine:</strong> Searchlight still lists November 6; the guide no longer labels that date as a confirmed nationwide opening.</li>
+      <li><strong>How to Rob a Bank:</strong> the November 13 wide opening is unchanged; a Harkins early-access listing for November 11 is now marked separately.</li>
+    </ul>
+
     <section className="hq-article-faq" aria-labelledby="release-questions">
       <h2 id="release-questions" tabIndex={-1}>Questions about November's releases</h2>
       <h3>Is Narnia still coming out in November 2026?</h3>
       <p>No. <a href={sources.narnia}>Netflix's current announcement</a> gives <strong>February 12, 2027</strong> for the theatrical release of Greta Gerwig's <em>Narnia: The Magician's Nephew</em>, followed by Netflix on April 2, 2027. Older November 2026 listings are out of date.</p>
       <h3>Why do Paper Tiger and I Play Rocky have more than one date?</h3>
-      <p>They begin in selected theaters before expanding. <em>I Play Rocky</em> starts its select run on November 6; <em>Paper Tiger</em> starts on November 13. Both appear on Cinema United's wide-release calendar for November 20. The early date is useful if you live in a launch city, but it is not a nationwide booking guarantee.</p>
+      <p><em>I Play Rocky</em> starts in selected theaters on November 6, according to Amazon, and Cinema United lists its wide opening on November 20. NEON confirms <em>Paper Tiger</em> for November 13; its November 20 expansion comes from TheWrap's announcement report and is not separately confirmed on NEON's current page. These dates describe different stages of a rollout, so check which one applies to your city.</p>
       <h3>Which movies open during Thanksgiving week?</h3>
       <p>In this selection, <em>Hexed</em> and <em>Focker-In-Law</em> open on <strong>Wednesday, November 25</strong>. Thanksgiving falls on Thursday, November 26. Films opening earlier in November may also be playing that weekend; actual screenings depend on your local cinema.</p>
       <h3>Are these streaming release dates?</h3>
@@ -303,7 +318,7 @@ const post: BlogPost = {
 
     <h2>More to watch before November</h2>
     <p>If you are choosing a tense watch for tonight, our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> sorts seven films by mood and explains sequel preparation. For another book-to-screen release, our <Link to="/blog/is-whalefall-based-on-a-book">Whalefall novel and movie guide</Link> explains what the adaptation is based on without revealing the ending.</p>
-    <p><small>Prepared with AI assistance from studio, distributor and exhibition-industry sources, plus reporting on the Focker-In-Law trailer. This is a release-planning guide, not a review based on screenings. Release details were checked on October 18, 2026. The US rating for Hexed was checked again on October 23, 2026.</small></p>
+    <p><small>Prepared with AI assistance from studio, distributor, exhibitor and exhibition-industry sources, plus reporting on the Focker-In-Law trailer and Paper Tiger's announced expansion. This is a release-planning guide, not a review based on screenings. The ten entries, US dates and Hexed's PG rating were reviewed on October 31, 2026. Paramount and Universal's US synopsis details were checked through indexed official-page text; Paper Tiger's expansion is qualified above.</small></p>
   </>,
 };
 
