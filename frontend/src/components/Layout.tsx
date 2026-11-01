@@ -13,6 +13,7 @@ import SiteNavigation from "./SiteNavigation";
 import PageErrorBoundary from "./PageErrorBoundary";
 import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
 import { useSiteVisits } from "../analytics/useSiteVisits";
+import { useSitePageViews } from "../analytics/useSitePageViews";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
@@ -117,6 +118,7 @@ export default function Layout() {
   useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked]);
   useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`, loc.key); }, [pathname, search, loc.key, analyticsBlocked]);
   useSiteVisits(analyticsBlocked, owner);
+  useSitePageViews(analyticsBlocked, owner, pathname);
   const loginViewed = useRef(false);
   const loginVisible = !user && (showLogin || pathname === "/login");
   useEffect(() => {

@@ -15,10 +15,15 @@
 .hq-traffic-footnote details p { line-height: 1.65; margin-top: .5rem; max-width: 80ch; }
 .hq-traffic-error { padding: .5rem 0; margin-bottom: .5rem; font-size: .85rem; }
 .hq-admin-traffic button:disabled { opacity: .6; cursor: default; }
+.hq-page-views .hq-traffic-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 600px) {
   .hq-admin-traffic { padding: .9rem; }
   .hq-traffic-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
   .hq-traffic-cards > div { padding: .75rem; }
   .hq-traffic-footnote { display: block; }
   .hq-traffic-footnote details { margin-top: .4rem; }
+  .hq-page-views .hq-traffic-cards { grid-template-columns: minmax(0, 1fr); }
+  .hq-page-views .hq-traffic-cards > div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .hq-page-views .hq-traffic-cards dd { margin: 0; }
+  .hq-page-views .hq-traffic-heading { flex-wrap: wrap; gap: .3rem 1rem; }
 }

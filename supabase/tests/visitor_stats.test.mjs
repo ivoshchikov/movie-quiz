@@ -36,15 +36,17 @@ await db.exec(`
 // Replace only the clock in the isolated fixture; production has no client/test clock input.
 const source = await readFile(new URL('../migrations/20261101174455_admin_visitor_stats.sql', import.meta.url), 'utf8');
 await db.exec(source.replaceAll('clock_timestamp()', 'hq_private.traffic_test_now()'));
+const pageViewSource = await readFile(new URL('../migrations/20261101212340_admin_page_views.sql', import.meta.url), 'utf8');
+await db.exec(pageViewSource.replaceAll('clock_timestamp()', 'hq_private.traffic_test_now()'));
 const scalar = async (sql, args) => (await db.query(sql, args)).rows[0].v;
 const uid = id => db.query("select set_config('request.jwt.claim.sub',$1,false)", [id ?? '']);
 const clock = at => db.query("select set_config('hq.test_now',$1,false)", [at]);
 const beat = id => db.query('select public.site_visit_heartbeat($1)', [visitor(id)]);
 const stats = (id = owner) => scalar('select public.admin_visitor_stats($1) v', [id]);
 async function reset(at = '2026-11-01T18:00:00Z') {
-  await db.exec('truncate hq_private.site_visit_days,hq_private.site_visit_exclusions');
+  await db.exec('truncate hq_private.site_visit_days,hq_private.site_visit_exclusions,hq_private.site_page_views');
   await uid(null); await clock(at);
-  await db.exec("update hq_private.site_traffic_settings set started_at=hq_private.traffic_test_now()-interval '35 days'");
+  await db.exec("update hq_private.site_traffic_settings set started_at=hq_private.traffic_test_now()-interval '35 days', page_views_started_at=hq_private.traffic_test_now()-interval '1 hour'");
 }
 async function read() { await uid(owner); return stats(); }
 async function seed(id, daysAgo, secondsAgo = 1000) {
@@ -169,5 +171,111 @@ test('concurrent tabs and owner exclusion serialize on a native PostgreSQL conne
     await b.query("select set_config('request.jwt.claim.sub',$1,false)",[owner]);
     await Promise.all([a.query('select public.site_visit_heartbeat($1)',[visitor(1)]),b.query('select public.site_visit_heartbeat($1)',[visitor(1)])]);
     await uid(null);await beat(1);assert.equal((await read()).today,0);
+  } finally { await a.end(); await b.end(); }
+});
+
+const view = (browser, token) => db.query('select public.site_record_page_view($1,$2)', [visitor(browser),visitor(token)]);
+const pageStats = (expected = owner) => scalar('select public.admin_page_view_stats($1) v',[expected]);
+async function readPageStats() { await uid(owner); return pageStats(); }
+
+test('page view collection starts independently and heartbeat polling never creates views', async () => {
+  await reset(); await beat(1); await beat(2);
+  const row = await readPageStats();
+  assert.deepEqual([row.hours24,row.days7,row.days30],[0,0,0]);
+  assert.equal(Date.parse(row.since),Date.parse(row.updated_at)-3600000);
+  assert.notEqual(row.since,(await stats()).since);
+});
+test('each new page activation counts, while retries retain the original timestamp', async () => {
+  await reset(); await view(1,101);
+  const first=await scalar('select viewed_at::text v from hq_private.site_page_views');
+  await clock('2026-11-01T18:01:00Z'); await view(1,101);
+  assert.equal(await scalar('select viewed_at::text v from hq_private.site_page_views'),first);
+  await view(1,102); await view(2,103);
+  const row=await readPageStats(); assert.deepEqual([row.hours24,row.days7,row.days30],[3,3,3]);
+  assert.equal((await stats()).today,2);
+});
+test('a page token cannot be transferred to another browser', async () => {
+  await reset(); await view(1,101);
+  await assert.rejects(view(2,101),/Invalid page view/);
+  assert.equal((await readPageStats()).hours24,1);
+  assert.equal((await stats()).today,1); // The conflicting statement rolls back its heartbeat too.
+});
+test('page ingestion is public, but tables and aggregate are private to verified Isildur', async () => {
+  await reset();
+  for(const [role,account,n] of [['anon',null,1],['authenticated',player,2]]) {
+    await uid(account);
+    await asRole(role,async()=>{
+      await view(n,100+n);
+      await assert.rejects(pageStats(),/permission denied|Administrator/);
+      if(account) await assert.rejects(pageStats(account),/Administrator/);
+      for(const operation of ['select * from','delete from']) await assert.rejects(db.query(`${operation} hq_private.site_page_views`),/permission denied/);
+    });
+  }
+  await uid(owner);
+  await asRole('authenticated', async()=>{
+    assert.equal((await pageStats()).days30,2);
+    await assert.rejects(pageStats(player),/Administrator/);
+    await assert.rejects(pageStats(null),/Administrator/);
+  });
+  await db.query('delete from public.admin_users where user_id=$1',[owner]);
+  try { await assert.rejects(pageStats(),/Administrator/); }
+  finally { await db.query('insert into public.admin_users values($1)',[owner]); }
+});
+test('owner heartbeat purges earlier guest page views and late guest retries stay excluded', async () => {
+  await reset(); await view(1,101); await view(1,102); await view(2,103);
+  await uid(owner); await beat(1); await view(3,104);
+  assert.equal((await pageStats()).hours24,1);
+  await uid(null); await view(1,101); await view(1,105); await view(3,106);
+  assert.equal((await readPageStats()).hours24,1);
+});
+test('rolling page-view windows use exact 24, 168 and 720 hours with future rows excluded', async () => {
+  await reset('2026-11-02T06:30:00Z');
+  for(const [i,hours] of [0,23.999,24,167.999,168,719.999,720,800,-1].entries()) {
+    await db.query("insert into hq_private.site_page_views values($1,$2,hq_private.traffic_test_now()-($3::text||' hours')::interval)",[visitor(i+101),visitor(1),hours]);
+  }
+  for(const zone of ['UTC','America/Chicago','Asia/Nicosia']) {
+    await db.query("select set_config('TimeZone',$1,false)",[zone]);
+    const row=await readPageStats(); assert.deepEqual([row.hours24,row.days7,row.days30],[2,4,6]);
+  }
+  await db.exec("set timezone='UTC'");
+});
+test('a retry after 24 hours does not move an old view into the current window', async () => {
+  await reset('2026-11-01T07:30:00Z'); await view(1,101);
+  await clock('2026-11-02T07:30:01Z'); await view(1,101);
+  const row=await readPageStats(); assert.equal(row.hours24,0); assert.equal(row.days7,1);
+});
+test('invalid page and visitor identifiers cannot add observations', async () => {
+  await reset();
+  for(const args of [[visitor(1),null],[null,visitor(101)],['00000000-0000-0000-0000-000000000000',visitor(101)],[visitor(1),'00000000-0000-0000-0000-000000000000']]) {
+    await assert.rejects(db.query('select public.site_record_page_view($1,$2)',args),/Invalid/);
+  }
+  assert.equal((await readPageStats()).days30,0);
+});
+test('page rows retain only opaque IDs and server time; grants and search paths stay bounded', async () => {
+  assert.deepEqual((await db.query("select column_name from information_schema.columns where table_schema='hq_private' and table_name='site_page_views' order by ordinal_position")).rows.map(r=>r.column_name),['view_id','visitor_id','viewed_at']);
+  assert.equal(await scalar("select relrowsecurity v from pg_class where oid='hq_private.site_page_views'::regclass"),true);
+  for(const role of ['anon','authenticated','service_role']) {
+    for(const op of ['select','insert','update','delete']) assert.equal(await scalar("select has_table_privilege($1,'hq_private.site_page_views',$2) v",[role,op]),false);
+  }
+  assert.equal(await scalar("select has_function_privilege('anon','public.admin_page_view_stats(uuid)','execute') v"),false);
+  for(const signature of ['public.site_record_page_view(uuid,uuid)','public.admin_page_view_stats(uuid)']) assert.ok((await scalar('select proconfig v from pg_proc where oid=$1::regprocedure',[signature])).includes('search_path=pg_catalog'));
+  assert.equal(await scalar("select prorettype::regtype::text v from pg_proc where oid='public.site_record_page_view(uuid,uuid)'::regprocedure"),'void');
+});
+test('existing daily cleanup also removes page views older than 840 hours', async () => {
+  await reset();
+  for(const [i,hours] of [720,839,841].entries()) await db.query("insert into hq_private.site_page_views values($1,$2,hq_private.traffic_test_now()-($3::text||' hours')::interval)",[visitor(i+101),visitor(1),hours]);
+  await db.exec('select hq_private.prune_site_visits()');
+  assert.equal(await scalar('select count(*)::integer v from hq_private.site_page_views'),2);
+});
+test('concurrent duplicate views and owner sign-in serialize on native PostgreSQL', {skip:!native}, async () => {
+  await reset(); const a=new Client({connectionString:native}),b=new Client({connectionString:native});
+  await a.connect();await b.connect();
+  try {
+    for(const c of [a,b]) await c.query("select set_config('hq.test_now','2026-11-01T18:00:00Z',false)");
+    await Promise.all([a.query('select public.site_record_page_view($1,$2)',[visitor(1),visitor(101)]),b.query('select public.site_record_page_view($1,$2)',[visitor(1),visitor(101)])]);
+    assert.equal((await readPageStats()).hours24,1);
+    await b.query("select set_config('request.jwt.claim.sub',$1,false)",[owner]);
+    await Promise.all([a.query('select public.site_record_page_view($1,$2)',[visitor(1),visitor(102)]),b.query('select public.site_visit_heartbeat($1)',[visitor(1)])]);
+    await uid(null);await view(1,103); assert.equal((await readPageStats()).hours24,0);
   } finally { await a.end(); await b.end(); }
 });

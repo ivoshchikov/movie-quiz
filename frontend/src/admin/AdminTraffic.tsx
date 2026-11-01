@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useReadRequest } from "../hooks/useReadRequest";
 import { loadVisitorStats } from "./visitorStats";
+import AdminPageViews from "./AdminPageViews";
 import "./admin-traffic.css";
 
 const format = new Intl.NumberFormat("en-US");
@@ -30,7 +31,7 @@ export default function AdminTraffic({ owner }: { owner: string }) {
   }, [retry]);
   const data = stats.value;
   return (
-    <section className="hq-admin-traffic" aria-label="Visitor activity">
+    <><section className="hq-admin-traffic" aria-label="Visitor activity">
       <div className="hq-traffic-heading">
         <div><h2>Visitor activity</h2><p>Unique visitors · excludes you</p></div>
         <button type="button" className="hq-inline-action" onClick={retry} disabled={stats.loading}>
@@ -58,6 +59,6 @@ export default function AdminTraffic({ owner }: { owner: string }) {
           previews and opted-out browsers are excluded. Counts may differ from Google Analytics.
         </p></details>
       </div>
-    </section>
+    </section><AdminPageViews owner={owner} /></>
   );
 }
