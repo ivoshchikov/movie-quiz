@@ -135,6 +135,28 @@
       }
     },
     {
+      "path": "/blog/completed-miniseries-to-watch",
+      "url": "https://hard-quiz.com/blog/completed-miniseries-to-watch",
+      "kind": "article",
+      "slug": "completed-miniseries-to-watch",
+      "publishedOn": "2026-11-01",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/movies-like-knives-out",
       "url": "https://hard-quiz.com/blog/movies-like-knives-out",
       "kind": "article",
