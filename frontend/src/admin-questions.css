@@ -690,3 +690,8 @@
 .hq-bank-metrics table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: .75rem; }
 .hq-bank-metrics caption { text-align: left; margin-block: .75rem; }
 .hq-bank-metrics th,.hq-bank-metrics td { padding: .6rem; text-align: left; border-bottom: 1px solid var(--hq-border); }
+
+@media (max-width: 600px) {
+  .hq-admin-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; max-width: 460px; gap: .25rem; }
+  .hq-admin-nav a { padding: .6rem .35rem; justify-content: center; font-size: 14px; text-align: center; }
+}

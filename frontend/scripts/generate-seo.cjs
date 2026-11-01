@@ -148,7 +148,7 @@ ${urls}
       return html.replace("</head>", `${tags}</head>`);
     };
     const pages = JSON.parse(fs.readFileSync(path.join(ROOT, "src/pageMetadata.json"), "utf8"));
-    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false], ["admin/daily", "adminDailyMetadata.json", true], ["admin/questions", "adminQuestionsMetadata.json", true], ["admin/questions/new", "adminQuestionsNewMetadata.json", true]]) {
+    for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false], ["admin/question-statistics", "adminQuestionStatisticsMetadata.json", true], ["admin/daily", "adminDailyMetadata.json", true], ["admin/questions", "adminQuestionsMetadata.json", true], ["admin/questions/new", "adminQuestionsNewMetadata.json", true]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
       metadata.url = SITE_URL + new URL(metadata.url).pathname;
       let html = template;

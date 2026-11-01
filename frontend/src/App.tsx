@@ -25,6 +25,7 @@ const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const AdminQuestionsPage=lazy(()=>import('./pages/AdminQuestionsPage'));
 const AdminQuestionsNewPage=lazy(()=>import('./pages/AdminQuestionsNewPage'));
+const AdminQuestionStatisticsPage=lazy(()=>import('./pages/AdminQuestionStatisticsPage'));
 
 export default function App() {
   return (
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="admin/daily"   element={<AdminDailyPage />} />
           <Route path="admin/questions" element={<Suspense fallback={<p role="status">Loading administration…</p>}><AdminQuestionsPage/></Suspense>}/>
           <Route path="admin/questions/new" element={<Suspense fallback={<p role="status">Loading administration…</p>}><AdminQuestionsNewPage/></Suspense>}/>
+          <Route path="admin/question-statistics" element={<AdminQuestionStatisticsPage/>}/>
 
           {/* личные результаты */}
           <Route element={<PrivateRoute />}>

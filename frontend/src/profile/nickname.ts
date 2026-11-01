@@ -44,6 +44,7 @@ export function nicknameDestination(destination: string): string {
   if (path === "/how-to-play") return "the game guide";
   if (path === "/result") return "your quiz result";
   if (path === "/admin/daily") return "Daily settings";
+  if (path === "/admin/question-statistics") return "question statistics";
   if (path.startsWith("/blog/")) return "the article";
   if (path === "/blog") return "the blog";
   return "the quiz selection";

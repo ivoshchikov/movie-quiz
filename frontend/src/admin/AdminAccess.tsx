@@ -11,6 +11,7 @@ export function AdminNavigation() {
     <nav className="hq-admin-nav" aria-label="Administration">
       <NavLink to="/admin/questions">Question bank</NavLink>
       <NavLink to="/admin/daily">Daily</NavLink>
+      <NavLink to="/admin/question-statistics">Question statistics</NavLink>
     </nav>
   );
 }
@@ -39,7 +40,7 @@ export default function AdminAccess({ children }: { children: ReactNode }) {
   if (loading || rights.loading)
     return (
       <section className="hq-admin hq-admin-access">
-        <h1>Question bank</h1>
+        <h1>{location.pathname === "/admin/question-statistics" ? "Question statistics" : "Question bank"}</h1>
         <p role="status">Checking administrator access…</p>
       </section>
     );

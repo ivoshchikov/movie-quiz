@@ -21,11 +21,25 @@ if (native) await db.exec('create extension pgcrypto with schema extensions');
 // PGlite-only crypto stand-in; native CI uses actual pgcrypto HMAC.
 else await db.exec("create function extensions.hmac(data text,key text,kind text)returns bytea language sql as $$select decode(md5(key||data)||md5(data||key),'hex')$$;create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec(`create schema if not exists hq_private; create table hq_private.test_clock_state(at timestamptz); insert into hq_private.test_clock_state values(null); create function hq_private.test_clock() returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$;`);
-for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history']) {
+let shownBackfill;
+for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history','20261101230911_admin_question_statistics']) {
   if (file.endsWith('authoritative_gameplay')) { await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8')); await db.exec("insert into public.daily_session(user_id,d) values('00000000-0000-0000-0000-000000000003',(clock_timestamp() at time zone 'America/Chicago')::date+1)"); }
+  if (file.endsWith('admin_question_statistics')) {
+    await db.query("select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',false)");
+    const first=(await db.query('select public.quiz_start($1,1,1) v',[randomUUID()])).rows[0].v;
+    const round=(await db.query('select public.quiz_next($1) v',[first.id])).rows[0].v;
+    await db.query("select public.quiz_answer($1,$2,'One')",[first.id,round.round.id]);
+    await db.query('delete from hq_private.game_sessions where id=$1',[first.id]);
+    const second=(await db.query('select public.quiz_start($1,1,1) v',[randomUUID()])).rows[0].v;
+    await db.query('select public.quiz_next($1)',[second.id]);
+  }
   await db.exec('begin');
   try { await db.exec((await readFile(new URL(`../migrations/${file}.sql`,import.meta.url),'utf8')).replace('create extension if not exists pg_net with schema extensions;', '').replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
   catch(e) { await db.exec('rollback'); throw e; }
+  if (file.endsWith('admin_question_statistics')) {
+    await db.query("select set_config('request.jwt.claim.sub','112743d7-f683-4bbb-8117-068e89a00f22',false)");
+    shownBackfill=(await db.query("select public.admin_question_statistics('112743d7-f683-4bbb-8117-068e89a00f22') v")).rows[0].v;
+  }
 }
 const player='00000000-0000-0000-0000-000000000002', other='00000000-0000-0000-0000-000000000003';
 const uid = id => db.query("select set_config('request.jwt.claim.sub',$1,false)",[id??'']);
@@ -35,7 +49,7 @@ const next = id => value('select public.quiz_next($1) v',[id]);
 const answer = (g,a) => value('select public.quiz_answer($1,$2,$3) v',[g.id,g.round.id,a]);
 const finish = id => value('select public.quiz_finish($1) v',[id]);
 async function reset() {
-  await db.exec('truncate hq_private.time_attack_bests,hq_private.time_attack_sessions cascade; truncate hq_private.question_first_outcomes,hq_private.question_cohort_metrics,hq_private.daily_cancellations,hq_private.answer_events,hq_private.question_metrics,hq_private.game_sessions cascade; truncate public.user_best,public.question_stats,public.daily_result,public.daily_session;');
+  await db.exec('truncate hq_private.question_shown_counts; truncate hq_private.time_attack_bests,hq_private.time_attack_sessions cascade; truncate hq_private.question_first_outcomes,hq_private.question_cohort_metrics,hq_private.daily_cancellations,hq_private.answer_events,hq_private.question_metrics,hq_private.game_sessions cascade; truncate public.user_best,public.question_stats,public.daily_result,public.daily_session;');
   await uid(player);
   await db.exec("update hq_private.gameplay_settings set guest_source_minute=12,guest_source_hour=120,guest_global_minute=120,guest_global_hour=1200,guest_round_budget=25000; select set_config('request.headers','{}',false)");
 }
@@ -614,4 +628,111 @@ test('a simultaneous Time Attack answer and exit freeze one immutable score and 
   assert.equal(done.personal_best.score,done.score);assert.equal(done.personal_best.score_time_ms,1000);assert.equal(await value("select count(*) v from hq_private.answer_events where mode='time_attack'"),1);
   await attackClock(10000);const retried=await attackFinish(g.id);assert.equal(retried.score,done.score);assert.equal(retried.score_time_ms,1000);
  }finally{for(const c of clients)await c.end();await attackCleanup();}
+});
+
+const questionStats = async (filters={}) => {
+ const caller=await value('select auth.uid() v');await uid(admin);
+ try {return await value('select public.admin_question_statistics($1,$2,$3,$4,$5,$6,$7,$8) v',[
+  admin,filters.search??'',filters.category??null,filters.difficulty??null,filters.mode??'all',filters.versions??'all',filters.sort??'shown_desc',filters.page??1]);}
+ finally {await uid(caller);}
+};
+const statistic = async (id=1,filters={}) => (await questionStats(filters)).rows.find(r=>r.id===id);
+test('statistics backfill keeps outcomes from purged sessions and adds only issued pending rounds',()=>{
+ const row=shownBackfill.rows.find(r=>r.id===1);assert.equal(row.shown,2);assert.equal(row.correct,1);assert.equal(row.accuracy,50);
+});
+test('prepared banks and retries do not inflate shown, accepted answers settle once',async()=>{
+ await reset();const s=await start();assert.equal((await statistic()).shown,0);
+ const g=await next(s.id);await next(s.id);assert.equal((await statistic()).shown,1);
+ await answer(g,'One');await answer(g,'One');const row=await statistic();
+ assert.equal(row.shown,1);assert.equal(row.correct,1);assert.equal(row.accuracy,100);
+ await db.exec('update public.question_stats set total_attempts=1000,correct_attempts=999');
+ assert.equal((await statistic()).shown,1);assert.equal((await statistic()).correct,1);
+});
+test('guests and repeated games add actual shows, wrong and abandoned rounds remain in the denominator',async()=>{
+ await reset();const a=await next((await start()).id);await answer(a,'Two');
+ await uid(null);const b=await next((await start()).id);await finish(b.id);
+ const c=await next((await start()).id);await answer(c,'One');
+ const row=await statistic();assert.equal(row.shown,3);assert.equal(row.correct,1);assert.equal(row.accuracy,33.3);
+});
+test('Daily counts the first real start, not assignment, refresh, retries or cancellation',async()=>{
+ await reset();await setTime('2051-11-01T12:00:00Z');const d='2051-11-01';
+ try {
+  await assignDaily(d);assert.equal((await statistic(1,{mode:'daily'})).shown,0);
+  await value('select public.daily_begin($1) v',[d]);await value('select public.daily_begin($1) v',[d]);
+  await value('select public.daily_status() v');assert.equal((await statistic(1,{mode:'daily'})).shown,1);
+  await value("select public.submit_daily_answer($1,$2,'One',0) v",[player,d]);
+  await value("select public.submit_daily_answer($1,$2,'One',0) v",[player,d]);
+  assert.equal((await statistic(1,{mode:'daily'})).correct,1);
+  await uid(admin);const revision=await value('select admin_revision v from public.daily_challenge where d=$1',[d]);
+  await value('select public.admin_cancel_daily($1,$2,$3,$4,$5) v',[d,'Invalid source question for this date',revision,randomUUID(),admin]);
+  const row=await statistic(1,{mode:'daily'});assert.equal(row.shown,1);assert.equal(row.correct,1);
+ } finally {await setTime(null);}
+});
+test('Time Attack counts each issued round once and skipped rounds keep their show',async()=>{
+ await reset();const id=randomUUID();let g=await value("select public.time_attack_start($1,1,'easy') v",[id]);
+ const before=await questionStats({mode:'time_attack'});assert.equal(before.shown,1);
+ await value('select public.time_attack_status($1) v',[id]);assert.equal((await questionStats({mode:'time_attack'})).shown,1);
+ g=await value('select public.time_attack_action($1,$2,$3,$4) v',[id,g.round.id,'skip',null]);
+ assert.equal((await questionStats({mode:'time_attack'})).shown,1);assert.equal((await questionStats({mode:'time_attack'})).correct,0);
+});
+test('version and mode filters do not mix prior content or preference votes',async()=>{
+ await reset();const options=await value('select options_json v from public.question where id=1');
+ try {
+  const g=await next((await start()).id);await answer(g,'One');
+  await db.exec("update public.question set options_json='[\"Four\",\"Three\",\"Two\",\"One\"]' where id=1");
+  assert.equal((await statistic()).shown,1);assert.equal((await statistic(1,{versions:'current'})).shown,0);
+  assert.equal((await statistic(1,{mode:'daily'})).shown,0);
+  assert.equal((await statistic(1,{mode:'time_attack'})).shown,0);
+  await db.exec("insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id) values(6801,'actors/test_6801.webp','Actor One','[\"Actor One\",\"Two\",\"Three\",\"Four\"]',2,1),(6802,'actors/test_6802.webp','Actor Two','[\"Actor Two\",\"Two\",\"Three\",\"Four\"]',2,1)");
+  const id=randomUUID();await uid(null);const pair=await value("select public.this_that_open($1,'actors') v",[id]);
+  await value("select public.this_that_choose($1,$2,'left') v",[id,pair.round.id]);
+  assert.equal((await statistic()).shown,1);
+ } finally {await db.query('update public.question set options_json=$1 where id=1',[JSON.stringify(options)]);await db.exec('delete from public.question where id in(6801,6802)');}
+});
+test('unseen questions have undefined accuracy; search, filters, deterministic order and pagination are server-side',async()=>{
+ await reset();
+ await db.exec(`insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id)
+  select n,'stats/film_'||n||'.webp','One','["One","Two","Three","Four"]',1,1 from generate_series(6001,6065) n`);
+ try {
+  const first=await questionStats({search:'stats/film_',sort:'id_asc'});assert.equal(first.total,65);assert.equal(first.rows.length,25);assert.equal(first.rows[0].id,6001);assert.equal(first.rows[0].accuracy,null);
+  const last=await questionStats({search:'stats/film_',sort:'id_asc',page:100000});assert.equal(last.page,3);assert.equal(last.rows.length,15);assert.equal(last.rows[14].id,6065);
+  assert.equal((await questionStats({search:'#6002'})).rows[0].id,6002);
+  assert.equal((await questionStats({search:'%',category:1})).total,0);
+  assert.equal((await questionStats({search:'stats/film_',category:2})).total,0);
+  assert.equal((await questionStats({search:'stats/film_',difficulty:2})).total,0);
+ } finally {await db.exec('delete from public.question where id between 6001 and 6065');}
+});
+test('statistics checks verified Isildur, expected account, membership, grants and filters',async()=>{
+ await reset();
+ for(const [role,id] of [['anon',null],['authenticated',player]]) {
+  await uid(id);await db.exec(`set role ${role}`);
+  try {
+   await assert.rejects(value('select public.admin_question_statistics($1) v',[admin]),/permission denied|Administrator/);
+   if(id)await assert.rejects(value('select public.admin_question_statistics($1) v',[id]),/Administrator/);
+   await assert.rejects(value('select count(*) v from hq_private.question_shown_counts'),/permission denied/);
+  } finally {await db.exec('reset role');}
+ }
+ await uid(admin);await assert.rejects(value('select public.admin_question_statistics($1) v',[player]),/Administrator/);
+ await db.query('delete from public.admin_users where user_id=$1',[admin]);
+ try {await assert.rejects(value('select public.admin_question_statistics($1) v',[admin]),/Administrator/);}
+ finally {await db.query('insert into public.admin_users(user_id) values($1)',[admin]);}
+ for(const filters of [{mode:'this_that'},{sort:'drop table'},{versions:'other'},{page:0},{search:'a'.repeat(201)}]) await assert.rejects(questionStats(filters),/Invalid/);
+ assert.equal(await value("select relrowsecurity v from pg_class where oid='hq_private.question_shown_counts'::regclass"),true);
+ for(const role of ['anon','authenticated','service_role'])for(const privilege of ['select','insert','update','delete'])assert.equal(await value("select has_table_privilege($1,'hq_private.question_shown_counts',$2) v",[role,privilege]),false);
+});
+test('pruning guest snapshots cannot erase permanent exposure counts',async()=>{
+ await reset();await uid(null);const g=await next((await start()).id);await answer(g,'One');
+ await db.query('delete from hq_private.game_sessions where id=$1',[g.id]);
+ await db.exec('delete from hq_private.answer_events where owner is null');
+ const row=await statistic();assert.equal(row.shown,1);assert.equal(row.correct,1);
+});
+test('native concurrent reads/answers cannot count one issued round twice', {skip:!native},async()=>{
+ await reset();await uid(null);const id=(await start()).id;
+ const a=new Client({connectionString:native}),b=new Client({connectionString:native});await a.connect();await b.connect();
+ try {
+  const [x,y]=await Promise.all([a.query('select public.quiz_next($1) v',[id]),b.query('select public.quiz_next($1) v',[id])]);
+  const round=x.rows[0].v.round;assert.equal(round.id,y.rows[0].v.round.id);assert.equal((await statistic()).shown,1);
+  await Promise.all([a.query("select public.quiz_answer($1,$2,'One')",[id,round.id]),b.query("select public.quiz_answer($1,$2,'One')",[id,round.id])]);
+  const row=await statistic();assert.equal(row.shown,1);assert.equal(row.correct,1);
+ } finally {await a.end();await b.end();}
 });
