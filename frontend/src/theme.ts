@@ -1,15 +1,16 @@
 import { useSyncExternalStore } from "react";
 
-export const themes = ["light", "dark", "halloween"] as const;
-type Theme = typeof themes[number];
-const normalizeTheme = (value: string | null | undefined): Theme => themes.includes(value as Theme) ? value as Theme : "dark";
+export const themes = ["light", "dark", "christmas"] as const;
+// Keep the archived Halloween renderer type-compatible for a future season.
+type Theme = typeof themes[number] | "halloween";
+const normalizeTheme = (value: string | null | undefined): Theme => value === "halloween" ? "christmas" : themes.find(theme => theme === value) ?? "dark";
 const storageKey = "hard-quiz-theme";
 const changeEvent = "hard-quiz-theme-change";
 const getTheme = (): Theme => normalizeTheme(document.documentElement.dataset.theme);
 
 function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#f6f7fb" : theme === "halloween" ? "#140f1b" : "#101116");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#f6f7fb" : theme === "christmas" ? "#0d191b" : "#101116");
   window.dispatchEvent(new Event(changeEvent));
 }
 
@@ -26,9 +27,10 @@ function subscribe(notify: () => void) {
 export function useTheme() {
   const theme = useSyncExternalStore(subscribe, getTheme, (): Theme => "dark");
   const setTheme = (next: Theme) => {
-    applyTheme(next);
+    const active = normalizeTheme(next);
+    applyTheme(active);
     // Browsers can deny storage. The selected theme still works in this document.
-    try { localStorage.setItem(storageKey, next); } catch { /* Keep the in-memory choice. */ }
+    try { localStorage.setItem(storageKey, active); } catch { /* Keep the in-memory choice. */ }
   };
   return { theme, setTheme };
 }

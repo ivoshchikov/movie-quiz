@@ -1,0 +1,41 @@
+:root[data-theme="christmas"] .hq-site { isolation: isolate; background-image: radial-gradient(ellipse at 12% 0, #32624b24, transparent 600px), radial-gradient(ellipse at 100% 100%, #bca5730d, transparent 700px); }
+.hq-winter { pointer-events: none; user-select: none; flex-shrink: 0; }
+.hq-winter-art { display: block; width: 68px; height: 80px; flex-shrink: 0; overflow: visible; }
+.hq-winter-backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+.hq-winter-garland { position: absolute; top: 0; width: 180px; height: 110px; opacity: .8; }
+.hq-winter-corner-left { left: 0; }
+.hq-winter-corner-right { right: 0; transform: scaleX(-1); }
+.hq-winter-bulb { filter: drop-shadow(0 0 3px #f1d39166); }
+.hq-winter-house { display: block; width: 420px; height: auto; }
+.hq-winter-backdrop > .hq-winter-house { position: absolute; bottom: 12px; right: -68px; opacity: .68; }
+.hq-winter-edge-tree { position: absolute; bottom: 12px; left: 24px; width: 104px; height: 140px; opacity: .5; }
+.hq-winter-band { display: flex; align-items: center; gap: 20px; position: relative; width: min(calc(100% - 48px), 944px); min-height: 112px; margin: 12px auto -4px; padding: 8px 20px; border-block: 1px solid #e5c98c3b; background: linear-gradient(90deg, #22413618, #31524640, #22413618); }
+.hq-winter-tree-gifts { display: flex; align-items: end; width: 130px; flex-shrink: 0; }
+.hq-winter-tree-gifts > .hq-winter-art:first-child { width: 68px; height: 88px; }
+.hq-winter-tree-gifts > .hq-winter-gifts { width: 58px; height: 60px; margin-left: -6px; }
+.hq-winter-season { flex: 1; min-width: 0; }
+.hq-winter-season > span { color: #f1d391; font-size: 15px; font-weight: 600; letter-spacing: .25px; }
+.hq-winter-season small { display: block; margin-top: 4px; color: var(--hq-muted); font-size: 11px; }
+.hq-winter-band-house { width: 220px; height: 92px; flex-shrink: 0; position: relative; overflow: hidden; }
+.hq-winter-band-house .hq-winter-house { position: absolute; bottom: -6px; width: 205px; }
+.hq-winter-santa { width: 72px; height: 80px; }
+.hq-winter-motion { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; padding: 0; color: var(--hq-muted); background: #0d191b60; border: 1px solid var(--hq-control-border); border-radius: 50%; cursor: pointer; pointer-events: auto; }
+.hq-winter-motion:hover { color: var(--hq-text); background: var(--hq-surface-soft); }
+.hq-winter-motion:focus-visible { outline: 2px solid var(--hq-purple); outline-offset: 3px; }
+.hq-winter-motion svg { width: 16px; height: 16px; }
+.hq-winter-snow, .hq-winter-flight { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
+.hq-winter-flake { position: absolute; top: 0; left: var(--snow-x); width: var(--snow-size); height: var(--snow-size); border-radius: 50%; background: #e9f3ed; opacity: .35; animation: hq-winter-snowfall var(--snow-duration) var(--snow-delay) linear infinite; }
+.hq-winter-crystal { width: 15px; height: 15px; background: transparent; color: #e9f3ed; opacity: .42; }
+.hq-winter-crystal svg { display: block; width: 100%; height: 100%; }
+.hq-winter-sleigh-art { position: absolute; width: 220px; height: 84px; right: -230px; bottom: max(14px, env(safe-area-inset-bottom)); opacity: .85; animation: hq-winter-sleigh 7s linear both; }
+.hq-winter-compact .hq-winter-backdrop { opacity: .3; }
+@keyframes hq-winter-snowfall { from { transform: translate3d(0, -12vh, 0); } to { transform: translate3d(var(--snow-drift), 112vh, 0); } }
+@keyframes hq-winter-sleigh { 0% { opacity: 0; transform: translate3d(0, 8px, 0); } 8%, 90% { opacity: .85; } 50% { transform: translate3d(calc(-50vw - 230px), -8px, 0); } 100% { opacity: 0; transform: translate3d(calc(-100vw - 460px), -20px, 0); } }
+@media (min-width: 1500px) { .hq-winter-band-house { display: none; } .hq-winter-backdrop > .hq-winter-house { right: -8px; } }
+@media (max-width: 1240px) { .hq-winter-garland { width: 90px; height: 55px; opacity: .5; } .hq-winter-backdrop > .hq-winter-house { width: 300px; right: -42px; opacity: .2; } .hq-winter-edge-tree { width: 56px; height: 76px; left: 0; opacity: .2; } }
+@media (max-width: 900px) { .hq-winter-band { gap: 12px; padding-inline: 12px; } .hq-winter-band-house { width: 170px; } .hq-winter-band-house .hq-winter-house { width: 180px; } .hq-winter-tree-gifts { width: 84px; } .hq-winter-tree-gifts > .hq-winter-gifts { width: 34px; } .hq-winter-tree-gifts > .hq-winter-art:first-child { width: 56px; height: 74px; } }
+@media (max-width: 720px) { .hq-winter-band-house { display: none; } .hq-winter-garland { width: 55px; height: 34px; } .hq-winter-sleigh-art { width: 160px; height: 60px; } }
+@media (max-width: 620px) { .hq-winter-band { width: calc(100% - 32px); gap: 10px; min-height: 96px; padding: 6px 0; margin-top: 8px; } .hq-winter-tree-gifts { width: 48px; } .hq-winter-tree-gifts > .hq-winter-art:first-child { width: 48px; height: 66px; } .hq-winter-tree-gifts > .hq-winter-gifts { display: none; } .hq-winter-season > span { font-size: 12px; } .hq-winter-season small { font-size: 10px; max-width: 150px; } .hq-winter-santa { width: 44px; height: 62px; } .hq-winter-backdrop > .hq-winter-house { width: 230px; right: -42px; opacity: .18; } .hq-winter-flake:nth-child(n+13) { display: none; } }
+@media (max-width: 360px) { .hq-winter-band { gap: 8px; } .hq-winter-tree-gifts { width: 36px; } .hq-winter-tree-gifts > .hq-winter-art:first-child { width: 36px; } .hq-winter-santa { width: 34px; height: 52px; } .hq-winter-season small { max-width: 125px; } }
+@media (prefers-reduced-motion: reduce) { .hq-winter-snow, .hq-winter-flight, .hq-winter-motion { display: none; } }
+@media (forced-colors: active) { .hq-winter-backdrop, .hq-winter-art, .hq-winter-band-house, .hq-winter-snow, .hq-winter-flight { display: none; } .hq-winter-band { border-color: CanvasText; } .hq-winter-season > span { color: CanvasText; } }

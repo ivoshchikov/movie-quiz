@@ -59,7 +59,7 @@ test("polling updates counts and a late response after logout cannot restore the
  await page.getByRole("button",{name:"Account menu"}).click();await page.getByRole("menuitem",{name:"Log out"}).click();
  await expect(page.getByRole("link",{name:"Log in to administration"})).toBeVisible();release();await expect(panel(page)).toHaveCount(0);
 });
-for(const theme of ["dark","light","halloween"])for(const width of [320,1440])test(`page views fit ${theme} at ${width}px`,async({page},info)=>{
+for(const theme of ["dark","light","christmas"])for(const width of [320,1440])test(`page views fit ${theme} at ${width}px`,async({page},info)=>{
  await page.addInitScript(t=>localStorage.setItem("hard-quiz-theme",t),theme);await page.setViewportSize({width,height:900});await admin(page);
  await page.goto("/admin/questions");await expect(count(page,"Last 30 days")).toHaveText("12,345");
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

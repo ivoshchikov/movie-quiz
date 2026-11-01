@@ -26,12 +26,17 @@
     <script>
       (() => {
         let theme = "dark";
-        try { const saved = localStorage.getItem("hard-quiz-theme"); if (saved === "light" || saved === "halloween") theme = saved; } catch {}
+        try {
+          const saved = localStorage.getItem("hard-quiz-theme");
+          if (saved === "light" || saved === "christmas") theme = saved;
+          // Preserve a seasonal preference while Halloween is archived.
+          if (saved === "halloween") { theme = "christmas"; localStorage.setItem("hard-quiz-theme", theme); }
+        } catch {}
         document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "light" ? "#f6f7fb" : theme === "halloween" ? "#140f1b" : "#101116");
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "light" ? "#f6f7fb" : theme === "christmas" ? "#0d191b" : "#101116");
       })();
     </script>
-    <style>html{background:#101116;color-scheme:dark}html[data-theme="light"]{background:#f6f7fb;color-scheme:light}html[data-theme="halloween"]{background:#140f1b;color-scheme:dark}</style>
+    <style>html{background:#101116;color-scheme:dark}html[data-theme="light"]{background:#f6f7fb;color-scheme:light}html[data-theme="christmas"]{background:#0d191b;color-scheme:dark}</style>
 
     <!-- Open Graph -->
     <meta data-rh="true" property="og:site_name" content="Hard Quiz" />
