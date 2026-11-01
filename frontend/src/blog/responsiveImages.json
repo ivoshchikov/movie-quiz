@@ -178,5 +178,65 @@
     "srcSet": "/blog-assets/completed-miniseries-to-watch-480.webp 480w, /blog-assets/completed-miniseries-to-watch-640.webp 640w, /blog-assets/completed-miniseries-to-watch-800.webp 800w",
     "width": 640,
     "height": 360
+  },
+  "/blog-assets/miniseries-unorthodox-still.webp": {
+    "src": "/blog-assets/miniseries-unorthodox-still.webp",
+    "srcSet": "/blog-assets/miniseries-unorthodox-still-480.webp 480w, /blog-assets/miniseries-unorthodox-still-800.webp 800w, /blog-assets/miniseries-unorthodox-still.webp 1200w",
+    "width": 1200,
+    "height": 645
+  },
+  "/blog-assets/miniseries-when-they-see-us-still.webp": {
+    "src": "/blog-assets/miniseries-when-they-see-us-still.webp",
+    "srcSet": "/blog-assets/miniseries-when-they-see-us-still-480.webp 480w, /blog-assets/miniseries-when-they-see-us-still-800.webp 800w, /blog-assets/miniseries-when-they-see-us-still.webp 1200w",
+    "width": 1200,
+    "height": 594
+  },
+  "/blog-assets/miniseries-chernobyl-still.webp": {
+    "src": "/blog-assets/miniseries-chernobyl-still.webp",
+    "srcSet": "/blog-assets/miniseries-chernobyl-still-480.webp 480w, /blog-assets/miniseries-chernobyl-still-800.webp 800w, /blog-assets/miniseries-chernobyl-still.webp 1200w",
+    "width": 1200,
+    "height": 592
+  },
+  "/blog-assets/miniseries-normal-people-still.webp": {
+    "src": "/blog-assets/miniseries-normal-people-still.webp",
+    "srcSet": "/blog-assets/miniseries-normal-people-still-480.webp 480w, /blog-assets/miniseries-normal-people-still-800.webp 800w, /blog-assets/miniseries-normal-people-still.webp 1200w",
+    "width": 1200,
+    "height": 657
+  },
+  "/blog-assets/miniseries-five-days-at-memorial-still.webp": {
+    "src": "/blog-assets/miniseries-five-days-at-memorial-still.webp",
+    "srcSet": "/blog-assets/miniseries-five-days-at-memorial-still-480.webp 480w, /blog-assets/miniseries-five-days-at-memorial-still-800.webp 800w, /blog-assets/miniseries-five-days-at-memorial-still.webp 1200w",
+    "width": 1200,
+    "height": 496
+  },
+  "/blog-assets/miniseries-the-queens-gambit-still.webp": {
+    "src": "/blog-assets/miniseries-the-queens-gambit-still.webp",
+    "srcSet": "/blog-assets/miniseries-the-queens-gambit-still-480.webp 480w, /blog-assets/miniseries-the-queens-gambit-still-800.webp 800w, /blog-assets/miniseries-the-queens-gambit-still.webp 1200w",
+    "width": 1200,
+    "height": 664
+  },
+  "/blog-assets/miniseries-one-day-still.webp": {
+    "src": "/blog-assets/miniseries-one-day-still.webp",
+    "srcSet": "/blog-assets/miniseries-one-day-still-480.webp 480w, /blog-assets/miniseries-one-day-still-800.webp 800w, /blog-assets/miniseries-one-day-still.webp 1200w",
+    "width": 1200,
+    "height": 504
+  },
+  "/blog-assets/miniseries-godless-still.webp": {
+    "src": "/blog-assets/miniseries-godless-still.webp",
+    "srcSet": "/blog-assets/miniseries-godless-still-480.webp 480w, /blog-assets/miniseries-godless-still-800.webp 800w, /blog-assets/miniseries-godless-still.webp 1200w",
+    "width": 1200,
+    "height": 492
+  },
+  "/blog-assets/miniseries-station-eleven-still.webp": {
+    "src": "/blog-assets/miniseries-station-eleven-still.webp",
+    "srcSet": "/blog-assets/miniseries-station-eleven-still-480.webp 480w, /blog-assets/miniseries-station-eleven-still-800.webp 800w, /blog-assets/miniseries-station-eleven-still.webp 1200w",
+    "width": 1200,
+    "height": 589
+  },
+  "/blog-assets/miniseries-maid-still.webp": {
+    "src": "/blog-assets/miniseries-maid-still.webp",
+    "srcSet": "/blog-assets/miniseries-maid-still-480.webp 480w, /blog-assets/miniseries-maid-still-800.webp 800w, /blog-assets/miniseries-maid-still.webp 1200w",
+    "width": 1200,
+    "height": 594
   }
 }

@@ -52,6 +52,24 @@ function seriesFacts(id: string) {
   return <p className="hq-watchlist-facts"><strong>{pick.year}</strong> · {pick.minutes.length} episodes · {viewingTime(pick.minutes)} · <a href={pick.viewing}>{pick.service}: viewing page</a></p>;
 }
 
+const stills = {
+  "unorthodox": {"src": "/blog-assets/miniseries-unorthodox-still.webp", "width": 1200, "height": 645, "alt": "Esty sits among friends in the back seat of a car in Unorthodox (2020).", "caption": "Esty and a new circle of friends in Unorthodox (2020)."},
+  "when-they-see-us": {"src": "/blog-assets/miniseries-when-they-see-us-still.webp", "width": 1200, "height": 594, "alt": "A small television inside a shop shows a man speaking into microphones in When They See Us (2019).", "caption": "An in-store television broadcast in When They See Us (2019)."},
+  "chernobyl": {"src": "/blog-assets/miniseries-chernobyl-still.webp", "width": 1200, "height": 592, "alt": "Two men stand in front of a wall map, one wearing a white coat, in Chernobyl (2019).", "caption": "An office conversation in Chernobyl (2019)."},
+  "normal-people": {"src": "/blog-assets/miniseries-normal-people-still.webp", "width": 1200, "height": 657, "alt": "A woman holds a mug while sitting on the edge of a table in Normal People (2020).", "caption": "Normal People (2020) makes room for quiet domestic moments."},
+  "five-days-at-memorial": {"src": "/blog-assets/miniseries-five-days-at-memorial-still.webp", "width": 1200, "height": 496, "alt": "Two hospital workers, one in a white coat, stand beside a bed in Five Days at Memorial (2022).", "caption": "Hospital staff in Five Days at Memorial (2022)."},
+  "the-queens-gambit": {"src": "/blog-assets/miniseries-the-queens-gambit-still.webp", "width": 1200, "height": 664, "alt": "Beth Harmon stands with her arms folded in a cardigan in The Queen's Gambit (2020).", "caption": "Beth Harmon in The Queen's Gambit (2020)."},
+  "one-day": {"src": "/blog-assets/miniseries-one-day-still.webp", "width": 1200, "height": 504, "alt": "Emma and Dexter sit together on a grassy hillside in One Day (2024).", "caption": "Emma and Dexter in the 2024 television adaptation of One Day."},
+  "godless": {"src": "/blog-assets/miniseries-godless-still.webp", "width": 1200, "height": 492, "alt": "A man in a broad-brimmed hat faces people outside wooden storefronts in Godless (2017).", "caption": "The frontier-town setting of Godless (2017)."},
+  "station-eleven": {"src": "/blog-assets/miniseries-station-eleven-still.webp", "width": 1200, "height": 589, "alt": "A crowned performer leans forward under blue stage lighting in Station Eleven (2021–2022).", "caption": "Theatre connects the story's different worlds in Station Eleven (2021–2022)."},
+  "maid": {"src": "/blog-assets/miniseries-maid-still.webp", "width": 1200, "height": 594, "alt": "Alex looks toward someone, with a counter behind her, in Maid (2021).", "caption": "Alex in Maid (2021), a story shaped by work, housing and care."},
+} as const;
+
+function seriesStill(id: keyof typeof stills) {
+  const { caption, ...image } = stills[id];
+  return <figure className="hq-film-still"><ArticleImage {...image} /><figcaption>{caption}</figcaption></figure>;
+}
+
 const post: BlogPost = {
   slug: "completed-miniseries-to-watch",
   title: "10 Completed Miniseries to Watch Over a Weekend",
@@ -130,6 +148,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="unorthodox">
       <h2 id="unorthodox" tabIndex={-1}>Unorthodox: a short series with room to breathe</h2>
       {seriesFacts("unorthodox")}
+      {seriesStill("unorthodox")}
       <p>Esty leaves her Hasidic community in Brooklyn for Berlin, where a group of musicians opens up an unfamiliar way of living. Shira Haas plays a young woman trying to work out what belongs to her, while the life she has left behind remains close.</p>
       <p>Choose this when you want a character story you can finish without reserving both days. Its four parts make a concentrated arc, with music and new friendships giving the upheaval something tangible to move toward. Expect pressure around marriage, faith and personal autonomy rather than a light travel escape. The conclusion leaves a life ahead of Esty; it does not require another season to complete this first movement toward independence.</p>
     </section>
@@ -137,6 +156,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="when-they-see-us">
       <h2 id="when-they-see-us" tabIndex={-1}>When They See Us: four parts that deserve time between them</h2>
       {seriesFacts("when-they-see-us")}
+      {seriesStill("when-they-see-us")}
       <p>Ava DuVernay's drama follows five teenagers wrongly accused after the 1989 Central Park attack, and the families living with the consequences. Its scope extends beyond an investigation into the years that an accusation can take from a person.</p>
       <p>Four episodes make this sound smaller than it feels. Each is substantial, and the last is the longest; leave space around the viewing rather than treating it as an evening's background television. It is the choice for a historical social drama, with coercive questioning, racism and imprisonment central to the experience. The four-part work reaches its conclusion, but the injustice it depicts is not packaged as an easy mystery to solve.</p>
     </section>
@@ -144,6 +164,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="chernobyl">
       <h2 id="chernobyl" tabIndex={-1}>Chernobyl: a disaster story driven by the cost of denial</h2>
       {seriesFacts("chernobyl")}
+      {seriesStill("chernobyl")}
       <p>The 1986 nuclear disaster becomes a five-part drama about people trying to understand an emergency while institutions resist what they are saying. Jared Harris, Stellan Skarsgård and Emily Watson anchor the story's scientists and officials.</p>
       <p>Pick it for the tension of expertise colliding with power: a measurement or an unwelcome explanation can be as consequential as a physical act of rescue. The series has a defined historical scope and a concluding episode rather than a seasonal cliffhanger. It is a demanding weekend choice, with distressing injuries and deaths. It is also a dramatization, not a substitute for historical or scientific accounts of the accident.</p>
     </section>
@@ -151,6 +172,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="normal-people">
       <h2 id="normal-people" tabIndex={-1}>Normal People: twelve episodes, a relatively small time commitment</h2>
       {seriesFacts("normal-people")}
+      {seriesStill("normal-people")}
       <p>Marianne and Connell move from school in a small Irish town to university, carrying a private connection into changing social worlds. Daisy Edgar-Jones and Paul Mescal play the pair in this adaptation of Sally Rooney's novel.</p>
       <p>The short chapters suit viewers who would rather watch relationships change through conversations, hesitations and misunderstandings than through large plot machinery. Twelve episodes need not mean twelve hours. The ending is intentionally open about the characters' future, so choose another title if you need every romantic question tied off. This is a finished adaptation with that openness built in, not a promise of a later resolving season. Expect explicit intimacy, family abuse and difficult mental-health material.</p>
     </section>
@@ -158,6 +180,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="five-days-at-memorial">
       <h2 id="five-days-at-memorial" tabIndex={-1}>Five Days at Memorial: the emergency and the questions afterward</h2>
       {seriesFacts("five-days-at-memorial")}
+      {seriesStill("five-days-at-memorial")}
       <p>Hurricane Katrina leaves a New Orleans hospital facing rising water, failing power and decisions made under extreme conditions. Vera Farmiga, Cherry Jones and Cornelius Smith Jr. lead the cast of the limited series adapted from Sheri Fink's reporting.</p>
       <p>The title describes the crisis, not the full shape of the story: the eight episodes also make room for its aftermath. Choose it if you want to follow how a disaster becomes an argument about responsibility. Its completed run does not turn the ethical questions into comfortable answers. This is one of the heaviest options here, particularly for viewers sensitive to hospital deaths and failures of care; shorter running time is not a measure of emotional intensity.</p>
     </section>
@@ -165,6 +188,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="the-queens-gambit">
       <h2 id="the-queens-gambit" tabIndex={-1}>The Queen's Gambit: the strongest all-round starting point</h2>
       {seriesFacts("the-queens-gambit")}
+      {seriesStill("the-queens-gambit")}
       <p>Beth Harmon discovers a remarkable aptitude for chess while growing up in an orphanage, then enters a competitive world that offers recognition without necessarily giving her stability. Anya Taylor-Joy leads Scott Frank and Allan Scott's seven-part adaptation of Walter Tevis's novel.</p>
       <p>This is the most straightforward recommendation here if you want ambition, changing surroundings and the momentum of a competition. You do not need to study chess before starting; the drama gives the matches personal stakes. Beth's trajectory has a full arc across the seven episodes, which makes the time investment easy to judge. The glossy period setting comes with addiction and isolation, so it is not an uncomplicated comfort watch.</p>
     </section>
@@ -172,6 +196,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="one-day">
       <h2 id="one-day" tabIndex={-1}>One Day: a long relationship told in short chapters</h2>
       {seriesFacts("one-day")}
+      {seriesStill("one-day")}
       <p>Emma and Dexter meet around their university graduation, then the series returns to their lives on the same date across successive years. Ambika Mod and Leo Woodall lead this fourteen-episode adaptation of David Nicholls's novel, distinct from the 2011 film.</p>
       <p>The appeal is watching what changes between meetings: a career, a friendship, a way of speaking to someone who knew you earlier. It suits viewers who enjoy romance shaped by time and missed opportunities. Fourteen chapters still make a shorter commitment than several seven-episode dramas in this list. Expect a bittersweet, emotionally heavy story, not a reassurance that the romantic-comedy setup will keep everything gentle. The released adaptation has a concluding chapter.</p>
     </section>
@@ -179,6 +204,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="godless">
       <h2 id="godless" tabIndex={-1}>Godless: a western worth giving the whole weekend</h2>
       {seriesFacts("godless")}
+      {seriesStill("godless")}
       <p>A fleeing outlaw finds refuge near a mining town whose population has been transformed by catastrophe, while his former gang leader searches for him. Scott Frank's western stars Michelle Dockery, Jack O'Connell and Jeff Daniels.</p>
       <p>Choose this for a larger cast, frontier landscapes and the accumulating tension around a threatened community. The seven episodes have very different lengths, including an extended finale; episode count alone understates the commitment. Its central conflict belongs to this one limited series, so you can make room for it without signing up for years of television. Be prepared for violent attacks and sexual violence, rather than assuming the period setting makes it an easy family watch.</p>
     </section>
@@ -186,6 +212,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="station-eleven">
       <h2 id="station-eleven" tabIndex={-1}>Station Eleven: what people preserve after the world changes</h2>
       {seriesFacts("station-eleven")}
+      {seriesStill("station-eleven")}
       <p>After a devastating flu, survivors build new lives while a traveling group keeps performing Shakespeare. Patrick Somerville's adaptation of Emily St. John Mandel's novel moves between the world before the collapse and the people trying to live afterward.</p>
       <p>Pick this when you have time for connections to gather across different timelines. It offers a more reflective reason to watch an apocalypse story: memory, performance and the relationships that outlast a familiar world. The ten-episode limited series reaches a conclusion, although the lives it imagines are larger than the portion we see. Pandemic loss and violence remain part of the story; the interest in art does not make the opening catastrophe mild.</p>
     </section>
@@ -193,6 +220,7 @@ const post: BlogPost = {
     <section className="hq-watchlist-entry" aria-labelledby="maid">
       <h2 id="maid" tabIndex={-1}>Maid: a full weekend with a determined, exhausted mother</h2>
       {seriesFacts("maid")}
+      {seriesStill("maid")}
       <p>Alex leaves an abusive relationship with her young daughter and begins cleaning houses while trying to secure somewhere safe to live. Margaret Qualley leads the series, with Andie MacDowell playing Alex's mother.</p>
       <p>The drama is in the practical obstacles: work, childcare, housing and the systems that are supposed to help. That makes it a different kind of suspense from a criminal investigation. Choose it for a sustained character journey, but budget for the longest run in this selection and for difficult material involving abuse and poverty. The ten episodes complete this stage of Alex's story; they do not pretend that independence is achieved through a single encouraging decision.</p>
     </section>

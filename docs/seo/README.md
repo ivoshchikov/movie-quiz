@@ -55,7 +55,7 @@ For local project images, the live bytes must also match the checked build's SHA
 
 The image decoder runs only on data URLs in a separate blank context with all network requests blocked. Site HTML is parsed with JavaScript disabled. Checks never sign in, start games, submit results, send model API requests or request Google indexing.
 
-Fetches have timeouts, bounded transient retries, a per-resource 8 MiB limit and a 150-image limit. The job has a 12-minute timeout. A newer production run cancels an older running check. A release mismatch is reported as unverified; an older/different deploy cannot be used as proof of the requested release.
+Fetches have timeouts, bounded transient retries, a per-resource 8 MiB limit and a 180-image limit. The image limit was reviewed on November 1 when ten miniseries stills added thirty 480/800/1200 px variants (616,572 bytes total) to the trusted catalog. The job has a 12-minute timeout. A newer production run cancels an older running check. A release mismatch is reported as unverified; an older/different deploy cannot be used as proof of the requested release.
 
 ## Results, history and reruns
 
