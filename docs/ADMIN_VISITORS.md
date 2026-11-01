@@ -1,6 +1,6 @@
 # Admin visitor activity
 
-UI-15, 1 November 2026 (Asia/Nicosia). Owner requested consistent filter chevrons and a private audience summary. Release, CI and production verification are recorded in the implementation PR.
+UI-15, 1 November 2026 (Asia/Nicosia). Owner requested consistent filter chevrons and a private audience summary. Dashboard status: prepared in [PR #55](https://github.com/ivoshchikov/movie-quiz/pull/55), not deployed; the Supabase migration connector returns an expired confirmation even with Allow all actions. No new database objects or collection are active. Filter chevrons were released separately in [PR #56](https://github.com/ivoshchikov/movie-quiz/pull/56). CI and rollout evidence are recorded in those PRs.
 
 ## Interface
 

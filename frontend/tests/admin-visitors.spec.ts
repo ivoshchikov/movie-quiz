@@ -158,7 +158,11 @@ test("a timed-out heartbeat does not permanently stop reporting or affect the pa
     await r.fulfill({ status: 204 });
   });
   await page.goto("/"); await expect.poll(() => reads).toBe(1);
+  // Finish unrelated catalogue reads before advancing every timer past 10 seconds.
+  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  const aborted = page.waitForEvent("requestfailed", request => request.url().endsWith("/rpc/site_visit_heartbeat"));
   await page.clock.fastForward(11000);
+  await aborted;
   await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
   await page.clock.fastForward(51000); await expect.poll(() => reads).toBe(2);
   release();
