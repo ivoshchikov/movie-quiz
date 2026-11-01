@@ -8,7 +8,7 @@ const dateLabel = (value: string) => new Intl.DateTimeFormat("en-US", {
   month: "short", day: "numeric", year: "numeric", timeZone: "America/Chicago",
 }).format(new Date(value));
 const timeLabel = (value: string) => new Intl.DateTimeFormat("en-US", {
-  hour: "numeric", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago",
+  hour: "numeric", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short",
 }).format(new Date(value));
 
 export default function AdminTraffic({ owner }: { owner: string }) {

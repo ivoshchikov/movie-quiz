@@ -34,7 +34,7 @@ await db.exec(`
   select set_config('hq.test_now','2026-11-01T18:00:00Z',false);
 `);
 // Replace only the clock in the isolated fixture; production has no client/test clock input.
-const source = await readFile(new URL('../migrations/20261101163345_admin_visitor_stats.sql', import.meta.url), 'utf8');
+const source = await readFile(new URL('../migrations/20261101174455_admin_visitor_stats.sql', import.meta.url), 'utf8');
 await db.exec(source.replaceAll('clock_timestamp()', 'hq_private.traffic_test_now()'));
 const scalar = async (sql, args) => (await db.query(sql, args)).rows[0].v;
 const uid = id => db.query("select set_config('request.jwt.claim.sub',$1,false)", [id ?? '']);

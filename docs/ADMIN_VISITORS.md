@@ -1,10 +1,10 @@
 # Admin visitor activity
 
-UI-15, 1 November 2026 (Asia/Nicosia). Owner requested consistent filter chevrons and a private audience summary. Dashboard status: prepared in [PR #55](https://github.com/ivoshchikov/movie-quiz/pull/55), not deployed; the Supabase migration connector returns an expired confirmation even with Allow all actions. No new database objects or collection are active. Filter chevrons were released separately in [PR #56](https://github.com/ivoshchikov/movie-quiz/pull/56). CI and rollout evidence are recorded in those PRs.
+UI-15, 1 November 2026 (Asia/Nicosia). Owner requested consistent filter chevrons and a private audience summary. Dashboard implementation: [PR #55](https://github.com/ivoshchikov/movie-quiz/pull/55). The earlier connector confirmation failure is resolved; migration `20261101174455` is installed and server permissions verified. Client publication is confirmed separately in the PR. Collection begins when that production client is published. Filter chevrons were released separately in [PR #56](https://github.com/ivoshchikov/movie-quiz/pull/56). CI and rollout evidence are recorded in those PRs.
 
 ## Interface
 
-The existing Question bank, Add questions and Daily workspaces share a compact Visitor activity panel below Administration navigation. Four cards show Online now, Today, Last 7 days and Last 30 days. It refreshes every 30 seconds in a visible, online tab and offers a manual refresh. Failed refreshes retain the last confirmed snapshot with a stale-data notice; initial failure is unavailable, never a fabricated zero. Reads are account-scoped, time out after 10 seconds and ignore late responses after navigation or logout.
+The existing Question bank, Add questions and Daily workspaces share a compact Visitor activity panel below Administration navigation. Four cards show Online now, Today, Last 7 days and Last 30 days. It refreshes every 30 seconds in a visible, online tab and offers a manual refresh. The last-updated clock explicitly labels CST/CDT. Failed refreshes retain the last confirmed snapshot with a stale-data notice; initial failure is unavailable, never a fabricated zero. Reads are account-scoped, time out after 10 seconds and ignore late responses after navigation or logout.
 
 `AdminSelect` retains native select semantics, platform pickers and keyboard behavior. A shared, non-interactive SVG chevron has a reserved text area and consistent inset/vertical alignment in all three themes. Forced-colors mode restores the native arrow. Bank filters, import defaults and individual question cards use the same control.
 
@@ -30,7 +30,7 @@ Guests and signed-in players are included. These are browser-based visitor estim
 
 ## Server contract
 
-Migration: `20261101163345_admin_visitor_stats.sql`. New RLS-protected tables live only in the existing unexposed `hq_private` schema. All table access is revoked from PUBLIC, anon, authenticated and service_role. No exposed-schema setting changes.
+Migration: `20261101174455_admin_visitor_stats.sql`. New RLS-protected tables live only in the existing unexposed `hq_private` schema. All table access is revoked from PUBLIC, anon, authenticated and service_role. No exposed-schema setting changes.
 
 `site_visit_heartbeat(uuid)` is intentionally callable by guests/players. It returns void and cannot read counts, choose a date, submit another user's identity or change gameplay data. Per-identifier transaction locks serialize concurrent tabs against owner exclusion. `admin_visitor_stats(p_expected_owner uuid)` requires matching `auth.uid()` plus the existing `is_admin()` membership/pinned-owner guard. It returns only four counts, collection start and server date/time. Every privileged RPC has a fixed search path and explicit execute grants. No service key, new external analytics credential or Edge deployment is needed. Existing game tables, answers, rules and Daily timezone are unchanged.
 
