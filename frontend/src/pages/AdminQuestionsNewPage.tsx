@@ -6,6 +6,7 @@ import { categoryLabel } from "../hooks/useQuizCatalog";
 import { useReadRequest } from "../hooks/useReadRequest";
 import Seo from "../components/Seo";
 import AdminAccess from "../admin/AdminAccess";
+import AdminSelect from "../admin/AdminSelect";
 import { prepareImage } from "../admin/prepareImage";
 import { imageLimit } from "../admin/imageProcessing";
 import {
@@ -602,7 +603,7 @@ function QuestionUploader({ owner }: { owner: string }) {
         <div className="hq-upload-defaults">
           <label>
             Default category
-            <select
+            <AdminSelect
               aria-label="Default category"
               value={category}
               onChange={(e) => commonCategory(Number(e.target.value))}
@@ -614,11 +615,11 @@ function QuestionUploader({ owner }: { owner: string }) {
                     {categoryLabel(c)}
                   </option>
                 ))}
-            </select>
+            </AdminSelect>
           </label>
           <label>
             Default difficulty
-            <select
+            <AdminSelect
               aria-label="Default difficulty"
               value={difficulty}
               onChange={(e) => commonDifficulty(Number(e.target.value))}
@@ -628,7 +629,7 @@ function QuestionUploader({ owner }: { owner: string }) {
                   {l.name}
                 </option>
               ))}
-            </select>
+            </AdminSelect>
           </label>
           <details className="hq-copy-details"><summary>About defaults</summary><p>Defaults apply to cards without an individual override.</p></details>
         </div>
@@ -882,7 +883,7 @@ function DraftCard({
         <div className="hq-upload-card-settings">
           <label>
             Category
-            <select
+            <AdminSelect
               aria-label="Category"
               value={card.category}
               onChange={(e) => categoryChange(Number(e.target.value))}
@@ -894,11 +895,11 @@ function DraftCard({
                     {categoryLabel(c)}
                   </option>
                 ))}
-            </select>
+            </AdminSelect>
           </label>
           <label>
             Difficulty
-            <select
+            <AdminSelect
               aria-label="Difficulty"
               value={card.difficulty}
               onChange={(e) =>
@@ -913,7 +914,7 @@ function DraftCard({
                   {l.name}
                 </option>
               ))}
-            </select>
+            </AdminSelect>
           </label>
         </div>
         <p className="hq-upload-answer-help">

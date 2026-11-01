@@ -1,0 +1,24 @@
+.hq-admin-traffic { max-width: 860px; margin: 0 auto 1.5rem; padding: 1rem 1.1rem; border: 1px solid var(--hq-border); border-radius: 14px; background: var(--hq-surface); color: var(--hq-text); }
+.hq-traffic-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.hq-traffic-heading h2 { margin: 0; font-size: 1rem; font-weight: 600; }
+.hq-traffic-heading p { margin: .15rem 0 0; font-size: .8rem; color: var(--hq-muted); }
+.hq-traffic-heading button { min-height: 44px; flex-shrink: 0; }
+.hq-traffic-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem; margin: 0; }
+.hq-traffic-cards > div { padding: .85rem 1rem; background: var(--hq-background); border: 1px solid var(--hq-border); border-radius: 9px; }
+.hq-traffic-cards dt { color: var(--hq-muted); font-size: .8rem; }
+.hq-traffic-cards dd { margin: .25rem 0 0; font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.hq-traffic-online dt::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-inline-end: .4rem; border-radius: 50%; background: var(--hq-success); }
+.hq-traffic-footnote { margin-top: .7rem; color: var(--hq-muted); font-size: .75rem; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .3rem 1rem; }
+.hq-traffic-footnote details { flex-basis: auto; }
+.hq-traffic-footnote summary { cursor: pointer; min-height: 44px; display: list-item; }
+.hq-traffic-footnote details[open] { flex-basis: 100%; }
+.hq-traffic-footnote details p { line-height: 1.65; margin-top: .5rem; max-width: 80ch; }
+.hq-traffic-error { padding: .5rem 0; margin-bottom: .5rem; font-size: .85rem; }
+.hq-admin-traffic button:disabled { opacity: .6; cursor: default; }
+@media (max-width: 600px) {
+  .hq-admin-traffic { padding: .9rem; }
+  .hq-traffic-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+  .hq-traffic-cards > div { padding: .75rem; }
+  .hq-traffic-footnote { display: block; }
+  .hq-traffic-footnote details { margin-top: .4rem; }
+}

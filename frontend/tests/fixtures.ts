@@ -25,6 +25,12 @@ export async function mockQuizApi(page: Page) {
     const url = new URL(route.request().url());
     const name = url.pathname.split('/').pop() || '';
     const request = route.request();
+    // Telemetry is intercepted separately from game/admin mutation observations.
+    if (name === 'site_visit_heartbeat') return route.fulfill({ status: 204 });
+    if (name === 'admin_visitor_stats') return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      online: 0, today: 0, week: 0, month: 0, date: '2026-11-01', timezone: 'America/Chicago',
+      since: '2026-10-31T12:00:00Z', updated_at: '2026-11-01T12:00:00Z',
+    }) });
     if (url.pathname.includes('/rpc/')) calls.push({ name, payload: request.postDataJSON() || {} });
     let body: unknown = [];
     const headers: Record<string, string> = { 'access-control-expose-headers': 'content-range' };

@@ -58,6 +58,8 @@ function initialReferrer() {
 const referral = initialReferrer();
 let virtualReferrer = referral.page_referrer;
 const canTrack = () => !!GA_ID && !blocked && allowedHost && !optOut && !/^\/admin(?:\/|$)/.test(location.pathname);
+// First-party visitor counts share the same owner, preview and opt-out boundary.
+export const canMeasureVisits = () => !blocked && allowedHost && !optOut && !/^\/admin(?:\/|$)/.test(location.pathname);
 const pageContext = () => ({
   page_title: document.title,
   page_location: location.origin + analyticsPath(location.pathname + location.search),
