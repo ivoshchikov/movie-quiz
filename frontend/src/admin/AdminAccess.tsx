@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { useReadRequest } from "../hooks/useReadRequest";
+import AdminTraffic from "./AdminTraffic";
 import { checkAdminRights } from "./dailyApi";
 
 export function AdminNavigation() {
@@ -78,6 +79,7 @@ export default function AdminAccess({ children }: { children: ReactNode }) {
   return (
     <div key={user.id}>
       <AdminNavigation />
+      <AdminTraffic owner={user.id} />
       {children}
     </div>
   );

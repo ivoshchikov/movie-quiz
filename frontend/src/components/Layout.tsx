@@ -12,6 +12,7 @@ import HalloweenDecorations from "./HalloweenDecorations";
 import SiteNavigation from "./SiteNavigation";
 import PageErrorBoundary from "./PageErrorBoundary";
 import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
+import { useSiteVisits } from "../analytics/useSiteVisits";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
@@ -115,6 +116,7 @@ export default function Layout() {
   // Disable the tag for the owner on every route, including automatic history measurement.
   useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked]);
   useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`, loc.key); }, [pathname, search, loc.key, analyticsBlocked]);
+  useSiteVisits(analyticsBlocked, owner);
   const loginViewed = useRef(false);
   const loginVisible = !user && (showLogin || pathname === "/login");
   useEffect(() => {

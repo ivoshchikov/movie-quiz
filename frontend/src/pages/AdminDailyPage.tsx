@@ -7,6 +7,7 @@ import Seo from "../components/Seo";
 import { useReadRequest, READ_TIMEOUT } from "../hooks/useReadRequest";
 import { categoryLabel } from "../hooks/useQuizCatalog";
 import { dailyDate, dailyDateLabel } from "../daily/time";
+import AdminTraffic from "../admin/AdminTraffic";
 import AdminImage from "../admin/AdminImage";
 import DailyCancellationPanel from "../admin/DailyCancellationPanel";
 import { AdminNavigation } from "../admin/AdminAccess";
@@ -459,6 +460,7 @@ function AdminDailyWorkspace({
   return (
     <div className="hq-admin">
       <AdminNavigation />
+      <AdminTraffic owner={owner} />
       <header className="hq-admin-heading">
         <p className="hq-eyebrow">Administration</p>
         <h1>Daily Challenge</h1>
