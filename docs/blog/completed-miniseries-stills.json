@@ -1,0 +1,310 @@
+{
+  "article": "https://hard-quiz.com/blog/completed-miniseries-to-watch",
+  "addedOn": "2026-11-01",
+  "provenance": "Ten files supplied by the site owner in Archive(3).zip. No independent license or original distribution source asserted. Captions describe the supplied compositions; episode numbers and timecodes were not supplied.",
+  "processing": "WebP quality 80 / method 6; LANCZOS resizing to 480, 800 and 1200 pixels; no crop, retouching, generative changes or artificial upscaling. Original aspect ratios retained with integer-pixel rounding.",
+  "originalBytes": 18782756,
+  "variantBytes": 616572,
+  "items": [
+    {
+      "stem": "unorthodox",
+      "filename": "Unorthodox (2020).png",
+      "width": 1917,
+      "height": 1030,
+      "bytes": 2443366,
+      "sha256": "b721983ef1d5c3e828f9f056a477d9c137e22b20691ee2182647855c4d6be257",
+      "variants": [
+        {
+          "filename": "miniseries-unorthodox-still-480.webp",
+          "width": 480,
+          "height": 258,
+          "bytes": 15956
+        },
+        {
+          "filename": "miniseries-unorthodox-still-800.webp",
+          "width": 800,
+          "height": 430,
+          "bytes": 30332
+        },
+        {
+          "filename": "miniseries-unorthodox-still.webp",
+          "width": 1200,
+          "height": 645,
+          "bytes": 48290
+        }
+      ],
+      "alt": "Esty sits among friends in the back seat of a car in Unorthodox (2020).",
+      "caption": "Esty and a new circle of friends in Unorthodox (2020)."
+    },
+    {
+      "stem": "when-they-see-us",
+      "filename": "When They See Us (2019).png",
+      "width": 1920,
+      "height": 951,
+      "bytes": 1577581,
+      "sha256": "a12d37c3da6cdba3d689928602344db821c6ee862ae2094020d59d374fb21547",
+      "variants": [
+        {
+          "filename": "miniseries-when-they-see-us-still-480.webp",
+          "width": 480,
+          "height": 238,
+          "bytes": 6868
+        },
+        {
+          "filename": "miniseries-when-they-see-us-still-800.webp",
+          "width": 800,
+          "height": 396,
+          "bytes": 12418
+        },
+        {
+          "filename": "miniseries-when-they-see-us-still.webp",
+          "width": 1200,
+          "height": 594,
+          "bytes": 19742
+        }
+      ],
+      "alt": "A small television inside a shop shows a man speaking into microphones in When They See Us (2019).",
+      "caption": "An in-store television broadcast in When They See Us (2019)."
+    },
+    {
+      "stem": "chernobyl",
+      "filename": "Chernobyl (2019).png",
+      "width": 1920,
+      "height": 948,
+      "bytes": 2130625,
+      "sha256": "14706a5fb098cc647f1dbd1d97628cea56dcebcefd8447efa12340af11086ae5",
+      "variants": [
+        {
+          "filename": "miniseries-chernobyl-still-480.webp",
+          "width": 480,
+          "height": 237,
+          "bytes": 11028
+        },
+        {
+          "filename": "miniseries-chernobyl-still-800.webp",
+          "width": 800,
+          "height": 395,
+          "bytes": 20688
+        },
+        {
+          "filename": "miniseries-chernobyl-still.webp",
+          "width": 1200,
+          "height": 592,
+          "bytes": 32958
+        }
+      ],
+      "alt": "Two men stand in front of a wall map, one wearing a white coat, in Chernobyl (2019).",
+      "caption": "An office conversation in Chernobyl (2019)."
+    },
+    {
+      "stem": "normal-people",
+      "filename": "Normal People (2020).png",
+      "width": 1888,
+      "height": 1034,
+      "bytes": 1977047,
+      "sha256": "4958a23b9993b708a0f23433f01b243f72723300ab576d78b995220e41605603",
+      "variants": [
+        {
+          "filename": "miniseries-normal-people-still-480.webp",
+          "width": 480,
+          "height": 263,
+          "bytes": 10826
+        },
+        {
+          "filename": "miniseries-normal-people-still-800.webp",
+          "width": 800,
+          "height": 438,
+          "bytes": 18766
+        },
+        {
+          "filename": "miniseries-normal-people-still.webp",
+          "width": 1200,
+          "height": 657,
+          "bytes": 30148
+        }
+      ],
+      "alt": "A woman holds a mug while sitting on the edge of a table in Normal People (2020).",
+      "caption": "Normal People (2020) makes room for quiet domestic moments."
+    },
+    {
+      "stem": "five-days-at-memorial",
+      "filename": "Five Days at Memorial (2022).png",
+      "width": 1920,
+      "height": 794,
+      "bytes": 1329303,
+      "sha256": "1b30d16641dbc3eb5846dedd9203acbfc096d8abc71e6ec84b8eac061e6e03a4",
+      "variants": [
+        {
+          "filename": "miniseries-five-days-at-memorial-still-480.webp",
+          "width": 480,
+          "height": 198,
+          "bytes": 7202
+        },
+        {
+          "filename": "miniseries-five-days-at-memorial-still-800.webp",
+          "width": 800,
+          "height": 331,
+          "bytes": 13694
+        },
+        {
+          "filename": "miniseries-five-days-at-memorial-still.webp",
+          "width": 1200,
+          "height": 496,
+          "bytes": 22168
+        }
+      ],
+      "alt": "Two hospital workers, one in a white coat, stand beside a bed in Five Days at Memorial (2022).",
+      "caption": "Hospital staff in Five Days at Memorial (2022)."
+    },
+    {
+      "stem": "the-queens-gambit",
+      "filename": "The Queen’s Gambit (2020).png",
+      "width": 1909,
+      "height": 1056,
+      "bytes": 1732339,
+      "sha256": "c9d3657a80a9153915c3ef1a8c9161ed45e541897604e2d87d0d0083c5e3062a",
+      "variants": [
+        {
+          "filename": "miniseries-the-queens-gambit-still-480.webp",
+          "width": 480,
+          "height": 266,
+          "bytes": 6496
+        },
+        {
+          "filename": "miniseries-the-queens-gambit-still-800.webp",
+          "width": 800,
+          "height": 443,
+          "bytes": 13138
+        },
+        {
+          "filename": "miniseries-the-queens-gambit-still.webp",
+          "width": 1200,
+          "height": 664,
+          "bytes": 22558
+        }
+      ],
+      "alt": "Beth Harmon stands with her arms folded in a cardigan in The Queen's Gambit (2020).",
+      "caption": "Beth Harmon in The Queen's Gambit (2020)."
+    },
+    {
+      "stem": "one-day",
+      "filename": "One Day (2024).png",
+      "width": 1920,
+      "height": 806,
+      "bytes": 1910025,
+      "sha256": "aed5b30513ccfef348bc5ae32cb33b9beba58f3e124587fb308045c75dec2877",
+      "variants": [
+        {
+          "filename": "miniseries-one-day-still-480.webp",
+          "width": 480,
+          "height": 202,
+          "bytes": 11676
+        },
+        {
+          "filename": "miniseries-one-day-still-800.webp",
+          "width": 800,
+          "height": 336,
+          "bytes": 21292
+        },
+        {
+          "filename": "miniseries-one-day-still.webp",
+          "width": 1200,
+          "height": 504,
+          "bytes": 34852
+        }
+      ],
+      "alt": "Emma and Dexter sit together on a grassy hillside in One Day (2024).",
+      "caption": "Emma and Dexter in the 2024 television adaptation of One Day."
+    },
+    {
+      "stem": "godless",
+      "filename": "Godless (2017).png",
+      "width": 1920,
+      "height": 787,
+      "bytes": 2034992,
+      "sha256": "5e1ef80f3a37bb05f3160c3dd1a8a4814cf03a0581d95797ce0b63e801b4e485",
+      "variants": [
+        {
+          "filename": "miniseries-godless-still-480.webp",
+          "width": 480,
+          "height": 197,
+          "bytes": 15132
+        },
+        {
+          "filename": "miniseries-godless-still-800.webp",
+          "width": 800,
+          "height": 328,
+          "bytes": 29742
+        },
+        {
+          "filename": "miniseries-godless-still.webp",
+          "width": 1200,
+          "height": 492,
+          "bytes": 47478
+        }
+      ],
+      "alt": "A man in a broad-brimmed hat faces people outside wooden storefronts in Godless (2017).",
+      "caption": "The frontier-town setting of Godless (2017)."
+    },
+    {
+      "stem": "station-eleven",
+      "filename": "Station Eleven (2021–2022).png",
+      "width": 1920,
+      "height": 942,
+      "bytes": 1641725,
+      "sha256": "e26c6081655fa77388f55781edb20e03fa458c90da28f38e023d3d7223d95d94",
+      "variants": [
+        {
+          "filename": "miniseries-station-eleven-still-480.webp",
+          "width": 480,
+          "height": 236,
+          "bytes": 9794
+        },
+        {
+          "filename": "miniseries-station-eleven-still-800.webp",
+          "width": 800,
+          "height": 392,
+          "bytes": 17980
+        },
+        {
+          "filename": "miniseries-station-eleven-still.webp",
+          "width": 1200,
+          "height": 589,
+          "bytes": 27956
+        }
+      ],
+      "alt": "A crowned performer leans forward under blue stage lighting in Station Eleven (2021–2022).",
+      "caption": "Theatre connects the story's different worlds in Station Eleven (2021–2022)."
+    },
+    {
+      "stem": "maid",
+      "filename": "Maid (2021).png",
+      "width": 1920,
+      "height": 951,
+      "bytes": 2005753,
+      "sha256": "1e66d68e6705f0703fee85cbc1c44a2d7cae14aa22cec4a93c2aa15fb60ff093",
+      "variants": [
+        {
+          "filename": "miniseries-maid-still-480.webp",
+          "width": 480,
+          "height": 238,
+          "bytes": 9672
+        },
+        {
+          "filename": "miniseries-maid-still-800.webp",
+          "width": 800,
+          "height": 396,
+          "bytes": 17880
+        },
+        {
+          "filename": "miniseries-maid-still.webp",
+          "width": 1200,
+          "height": 594,
+          "bytes": 29842
+        }
+      ],
+      "alt": "Alex looks toward someone, with a counter behind her, in Maid (2021).",
+      "caption": "Alex in Maid (2021), a story shaped by work, housing and care."
+    }
+  ]
+}
