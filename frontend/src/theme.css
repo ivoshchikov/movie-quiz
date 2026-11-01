@@ -87,4 +87,25 @@
   --hq-shadow: #050209b3;
 }
 
+:root[data-theme="christmas"] {
+  color-scheme: dark;
+  --hq-background: #0d191b;
+  --hq-surface: #162729;
+  --hq-surface-soft: #203436;
+  --hq-text: #f9f5eb;
+  --hq-reading-text: #e1ece7;
+  --hq-muted: #b7ceca;
+  --hq-border: #354f4c;
+  --hq-control-border: #8baca5;
+  --hq-purple: #f1d391;
+  --hq-button: #b63b42;
+  --hq-button-hover: #9e3038;
+  --hq-tint: #243a35;
+  --hq-tint-hover: #304d43;
+  --hq-warning: #f4ce8b;
+  --hq-media: #0a1216;
+  --hq-backdrop: #051014d6;
+  --hq-shadow: #020d11a3;
+}
+
 html { background: var(--hq-background); color: var(--hq-text); }

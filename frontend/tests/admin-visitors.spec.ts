@@ -98,7 +98,7 @@ for (const value of [
   await expect(count(page, "Today")).toHaveText("—");
 });
 
-for (const theme of ["dark", "light", "halloween"]) test(`select chevrons and the summary fit mobile in ${theme}`, async ({ page }) => {
+for (const theme of ["dark", "light", "christmas"]) test(`select chevrons and the summary fit mobile in ${theme}`, async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 820 });
   await page.addInitScript(theme => localStorage.setItem("hard-quiz-theme", theme), theme);
   await adminFixture(page);

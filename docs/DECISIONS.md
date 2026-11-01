@@ -537,3 +537,11 @@ Preserve the existing movies bucket, category namespaces, transactional numberin
 - Count initial visible public-document loads and pathname transitions; ignore query-only filters, hashes, scrolling, theme changes and heartbeat/polling. Repeated navigation/reload counts anew. Delivery retries of one token count once and preserve first server time.
 - Share the opaque browser UUID and verified-owner/browser exclusion. No URLs or account information are stored. Client retries are bounded and memory-only; blocked or interrupted collection can undercount.
 - Add a private RLS table and explicitly granted ingestion/aggregate RPCs using the existing Isildur guard. Extend existing retention cleanup. Visitor statistics remain independently available if page-view reads fail. No gameplay, Daily timezone or GA4 changes. Contract: [ADMIN_VISITORS.md](ADMIN_VISITORS.md). Final publication evidence is recorded in the implementation PR.
+
+## 2026-11-01 — Archive Halloween and enable Christmas & New Year
+
+- Owner requested hiding Halloween while retaining it for future reuse, and adding a Christmas/New Year theme with seasonal scenery, Santa, falling snow and the McCallister house.
+- Keep three slider stops: Light, Dark, Christmas. Preserve the dark default and ordinary preferences. Map the old seasonal choice to Christmas in both the early HTML initializer and runtime normalization, with no flash of Halloween.
+- Retain Halloween source, palette, icon and original motion checks; the archived test suffix keeps unavailable-season scenarios out of the active browser suite. Restoring that season requires explicitly updating the active selector/bootstrap mapping and Layout decoration import; do not activate it automatically by calendar date.
+- Use original code-native SVG artwork and shared theme tokens. Motion is decorative, non-interactive, pausable and disabled for reduced motion, hidden tabs and active gameplay in Classic, Daily, Time Attack and This or That. No external assets or new packages are needed.
+- Keep gameplay, private/admin permissions, analytics semantics, routes, SEO metadata and Daily timezone unchanged. Publish through the existing reviewed PR/CI/Vercel workflow; record actual release evidence in the PR.

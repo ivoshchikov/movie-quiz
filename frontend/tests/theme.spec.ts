@@ -5,10 +5,10 @@ import { dailyFixture } from "./daily-fixtures";
 
 const preference = "hard-quiz-theme";
 const slider = (page: Page) => page.getByRole("slider", { name: "Color theme" });
-async function selectTheme(page: Page, theme: "light" | "dark" | "halloween") {
+async function selectTheme(page: Page, theme: "light" | "dark" | "christmas") {
   await slider(page).focus(); await slider(page).press("Home");
   if (theme !== "light") await slider(page).press("ArrowRight");
-  if (theme === "halloween") await slider(page).press("ArrowRight");
+  if (theme === "christmas") await slider(page).press("ArrowRight");
 }
 async function changeTheme(page: Page) {
   await selectTheme(page, await slider(page).getAttribute("aria-valuetext") === "Dark" ? "light" : "dark");
@@ -94,13 +94,13 @@ test("the selected theme synchronizes between tabs, including resetting the pref
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Dark");
   await changeTheme(page);
   await expect(slider(other)).toHaveAttribute("aria-valuetext", "Light");
-  await selectTheme(other, "halloween");
-  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await selectTheme(other, "christmas");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Christmas");
   await page.evaluate(key => localStorage.removeItem(key), preference);
   await expect(slider(other)).toHaveAttribute("aria-valuetext", "Dark");
 });
 
-for (const theme of ["dark", "light", "halloween"] as const) {
+for (const theme of ["dark", "light", "christmas"] as const) {
   test(`${theme}: readable pages, usable mobile header and portal login`, async ({ page }) => {
     test.setTimeout(60_000);
     await mockQuizApi(page); await savedTheme(page, theme);
@@ -125,11 +125,11 @@ for (const theme of ["dark", "light", "halloween"] as const) {
     await page.getByRole("button", { name: "Log in", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator(".hq-login-card")).toHaveCSS("background-color", theme === "light" ? "rgb(255, 255, 255)" : theme === "halloween" ? "rgb(33, 24, 41)" : "rgb(25, 26, 34)");
-    await expect(dialog.getByRole("textbox", { name: "Email" })).toHaveCSS("color", theme === "light" ? "rgb(35, 37, 53)" : theme === "halloween" ? "rgb(255, 245, 233)" : "rgb(245, 245, 250)");
+    await expect(dialog.locator(".hq-login-card")).toHaveCSS("background-color", theme === "light" ? "rgb(255, 255, 255)" : theme === "christmas" ? "rgb(22, 39, 41)" : "rgb(25, 26, 34)");
+    await expect(dialog.getByRole("textbox", { name: "Email" })).toHaveCSS("color", theme === "light" ? "rgb(35, 37, 53)" : theme === "christmas" ? "rgb(249, 245, 235)" : "rgb(245, 245, 250)");
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
-    await expect(page.locator(".hq-haunt")).toHaveCount(theme === "halloween" ? 1 : 0);
+    await expect(page.locator(".hq-winter")).toHaveCount(theme === "christmas" ? 1 : 0);
     expect(errors).toEqual([]);
   });
 
@@ -185,7 +185,7 @@ for (const theme of ["dark", "light", "halloween"] as const) {
   });
 }
 
-for (const theme of ["light", "halloween"] as const) test(`the saved ${theme} theme is restored before the application can start`, async ({ page }) => {
+for (const theme of ["light", "christmas"] as const) test(`the saved ${theme} theme is restored before the application can start`, async ({ page }) => {
   await savedTheme(page, theme);
   // Simulate a slow or unavailable application bundle; the inline bootstrap must suffice.
   await page.route("**/*", route => {
@@ -199,13 +199,13 @@ for (const theme of ["light", "halloween"] as const) test(`the saved ${theme} th
   for (const route of ["/", "/blog", "/how-to-play", "/daily", "/404"]) {
     await page.goto(route);
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-    await expect(page.locator("html")).toHaveCSS("background-color", theme === "light" ? "rgb(246, 247, 251)" : "rgb(20, 15, 27)");
-    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", theme === "light" ? "#f6f7fb" : "#140f1b");
+    await expect(page.locator("html")).toHaveCSS("background-color", theme === "light" ? "rgb(246, 247, 251)" : "rgb(13, 25, 27)");
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", theme === "light" ? "#f6f7fb" : "#0d191b");
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
   }
 });
 
-test("the slider supports dragging through three stops and removes Halloween decoration on exit", async ({ page }) => {
+test("the slider supports dragging through three stops and removes Christmas decoration on exit", async ({ page }) => {
   await mockQuizApi(page); await page.goto("/");
   // The account placeholder can move the slider while the header settles.
   await expect(page.getByRole("button", { name: "Log in", exact: true })).toBeVisible();
@@ -214,17 +214,17 @@ test("the slider supports dragging through three stops and removes Halloween dec
   const y = box!.y + box!.height / 2;
   await page.mouse.move(box!.x + box!.width / 2, y); await page.mouse.down();
   await page.mouse.move(box!.x + box!.width - 12, y, { steps: 8 }); await page.mouse.up();
-  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
-  await expect(page.locator(".hq-haunt-band")).toBeVisible();
-  await expect(page.locator(".hq-haunt-edges")).toHaveAttribute("aria-hidden", "true");
-  await expect(page.locator(".hq-haunt")).toHaveCSS("pointer-events", "none");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Christmas");
+  await expect(page.locator(".hq-winter-band")).toBeVisible();
+  await expect(page.locator(".hq-winter-backdrop")).toHaveAttribute("aria-hidden", "true");
+  await expect(page.locator(".hq-winter")).toHaveCSS("pointer-events", "none");
   await page.reload();
-  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Christmas");
   await slider(page).press("Home");
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Light");
-  await expect(page.locator(".hq-haunt")).toHaveCount(0);
+  await expect(page.locator(".hq-winter")).toHaveCount(0);
   await slider(page).press("End");
-  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Christmas");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.locator(".hq-theme-thumb")).toHaveCSS("transition-duration", "0s");
 });
@@ -235,10 +235,10 @@ test("touch selection is usable at 320px and keeps game controls within the view
   await slider(page).waitFor();
   let box = (await slider(page).boundingBox())!;
   await page.touchscreen.tap(box.x + box.width - 12, box.y + box.height / 2);
-  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Halloween");
+  await expect(slider(page)).toHaveAttribute("aria-valuetext", "Christmas");
   await page.getByRole("button", { name: "Play Movie Stills" }).click();
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
-  await expect(page.locator(".hq-haunt-band")).toHaveCount(0);
+  await expect(page.locator(".hq-winter-band")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
   box = (await slider(page).boundingBox())!;

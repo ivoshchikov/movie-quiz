@@ -35,7 +35,7 @@ for (const width of [320, 1440]) test(`direct mode links stay passive and open t
   }
   expect(calls.filter(c => /^(quiz_start|daily_begin|time_attack_start|this_that_open|submit_daily_answer)$/.test(c.name))).toEqual([]);
 });
-for (const width of [1440, 768, 390, 320]) for (const theme of ['dark', 'light', 'halloween']) {
+for (const width of [1440, 768, 390, 320]) for (const theme of ['dark', 'light', 'christmas']) {
   test(`four equal modes and passive previews in ${theme}, ${width}px`, async ({ page }, info) => {
     const calls = await options(page);
     await page.addInitScript(t => localStorage.setItem('hard-quiz-theme', t), theme);
