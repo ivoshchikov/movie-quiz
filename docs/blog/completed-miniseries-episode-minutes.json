@@ -1,0 +1,177 @@
+{
+  "checkedOn": "2026-11-01",
+  "scope": "Released narrative episodes only; whole-minute catalog lengths. Display totals rounded to nearest five minutes. Not elapsed player timing.",
+  "series": [
+    {
+      "title": "Unorthodox",
+      "episodes": 4,
+      "episodeMinutes": [
+        52,
+        52,
+        55,
+        54
+      ],
+      "totalMinutes": 213,
+      "displayMinutes": 215,
+      "source": "Netflix title page"
+    },
+    {
+      "title": "When They See Us",
+      "episodes": 4,
+      "episodeMinutes": [
+        63,
+        71,
+        73,
+        88
+      ],
+      "totalMinutes": 295,
+      "displayMinutes": 295,
+      "source": "Netflix title page"
+    },
+    {
+      "title": "Chernobyl",
+      "episodes": 5,
+      "episodeMinutes": [
+        59,
+        65,
+        62,
+        65,
+        72
+      ],
+      "totalMinutes": 323,
+      "displayMinutes": 325,
+      "source": "Apple TV US episode catalog"
+    },
+    {
+      "title": "Normal People",
+      "episodes": 12,
+      "episodeMinutes": [
+        30,
+        28,
+        33,
+        31,
+        31,
+        33,
+        27,
+        28,
+        22,
+        26,
+        28,
+        23
+      ],
+      "totalMinutes": 340,
+      "displayMinutes": 340,
+      "source": "TVmaze complete episode guide"
+    },
+    {
+      "title": "Five Days at Memorial",
+      "episodes": 8,
+      "episodeMinutes": [
+        40,
+        40,
+        47,
+        47,
+        53,
+        45,
+        54,
+        53
+      ],
+      "totalMinutes": 379,
+      "displayMinutes": 380,
+      "source": "TVmaze complete episode guide"
+    },
+    {
+      "title": "The Queen's Gambit",
+      "episodes": 7,
+      "episodeMinutes": [
+        59,
+        65,
+        46,
+        48,
+        48,
+        60,
+        68
+      ],
+      "totalMinutes": 394,
+      "displayMinutes": 395,
+      "source": "Netflix title page"
+    },
+    {
+      "title": "One Day",
+      "episodes": 14,
+      "episodeMinutes": [
+        39,
+        27,
+        22,
+        28,
+        33,
+        27,
+        31,
+        29,
+        24,
+        32,
+        19,
+        27,
+        26,
+        36
+      ],
+      "totalMinutes": 400,
+      "displayMinutes": 400,
+      "source": "TVmaze complete episode guide"
+    },
+    {
+      "title": "Godless",
+      "episodes": 7,
+      "episodeMinutes": [
+        70,
+        69,
+        74,
+        68,
+        50,
+        41,
+        80
+      ],
+      "totalMinutes": 452,
+      "displayMinutes": 450,
+      "source": "Netflix title page"
+    },
+    {
+      "title": "Station Eleven",
+      "episodes": 10,
+      "episodeMinutes": [
+        44,
+        46,
+        49,
+        44,
+        54,
+        44,
+        53,
+        57,
+        57,
+        59
+      ],
+      "totalMinutes": 507,
+      "displayMinutes": 505,
+      "source": "TVmaze complete episode guide"
+    },
+    {
+      "title": "Maid",
+      "episodes": 10,
+      "episodeMinutes": [
+        50,
+        52,
+        47,
+        48,
+        59,
+        57,
+        53,
+        59,
+        60,
+        54
+      ],
+      "totalMinutes": 539,
+      "displayMinutes": 540,
+      "source": "Netflix title page"
+    }
+  ]
+}

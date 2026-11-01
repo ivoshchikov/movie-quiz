@@ -3,6 +3,7 @@ import type { BlogPost } from "./types";
 import { estimateReadingMinutes } from "./reading";
 
 // Посты
+import completedMiniseries from "./entries/completed-miniseries-to-watch";
 import knivesOut          from "./entries/movies-like-knives-out";
 import thriller2026        from "./entries/best-thriller-movies-2026";
 import november2026Movies  from "./entries/november-2026-movie-releases";
@@ -14,6 +15,7 @@ import why239              from "./entries/why-2-39-feels-more-cinematic";
 
 export const posts: BlogPost[] = [
   // Самый свежий — сверху (в любом случае список на /blog сортируется по дате)
+  completedMiniseries,
   knivesOut,
   thriller2026,
   november2026Movies,
