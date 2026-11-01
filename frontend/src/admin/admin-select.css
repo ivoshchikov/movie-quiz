@@ -1,0 +1,9 @@
+.hq-admin-select { position: relative; display: block; min-width: 0; width: 100%; color: var(--hq-text); }
+.hq-bank .hq-admin-select > select { width: 100%; appearance: none; -webkit-appearance: none; padding-inline-end: 2.75rem; cursor: pointer; }
+.hq-admin-select > .hq-icon { position: absolute; inset-inline-end: .9rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; pointer-events: none; color: var(--hq-muted); }
+.hq-admin-select > select:disabled { cursor: default; }
+.hq-admin-select > select:disabled + .hq-icon { opacity: .5; }
+@media (forced-colors: active) {
+  .hq-bank .hq-admin-select > select { appearance: auto; padding-inline-end: .75rem; }
+  .hq-admin-select > .hq-icon { display: none; }
+}

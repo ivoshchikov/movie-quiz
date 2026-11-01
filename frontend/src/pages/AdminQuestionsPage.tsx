@@ -8,6 +8,7 @@ import { categoryLabel } from "../hooks/useQuizCatalog";
 import { useReadRequest } from "../hooks/useReadRequest";
 import Seo from "../components/Seo";
 import AdminAccess from "../admin/AdminAccess";
+import AdminSelect from "../admin/AdminSelect";
 import AdminImage from "../admin/AdminImage";
 import QuestionEditor from "../admin/QuestionEditor";
 import QuestionMetrics from "../admin/QuestionMetrics";
@@ -171,12 +172,12 @@ function QuestionBank({ owner }: { owner: string }) {
             maxLength={200}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Answer, ID or image path"
+            placeholder="Answer, ID or path"
           />
         </label>
         <label>
           Category
-          <select
+          <AdminSelect
             aria-label="Category"
             value={filters.category ?? ""}
             onChange={(e) => change("category", e.target.value)}
@@ -188,11 +189,11 @@ function QuestionBank({ owner }: { owner: string }) {
               </option>
             ))}
             <option value="0">Uncategorised</option>
-          </select>
+          </AdminSelect>
         </label>
         <label>
           Difficulty
-          <select
+          <AdminSelect
             aria-label="Difficulty"
             value={filters.difficulty ?? ""}
             onChange={(e) => change("difficulty", e.target.value)}
@@ -203,11 +204,11 @@ function QuestionBank({ owner }: { owner: string }) {
                 {l.name}
               </option>
             ))}
-          </select>
+          </AdminSelect>
         </label>
         <label>
           Sort
-          <select
+          <AdminSelect
             aria-label="Sort"
             value={filters.sort}
             onChange={(e) => change("sort", e.target.value)}
@@ -215,7 +216,7 @@ function QuestionBank({ owner }: { owner: string }) {
             <option value="id_desc">ID: high to low</option>
             <option value="id_asc">ID: low to high</option>
             <option value="answer_asc">Answer: A–Z</option>
-          </select>
+          </AdminSelect>
         </label>
         <button
           className="hq-secondary"
