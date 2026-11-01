@@ -26,7 +26,10 @@ export async function mockQuizApi(page: Page) {
     const name = url.pathname.split('/').pop() || '';
     const request = route.request();
     // Telemetry is intercepted separately from game/admin mutation observations.
-    if (name === 'site_visit_heartbeat') return route.fulfill({ status: 204 });
+    if (name === 'site_visit_heartbeat' || name === 'site_record_page_view') return route.fulfill({ status: 204 });
+    if (name === 'admin_page_view_stats') return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      hours24: 0, days7: 0, days30: 0, since: '2026-11-01T12:00:00Z', updated_at: '2026-11-01T18:00:00Z',
+    }) });
     if (name === 'admin_visitor_stats') return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
       online: 0, today: 0, week: 0, month: 0, date: '2026-11-01', timezone: 'America/Chicago',
       since: '2026-10-31T12:00:00Z', updated_at: '2026-11-01T12:00:00Z',

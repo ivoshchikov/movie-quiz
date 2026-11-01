@@ -397,3 +397,10 @@ The owner supplied 28 Years Later The Bone Temple(1).png. The new shot is accept
 ## Question upload recovery — 16 October 2026 (UTC)
 
 A targeted fix is prepared for the missing-object response that prevented first-time image imports. Upload cards now expose category destinations, reserved paths and explicit unconfirmed-operation recovery. See [QUESTION_UPLOAD_RECOVERY.md](QUESTION_UPLOAD_RECOVERY.md) for the cause, existing naming and recovery procedure. No schema, owner authorization, compression or game rules change. Deployment is recorded separately after confirmation.
+
+
+## UI-15 extension — Page views below Visitor activity
+
+1 November 2026, Asia/Nicosia. Owner requested page views for 24 hours, 7 and 30 days. A separate Page views panel under Visitor activity spans Question bank, Add questions and Daily, with three counters, foreground polling, independent errors/retry and mobile rows. Windows are rolling 24/168/720 hours; visitor windows remain Chicago calendar dates.
+
+First-party collection counts visible public-document loads and pathname transitions, including reload/Back. Query filters, hashes, scrolling and heartbeats do not increment it. A random view token makes retries idempotent; the existing browser UUID, verified-owner exclusion, production-host and opt-out rules are shared. Private RLS-protected rows contain only two opaque UUIDs and server time, with daily cleanup after 840 hours. Aggregate access remains pinned to verified Isildur plus admin membership. No game, question, Daily or GA4 behavior changes. GA4 history is not backfilled; page views do not measure actual ad impressions. Contract: [ADMIN_VISITORS.md](ADMIN_VISITORS.md). Installed migration and final CI/merge/production evidence are recorded separately in the implementation PR.

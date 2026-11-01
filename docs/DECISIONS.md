@@ -528,3 +528,12 @@ Preserve the existing movies bucket, category namespaces, transactional numberin
 - Сбор начинается после выпуска, с явной датой начала. Старые визиты не восстанавливаются из игровых попыток, не выдумываются и не смешиваются с GA4. Админка, owner, preview и существующий opt-out исключаются.
 - Сервер проверяет закреплённый auth.uid Isildur; его браузер исключается также после гостевого посещения/выхода. Агрегат требует существующий is_admin и совпадение ожидаемого аккаунта. Таблицы закрыты в hq_private с RLS и явным отзывом прав; хранение до 35 дней. Публичный heartbeat возвращает void и не раскрывает статистику.
 - Игровые записи, ответы, правила и часовой пояс Daily не меняются. Полный контракт — [ADMIN_VISITORS.md](ADMIN_VISITORS.md).
+
+
+## 2026-11-01 — UI-15: private page-view counters
+
+- Owner authorized Page views immediately below Visitor activity: rolling last 24, 168 and 720 hours. Unique-visitor counters retain their Chicago calendar-date definitions.
+- Use independent first-party observations with a separate collection start. Do not manufacture history from GA4, heartbeats or game attempts. Page views are distinct from ad impressions.
+- Count initial visible public-document loads and pathname transitions; ignore query-only filters, hashes, scrolling, theme changes and heartbeat/polling. Repeated navigation/reload counts anew. Delivery retries of one token count once and preserve first server time.
+- Share the opaque browser UUID and verified-owner/browser exclusion. No URLs or account information are stored. Client retries are bounded and memory-only; blocked or interrupted collection can undercount.
+- Add a private RLS table and explicitly granted ingestion/aggregate RPCs using the existing Isildur guard. Extend existing retention cleanup. Visitor statistics remain independently available if page-view reads fail. No gameplay, Daily timezone or GA4 changes. Contract: [ADMIN_VISITORS.md](ADMIN_VISITORS.md). Final publication evidence is recorded in the implementation PR.
