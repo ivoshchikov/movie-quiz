@@ -74,6 +74,21 @@
       }
     },
     {
+      "src": "^/admin/question-statistics\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/admin/question-statistics"
+      }
+    },
+    {
+      "src": "^/admin/question-statistics/?$",
+      "dest": "/admin/question-statistics.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
       "src": "^/admin/questions/new\\.html$",
       "status": 301,
       "headers": {
