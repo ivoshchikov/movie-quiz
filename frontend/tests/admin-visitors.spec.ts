@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import { mockQuizApi, mockSignedIn } from "./fixtures";
+import { mockHumanBrowser, mockQuizApi, mockSignedIn } from "./fixtures";
+
+test.beforeEach(async ({ page }) => { await mockHumanBrowser(page); });
 
 const owner = "112743d7-f683-4bbb-8117-068e89a00f22";
 const id = "77777777-7777-4777-8777-777777777777";
@@ -211,6 +213,7 @@ test("a preview host never sends visitor telemetry", async ({ page }) => {
 });
 test("simultaneous new tabs share one browser identifier", async ({ page, context }) => {
   const other = await context.newPage();
+  await mockHumanBrowser(other);
   const a = await telemetry(page), b = await telemetry(other);
   await Promise.all([page.goto("/"), other.goto("/")]);
   await expect.poll(() => a.beats.length + b.beats.length).toBeGreaterThan(0);

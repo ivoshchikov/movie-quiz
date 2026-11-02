@@ -10,6 +10,11 @@ export const difficulties = [
   { id: 3, key: 'hard', name: 'Hard', time_limit_secs: 17, lives: 1, sort_order: 3 },
 ];
 
+// Only isolated telemetry tests simulate an ordinary browser. Production has no bypass.
+export async function mockHumanBrowser(page: Page) {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { configurable: true, get: () => false }));
+}
+
 export async function mockQuizApi(page: Page) {
   const calls: { name: string; payload: Record<string, unknown> }[] = [];
   const games = new Map<string, Record<string, unknown>>();

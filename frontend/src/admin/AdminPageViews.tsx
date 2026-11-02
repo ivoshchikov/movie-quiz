@@ -30,7 +30,7 @@ export default function AdminPageViews({ owner }: { owner: string }) {
   const data = stats.value;
   return <section className="hq-admin-traffic hq-page-views" aria-label="Page views">
     <div className="hq-traffic-heading">
-      <div><h2>Page views</h2><p>Public pages · excludes you</p></div>
+      <div><h2>Page views</h2><p>Public pages · bot-filtered · excludes you</p></div>
       <button type="button" className="hq-inline-action" onClick={retry} disabled={stats.loading}>
         {stats.loading && data ? "Refreshing…" : "Refresh page views"}
       </button>
@@ -51,6 +51,7 @@ export default function AdminPageViews({ owner }: { owner: string }) {
         A page load or a move to a different page counts as one view, including repeat visits.
         Filters, scrolling and activity checks do not add views. Windows cover the preceding 24, 168 and 720 hours.
         Owner and administrative visits, previews and opted-out browsers are excluded.
+        Known bots and detected automation are filtered out; unidentified bots can remain.
         Collection starts on the date shown; earlier GA4 history is not included. Network failures and blocked
         collection can reduce counts. These are page views, not ad impressions, and may differ from Google Analytics.
       </p></details>

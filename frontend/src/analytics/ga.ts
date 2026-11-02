@@ -1,3 +1,5 @@
+import { isAutomatedTraffic } from "./trafficBotFilter";
+
 export type AnalyticsParameters = Record<string, unknown>;
 type GtagArguments =
   | [command: "js", date: Date]
@@ -58,8 +60,9 @@ function initialReferrer() {
 const referral = initialReferrer();
 let virtualReferrer = referral.page_referrer;
 const canTrack = () => !!GA_ID && !blocked && allowedHost && !optOut && !/^\/admin(?:\/|$)/.test(location.pathname);
-// First-party visitor counts share the same owner, preview and opt-out boundary.
-export const canMeasureVisits = () => !blocked && allowedHost && !optOut && !/^\/admin(?:\/|$)/.test(location.pathname);
+// First-party counts also exclude identified crawlers and browser automation.
+export const canMeasureVisits = () => !blocked && allowedHost && !optOut &&
+  !/^\/admin(?:\/|$)/.test(location.pathname) && !isAutomatedTraffic();
 const pageContext = () => ({
   page_title: document.title,
   page_location: location.origin + analyticsPath(location.pathname + location.search),
