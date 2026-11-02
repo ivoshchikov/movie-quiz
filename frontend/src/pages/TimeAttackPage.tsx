@@ -7,7 +7,7 @@ import type { SiteOutletContext } from "../components/Layout";
 import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
 import pageMetadata from "../pageMetadata.json";
-import { activeAttack, attackCatalog, isLevel } from "../timeAttack/api";
+import { activeAttack, attackCatalog, attackCategoryName, isLevel } from "../timeAttack/api";
 import type { AttackLevel } from "../timeAttack/api";
 import { readAttackRun, runFromGame, writeAttackRun } from "../timeAttack/storage";
 import ModeSwitcher from "../components/ModeSwitcher";
@@ -61,7 +61,7 @@ export function TimeAttackSetup({ embedded = false }: { embedded?: boolean }) {
       {catalog.value && !catalog.value.categories.length && <p>New questions are on the way. <Link to="/">All games</Link></p>}
       {category && selection && <div className="hq-attack-setup">
         <RadioGroup value={category.id} onChange={id => select(id, level)} aria-label="Time Attack category"><RadioGroup.Label className="hq-legend">Category</RadioGroup.Label><div className="hq-attack-choices">
-          {catalog.value!.categories.map(c => <RadioGroup.Option as="button" key={c.id} value={c.id} className="hq-category-option">{({ checked }) => <><span>{c.id === 1 ? "Movie Stills" : c.name}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div></RadioGroup>
+          {catalog.value!.categories.map(c => <RadioGroup.Option as="button" key={c.id} value={c.id} className="hq-category-option">{({ checked }) => <><span>{attackCategoryName(c.id)}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div></RadioGroup>
         <RadioGroup value={level} onChange={key => select(category.id, key)} aria-label="Time Attack difficulty"><RadioGroup.Label className="hq-legend">Time pressure</RadioGroup.Label><div className="hq-attack-choices">
           {catalog.value!.levels.map(l => <RadioGroup.Option as="button" key={l.key} value={l.key} className="hq-difficulty-option">{({ checked }) => <><span>{l.name} · {l.duration_secs} s</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div></RadioGroup>
         <p className="hq-mode-warning">One continuous timer, including loading and time away.</p>

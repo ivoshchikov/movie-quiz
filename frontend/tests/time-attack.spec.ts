@@ -65,7 +65,7 @@ for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:320
  await page.screenshot({path:`../ui08-verification/time-attack-${viewport.width}.png`,fullPage:true});
 });
 test('Time Attack is indexed with initial HTML and its live route is noindex',async({page})=>{
- await attackFixture(page);await page.goto('/time-attack');await expect(page.getByRole('button',{name:'Start Time Attack',exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page).toHaveTitle('Movie & Actor Time Attack Quiz | Hard Quiz');await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://hard-quiz.com/time-attack');
+ await attackFixture(page);await page.goto('/time-attack');await expect(page.getByRole('button',{name:'Start Time Attack',exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page).toHaveTitle('Movie, TV & Actor Time Attack Quiz | Hard Quiz');await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://hard-quiz.com/time-attack');
  await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();await expect(page.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content','noindex, nofollow');
 });
 

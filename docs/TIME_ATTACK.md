@@ -4,7 +4,7 @@ Owner approved implementation, tests and production publication on 19 October 20
 
 ## Rules
 
-- Fixed-time race; Movie Stills (category 1) and Actors (category 2). TV series waits for a larger bank. No streak-bonus variant or extending Time Bank in this release.
+- Fixed-time race; Movie Stills (category 1), Actors (2), Actresses (3) and TV Series (4). Only categories with eligible questions appear. No streak-bonus variant or extending Time Bank in this release.
 - Easy 120 seconds, Medium 90, Hard 60. Level changes the total clock, not the question pool. Each full block contains 2 Easy / 2 Medium / 1 Hard questions in shuffled order while those strata remain. An exhausted stratum drops out; remaining questions continue. No question repeats in a run. Each stratum is a weighted permutation; existing selection weights, including #175 at 0.1, are preserved.
 - Correct +2 points; wrong −1 point; scores may be negative. A random four-choice guess has expected score −0.25, before time spent answering. Skip deducts 3 seconds once and permanently consumes the question. With less than 3 seconds left, a skip ends the run at its actual acceptance time, without backdating the end.
 - No lives and no separate question timer. The server starts the overall clock after admission and bank construction, when it issues the first question. Loading and network time count. The same 500 ms minimum feedback applies to answers and skips; it consumes overall time.
@@ -16,7 +16,7 @@ Owner approved implementation, tests and production publication on 19 October 20
 
 ## Server and data contracts
 
-Migration: `supabase/migrations/20261019104507_time_attack.sql`.
+Migrations: `supabase/migrations/20261019104507_time_attack.sql` and `20261102222731_all_game_categories.sql` (category expansion requested 3 November 2026, Asia/Nicosia).
 
 Private tables hold sessions, immutable question/option/answer snapshots, and personal bests. RLS is enabled and direct client privileges revoked. Public RPCs explicitly grant only the intended roles and check ownership; guest sessions are random UUID capabilities. Private helpers are not executable by client roles. Every privileged function fixes its search path.
 
@@ -37,3 +37,7 @@ Accepted outcomes join the existing event/cohort system under `time_attack`. Ski
 Run the existing isolated SQL fixture with the new migration, including native PostgreSQL concurrent choices/skip/next, a blocked answer crossing its deadline, and mixed-mode admission races. Browser fixtures use the test Supabase origin and intercept analytics, covering score/clock/skip, loss/retry, reload, signed-in records, own rank, image errors and four viewport sizes. Production verification must use passive pages, metadata, catalog/ranking reads and schema/ACL checks; do not create test attempts or records in production.
 
 Native PostgreSQL 17 verification on application commit `d3be1a7505e47b90a13140cd81b05d61662eade3`: 60 contracts passed, zero failures/skips, including nine real concurrency cases (Actions run `39242370650`). Local PGlite: 51 passed with the nine native-only cases skipped. Typecheck, lint, build and the 16 Time Attack browser scenarios pass. Full regression and deployment evidence are recorded in PR #40. An illustrative 90-second balance simulation (not player telemetry) favored 80%-accurate 2.5-second recognition over 0.1-second random guessing; negative scoring and the paid skip remain as approved. Real-player balance still needs observation after launch.
+
+The category expansion changes only catalog/admission eligibility. Parsing, saved-run recovery, play/image labels, result links, profile records and leaderboard filters accept all four current category IDs. A run snapshots one selected category; its difficulty mix and clock rules remain the same. Existing records retain their category/time-pressure keys, and no mixed-category run is added.
+
+The current client reads `time_attack_category_catalog()` for all four categories. Migration `20261102230323_time_attack_catalog_compatibility.sql` retains the original `time_attack_catalog()` response for older clients that reject IDs other than 1/2. Both reads are anonymous/account-accessible and contain no answers. Install both category migrations before deploying the current client.

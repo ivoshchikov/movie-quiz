@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { comparisonRequest } from "./api";
 import type { Choice, Comparison } from "./api";
-import { ACTIVITY, fromComparison, readRun, rememberGuest, runKey, signalActivity, writeRun } from "./storage";
+import { activityKey, fromComparison, readRun, rememberGuest, runKey, signalActivity, writeRun } from "./storage";
 import type { Pending, Run } from "./storage";
 import { attemptAnalytics } from "../analytics/attempts";
 
@@ -15,7 +15,7 @@ export function useComparison(initial: Run) {
     if (!alive.current || locked.current) { if (kind === "load") queued.current = true; return; }
     locked.current = true; setBusy(true); setError(false); setNotice("");
     const run = descriptor.current, g = current.current;
-    const stored = readRun(run.owner);
+    const stored = readRun(run.owner, run.board);
     let pending: Pending | undefined = kind === "retry" ? (stored?.id === run.id ? stored.pending : run.pending) : undefined;
     if (kind === "choose" && g?.round && choice && g.round.outcome === null) pending = { kind: "choose", round: g.round.id, choice };
     if ((kind === "next" || kind === "more") && g?.round?.outcome) pending = { kind: "next", round: g.round.id, more: kind === "more" };
@@ -29,7 +29,7 @@ export function useComparison(initial: Run) {
       if (next.owner !== run.owner || next.board !== run.board || (run.confirmed && next.id !== run.id)) throw Error("Comparison owner changed");
       if (!alive.current) return;
       if (current.current && next.version < current.current.version) return;
-      const saved = readRun(run.owner), unresolved = saved?.id === next.id ? saved.pending : undefined;
+      const saved = readRun(run.owner, run.board), unresolved = saved?.id === next.id ? saved.pending : undefined;
       const stillPending = unresolved && next.round?.id === unresolved.round && (unresolved.kind === "choose" ? next.round.outcome === null : !next.complete && next.round.outcome !== null);
       const analytics = attemptAnalytics("this_or_that", `${next.id}:${next.owner ?? "guest"}`);
       const settings = { is_logged_in: !!next.owner, board: next.board };
@@ -42,7 +42,7 @@ export function useComparison(initial: Run) {
       descriptor.current = { ...fromComparison(next), ...(stillPending ? { pending: unresolved } : {}) };
       if (!saved || saved.id === next.id || !run.confirmed) writeRun(descriptor.current); current.current = next; setGame(next); rememberGuest(next);
       if (stillPending) setError(true);
-      if (pending) signalActivity();
+      if (pending) signalActivity(run.board);
     } catch (failure) {
       if (!alive.current) return;
       if ((failure as { code?: string })?.code === "PT409") {
@@ -57,9 +57,9 @@ export function useComparison(initial: Run) {
   useEffect(() => {
     alive.current = true; void perform("load");
     const visible = () => { if (document.visibilityState === "visible") void perform("load"); };
-    const storage = (e: StorageEvent) => { if (e.key === ACTIVITY || e.key === runKey(initial.owner)) { const saved = readRun(initial.owner); if (saved && saved.id !== descriptor.current.id) return; if (locked.current) queued.current = true; else void perform("load"); } };
+    const storage = (e: StorageEvent) => { if (e.key === activityKey(initial.board) || e.key === runKey(initial.owner, initial.board)) { const saved = readRun(initial.owner, initial.board); if (saved && saved.id !== descriptor.current.id) return; if (locked.current) queued.current = true; else void perform("load"); } };
     document.addEventListener("visibilitychange", visible); window.addEventListener("storage", storage);
     return () => { alive.current = false; controller.current?.abort(); document.removeEventListener("visibilitychange", visible); window.removeEventListener("storage", storage); };
-  }, [perform, initial.owner]);
+  }, [perform, initial.owner, initial.board]);
   return { game, busy, error, notice, choose: (choice: Choice) => perform("choose", choice), next: () => perform("next"), more: () => perform("more"), retry: () => perform("retry") };
 }

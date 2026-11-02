@@ -11,7 +11,7 @@ import StatusMessage from "../components/StatusMessage";
 import ModeSwitcher from "../components/ModeSwitcher";
 import { gameMode } from "../games/modes";
 import { useReadRequest } from "../hooks/useReadRequest";
-import { attackCatalog, isLevel } from "../timeAttack/api";
+import { attackCatalog, attackCategoryName, isLevel } from "../timeAttack/api";
 import type { AttackLevel } from "../timeAttack/api";
 import AttackLeaderboard from "../timeAttack/AttackLeaderboard";
 import ActorRanking from "../thisThat/ActorRanking";
@@ -78,7 +78,7 @@ function AttackRankings() {
     {catalog.error && <StatusMessage tone="error">Options could not load. <button className="hq-inline-action" onClick={catalog.retry}>Retry options</button></StatusMessage>}
     {category && <>
       <div className="hq-attack-setup">
-        <RadioGroup value={category.id} onChange={id => select("attack-category", String(id))} aria-label="Time Attack category"><RadioGroup.Label className="hq-legend">Category</RadioGroup.Label><div className="hq-attack-choices">{catalog.value!.categories.map(c => <RadioGroup.Option as="button" type="button" key={c.id} value={c.id} className="hq-category-option">{c.id === 1 ? "Movie Stills" : c.name}</RadioGroup.Option>)}</div></RadioGroup>
+        <RadioGroup value={category.id} onChange={id => select("attack-category", String(id))} aria-label="Time Attack category"><RadioGroup.Label className="hq-legend">Category</RadioGroup.Label><div className="hq-attack-choices">{catalog.value!.categories.map(c => <RadioGroup.Option as="button" type="button" key={c.id} value={c.id} className="hq-category-option">{attackCategoryName(c.id)}</RadioGroup.Option>)}</div></RadioGroup>
         <RadioGroup value={level} onChange={key => select("level", key)} aria-label="Time Attack difficulty"><RadioGroup.Label className="hq-legend">Time pressure</RadioGroup.Label><div className="hq-attack-choices">{catalog.value!.levels.map(l => <RadioGroup.Option as="button" type="button" key={l.key} value={l.key} className="hq-difficulty-option">{l.name} · {l.duration_secs} s</RadioGroup.Option>)}</div></RadioGroup>
       </div>
       <AttackLeaderboard category={category.id} level={level} />
@@ -93,7 +93,7 @@ export default function LeaderboardPage() {
   const mode = gameMode(params.get("mode"));
   return <div className="hq-leaderboard-page"><Seo {...pageMetadata.leaderboard} />
     <section className="hq-panel hq-leaderboard-panel" aria-labelledby="leaderboard-title">
-      <header className="hq-leaderboard-heading"><div><h1 id="leaderboard-title">Rankings</h1><p>{mode === "this-or-that" ? "Actor favourites, chosen by players" : mode === "daily" ? "Daily streaks" : "All-time personal bests"}</p></div><span className="hq-leaderboard-symbol"><SiteIcon name="trophy" /></span></header>
+      <header className="hq-leaderboard-heading"><div><h1 id="leaderboard-title">Rankings</h1><p>{mode === "this-or-that" ? "Favourites, chosen by players" : mode === "daily" ? "Daily streaks" : "All-time personal bests"}</p></div><span className="hq-leaderboard-symbol"><SiteIcon name="trophy" /></span></header>
       <ModeSwitcher label="Ranking mode" value={mode} onChange={value => { const next = new URLSearchParams(params); next.set("mode", value); setParams(next, { preventScrollReset: true }); }} />
       <div className="hq-rankings-content">{mode === "classic" ? <ClassicRankings /> : mode === "time-attack" ? <AttackRankings /> : mode === "this-or-that" ? <ActorRanking /> : <><StreakLeaderboard refreshKey={dailyDate()} /><Link className="hq-secondary" to="/daily">Play Daily <SiteIcon name="arrow" /></Link></>}</div>
     </section>

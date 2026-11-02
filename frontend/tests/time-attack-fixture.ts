@@ -21,7 +21,7 @@ export async function attackFixture(page: Page, options: {signedIn?:boolean;size
   await page.route('**/rest/v1/rpc/time_attack_*',async route=>{
     const name=new URL(route.request().url()).pathname.split('/').pop()!;
     const p=route.request().postDataJSON()??{};calls.push({name,payload:p});
-    if(name==='time_attack_catalog')return data.failCatalog?route.fulfill({status:503,body:'{}'}):route.fulfill({json:{categories:[{id:1,name:'All movies',bank_size:100},{id:2,name:'Actors',bank_size:200}],levels:[{key:'easy',name:'Easy',duration_secs:120},{key:'medium',name:'Medium',duration_secs:90},{key:'hard',name:'Hard',duration_secs:60}]}});
+    if(name==='time_attack_category_catalog')return data.failCatalog?route.fulfill({status:503,body:'{}'}):route.fulfill({json:{categories:[{id:1,name:'All movies',bank_size:100},{id:2,name:'Actors',bank_size:200},{id:3,name:'Actresses',bank_size:150},{id:4,name:'TV series',bank_size:73}],levels:[{key:'easy',name:'Easy',duration_secs:120},{key:'medium',name:'Medium',duration_secs:90},{key:'hard',name:'Hard',duration_secs:60}]}});
     if(name==='time_attack_leaderboard')return route.fulfill({json:data.ranking});
     const t=await now();
     if(name==='time_attack_active'){const g=[...games.values()].find(g=>g.status==='active');return route.fulfill({json:g??null});}

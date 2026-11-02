@@ -1,5 +1,8 @@
 import { gameplayRpc } from "../game/server";
 
+export const isAttackCategory = (id: unknown): id is number => typeof id === "number" && [1, 2, 3, 4].includes(id);
+export const attackCategoryName = (id: number) => ({ 1: "Movie Stills", 2: "Actors", 3: "Actresses", 4: "TV Series" })[id as 1 | 2 | 3 | 4] ?? `Category ${id}`;
+export const attackImageAlt = (id: number) => ({ 1: "Movie still to identify", 2: "Actor photograph to identify", 3: "Actress photograph to identify", 4: "TV series still to identify" })[id as 1 | 2 | 3 | 4];
 export type AttackLevel = "easy" | "medium" | "hard";
 export interface AttackCatalog {
   categories: { id: number; name: string; bank_size: number }[];
@@ -31,7 +34,7 @@ const best = (v: AttackBest) => !!v && integer(v.score) && count(v.score_time_ms
 export function parseAttack(value: unknown): AttackGame {
   const g = value as AttackGame;
   if (!g || typeof g.id !== "string" || !(g.owner === null || typeof g.owner === "string") ||
-    ![1, 2].includes(g.category_id) || !isLevel(g.level) || g.duration_secs !== ({ easy: 120, medium: 90, hard: 60 })[g.level] ||
+    !isAttackCategory(g.category_id) || !isLevel(g.level) || g.duration_secs !== ({ easy: 120, medium: 90, hard: 60 })[g.level] ||
     !integer(g.score) || ![g.correct, g.wrong, g.skipped, g.version, g.bank_size, g.elapsed_ms].every(count) ||
     g.score !== g.correct * 2 - g.wrong || !["active", "finished"].includes(g.status) ||
     ![g.started_at, g.deadline_at, g.server_now].every(date) ||
@@ -51,9 +54,9 @@ export async function attackRequest(name: "time_attack_start" | "time_attack_sta
   return parseAttack(await gameplayRpc(name, payload));
 }
 export async function attackCatalog(signal?: AbortSignal) {
-  const c = await gameplayRpc<AttackCatalog>("time_attack_catalog", {}, signal);
+  const c = await gameplayRpc<AttackCatalog>("time_attack_category_catalog", {}, signal);
   if (!c || !Array.isArray(c.categories) || !Array.isArray(c.levels) || c.levels.length !== 3 ||
-    !c.categories.every(c => [1, 2].includes(c.id) && typeof c.name === "string" && c.name.trim() && count(c.bank_size) && c.bank_size > 0) ||
+    !c.categories.every(c => isAttackCategory(c.id) && typeof c.name === "string" && c.name.trim() && count(c.bank_size) && c.bank_size > 0) ||
     new Set(c.categories.map(c => c.id)).size !== c.categories.length ||
     !c.levels.every((l, i) => l.key === ["easy", "medium", "hard"][i] && l.name === levelName(l.key) && l.duration_secs === [120, 90, 60][i])) throw new Error("invalid-time-attack-catalog");
   return c;
@@ -71,7 +74,7 @@ export async function attackRanking(category: number, level: AttackLevel, signal
 }
 export async function myAttackBests(signal?: AbortSignal) {
   const rows = await gameplayRpc<MyAttackBest[]>("my_time_attack_bests", {}, signal);
-  if (!Array.isArray(rows) || !rows.every(r => best(r) && [1, 2].includes(r.category_id) && isLevel(r.level) && date(r.updated_at))) throw new Error("invalid-time-attack-bests");
+  if (!Array.isArray(rows) || !rows.every(r => best(r) && isAttackCategory(r.category_id) && isLevel(r.level) && date(r.updated_at))) throw new Error("invalid-time-attack-bests");
   return rows;
 }
 export const attackTime = (ms: number) => `${(ms / 1000).toFixed(3)} s`;

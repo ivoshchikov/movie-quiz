@@ -22,7 +22,7 @@ if (native) await db.exec('create extension pgcrypto with schema extensions');
 else await db.exec("create function extensions.hmac(data text,key text,kind text)returns bytea language sql as $$select decode(md5(key||data)||md5(data||key),'hex')$$;create function extensions.gen_random_bytes(n integer) returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec(`create schema if not exists hq_private; create table hq_private.test_clock_state(at timestamptz); insert into hq_private.test_clock_state values(null); create function hq_private.test_clock() returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$;`);
 let shownBackfill;
-for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history','20261101230911_admin_question_statistics']) {
+for (const file of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history','20261101230911_admin_question_statistics','20261102222731_all_game_categories','20261102230323_time_attack_catalog_compatibility']) {
   if (file.endsWith('authoritative_gameplay')) { await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8')); await db.exec("insert into public.daily_session(user_id,d) values('00000000-0000-0000-0000-000000000003',(clock_timestamp() at time zone 'America/Chicago')::date+1)"); }
   if (file.endsWith('admin_question_statistics')) {
     await db.query("select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',false)");
@@ -735,4 +735,31 @@ test('native concurrent reads/answers cannot count one issued round twice', {ski
   await Promise.all([a.query("select public.quiz_answer($1,$2,'One')",[id,round.id]),b.query("select public.quiz_answer($1,$2,'One')",[id,round.id])]);
   const row=await statistic();assert.equal(row.shown,1);assert.equal(row.correct,1);
  } finally {await a.end();await b.end();}
+});
+
+test('Time Attack admits all categories and isolates new category snapshots, retries, bests and rankings',async()=>{
+ await attackBank();
+ try {
+  await db.exec(`insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id)
+   select 13000+c*10+d,'category-'||c||'-'||d||'.webp','One','["One","Two","Three","Four"]',c,d
+   from generate_series(3,4)c cross join generate_series(1,3)d`);
+  const catalog=await value('select public.time_attack_category_catalog() v');assert.deepEqual(catalog.categories.map(c=>c.id),[1,2,3,4]);
+  assert.deepEqual((await value('select public.time_attack_catalog() v')).categories.map(c=>c.id),[1,2]);
+  await db.exec('set role anon');assert.deepEqual((await value('select public.time_attack_category_catalog() v')).categories.map(c=>c.id),[1,2,3,4]);await db.exec('reset role');
+  for(const category of [3,4]){
+   await uid(player);const g=await attackStart(category,'medium');assert.equal(g.category_id,category);assert.equal(g.duration_secs,90);assert.equal(g.bank_size,3);
+   const rows=(await db.query('select q.category_id,r.difficulty_id from hq_private.time_attack_rounds r join public.question q on q.id=r.question_id where r.session_id=$1',[g.id])).rows;
+   assert.ok(rows.every(r=>r.category_id===category));assert.deepEqual(rows.map(r=>r.difficulty_id).sort(),[1,2,3]);
+   const retried=await attackStart(category,'medium',g.id);assert.equal(retried.id,g.id);assert.equal(retried.round.id,g.round.id);
+   await assert.rejects(attackStart(category===3?4:3,'medium',g.id),/unavailable/);
+   await attackClock(category*1000);const answered=await attackAction(g);assert.equal(answered.score,2);
+   const ended=await attackFinish(g.id);assert.equal(ended.personal_best.score,2);
+   const ranking=await value("select public.time_attack_leaderboard($1,'medium') v",[category]);assert.equal(ranking.total,1);assert.equal(ranking.me.user_id,player);
+  }
+  const saved=(await db.query("select category_id,level from hq_private.time_attack_bests where owner=$1 order by category_id",[player])).rows;
+  assert.deepEqual(saved,[{category_id:3,level:'medium'},{category_id:4,level:'medium'}]);
+  await uid(null);
+  for(const category of [3,4]){const g=await attackStart(category,'hard');assert.equal(g.owner,null);assert.equal(g.category_id,category);assert.equal(g.duration_secs,60);await attackFinish(g.id);}
+  await assert.rejects(attackStart(0),/Invalid Time Attack/);await assert.rejects(attackStart(5),/Invalid Time Attack/);
+ }finally{await db.exec('delete from public.question where id between 13030 and 13049');await attackCleanup();}
 });

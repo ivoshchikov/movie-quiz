@@ -6,7 +6,7 @@ import { pickFixture } from './this-that-fixture';
 
 async function options(page: Page) {
   const calls = await mockQuizApi(page);
-  await page.route('**/rest/v1/rpc/time_attack_catalog', r => r.fulfill({ json: {
+  await page.route('**/rest/v1/rpc/time_attack_category_catalog', r => r.fulfill({ json: {
     categories: [{ id: 1, name: 'All movies', bank_size: 100 }, { id: 2, name: 'Actors', bank_size: 200 }],
     levels: [{ key: 'easy', name: 'Easy', duration_secs: 120 }, { key: 'medium', name: 'Medium', duration_secs: 90 }, { key: 'hard', name: 'Hard', duration_secs: 60 }],
   } }));
