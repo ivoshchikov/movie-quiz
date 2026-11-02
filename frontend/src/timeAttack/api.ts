@@ -54,7 +54,7 @@ export async function attackRequest(name: "time_attack_start" | "time_attack_sta
   return parseAttack(await gameplayRpc(name, payload));
 }
 export async function attackCatalog(signal?: AbortSignal) {
-  const c = await gameplayRpc<AttackCatalog>("time_attack_catalog", {}, signal);
+  const c = await gameplayRpc<AttackCatalog>("time_attack_category_catalog", {}, signal);
   if (!c || !Array.isArray(c.categories) || !Array.isArray(c.levels) || c.levels.length !== 3 ||
     !c.categories.every(c => isAttackCategory(c.id) && typeof c.name === "string" && c.name.trim() && count(c.bank_size) && c.bank_size > 0) ||
     new Set(c.categories.map(c => c.id)).size !== c.categories.length ||
