@@ -1,0 +1,153 @@
+{
+  "schema_version": "hardquiz.question-content-bundle/1.0",
+  "package_id": "HQ-EXAMPLE-1",
+  "language": "en",
+  "question_count": 4,
+  "correct_index_convention": "zero_based",
+  "questions": [
+    {
+      "temp_id": "example-1",
+      "prompt": "Example only \u2014 replace before publication",
+      "correct_answer": "Example All movies",
+      "options": [
+        "Example All movies",
+        "Another example",
+        "Third example",
+        "Fourth example"
+      ],
+      "correct_index": 0,
+      "category_id": 1,
+      "category_name": "All movies",
+      "difficulty_level_id": 1,
+      "difficulty_name": "Easy",
+      "difficulty_key": "easy",
+      "published": false,
+      "image": {
+        "file": "images/example-1.webp",
+        "mime_type": "image/webp",
+        "width": 240,
+        "height": 160,
+        "bytes": 280,
+        "sha256": "ac21af82bb596ce98049bf147b4d681698fcf8310b33475aef73c57a45df196a",
+        "photographer": "Hard Quiz example artwork",
+        "source_page_url": "https://hard-quiz.com/",
+        "license": "CC0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attribution_required": false,
+        "attribution_text": "Geometric example artwork by Hard Quiz, CC0.",
+        "processing": {
+          "changes": "Original geometric drawing exported as WebP.",
+          "generative_editing": false
+        }
+      }
+    },
+    {
+      "temp_id": "example-2",
+      "prompt": "Example only \u2014 replace before publication",
+      "correct_answer": "Example Actors",
+      "options": [
+        "Example Actors",
+        "Another example",
+        "Third example",
+        "Fourth example"
+      ],
+      "correct_index": 0,
+      "category_id": 2,
+      "category_name": "Actors",
+      "difficulty_level_id": 1,
+      "difficulty_name": "Easy",
+      "difficulty_key": "easy",
+      "published": false,
+      "image": {
+        "file": "images/example-2.webp",
+        "mime_type": "image/webp",
+        "width": 240,
+        "height": 160,
+        "bytes": 302,
+        "sha256": "4ac2682ef36dbf3a6a42ca0059ed309362ca21761000fc087727e2af42e0c152",
+        "photographer": "Hard Quiz example artwork",
+        "source_page_url": "https://hard-quiz.com/",
+        "license": "CC0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attribution_required": false,
+        "attribution_text": "Geometric example artwork by Hard Quiz, CC0.",
+        "processing": {
+          "changes": "Original geometric drawing exported as WebP.",
+          "generative_editing": false
+        }
+      }
+    },
+    {
+      "temp_id": "example-3",
+      "prompt": "Example only \u2014 replace before publication",
+      "correct_answer": "Example Actresses",
+      "options": [
+        "Example Actresses",
+        "Another example",
+        "Third example",
+        "Fourth example"
+      ],
+      "correct_index": 0,
+      "category_id": 3,
+      "category_name": "Actresses",
+      "difficulty_level_id": 1,
+      "difficulty_name": "Easy",
+      "difficulty_key": "easy",
+      "published": false,
+      "image": {
+        "file": "images/example-3.webp",
+        "mime_type": "image/webp",
+        "width": 240,
+        "height": 160,
+        "bytes": 282,
+        "sha256": "fbd0344981620c870a3ed626a75a382dcfa41a00cdd672d8d1908f27ecaba279",
+        "photographer": "Hard Quiz example artwork",
+        "source_page_url": "https://hard-quiz.com/",
+        "license": "CC0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attribution_required": false,
+        "attribution_text": "Geometric example artwork by Hard Quiz, CC0.",
+        "processing": {
+          "changes": "Original geometric drawing exported as WebP.",
+          "generative_editing": false
+        }
+      }
+    },
+    {
+      "temp_id": "example-4",
+      "prompt": "Example only \u2014 replace before publication",
+      "correct_answer": "Example TV series",
+      "options": [
+        "Example TV series",
+        "Another example",
+        "Third example",
+        "Fourth example"
+      ],
+      "correct_index": 0,
+      "category_id": 4,
+      "category_name": "TV series",
+      "difficulty_level_id": 1,
+      "difficulty_name": "Easy",
+      "difficulty_key": "easy",
+      "published": false,
+      "image": {
+        "file": "images/example-4.webp",
+        "mime_type": "image/webp",
+        "width": 240,
+        "height": 160,
+        "bytes": 292,
+        "sha256": "d759918fdc7b33ad74b201bea1f2ecd2ae1a25060446c27dcfe8c3d2835c9e1a",
+        "photographer": "Hard Quiz example artwork",
+        "source_page_url": "https://hard-quiz.com/",
+        "license": "CC0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attribution_required": false,
+        "attribution_text": "Geometric example artwork by Hard Quiz, CC0.",
+        "processing": {
+          "changes": "Original geometric drawing exported as WebP.",
+          "generative_editing": false
+        }
+      }
+    }
+  ]
+}

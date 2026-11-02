@@ -1,4 +1,5 @@
 import { imageHeader, sha256 } from './image.js';
+import { canonical, TEMP_ID, bundleOperationId, validateContentMetadata } from './content.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const HASH = /^[0-9a-f]{64}$/;
@@ -42,7 +43,7 @@ export function createHandler({ authorize, rpc, storage, decode }) {
       }
       const form = await bounded.formData();
       const file = form.get('image'); const raw = form.get('question');
-      if (!(file instanceof Blob) || typeof raw !== 'string' || raw.length > 6000) return reply({ error: 'Image and answers are required' }, 400);
+      if (!(file instanceof Blob) || typeof raw !== 'string' || raw.length > 36000) return reply({ error: 'Image and answers are required (metadata up to 32 KiB)' }, 400);
       const data = JSON.parse(raw);
       if (!data || typeof data !== 'object' || Array.isArray(data) || !UUID.test(data.id) || ![1,2,3,4].includes(data.category_id) || ![1,2,3].includes(data.difficulty_level_id) ||
         !Number.isInteger(data.correct_index) || data.correct_index < 0 || data.correct_index > 3 ||
@@ -56,13 +57,23 @@ export function createHandler({ authorize, rpc, storage, decode }) {
       const actual = await decode(bytes);
       if (actual.width !== expected.width || actual.height !== expected.height) return reply({ error: 'Invalid image content' }, 400);
       const hash = await sha256(bytes);
+      let metadata;
+      if (data.content_metadata != null) {
+        metadata = validateContentMetadata(data.content_metadata);
+        if (metadata.image.sha256 !== hash || metadata.image.bytes !== bytes.length || metadata.image.mime_type !== 'image/webp' || metadata.image.width !== actual.width || metadata.image.height !== actual.height) return reply({ error: 'Image attribution describes a different image' }, 400);
+      }
+      if (data.bundle != null && (!data.bundle || typeof data.bundle !== 'object' || typeof data.bundle.package_id !== 'string' || typeof data.bundle.temp_id !== 'string' || !TEMP_ID.test(data.bundle.package_id) || !TEMP_ID.test(data.bundle.temp_id) || data.id !== await bundleOperationId(data.bundle.package_id, data.bundle.temp_id) || data.edit_question_id != null)) return reply({ error: 'Invalid bundle identity' }, 400);
       const fingerprint = await sha256(new TextEncoder().encode(JSON.stringify({ hash, category_id: data.category_id,
-        difficulty_level_id: data.difficulty_level_id, options, correct_index: data.correct_index, source_hash: data.source_hash ?? null, ...(data.edit_question_id != null ? { edit_question_id: data.edit_question_id, edit_revision: data.edit_revision } : {}) })));
+        difficulty_level_id: data.difficulty_level_id, options, correct_index: data.correct_index, source_hash: data.source_hash ?? null,
+        ...(data.bundle ? { bundle: canonical(data.bundle) } : {}), ...(metadata ? { content_metadata: metadata } : {}),
+        ...(data.edit_question_id != null ? { edit_question_id: data.edit_question_id, edit_revision: data.edit_revision } : {}) })));
       if (data.edit_question_id != null && (!Number.isSafeInteger(data.edit_question_id) || data.edit_question_id < 1 || !Number.isSafeInteger(data.edit_revision) || data.edit_revision < 1)) return reply({ error: 'Invalid edit settings' }, 400);
-      job = await rpc(data.edit_question_id != null ? 'admin_edit_import_reserve' : 'admin_import_reserve', { p_owner: owner, p_id: data.id, p_fingerprint: fingerprint, p_hash: hash,
+      if (data.edit_question_id != null && (metadata || data.bundle)) return reply({ error: 'Invalid edit metadata' }, 400);
+      job = await rpc(data.edit_question_id != null ? 'admin_edit_import_reserve' : data.bundle || metadata ? 'admin_content_import_reserve' : 'admin_import_reserve', { p_owner: owner, p_id: data.id, p_fingerprint: fingerprint, p_hash: hash,
         p_source_hash: data.source_hash ?? null, p_category: data.category_id, p_difficulty: data.difficulty_level_id,
         p_options: options, p_correct_index: data.correct_index, p_allow_duplicate: data.allow_duplicate === true,
-        ...(data.edit_question_id != null ? { p_question_id: data.edit_question_id, p_revision: data.edit_revision } : {}) });
+        ...(data.edit_question_id != null ? { p_question_id: data.edit_question_id, p_revision: data.edit_revision } : {}),
+        ...(data.bundle || metadata ? { p_package_id: data.bundle?.package_id ?? null, p_temp_id: data.bundle?.temp_id ?? null, p_content_metadata: metadata ?? null } : {}) });
       if (job.status === 'duplicate') return reply(job, 409);
       if (job.status === 'committed') return reply({ status: 'committed', question_id: job.question_id, image_path: job.image_path });
       const claimed = await rpc('admin_import_claim', { p_owner: owner, p_id: data.id, p_fingerprint: fingerprint });
@@ -105,7 +116,7 @@ export function createHandler({ authorize, rpc, storage, decode }) {
       if (error instanceof SyntaxError || error instanceof TypeError && /multipart|form.?data|parse/i.test(message)) return reply({ error: 'Invalid request body' }, 400);
       if (/Question changed|Question unavailable/i.test(message)) return reply({ error: message.slice(0,200), status: 'conflict' }, 409);
       if (/Administrator|auth|JWT|Account/i.test(message)) return reply({ error: 'Administrator access required' }, 403);
-      if (/Invalid|dimensions|static WebP|metadata|Animated|WebP must|Decoding|different answers|Draft expired|data changed/i.test(message)) return reply({ error: message.slice(0,200) }, 400);
+      if (/Invalid|dimensions|static WebP|metadata|attribution|Animated|WebP must|Decoding|different answers|Draft expired|data changed|already linked/i.test(message)) return reply({ error: message.slice(0,200) }, 400);
       return reply({ error: 'Saving could not be confirmed. Check status or retry this question.' }, 503);
     }
   };

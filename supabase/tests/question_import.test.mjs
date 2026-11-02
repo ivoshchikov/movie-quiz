@@ -5,6 +5,7 @@ import { webcrypto } from 'node:crypto';
 import { createHandler } from '../functions/admin-questions/handler.js';
 import { createStorageAdapter } from '../functions/admin-questions/storage.js';
 import { imageHeader, decodeWebp, sha256 } from '../functions/admin-questions/image.js';
+import { bundleOperationId, canonical } from '../functions/admin-questions/content.mjs';
 if(!globalThis.crypto)globalThis.crypto=webcrypto;
 const image=new Uint8Array(await readFile(new URL('./assets/question.webp',import.meta.url)));
 const owner='112743d7-f683-4bbb-8117-068e89a00f22';
@@ -20,10 +21,10 @@ function fixture(){
     rpc:async(name,p)=>{
       calls.push(name);
       const j=jobs.get(p.p_id);
-      if(name==='admin_import_reserve'){
+      if(name==='admin_import_reserve'||name==='admin_content_import_reserve'){
         if(j){if(j.fingerprint!==p.p_fingerprint)throw Error('Import data changed');return j;}
         if(state.duplicate&&!p.p_allow_duplicate)return {status:'duplicate',question_id:71};
-        const job={id:p.p_id,status:'reserved',image_path:`general/g_${String(++number).padStart(5,'0')}.webp`,fingerprint:p.p_fingerprint,file_hash:p.p_hash};jobs.set(p.p_id,job);return job;
+        const job={id:p.p_id,status:'reserved',image_path:`general/g_${String(++number).padStart(5,'0')}.webp`,fingerprint:p.p_fingerprint,file_hash:p.p_hash,content_metadata:p.p_content_metadata,package_id:p.p_package_id,temp_id:p.p_temp_id};jobs.set(p.p_id,job);return job;
       }
       if(name==='admin_import_claim'){if(j.status==='committed')return j;if(j.lease_token)return {status:'busy'};j.lease_token=crypto.randomUUID();return {...j};}
       if(name==='admin_import_object'){
@@ -147,4 +148,30 @@ test('replacement uploads carry an immutable target and expected revision throug
  assert.equal((await handler(request({...data,edit_question_id:42,edit_revision:0}))).status,400);assert.equal(calls.length,1);
  const conflicting=createHandler({authorize:async()=>owner,decode:decodeWebp,storage:{},rpc:async()=>{throw Error('Question changed. Reload before editing.');}});
  const conflict=await conflicting(request({...data,edit_question_id:42,edit_revision:3}));assert.equal(conflict.status,409);assert.equal((await conflict.json()).status,'conflict');
+});
+const contentMetadata=async()=>({image:{sha256:await sha256(image),bytes:image.length,mime_type:'image/webp',width:1920,height:960,photographer:'Example creator',source_page_url:'https://example.com/subject',license:'CC BY-SA 4.0',license_url:'https://creativecommons.org/licenses/by-sa/4.0/',attribution_required:true,attribution_text:'Example creator. Cropped; WebP. CC BY-SA 4.0.',attribution_html:'<script>alert(1)</script>',creator_urls:['https://example.com/creator'],share_alike_required:true,derivative_license:'CC BY-SA 4.0',processing:{changes:'Cropped; converted to WebP.'}},identity:{wikidata_id:'Q1234'}});
+test('bundle identity and full attribution use the same immutable operation and fingerprint across upload retries',async()=>{
+ const f=fixture(),bundle={package_id:'HQ-EDGE-TEST',temp_id:'record-one'},id=await bundleOperationId(bundle.package_id,bundle.temp_id),content_metadata=await contentMetadata();
+ const payload={...data,id,bundle,content_metadata};
+ f.state.loseCommit=true;assert.equal((await f.handler(request(payload))).status,503);
+ const retried=await(await f.handler(request({...payload,content_metadata:canonical(content_metadata)}))).json();
+ assert.equal(retried.status,'committed');assert.equal(f.jobs.size,1);assert.equal(f.uploads.filter(p=>p.startsWith('movies/')).length,1);
+ assert.equal(f.calls.filter(n=>n==='admin_content_import_reserve').length,2);
+ assert.deepEqual(f.jobs.get(id).content_metadata,canonical(content_metadata));
+ assert.equal(f.jobs.get(id).package_id,bundle.package_id);
+ assert.equal(await sha256(f.objects.get(`movies/${retried.image_path}`).bytes),await sha256(image));
+ const expected=await sha256(new TextEncoder().encode(JSON.stringify({hash:await sha256(image),category_id:1,difficulty_level_id:1,options:data.options,correct_index:0,source_hash:data.source_hash,bundle:canonical(bundle),content_metadata:canonical(content_metadata)})));
+ assert.equal(f.jobs.get(id).fingerprint,expected);
+ const changed={...content_metadata,image:{...content_metadata.image,photographer:'Another creator'}};
+ assert.equal((await f.handler(request({...payload,content_metadata:changed}))).status,400);
+});
+test('a changed package operation ID or provenance for different bytes cannot reserve a production path',async()=>{
+ const bundle={package_id:'HQ-EDGE-TEST',temp_id:'record-two'},id=await bundleOperationId(bundle.package_id,bundle.temp_id),metadata=await contentMetadata();
+ for(const changed of [
+  {id:data.id,bundle,content_metadata:metadata},
+  {id,bundle,content_metadata:{...metadata,image:{...metadata.image,sha256:'0'.repeat(64)}}},
+  {id,bundle,content_metadata:{...metadata,image:{...metadata.image,width:10}}},
+  {id,bundle,content_metadata:{...metadata,image:{...metadata.image,license_url:'javascript:alert(1)'}}},
+  {id,bundle,content_metadata:{...metadata,image:{...metadata.image,creator_urls:['data:text/html,x']}}},
+ ]) {const f=fixture();assert.equal((await f.handler(request({...data,...changed}))).status,400);assert.equal(f.jobs.size,0);assert.equal(f.uploads.length,0);}
 });

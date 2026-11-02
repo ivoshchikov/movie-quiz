@@ -10,6 +10,7 @@ import Seo from "../components/Seo";
 import AdminAccess from "../admin/AdminAccess";
 import AdminSelect from "../admin/AdminSelect";
 import AdminImage from "../admin/AdminImage";
+import ImageCredit from "../components/ImageCredit";
 import QuestionEditor from "../admin/QuestionEditor";
 import QuestionMetrics from "../admin/QuestionMetrics";
 import { loadBank, loadQuestion } from "../admin/questionsApi";
@@ -484,6 +485,7 @@ function QuestionDetail({
           preview
         />
       </div>
+      {row.content_metadata && <details className="hq-image-credits"><summary>Image sources and attribution</summary><ImageCredit metadata={row.content_metadata} /></details>}
       <div className="hq-bank-detail-actions">
         <button className="hq-secondary" onClick={() => setZoom((v) => !v)}>
           {zoom ? "Fit image" : "Zoom image"}

@@ -1,3 +1,4 @@
+import GameImageCredits from "../components/GameImageCredits";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
@@ -34,6 +35,7 @@ function Pair({ game, disabled, onChoose }: { game: Comparison; disabled: boolea
     const picked = r.winner === p.id;
     return <button key={p.id} className={`hq-pick-card${picked ? " is-picked" : ""}`} aria-label={`Choose ${p.name}`} aria-pressed={picked} disabled={!ready} onClick={() => onChoose(i ? "right" : "left")}><span className="hq-pick-portrait"><img key={imageTry} src={getPublicUrl(p.image_url) + (imageTry ? `${p.image_url.includes("?") ? "&" : "?"}retry=${imageTry}` : "")} alt={p.name} onLoad={() => setLoaded(values => values.map((v, n) => n === i || v))} onError={() => setFailed(true)} /></span><span className="hq-pick-name">{p.name}<span aria-hidden="true">{picked ? "✓" : i + 1}</span></span></button>;
   })}</div>
+    <div className="hq-bundle-actions">{r.cards.map(p => <GameImageCredits key={p.id} mode="comparison" person={p.id} imagePath={p.image_url} label={`Image credits for ${p.name}`} />)}</div>
     {!loaded.every(Boolean) && !failed && <p role="status">Loading both photos…</p>}
     {failed && <p role="alert">A photo could not load. <button className="hq-inline-action" onClick={() => { setFailed(false); setLoaded([false, false]); setImageTry(n => n + 1); }}>Retry photos</button> or skip this pair below.</p>}
     <div className="hq-pick-feedback" role="status" aria-live="polite">{r.outcome && <><strong>{r.outcome === "withdrawn" ? "This pair was withdrawn. Your vote wasn’t counted." : r.winner ? "Choice saved" : r.outcome === "equal" ? "Both equally — saved" : "Pair skipped"}</strong>{r.community ? <span>Other players: {Math.round(r.community.left / r.community.total * 100)}% {r.cards[0].name} · {Math.round(r.community.right / r.community.total * 100)}% {r.cards[1].name}</span> : null}</>}</div>

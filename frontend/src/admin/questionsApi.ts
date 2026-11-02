@@ -1,4 +1,6 @@
 import { supabase } from "../supabase";
+import type { BundleIdentity, ContentMetadata } from "../contentBundle/types";
+import { canonical } from "../../../supabase/functions/admin-questions/content.mjs";
 
 export interface BankQuestion {
   id: number;
@@ -10,6 +12,7 @@ export interface BankQuestion {
   needs_review: boolean;
   admin_revision?: number;
   invalid_options?: string;
+  content_metadata?: ContentMetadata | null;
 }
 export interface BankResult {
   rows: BankQuestion[];
@@ -46,6 +49,8 @@ export interface ImportPayload {
   allow_duplicate: boolean;
   edit_question_id?: number;
   edit_revision?: number;
+  bundle?: BundleIdentity;
+  content_metadata?: ContentMetadata;
 }
 const object = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === "object" && !Array.isArray(v);
@@ -180,9 +185,24 @@ export async function importFingerprint(payload: ImportPayload, blob: Blob) {
         options: payload.options.map((s) => s.trim().normalize("NFC")),
         correct_index: payload.correct_index,
         source_hash: payload.source_hash ?? null,
+        ...(payload.bundle ? { bundle: canonical(payload.bundle) } : {}),
+        ...(payload.content_metadata ? { content_metadata: canonical(payload.content_metadata) } : {}),
+        ...(payload.edit_question_id != null ? { edit_question_id: payload.edit_question_id, edit_revision: payload.edit_revision } : {}),
       }),
     ),
   );
+}
+export async function bundleStatuses(packageId: string, tempIds: string[], signal: AbortSignal): Promise<Record<string, ImportStatus>> {
+  const { data, error } = await supabase.rpc("admin_bundle_status", { p_package_id: packageId, p_temp_ids: tempIds }).abortSignal(signal);
+  if (error) throw error;
+  if (!object(data) || !Object.values(data).every(v => object(v) && ["reserved", "committed", "expired", "uploaded"].includes(String(v.status)))) throw Error("Bundle status could not be checked.");
+  return data as Record<string, ImportStatus>;
+}
+export async function bundleWarnings(records: Record<string, unknown>[], signal: AbortSignal): Promise<Record<string, string[]>> {
+  const { data, error } = await supabase.rpc("admin_bundle_warnings", { p_records: records }).abortSignal(signal);
+  if (error) throw error;
+  if (!object(data) || !Object.values(data).every(v => Array.isArray(v) && v.every(s => typeof s === "string"))) throw Error("Duplicate review could not be checked.");
+  return data as Record<string, string[]>;
 }
 async function callImport(
   body: FormData | Record<string, unknown>,

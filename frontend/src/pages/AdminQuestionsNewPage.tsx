@@ -7,6 +7,9 @@ import { useReadRequest } from "../hooks/useReadRequest";
 import Seo from "../components/Seo";
 import AdminAccess from "../admin/AdminAccess";
 import AdminSelect from "../admin/AdminSelect";
+import ContentBundleImport from "../admin/ContentBundleImport";
+import ImageCredit from "../components/ImageCredit";
+import { sha256 } from "../../../supabase/functions/admin-questions/webpHeader.mjs";
 import { prepareImage } from "../admin/prepareImage";
 import { imageLimit } from "../admin/imageProcessing";
 import {
@@ -18,7 +21,7 @@ import {
   ImportError,
 } from "../admin/questionsApi";
 import type { ImportPayload, ImportStatus } from "../admin/questionsApi";
-import { loadDrafts, saveDrafts, draftIsReady } from "../admin/questionDrafts";
+import { loadDrafts, saveDrafts, draftIsReady, draftStorageBytes } from "../admin/questionDrafts";
 import type { QuestionDraft } from "../admin/questionDrafts";
 import "../admin-daily.css";
 import "../admin-questions.css";
@@ -177,6 +180,15 @@ function QuestionUploader({ owner }: { owner: string }) {
             card.category,
             controller.signal,
           );
+          const contentMetadata = card.contentMetadata ? {
+            ...card.contentMetadata,
+            editorial: { ...card.contentMetadata.editorial, prepared_image: card.contentMetadata.editorial?.prepared_image ?? card.contentMetadata.image },
+            image: { ...card.contentMetadata.image,
+              sha256: await sha256(new Uint8Array(await value.blob.arrayBuffer())),
+              bytes: value.blob.size, width: value.width, height: value.height,
+              processing: { ...card.contentMetadata.image.processing, changes: `${card.contentMetadata.image.processing.changes} Hard Quiz: resized to ${value.width} × ${value.height}; encoded as WebP for this category.` },
+            },
+          } : undefined;
           mutate((all) =>
             all.map((c) =>
               c.id === card.id && c.category === card.category
@@ -192,6 +204,7 @@ function QuestionUploader({ owner }: { owner: string }) {
                           sourceHeight: previous.sourceHeight,
                         }
                       : value,
+                    contentMetadata,
                     message: undefined,
                   }
                 : c,
@@ -296,6 +309,8 @@ function QuestionUploader({ owner }: { owner: string }) {
     correct_index: card.correct!,
     source_hash: card.processed!.sourceHash,
     allow_duplicate: card.allowDuplicate === true,
+    ...(card.bundle ? { bundle: card.bundle } : {}),
+    ...(card.contentMetadata ? { content_metadata: card.contentMetadata } : {}),
   });
   async function readStatus(card: QuestionDraft): Promise<ImportStatus | null> {
     const controller = new AbortController();
@@ -543,20 +558,20 @@ function QuestionUploader({ owner }: { owner: string }) {
     }
   }
   const ready = cards.filter(
-    (c) => !c.locked && !c.duplicate && c.phase === "Ready" && draftIsReady(c),
+    (c) => c.selected !== false && !c.locked && !c.duplicate && c.phase === "Ready" && draftIsReady(c),
   );
   const failed = cards.filter(
     (c) => c.locked && !c.questionId && c.phase !== "Added" && draftIsReady(c),
   );
-  function discard(id: string) {
-    removed.current.add(id);
-    files.current.delete(id);
-    mutate((all) => all.filter((c) => c.id !== id));
+  function discardMany(ids: string[]) {
+    for (const id of ids) { removed.current.add(id); files.current.delete(id); }
+    mutate((all) => all.filter((c) => !ids.includes(c.id)));
     if (key && canPersist)
-      void saveDrafts(owner, key, cardsRef.current, [...removed.current]).catch(
-        () => {},
-      );
+      void saveDrafts(owner, key, cardsRef.current, [...removed.current])
+        .then(() => { if (mounted.current) setDraftMessage("Drafts saved securely in this browser."); })
+        .catch(() => { if (mounted.current) setDraftMessage("Draft removal could not be saved. Removed cards may return after reload; keep this tab open and retry."); });
   }
+  const discard = (id: string) => discardMany([id]);
   return (
     <section
       className="hq-admin hq-bank hq-question-upload"
@@ -634,6 +649,30 @@ function QuestionUploader({ owner }: { owner: string }) {
           <details className="hq-copy-details"><summary>About defaults</summary><p>Defaults apply to cards without an individual override.</p></details>
         </div>
       )}
+      <ContentBundleImport
+        catalog={{ categories, levels }}
+        existing={[...new Map([...saved, ...cards].map(c => [c.id, c])).values()]}
+        disabled={catalog.loading || catalog.error || !canPersist || running}
+        onImport={async additions => {
+          if (!key || !canPersist) throw Error("Draft recovery must be available before importing a package.");
+          if (uploading.current) throw Error("Wait for the current save before creating more drafts.");
+          uploading.current = true; setRunning(true);
+          try {
+          const recovered = await loadDrafts(owner, key);
+          if (!mounted.current) return;
+          const all = new Map([...recovered, ...cardsRef.current].filter(c => !removed.current.has(c.id)).map(c => [c.id, c]));
+          for (const c of additions) if (!all.has(c.id)) all.set(c.id, c);
+          const merged = [...all.values()];
+          if (merged.length > 50 || draftStorageBytes(merged) > 50 * 1048576) throw Error("These records do not fit with your saved drafts. Select fewer or explicitly remove drafts first. Existing drafts are unchanged.");
+          await saveDrafts(owner, key, merged, [...removed.current]);
+          if (!mounted.current) return;
+          for (const card of additions) removed.current.delete(card.id);
+          mutate(() => merged); setSaved([]);
+          setDraftMessage("Drafts saved securely in this browser. Review before adding.");
+          for (const card of additions) if (card.locked) void check(card);
+          } finally { uploading.current = false; if (mounted.current) setRunning(false); }
+        }}
+      />
       <label className={`hq-upload-drop${dragging ? " is-dragging" : ""}`}>
         <strong>Choose images or drop them here</strong>
         <span>
@@ -660,10 +699,11 @@ function QuestionUploader({ owner }: { owner: string }) {
             className="hq-secondary"
             onClick={() => {
               const existing = new Set(cardsRef.current.map((c) => c.id));
-              const restored = saved
-                .filter((c) => !existing.has(c.id))
-                .slice(0, 50 - cardsRef.current.length);
-              mutate((all) => [...all, ...restored].slice(0, 50));
+              const restored = saved.filter((c) => !existing.has(c.id) && !removed.current.has(c.id));
+              if (cardsRef.current.length + restored.length > 50 || draftStorageBytes([...cardsRef.current, ...restored]) > 50 * 1048576) {
+                setNotice("Saved drafts do not fit in the current queue. Remove cards explicitly before restoring. All saved drafts have been kept."); return;
+              }
+              mutate((all) => [...all, ...restored]);
               setSaved([]);
               for (const card of restored) if (card.locked) void check(card);
             }}
@@ -685,6 +725,14 @@ function QuestionUploader({ owner }: { owner: string }) {
           {cards.length} cards ·{" "}
           {cards.filter((c) => c.phase === "Added").length} added
         </span>
+        {cards.some(c => !c.locked && draftIsReady(c)) && <>
+          <button className="hq-secondary" disabled={running} onClick={() => mutate(all => all.map(c => c.locked ? c : { ...c, selected: true }))}>Select all ready drafts</button>
+          <button className="hq-secondary" disabled={running} onClick={() => mutate(all => all.map(c => c.locked ? c : { ...c, selected: false }))}>Clear draft selection</button>
+          <button className="hq-secondary" disabled={running || !cards.some(c => !c.locked && c.selected !== false)} onClick={() => {
+            const selected = cardsRef.current.filter(c => !c.locked && c.selected !== false);
+            if (selected.length && window.confirm(`Remove ${selected.length} selected local drafts? This does not delete questions from the bank.`)) discardMany(selected.map(c => c.id));
+          }}>Remove selected drafts</button>
+        </>}
         <button
           className="hq-primary"
           disabled={running || !ready.length}
@@ -708,8 +756,7 @@ function QuestionUploader({ owner }: { owner: string }) {
             className="hq-inline-action"
             disabled={running}
             onClick={() => {
-              for (const c of cardsRef.current)
-                if (c.phase === "Added" || c.questionId) discard(c.id);
+              discardMany(cardsRef.current.filter(c => c.phase === "Added" || c.questionId).map(c => c.id));
             }}
           >
             Clear added cards
@@ -758,6 +805,8 @@ function QuestionUploader({ owner }: { owner: string }) {
                       ? {
                           ...c,
                           processed: undefined,
+                          contentMetadata: undefined,
+                          contentWarnings: undefined,
                           phase: "Processing",
                           name: file.name,
                           message: undefined,
@@ -839,6 +888,8 @@ function DraftCard({
         </span>
       </header>
       <p className="hq-upload-file">{card.name}</p>
+      {card.bundle && <p className="hq-upload-file">Package: {card.bundle.package_id} · {card.bundle.temp_id}</p>}
+      {!card.locked && <label className="hq-draft-select"><input type="checkbox" checked={card.selected !== false} disabled={running} onChange={e => change({ selected: e.target.checked })} aria-label={`Select question ${index + 1} for adding`} />Select for adding</label>}
       {url ? (
         <img
           className="hq-upload-preview"
@@ -948,6 +999,14 @@ function DraftCard({
           ))}
         </div>
       </fieldset>
+      {card.contentWarnings?.map((warning, i) => <p className="hq-bank-warning" key={i}>{warning}</p>)}
+      {card.contentMetadata && <details className="hq-image-credits"><summary>Image sources and attribution</summary>
+        <ImageCredit metadata={card.contentMetadata} />
+        <fieldset className="hq-credit-editor" disabled={card.locked || running}>
+          <legend>Edit image credits</legend>
+          {(["photographer", "source_page_url", "license", "license_url", "attribution_text"] as const).map(field => <label key={field}>{({ photographer: "Photographer", source_page_url: "Source URL", license: "License", license_url: "License URL", attribution_text: "Credit text" })[field]}<textarea aria-label={`${field} for question ${index + 1}`} value={String(card.contentMetadata!.image[field])} maxLength={field === "attribution_text" ? 12000 : 2048} onChange={e => change({ contentMetadata: { ...card.contentMetadata!, image: { ...card.contentMetadata!.image, [field]: e.target.value } } })} /></label>)}
+        </fieldset>
+      </details>}
       {card.message && (
         <p
           className={card.phase === "Failed" ? "hq-bank-warning" : ""}
@@ -957,6 +1016,7 @@ function DraftCard({
         </p>
       )}
       <div className="hq-upload-card-actions">
+        {!card.locked && draftIsReady(card) && <button className="hq-primary" disabled={running || !!card.duplicate} onClick={retry}>Add this question</button>}
         {card.questionId && (
           <Link
             className="hq-inline-action"
@@ -974,9 +1034,9 @@ function DraftCard({
             Remove draft
           </button>
         )}
-        {!card.locked && !card.processed && card.phase !== "Processing" && (
+        {!card.locked && card.phase !== "Processing" && (
           <label className="hq-inline-action">
-            Attach image again
+            {card.processed ? "Replace image (clears image credits)" : "Attach image again"}
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp"
