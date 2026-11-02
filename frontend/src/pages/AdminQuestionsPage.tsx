@@ -407,6 +407,8 @@ function QuestionBank({ owner }: { owner: string }) {
                 id={questionId}
                 category={category}
                 difficulty={difficulty}
+                levels={levels}
+                reloadLevels={catalog.retry}
                 guard={registerGuard}
                 changed={(deleted) => {
                   bank.retry();
@@ -433,6 +435,8 @@ function QuestionDetail({
   id,
   category,
   difficulty,
+  levels,
+  reloadLevels,
   changed,
   guard,
 }: {
@@ -440,6 +444,8 @@ function QuestionDetail({
   id: number;
   category: (id: number | null) => string;
   difficulty: (id: number) => string;
+  levels: { id: number; name: string }[];
+  reloadLevels: () => void;
   changed: (deleted: boolean) => void;
   guard: (check: (() => boolean) | null) => void;
 }) {
@@ -565,13 +571,21 @@ function QuestionDetail({
             </button>
           </dd>
         </div>
+        <div>
+          <dt>Image size</dt>
+          <dd>{row.image_bytes == null ? "Unavailable" : row.image_bytes < 1024
+            ? `${row.image_bytes.toLocaleString("en-US")} bytes`
+            : `${(row.image_bytes / (row.image_bytes >= 1048576 ? 1048576 : 1024)).toLocaleString("en-US", { maximumFractionDigits: 1 })} ${row.image_bytes >= 1048576 ? "MiB" : "KiB"} (${row.image_bytes.toLocaleString("en-US")} bytes)`}</dd>
+        </div>
       </dl>
       <p role="status">{copy}</p>
-      <QuestionMetrics key={`${id}:${row.admin_revision}`} owner={owner} id={id} />
+      <QuestionMetrics key={`metrics:${id}:${row.admin_revision}`} owner={owner} id={id} />
       {editing ? (
         <QuestionEditor
-          key={`${row.id}:${row.admin_revision}`}
+          key={`editor:${row.id}:${row.admin_revision}`}
           row={row}
+          levels={levels}
+          reloadLevels={reloadLevels}
           guard={guard}
           cancel={() => setEditing(false)}
           reload={() => {

@@ -13,6 +13,7 @@ export interface BankQuestion {
   admin_revision?: number;
   invalid_options?: string;
   content_metadata?: ContentMetadata | null;
+  image_bytes?: number | null;
 }
 export interface BankResult {
   rows: BankQuestion[];
@@ -66,6 +67,7 @@ function question(v: unknown): BankQuestion {
     !(v.category_id === null || count(v.category_id)) ||
     !count(v.difficulty_level_id) ||
     typeof v.needs_review !== "boolean" ||
+    (v.image_bytes !== undefined && v.image_bytes !== null && !count(v.image_bytes)) ||
     (v.admin_revision !== undefined && (!count(v.admin_revision) || v.admin_revision < 1))
   )
     throw new Error("Invalid question response");
@@ -290,6 +292,7 @@ export async function changeQuestion(
   options: string[] | null,
   correctIndex: number | null,
   remove: boolean,
+  difficulty: number | null,
   signal: AbortSignal,
 ) {
   const { data, error } = await supabase
@@ -300,6 +303,7 @@ export async function changeQuestion(
       p_options: options,
       p_correct_index: correctIndex,
       p_delete: remove,
+      p_difficulty_id: difficulty,
     })
     .abortSignal(signal);
   if (error) {
@@ -313,6 +317,8 @@ export async function changeQuestion(
         "invalid",
         "Enter four different answers and choose the correct one.",
       );
+    if (/Invalid difficulty/.test(error.message))
+      throw new ImportError("invalid", "This difficulty is unavailable. Reload the question and choose a current difficulty.");
     throw new ImportError(
       "unknown",
       "Saving could not be confirmed. Retry the same operation.",

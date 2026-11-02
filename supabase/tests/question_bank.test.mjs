@@ -53,6 +53,17 @@ await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011161955_question_privacy.sql',import.meta.url),'utf8'));await db.exec('commit');
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011170955_question_edit_delete.sql',import.meta.url),'utf8'));await db.exec('commit');
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261102122652_question_content_bundles.sql',import.meta.url),'utf8'));await db.exec('commit');
+// Minimal authoritative aggregate fixtures; the gameplay suite exercises their
+// real issuance triggers/backfill separately. No legacy attempts are shows.
+await db.exec(`create table hq_private.gameplay_settings(cohort_since timestamptz);
+insert into hq_private.gameplay_settings values('2026-10-18T12:00:00Z');
+create table hq_private.question_shown_counts(question_id integer,revision integer,mode text,shown bigint,primary key(question_id,revision,mode));
+create table hq_private.question_metrics(question_id integer,revision integer,mode text,correct bigint,primary key(question_id,revision,mode));
+create table hq_private.question_cohort_metrics(question_id integer,revision integer,mode text,cohort text,correct bigint);`);
+// Commit one old-client operation before upgrading, then retry it afterwards.
+await db.exec(`select set_config('request.jwt.claim.sub','${admin}',false);
+select public.admin_change_question('00000000-0000-4000-8000-000000000600',100,1,'["One","Two","Three","Four"]',0,false);`);
+await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261102170738_question_editor_details.sql',import.meta.url),'utf8'));await db.exec('commit');
 const uid=async id=>db.query("select set_config('request.jwt.claim.sub',$1,false)",[id??'']);
 const scalar=async(sql,args)=>(await db.query(sql,args)).rows[0].v;
 const reserve=async(id,category=1,allow=false,hash=id.replaceAll('-','').repeat(2))=>scalar('select public.admin_import_reserve($1,$2,$3,$4,null,$5,1,$6,0,$7) v',[admin,id,'f'.repeat(64),hash,category,JSON.stringify(options),allow]);
@@ -215,9 +226,10 @@ test('two owner tabs cannot overwrite each other with the same revision',{skip:!
  const a=new Client({connectionString:native}),b=new Client({connectionString:native});await a.connect();await b.connect();
  try{
   await Promise.all([a.query("select set_config('request.jwt.claim.sub',$1,false)",[admin]),b.query("select set_config('request.jwt.claim.sub',$1,false)",[admin])]);
-  const query='select public.admin_change_question($1,$2,1,$3,0,false) v';
-  const outcomes=await Promise.allSettled([a.query(query,['00000000-0000-4000-8000-000000000411',q,JSON.stringify(['A1','A2','A3','A4'])]),b.query(query,['00000000-0000-4000-8000-000000000412',q,JSON.stringify(['B1','B2','B3','B4'])])]);
+  const query='select public.admin_change_question($1,$2,1,$3,0,false,$4) v';
+  const outcomes=await Promise.allSettled([a.query(query,['00000000-0000-4000-8000-000000000411',q,JSON.stringify(['A1','A2','A3','A4']),2]),b.query(query,['00000000-0000-4000-8000-000000000412',q,JSON.stringify(['B1','B2','B3','B4']),3])]);
   assert.equal(outcomes.filter(o=>o.status==='fulfilled').length,1);const failure=outcomes.find(o=>o.status==='rejected');assert.match(failure.reason.message,/Question changed/);assert.equal(await scalar('select admin_revision v from public.question where id=$1',[q]),2);
+  const detail=await scalar('select public.admin_question_detail($1) v',[q]);assert.equal(detail.difficulty_level_id,detail.correct_answer==='A1'?2:3);
  }finally{await a.end();await b.end();}
 });
 test('deletion during a replacement upload prevents the upload from resurrecting a question',async()=>{
@@ -330,4 +342,87 @@ test('concurrent approvals use one bundle identity and one production number',{s
   const result=await Promise.all(clients.map(c=>c.query(query,args)));assert.equal(result[0].rows[0].v.image_path,result[1].rows[0].v.image_path);
   assert.equal(await scalar("select count(*)::integer v from hq_private.question_imports where package_id='HQ-SQL-BUNDLE' and temp_id='concurrent'"),1);
  }finally{await Promise.all(clients.map(c=>c.end()));}
+});
+
+test('difficulty upgrade preserves committed old-client receipts and one unambiguous RPC signature',async()=>{
+ await uid(admin);
+ const receipt=await scalar("select public.admin_change_question('00000000-0000-4000-8000-000000000600',100,1,'[\"One\",\"Two\",\"Three\",\"Four\"]',0,false) v");
+ assert.equal(receipt.revision,2);
+ assert.equal(await scalar('select difficulty_level_id v from public.question where id=100'),2);
+ assert.equal(await scalar("select count(*)::integer v from pg_proc where pronamespace='public'::regnamespace and proname='admin_change_question'"),1);
+});
+
+test('difficulty edits in all four categories are revision-checked, idempotent and leave Daily snapshots unchanged',async()=>{
+ await uid(admin);
+ for(const category of [1,2,3,4]){
+  const q=await scalar("insert into public.question(image_url,correct_answer,options_json,category_id,difficulty_level_id) values($1,'One',$2,$3,1) returning id v",[`test/difficulty-${category}.webp`,JSON.stringify(options),category]);
+  const date=`2010-01-0${category}`;
+  await db.query('insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) values($1,$2,$3,1)',[date,q,category]);
+  const op=`00000000-0000-4000-8000-00000000060${category}`;
+  const change=d=>scalar('select public.admin_change_question($1,$2,1,$3,0,false,$4) v',[op,q,JSON.stringify(options),d]);
+  const receipt=await change(3);assert.deepEqual(await change(3),receipt);
+  const detail=await scalar('select public.admin_question_detail($1) v',[q]);
+  assert.equal(detail.difficulty_level_id,3);assert.equal(detail.admin_revision,2);assert.equal(detail.correct_answer,'One');
+  assert.equal(detail.image_url,`test/difficulty-${category}.webp`);
+  assert.equal(await scalar('select difficulty_level_id v from hq_private.daily_questions where d=$1',[date]),1);
+  assert.ok((await scalar('select public.admin_question_bank(\'\',$1,3) v',[category])).rows.some(r=>r.id===q));
+  await assert.rejects(change(2),/Operation data changed/);
+  await assert.rejects(scalar('select public.admin_change_question(gen_random_uuid(),$1,1,$2,0,false,2) v',[q,JSON.stringify(options)]),/Question changed/);
+  await assert.rejects(scalar('select public.admin_change_question(gen_random_uuid(),$1,2,$2,0,false,99999) v',[q,JSON.stringify(options)]),/Invalid difficulty/);
+  assert.equal(await scalar('select admin_revision v from public.question where id=$1',[q]),2);
+ }
+});
+
+test('difficulty with a replacement image commits atomically and retries without another version',async()=>{
+ await uid(admin);
+ const q=await scalar("insert into public.question(image_url,correct_answer,options_json,category_id,difficulty_level_id) values('test/difficulty-photo.webp','One',$1,3,1) returning id v",[JSON.stringify(options)]);
+ const id='00000000-0000-4000-8000-000000000610',hash='6'.repeat(64),fp='5'.repeat(64);
+ await assert.rejects(scalar('select public.admin_edit_import_reserve($1,$2,$3,$4,null,3,9999,$5,0,true,$6,1) v',[admin,id,fp,hash,JSON.stringify(options),q]),/Invalid/);
+ await scalar('select public.admin_edit_import_reserve($1,$2,$3,$4,null,3,2,$5,0,true,$6,1) v',[admin,id,fp,hash,JSON.stringify(options),q]);
+ const job=await scalar('select public.admin_import_claim($1,$2,$3) v',[admin,id,fp]);
+ const finish=()=>scalar('select public.admin_import_finish($1,$2,$3,$4,$5) v',[admin,id,job.lease_token,fp,hash]);
+ await assert.rejects(finish(),/Image upload unconfirmed/);
+ assert.equal(await scalar('select difficulty_level_id v from public.question where id=$1',[q]),1);
+ await db.query('insert into storage.objects(bucket_id,name,user_metadata,metadata) values($1,$2,$3,$4)',['movies',job.image_path,JSON.stringify({hq_import_id:id,sha256:hash}),JSON.stringify({size:123456})]);
+ const receipt=await finish();assert.deepEqual(await finish(),receipt);
+ const detail=await scalar('select public.admin_question_detail($1) v',[q]);
+ assert.equal(detail.difficulty_level_id,2);assert.equal(detail.admin_revision,2);assert.equal(detail.image_bytes,123456);assert.equal(detail.image_url,job.image_path);
+});
+
+test('image size uses current Storage bytes and tolerates absent or malformed metadata',async()=>{
+ await uid(admin);
+ const q=contentResults[0];
+ for(const size of [311190,'311190',0,null,'bad','1.5','-2','999999999999999999999999']){
+  await db.query('update storage.objects set metadata=$1 where bucket_id=\'movies\' and name=$2',[JSON.stringify({size}),q.image_path]);
+  const detail=await scalar('select public.admin_question_detail($1) v',[q.question_id]);
+  assert.equal(detail.image_bytes,typeof size==='number'?size:size==='311190'?311190:null);
+  assert.equal(detail.content_metadata.image.photographer,'Example creator');
+ }
+ const before=await scalar('select public.admin_question_detail($1) v',[q.question_id]);
+ await scalar('select public.admin_change_question(gen_random_uuid(),$1,$2,$3,0,false,2) v',[q.question_id,before.admin_revision,JSON.stringify(options)]);
+ const after=await scalar('select public.admin_question_detail($1) v',[q.question_id]);
+ assert.deepEqual(after.content_metadata,before.content_metadata);
+ assert.equal(after.difficulty_level_id,2);
+});
+
+test('compact activity sums modes and revisions without legacy counters or overlapping cohorts',async()=>{
+ await uid(admin);
+ const q=100;
+ await db.query("insert into hq_private.question_shown_counts values($1,1,'normal',10),($1,2,'daily',5),($1,2,'time_attack',16)",[q]);
+ await db.query("insert into hq_private.question_metrics values($1,1,'normal',5),($1,2,'daily',2),($1,2,'time_attack',5)",[q]);
+ await db.query("insert into hq_private.question_cohort_metrics values($1,1,'normal','account',100),($1,1,'normal','first_account',100)",[q]);
+ await db.query("insert into public.question_stats(question_id,total_attempts,correct_attempts) values($1,5000,4000) on conflict(question_id) do update set total_attempts=5000,correct_attempts=4000",[q]);
+ const metrics=await scalar('select public.admin_question_metrics($1) v',[q]);
+ assert.deepEqual(metrics.activity,{shown:31,correct:12,accuracy:38.7});
+ assert.equal(metrics.legacy.total_attempts,5000);assert.equal(metrics.cohorts.length,2);
+ assert.deepEqual((await scalar('select public.admin_question_metrics(300) v')).activity,{shown:0,correct:0,accuracy:null});
+ await uid(player);await db.exec('set role authenticated');try{
+  await assert.rejects(scalar('select public.admin_question_metrics($1) v',[q]),/Administrator/);
+  await assert.rejects(scalar('select public.admin_question_detail($1) v',[q]),/Administrator/);
+  await assert.rejects(scalar('select public.admin_change_question(gen_random_uuid(),100,2,$1,0,false,3) v',[JSON.stringify(options)]),/Administrator/);
+ }finally{await db.exec('reset role');}
+ await uid(null);await db.exec('set role anon');try{
+  await assert.rejects(db.query('select public.admin_question_metrics(100)'),/permission denied/);
+  await assert.rejects(db.query('select public.admin_question_detail(100)'),/permission denied/);
+ }finally{await db.exec('reset role');}
 });

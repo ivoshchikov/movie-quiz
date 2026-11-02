@@ -3,19 +3,25 @@ import type { BankQuestion, ImportPayload } from "./questionsApi";
 import { changeQuestion, ImportError, sendImport } from "./questionsApi";
 import { prepareImage } from "./prepareImage";
 import type { ProcessedImage } from "./imageProcessing";
+import AdminSelect from "./AdminSelect";
 export default function QuestionEditor({
   row,
+  levels,
+  reloadLevels,
   done,
   cancel,
   reload,
   guard,
 }: {
   row: BankQuestion;
+  levels: { id: number; name: string }[];
+  reloadLevels: () => void;
   done: (deleted: boolean) => void;
   cancel: () => void;
   reload: () => void;
   guard: (check: (() => boolean) | null) => void;
 }) {
+  const [difficulty, setDifficulty] = useState(row.difficulty_level_id);
   const [options, setOptions] = useState(() =>
     Array.from({ length: 4 }, (_, i) =>
       typeof row.options_json[i] === "string"
@@ -42,6 +48,7 @@ export default function QuestionEditor({
     remove: boolean;
     options: string[];
     correct: number;
+    difficulty: number;
     image: ProcessedImage | null;
   } | null>(null);
   const controller = useRef<AbortController | null>(null),
@@ -49,6 +56,7 @@ export default function QuestionEditor({
     inFlight = useRef(false);
   const dirty =
     !!image ||
+    difficulty !== row.difficulty_level_id ||
     options.some((s, i) => s !== row.options_json[i]) ||
     row.options_json[correct] !== row.correct_answer;
   useEffect(() => {
@@ -131,6 +139,7 @@ export default function QuestionEditor({
       remove,
       options: options.map((s) => s.trim().normalize("NFC")),
       correct,
+      difficulty,
       image,
     };
     const op = operation.current;
@@ -147,7 +156,7 @@ export default function QuestionEditor({
         const payload: ImportPayload = {
           id: op.id,
           category_id: row.category_id ?? 1,
-          difficulty_level_id: row.difficulty_level_id,
+          difficulty_level_id: op.difficulty,
           options: op.options,
           correct_index: op.correct,
           source_hash: op.image.sourceHash,
@@ -164,6 +173,7 @@ export default function QuestionEditor({
           op.remove ? null : op.options,
           op.remove ? null : op.correct,
           op.remove,
+          op.remove ? null : op.difficulty,
           c.signal,
         );
       if (alive.current) {
@@ -196,14 +206,26 @@ export default function QuestionEditor({
       <h3>Edit question #{row.id}</h3>
       <p>
         Changes apply to new quizzes. Assigned Daily questions and started games
-        keep their original answers. Unsaved edits are kept only while this
-        window is open.
+        keep their original answers and difficulty. Unsaved edits are kept only
+        while this window is open.
       </p>
       {!row.admin_revision && (
         <p role="alert">Editing is unavailable. Reload this question.</p>
       )}
       <fieldset disabled={busy || processing || locked || deleting}>
-        <legend>Four answer options</legend>
+        <legend>Question settings</legend>
+        <label>
+          Difficulty
+          <AdminSelect
+            value={difficulty}
+            disabled={!levels.length}
+            onChange={(e) => setDifficulty(Number(e.target.value))}
+          >
+            {!levels.some(l => l.id === difficulty) && <option value={difficulty}>Difficulty {difficulty}</option>}
+            {levels.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+          </AdminSelect>
+        </label>
+        {!levels.length && <p role="status">Difficulty settings are unavailable. <button type="button" className="hq-inline-action" onClick={reloadLevels}>Reload difficulty settings</button></p>}
         {options.map((value, i) => (
           <div className="hq-edit-answer" key={i}>
             <label>
