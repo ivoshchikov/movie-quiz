@@ -222,6 +222,7 @@ test('edit and deletion APIs reject guests, players and direct service-only call
 });
 
 test('two owner tabs cannot overwrite each other with the same revision',{skip:!native},async()=>{
+ await uid(admin);
  const q=await scalar("insert into public.question(image_url,correct_answer,options_json,category_id,difficulty_level_id) values('test/concurrent.webp','One','[\"One\",\"Two\",\"Three\",\"Four\"]',4,1) returning id v");
  const a=new Client({connectionString:native}),b=new Client({connectionString:native});await a.connect();await b.connect();
  try{
