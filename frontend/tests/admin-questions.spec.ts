@@ -13,6 +13,7 @@ const row = (id: number) => ({
   difficulty_level_id: 1,
   needs_review: false,
   admin_revision: 1,
+  image_bytes: 311190 as number | null,
 });
 async function fixture(
   page: Page,
@@ -45,6 +46,8 @@ async function fixture(
     conflict: false,
     loseChangeResponse: false,
     operations: new Map<string, unknown>(),
+    activity: { shown: 31, correct: 12, accuracy: 38.7 } as { shown: number; correct: number; accuracy: number | null },
+    failMetrics: false,
   };
   await page.route("**/rest/v1/rpc/is_admin", (r) =>
     r.fulfill({
@@ -52,7 +55,7 @@ async function fixture(
       body: JSON.stringify(data.rights),
     }),
   );
-  await page.route("**/rest/v1/rpc/admin_question_metrics", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ since: "2026-10-18T12:00:00Z", legacy: { total_attempts: 20, correct_attempts: 12 }, cohorts: [{ revision: 1, mode: "normal", cohort: "first_account", correct: 2, wrong: 1, timeouts: 1, abandoned: 2, response_ms: 9000, timed_answers: 3 }] }) }));
+  await page.route("**/rest/v1/rpc/admin_question_metrics", r => r.fulfill({ status: data.failMetrics ? 503 : 200, contentType: "application/json", body: JSON.stringify({ activity: data.activity }) }));
   await page.route("**/rest/v1/rpc/admin_draft_key", (r) =>
     r.fulfill({
       status: data.failKey ? 503 : 200,
@@ -84,6 +87,7 @@ async function fixture(
       else {
         q.options_json = p.p_options;
         q.correct_answer = p.p_options[p.p_correct_index];
+        q.difficulty_level_id = p.p_difficulty_id ?? q.difficulty_level_id;
         q.admin_revision++;
       }
       result = {
@@ -213,7 +217,7 @@ async function fixture(
       question_id: p.edit_question_id ?? 300 + data.imports.length,
       image_path: imagePath,
     };
-    if (p.edit_question_id) { const q = data.rows.find(q => q.id === p.edit_question_id)!; q.image_url = result.image_path; q.options_json = p.options; q.correct_answer = p.options[p.correct_index]; q.admin_revision++; }
+    if (p.edit_question_id) { const q = data.rows.find(q => q.id === p.edit_question_id)!; q.image_url = result.image_path; q.options_json = p.options; q.correct_answer = p.options[p.correct_index]; q.difficulty_level_id = p.difficulty_level_id; q.image_bytes = (form.get("image") as Blob).size; q.admin_revision++; }
     data.statuses.set(p.id, result);
     if (data.loseResponse) return r.abort();
     return r.fulfill({
@@ -610,6 +614,121 @@ test("private routes are noindex in first HTTP metadata and contain no bank data
   }
 });
 
+test("repeated edit and cancel keeps exactly one statistics section", async ({ page }) => {
+  await fixture(page);
+  const errors: string[] = [];
+  page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
+  await page.goto("/admin/questions?question=60");
+  for (let i = 0; i < 4; i++) {
+    await page.getByRole("button", { name: "Edit or delete question" }).click();
+    await page.getByRole("button", { name: "Cancel editing" }).click();
+    await expect(page.getByRole("region", { name: "Question statistics", exact: true })).toHaveCount(1);
+  }
+  expect(errors.filter(s => /same key/.test(s))).toEqual([]);
+});
+
+test("the full portrait fits inside its preview at desktop and mobile widths", async ({ page }) => {
+  await fixture(page);
+  for (const width of [1440, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/admin/questions?question=60");
+    const image = page.getByAltText("Full image for question 60");
+    await expect(image).toBeVisible();
+    await expect.poll(() => image.evaluate((e: HTMLImageElement) => e.naturalHeight)).toBeGreaterThan(0);
+    const bounds = await image.evaluate(e => {
+      const preview = e.closest(".hq-bank-full-image")!.getBoundingClientRect();
+      const img = e.getBoundingClientRect();
+      return { overflow: Math.max(preview.top - img.top, preview.left - img.left, img.bottom - preview.bottom, img.right - preview.right), objectFit: getComputedStyle(e).objectFit };
+    });
+    expect(bounds.overflow).toBeLessThanOrEqual(1);
+    expect(bounds.objectFit).toBe("contain");
+    await expect(page.getByRole("dialog").locator(".hq-bank-details > div").filter({ has: page.getByText("Image size", { exact: true }) })).toHaveText("Image size303.9 KiB (311,190 bytes)");
+    await page.getByRole("button", { name: "Zoom image", exact: true }).click();
+    await page.getByRole("button", { name: "Fit image", exact: true }).click();
+    await expect(image).toHaveCSS("object-fit", "contain");
+    expect(await page.getByRole("dialog").evaluate(e => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(1);
+  }
+});
+
+test("difficulty-only edits retry the frozen operation and persist after reopening", async ({ page }) => {
+  const { data } = await fixture(page);
+  data.loseChangeResponse = true;
+  await page.goto("/admin/questions?question=60");
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption("3");
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "could not be confirmed" })).toBeVisible();
+  await expect(page.getByText("Question #60 changes saved.", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Retry same operation" }).click();
+  await expect(page.getByText("Question #60 changes saved.", { exact: true })).toBeVisible();
+  expect(data.changes).toHaveLength(2);
+  expect(data.changes[0]).toEqual(data.changes[1]);
+  expect(data.changes[0].p_difficulty_id).toBe(3);
+  expect(data.rows.find(q => q.id === 60)?.admin_revision).toBe(2);
+  expect(data.imports).toHaveLength(0);
+  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.getByRole("button", { name: "View question 60", exact: true }).click();
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toHaveValue("3");
+});
+
+test("cancelling only a difficulty edit asks to discard and does not save", async ({ page }) => {
+  const { data } = await fixture(page);
+  await page.goto("/admin/questions?question=60");
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption("2");
+  page.once("dialog", d => d.dismiss());
+  await page.getByRole("button", { name: "Cancel editing" }).click();
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toHaveValue("2");
+  page.once("dialog", d => d.accept());
+  await page.getByRole("button", { name: "Cancel editing" }).click();
+  await page.getByRole("button", { name: "Edit or delete question" }).click();
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toHaveValue("1");
+  expect(data.changes).toHaveLength(0);
+  await expect(page.getByRole("region", { name: "Question statistics", exact: true })).toHaveCount(1);
+});
+
+test("compact statistics show three confirmed measures and an undefined unseen percentage", async ({ page }) => {
+  const { data } = await fixture(page);
+  await page.goto("/admin/questions?question=60");
+  const stats = page.getByRole("region", { name: "Question statistics", exact: true });
+  await expect(stats.locator("dl > div")).toHaveText(["Shown31", "Correct answers12", "Correct %38.7%"]);
+  await expect(stats.locator("table")).toHaveCount(0);
+  await expect(stats.getByText(/Historical|cohort|submitted answers/)).toHaveCount(0);
+  data.activity = { shown: 0, correct: 0, accuracy: null };
+  await page.reload();
+  await expect(stats.locator("dl > div")).toHaveText(["Shown0", "Correct answers0", "Correct %—"]);
+});
+
+test("failed or inconsistent statistics never fabricate zero counts; retry recovers", async ({ page }) => {
+  const { data } = await fixture(page);
+  data.failMetrics = true;
+  await page.goto("/admin/questions?question=60");
+  const stats = page.getByRole("region", { name: "Question statistics", exact: true });
+  await expect(stats.getByRole("alert")).toBeVisible();
+  await expect(stats.locator("dl")).toHaveCount(0);
+  data.failMetrics = false;
+  data.activity = { shown: 2, correct: 3, accuracy: 150 };
+  await page.reload();
+  await expect(stats.getByRole("alert")).toBeVisible();
+  await expect(stats.locator("dl")).toHaveCount(0);
+  data.activity = { shown: 2, correct: 1, accuracy: 50 };
+  await stats.getByRole("button", { name: "Retry question statistics" }).click();
+  await expect(stats.locator("dl > div")).toHaveText(["Shown2", "Correct answers1", "Correct %50%"]);
+});
+
+test("missing stored image size stays unavailable and a zero-byte value is explicit", async ({ page }) => {
+  const { data } = await fixture(page);
+  data.rows.find(q => q.id === 60)!.image_bytes = null;
+  await page.goto("/admin/questions?question=60");
+  const size = page.getByRole("dialog").locator(".hq-bank-details > div").filter({ has: page.getByText("Image size", { exact: true }) });
+  await expect(size).toHaveText("Image sizeUnavailable");
+  data.rows.find(q => q.id === 60)!.image_bytes = 0;
+  await page.reload();
+  await expect(size).toHaveText("Image size0 bytes");
+});
+
 test("edit four answers and correct option, refreshing the existing question", async ({
   page,
 }) => {
@@ -688,6 +807,7 @@ test("conflicting edits show reload and never claim a successful save", async ({
   await page.goto("/admin/questions?question=60");
   await page.getByRole("button", { name: "Edit or delete question" }).click();
   await page.getByLabel("Answer A", { exact: true }).fill("Updated title");
+  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption("2");
   await page.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(
     page.getByRole("alert").filter({ hasText: "changed or was deleted" }),
@@ -701,10 +821,13 @@ test("conflicting edits show reload and never claim a successful save", async ({
 
 test("replace an image on mobile without changing the question ID",async({page})=>{
  const {data}=await fixture(page);await page.setViewportSize({width:390,height:844});await page.goto('/admin/questions?question=60');await page.getByRole('button',{name:'Edit or delete question'}).click();
+ await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption('2');
  await page.getByLabel('Replace image (optional)',{exact:true}).setInputFiles('tests/assets/question-frame.png');await expect(page.getByAltText('Replacement image preview')).toBeVisible({timeout:20000});
  await expect(page.getByRole('button',{name:'Save changes',exact:true})).toBeEnabled();
  const bounds=await page.getByRole('dialog').evaluate(e=>({width:e.scrollWidth,viewport:window.innerWidth}));expect(bounds.width).toBeLessThanOrEqual(bounds.viewport);
  await page.getByRole('button',{name:'Save changes',exact:true}).click();await expect(page.getByText('Question #60 changes saved.',{exact:true})).toBeVisible();expect(data.imports).toHaveLength(1);expect((data.imports[0] as unknown as {edit_question_id:number}).edit_question_id).toBe(60);expect(data.rows).toHaveLength(60);expect(data.rows.find(q=>q.id===60)?.image_url).not.toBe('general/g_00060.webp');
+ expect(data.imports[0].difficulty_level_id).toBe(2);expect(data.rows.find(q=>q.id===60)?.difficulty_level_id).toBe(2);
+ await expect(page.getByRole('dialog').locator('.hq-bank-details > div').filter({has:page.getByText('Image size',{exact:true})})).not.toContainText('311,190');
 });
 
 for (const theme of ["light", "dark", "christmas"]) test(`${theme} theme covers the question bank, editor and upload form`, async ({ page }) => {
