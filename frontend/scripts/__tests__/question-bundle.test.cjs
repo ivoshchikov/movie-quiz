@@ -51,7 +51,7 @@ test("the documented example covers all four live category IDs and preserves pre
 });
 test("50 records, false legacy compatibility flag and zero-based answer positions are accepted", async () => {
   const value = await validate(
-    await bundle((m) => {
+    await bundle((m, files) => {
       m.supported_by_current_admin_importer = false;
       const sample = m.questions[0];
       m.questions = Array.from({ length: 50 }, (_, i) => ({
@@ -62,9 +62,12 @@ test("50 records, false legacy compatibility flag and zero-based answer position
         correct_option_label: "ABCD"[i % 4],
       }));
       m.question_count = 50;
+      for (const name of Object.keys(files))
+        if (name !== sample.image.file) delete files[name];
     }),
   );
   assert.equal(value.entries.length, 50);
+  assert.deepEqual(value.errors, []);
   assert.ok(value.entries.every((e) => !e.errors.length));
 });
 test(
@@ -152,11 +155,13 @@ test("repeated temporary IDs invalidate both entries, while possible persons/wor
       .every((e) => e.errors.some((s) => /repeated/.test(s))),
   );
   const intentional = await validate(
-    await bundle((m) => {
+    await bundle((m, files) => {
+      delete files[m.questions[1].image.file];
       m.questions[1] = { ...m.questions[0], temp_id: "different-frame" };
     }),
   );
   assert.equal(intentional.entries.length, 4);
+  assert.deepEqual(intentional.errors, []);
   assert.equal(intentional.entries[1].errors.length, 0);
   assert.equal(intentional.entries[1].warnings.length, 2);
 });

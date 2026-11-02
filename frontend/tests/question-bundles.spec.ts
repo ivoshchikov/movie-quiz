@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import type { Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { webcrypto } from "node:crypto";
 import { zipSync, unzipSync, strToU8 } from "fflate";
 import { mockQuizApi, mockSignedIn } from "./fixtures";
 import {
@@ -16,6 +17,10 @@ import type {
   BundleIdentity,
   ContentMetadata,
 } from "../src/contentBundle/types";
+
+// Node 18 CI does not expose Web Crypto globally by default.
+if (!globalThis.crypto)
+  Object.defineProperty(globalThis, "crypto", { value: webcrypto });
 
 const owner = "112743d7-f683-4bbb-8117-068e89a00f22";
 const exampleRoot = "../docs/examples/question-content-bundle/";
