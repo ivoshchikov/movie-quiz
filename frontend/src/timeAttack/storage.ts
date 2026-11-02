@@ -1,4 +1,4 @@
-import { isLevel } from "./api";
+import { isLevel, isAttackCategory } from "./api";
 import type { AttackGame, AttackLevel } from "./api";
 export interface PendingAction { round: string; action: "answer" | "skip"; answer: string | null; }
 export interface AttackRun {
@@ -9,7 +9,7 @@ const memory = new Map<string, AttackRun>();
 export function readAttackRun(owner: string | null): AttackRun | null {
   try {
     const r: AttackRun = JSON.parse(localStorage.getItem(key(owner)) || "null");
-    if (r && typeof r.id === "string" && /^[0-9a-f-]{36}$/i.test(r.id) && r.owner === owner && [1, 2].includes(r.category) && isLevel(r.level) && typeof r.confirmed === "boolean" &&
+    if (r && typeof r.id === "string" && /^[0-9a-f-]{36}$/i.test(r.id) && r.owner === owner && isAttackCategory(r.category) && isLevel(r.level) && typeof r.confirmed === "boolean" &&
       (!r.pending || typeof r.pending.round === "string" && ["answer", "skip"].includes(r.pending.action) && (r.pending.answer === null || typeof r.pending.answer === "string"))) return r;
   } catch { /* Memory-only play remains available. */ }
   return memory.get(key(owner)) ?? null;

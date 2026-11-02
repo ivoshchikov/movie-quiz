@@ -14,7 +14,7 @@ function Photo({ path }: { path: string }) {
 const descriptions: Record<GameMode, string> = {
   classic: "A film still with four answer choices.",
   "time-attack": "A film still, four answer choices and one continuous countdown.",
-  "this-or-that": "Two actor portraits side by side. Choose the one you prefer.",
+  "this-or-that": "An example pair of portraits. Choose the one you prefer.",
   daily: "A daily calendar with one mystery question. Today’s question is revealed only after you start.",
 };
 export default function ModePreview({ mode }: { mode: GameMode }) {

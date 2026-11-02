@@ -443,3 +443,11 @@ The detail uses distinct keys for statistics and the editor: repeated Edit/Cance
 The image preview fits the complete portrait or landscape inside its viewport. Explicit Zoom/ Fit still works, and replacement previews retain their proportions. **Image size**, below Image path, reports the current Storage object's bytes plus KiB/MiB; missing, malformed or nonlocal metadata is **Unavailable**. This does not download another image or confuse bundle/source bytes with stored bytes. Image attribution and historical media are preserved.
 
 Migration: `20261102170738_question_editor_details.sql`. Regression tests reproduce both original bugs, cover difficulty-only edits, lost-response retries, stale edits, combined image/difficulty edits, all four categories, actual/missing bytes, compact statistics, permissions and desktop/mobile themes. Publication evidence is recorded in the implementation PR; test mutations use isolated fixtures only.
+
+## Category expansion — 3 November 2026 (Asia/Nicosia)
+
+Time Attack now offers Movie Stills, Actors, Actresses and TV Series when eligible questions exist. Admission, client parsing/recovery and all result/profile/ranking labels support the same four IDs. Each run uses one category, with the existing clock, difficulty mix, score, paid skip and independent records.
+
+This or That adds Actors / Actresses selection across setup, play, community ranking and personal results. The boards have independent pairs, profiles, preferences and rankings; no mixed mode is introduced. URL state, continuation, device storage, immutable pending actions and explicit guest imports preserve the board. Existing Actor local keys, imports and public/private history remain compatible. New category-aware top/import RPCs validate the requested board and ownership. The deployed private rating service already supports both boards and retains its calculation.
+
+Migration source: `20261102222731_all_game_categories.sql`; contracts: [TIME_ATTACK.md](TIME_ATTACK.md), [THIS_OR_THAT.md](THIS_OR_THAT.md). Public metadata/prerender copy and How to play reflect the available categories. Local/native/CI and exact production evidence are recorded in the release PR. All mutation checks use isolated fixtures.

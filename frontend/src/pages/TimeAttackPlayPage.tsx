@@ -7,7 +7,7 @@ import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
 import GameImageCredits from "../components/GameImageCredits";
 import ThemeSlider from "../components/ThemeSlider";
-import { attackTime, isLevel, levelName } from "../timeAttack/api";
+import { attackTime, isLevel, levelName, isAttackCategory, attackCategoryName, attackImageAlt } from "../timeAttack/api";
 import { readAttackRun } from "../timeAttack/storage";
 import type { AttackRun } from "../timeAttack/storage";
 import { useTimeAttack } from "../timeAttack/useTimeAttack";
@@ -21,7 +21,7 @@ export default function TimeAttackPlayPage() {
   const run = useMemo(() => {
     const requested = (location.state as { run?: AttackRun } | null)?.run;
     const saved = readAttackRun(owner);
-    if (requested?.owner === owner && typeof requested.id === "string" && /^[0-9a-f-]{36}$/i.test(requested.id) && [1, 2].includes(requested.category) && isLevel(requested.level) && typeof requested.confirmed === "boolean") {
+    if (requested?.owner === owner && typeof requested.id === "string" && /^[0-9a-f-]{36}$/i.test(requested.id) && isAttackCategory(requested.category) && isLevel(requested.level) && typeof requested.confirmed === "boolean") {
       return saved?.id === requested.id ? saved : requested;
     }
     return saved;
@@ -40,14 +40,14 @@ export default function TimeAttackPlayPage() {
     }
     window.addEventListener("keydown", key); return () => window.removeEventListener("keydown", key);
   }, [ready, exit, r, view.actions]);
-  const title = game?.category_id === 2 ? "Actors" : "Movie Stills";
+  const title = attackCategoryName(game?.category_id ?? run?.category ?? 1);
   const query = `category=${game?.category_id ?? run?.category ?? 1}&level=${game?.level ?? run?.level ?? "easy"}`;
   const image = r ? getPublicUrl(r.image_url) : "";
   const imageSrc = view.imageAttempt ? `${image}${image.includes("?") ? "&" : "?"}hq_retry=${view.imageAttempt}` : image;
   const busy = view.working || phase === "checking" || phase === "loading";
   const feedback = r?.outcome === "correct" ? "Correct! +2 points" : r?.outcome === "wrong" ? "Incorrect. −1 point" : "Skipped. −3 seconds";
 
-  return <><Seo title="Play Time Attack | Hard Quiz" description="Race the clock in the movie and actor quiz." noindex />
+  return <><Seo title="Play Time Attack | Hard Quiz" description="Race the clock with movie and TV stills, actors or actresses." noindex />
     <header className="hq-play-header"><Link to="/time-attack" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></Link><div className="hq-play-actions"><ThemeSlider />{game?.status === "active" && <button className="hq-play-exit" disabled={busy} onClick={() => setExit(true)}>End run</button>}</div></header>
     {loading || authError || !run || !game ? <section className="hq-game-placeholder"><h1>{!loading && !run ? "Choose your Time Attack" : "Getting Time Attack ready"}</h1>
       <p role={view.error || authError ? "alert" : "status"}>{authError ? "Your sign-in status could not be checked." : !run && !loading ? "Start a new run or continue your last one from the Time Attack page." : view.error ?? "Loading your server session…"}</p>
@@ -67,7 +67,7 @@ export default function TimeAttackPlayPage() {
         <div className="hq-game-heading"><div><h1>Time Attack</h1><span>{title} · {levelName(game.level)}</span></div><span className="hq-question-number">Question {r?.number ?? "…"}</span></div>
         <div className="hq-game-image" aria-busy={phase === "image-loading" || phase === "loading"}>
           {r && <img key={`${r.id}:${view.imageAttempt}`} src={imageSrc} className={phase === "image-loading" || phase === "loading" ? "hq-image-loading" : ""} draggable={false}
-            alt={game.category_id === 2 ? "Actor photograph to identify" : "Movie still to identify"}
+            alt={attackImageAlt(game.category_id)}
             onLoad={e => view.actions.current?.image(r.id, view.imageAttempt, e.currentTarget.naturalWidth > 0)} onError={() => view.actions.current?.image(r.id, view.imageAttempt, false)} />}
           {(phase === "loading" || phase === "image-loading") && <div className="hq-game-image-message" role="status"><span className="hq-game-spinner" />Loading image… The clock keeps running.</div>}
           {phase === "image-error" && <div className="hq-game-image-message"><p role="alert">The image could not load. Your clock keeps running.</p><button className="hq-secondary" onClick={() => view.actions.current?.retry()}>Retry image</button></div>}

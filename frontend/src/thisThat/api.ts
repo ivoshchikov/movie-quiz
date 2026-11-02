@@ -1,5 +1,7 @@
 import { gameplayRpc } from "../game/server";
-export type Board = "actors" | "actresses";
+import { isBoard } from "./boards";
+import type { Board } from "./boards";
+export type { Board } from "./boards";
 export const choices = ["left", "right", "equal", "unknown_left", "unknown_right", "unknown_both", "skip"] as const;
 export type Choice = typeof choices[number];
 export interface Person { id: number; name: string; image_url: string; revision?: number; }
@@ -21,18 +23,22 @@ export function parseComparison(value: unknown): Comparison {
   return g;
 }
 export const comparisonRequest = async (name: string, payload: Record<string, unknown>, signal?: AbortSignal) => parseComparison(await gameplayRpc(name, payload, signal));
-export async function activeComparison(signal?: AbortSignal) { const v = await gameplayRpc("this_that_active", { p_board: "actors" }, signal); return v === null ? null : parseComparison(v); }
-export const comparisonCatalog = (signal?: AbortSignal) => gameplayRpc<{ boards: { key: Board; name: string; people: number; pairs: number }[] }>("this_that_catalog", {}, signal);
-export async function personalTop(id?: string, signal?: AbortSignal) {
-  const rows = await gameplayRpc<TopPerson[]>("this_that_top", { p_id: id ?? null }, signal);
+export async function activeComparison(board: Board, signal?: AbortSignal) { const v = await gameplayRpc("this_that_active", { p_board: board }, signal); const g = v === null ? null : parseComparison(v); if (g && g.board !== board) throw Error("Comparison category changed"); return g; }
+export async function comparisonCatalog(signal?: AbortSignal) {
+  const value = await gameplayRpc<{ boards: { key: Board; name: string; people: number; pairs: number }[] }>("this_that_catalog", {}, signal);
+  if (!value || !Array.isArray(value.boards) || value.boards.some(b => !isBoard(b.key) || typeof b.name !== "string" || !Number.isSafeInteger(b.people) || b.people < 2 || b.pairs !== b.people * (b.people - 1) / 2) || new Set(value.boards.map(b => b.key)).size !== value.boards.length) throw Error("Invalid comparison catalog");
+  return value;
+}
+export async function personalTop(board: Board, id?: string, signal?: AbortSignal) {
+  const rows = await gameplayRpc<TopPerson[]>("this_that_top_for_board", { p_board: board, p_id: id ?? null }, signal);
   if (!Array.isArray(rows) || rows.some(p => !isPerson(p) || !Number.isInteger(p.rank) || p.rank < 1)) throw Error("Invalid personal top");
   return rows;
 }
-export async function ranking(search: string, signal: AbortSignal): Promise<Ranking> {
+export async function ranking(board: Board, search: string, signal: AbortSignal): Promise<Ranking> {
   const controller = new AbortController(); const abort = () => controller.abort(); signal.addEventListener("abort", abort, { once: true }); if (signal.aborted) controller.abort();
   const timer = window.setTimeout(abort, 15000);
   try {
-    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/this-that-ranking`, { method: "POST", headers: { "Content-Type": "application/json", apikey: import.meta.env.VITE_SUPABASE_ANON_KEY }, body: JSON.stringify({ board: "actors", search }), signal: controller.signal, credentials: "omit" });
+    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/this-that-ranking`, { method: "POST", headers: { "Content-Type": "application/json", apikey: import.meta.env.VITE_SUPABASE_ANON_KEY }, body: JSON.stringify({ board, search }), signal: controller.signal, credentials: "omit" });
     if (!response.ok) throw Error("Ranking unavailable");
     const r = await response.json() as Ranking;
     if (!r || !Number.isInteger(r.total) || !Number.isInteger(r.candidates) || !Array.isArray(r.rows) || r.rows.length > 20 || r.rows.some(p => !isPerson(p) || !(p.rank === null || Number.isInteger(p.rank) && p.rank > 0))) throw Error("Invalid ranking");

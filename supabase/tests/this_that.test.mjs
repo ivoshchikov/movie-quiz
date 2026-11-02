@@ -11,7 +11,7 @@ for(const f of ['gameplay.sql','this-that-platform.sql'])await db.exec(await rea
 if(native)await db.exec('create extension pgcrypto with schema extensions');// PGlite-only crypto stand-in; native CI uses actual pgcrypto HMAC.
 else await db.exec("create function extensions.hmac(data text,key text,kind text)returns bytea language sql as $$select decode(md5(key||data)||md5(data||key),'hex')$$;create function extensions.gen_random_bytes(n integer)returns bytea language sql as $$select decode(repeat('ab',n),'hex')$$");
 await db.exec("create schema hq_private;create table hq_private.test_clock_state(at timestamptz);insert into hq_private.test_clock_state values('2026-10-19T18:00:00Z');create function hq_private.test_clock()returns timestamptz language sql volatile as $$select coalesce((select at from hq_private.test_clock_state),clock_timestamp())$$");
-for(const f of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history']){
+for(const f of ['20261010200933_admin_daily_guard','20261011145955_admin_question_bank','20261011161955_question_privacy','20261011170955_question_edit_delete','20261015211558_authoritative_gameplay','20261018151208_gameplay_stage1','20261019104507_time_attack','20261019200201_this_or_that','20261019202710_this_that_net_privacy','20261019203942_this_that_bounded_refresh','20261019204920_this_that_private_history','20261102222731_all_game_categories']){
  if(f.endsWith('authoritative_gameplay'))await db.exec(await readFile(new URL('./fixtures/gameplay-legacy.sql',import.meta.url),'utf8'));
  await db.exec('begin');try{await db.exec((await readFile(new URL('../migrations/'+f+'.sql',import.meta.url),'utf8')).replace('create extension if not exists pg_net with schema extensions;','').replaceAll('clock_timestamp()','hq_private.test_clock()'));await db.exec('commit');}catch(e){await db.exec('rollback');throw e;}
 }
@@ -48,3 +48,60 @@ test('an import cannot follow an account switch into another owner',async()=>{aw
 test('an expired Auth session cannot contribute a public vote even with an otherwise valid identity',async()=>{await reset();const g=await open();try{await db.query("update auth.sessions set not_after=hq_private.test_clock()-interval '1 second'where id=$1",[sid]);assert.equal((await choose(g)).round.public_status,'personal');assert.equal(await val('select count(*) v from hq_private.tt_votes'),0);}finally{await db.query('update auth.sessions set not_after=null where id=$1',[sid]);}});
 test('cron authorizes a short-lived signature once; the durable secret and altered or expired tokens fail',async()=>{await reset();const secret=await val('select refresh_secret v from hq_private.tt_rating_state');assert.equal(await rpc('this_that_refresh_authorized',[secret]),false);const signed=async(offset=0)=>val("with prefix as(select(floor(extract(epoch from hq_private.test_clock()))::bigint+$1)::text||'.'||gen_random_uuid()::text x)select x||'.'||encode(extensions.hmac(x||'.this-that-ranking',refresh_secret,'sha256'),'hex')v from prefix,hq_private.tt_rating_state",[offset]);const token=await signed();assert.equal(await rpc('this_that_refresh_authorized',[token]),true);assert.equal(await rpc('this_that_refresh_authorized',[token]),false);assert.equal(await rpc('this_that_refresh_authorized',[await signed(-61)]),false);assert.equal(await rpc('this_that_refresh_authorized',[await signed(6)]),false);assert.equal(await rpc('this_that_refresh_authorized',[token.slice(0,-1)+(token.endsWith('a')?'b':'a')]),false);for(const invalid of [null,'','a','..','1.x.x'])assert.equal(await rpc('this_that_refresh_authorized',[invalid]),false);});
 test('temporary participant withdrawal does not block private imports or turn preferences into public votes',async()=>{await reset();const ids=(await db.query("select id from hq_private.tt_people where board='actors'order by id")).rows.map(x=>x.id);await db.query('update hq_private.tt_people set active=false where id=$1',[ids[0]]);await rpc('this_that_import',[randomUUID(),JSON.stringify([{a:ids[0],b:ids[1],winner:ids[0]}])]);assert.equal(await val('select count(*) v from hq_private.tt_preferences'),1);assert.deepEqual(await rpc('this_that_top'),[]);assert.equal(await val('select count(*) v from hq_private.tt_votes'),0);await db.query('update hq_private.tt_people set active=true where id=$1',[ids[0]]);assert.equal((await rpc('this_that_top'))[0].id,ids[0]);});
+
+test('actor and actress choices, progress, personal tops and community catalogues stay separate',async()=>{
+ await reset();
+ const sets={};
+ for(const board of ['actors','actresses']){
+  const ids=(await db.query('select id from hq_private.tt_people where board=$1',[board])).rows.map(p=>p.id);
+  const g=await open(randomUUID(),board);sets[board]=g;
+  assert.equal(g.board,board);assert.ok(g.round.cards.every(p=>ids.includes(p.id)));
+  await choose(g);const top=await rpc('this_that_top_for_board',[board,g.id]);assert.ok(top.length>0);assert.ok(top.every(p=>ids.includes(p.id)));
+  await assert.rejects(rpc('this_that_top_for_board',[board==='actors'?'actresses':'actors',g.id]),/unavailable/);
+  const ranked=await rpc('this_that_leaderboard',[board]);assert.equal(ranked.candidates,ids.length);assert.ok(ranked.rows.every(p=>ids.includes(p.id)));
+ }
+ assert.notEqual(sets.actors.id,sets.actresses.id);
+ assert.equal((await rpc('this_that_active',['actors'])).id,sets.actors.id);assert.equal((await rpc('this_that_active',['actresses'])).id,sets.actresses.id);
+ assert.ok((await rpc('this_that_top_for_board',['actresses'])).every(p=>p.name.startsWith('Actress')));
+ assert.ok((await rpc('this_that_top')).every(p=>p.name.startsWith('Actor')));
+ await assert.rejects(open(randomUUID(),'mixed'),/Invalid comparison/);
+ await assert.rejects(rpc('this_that_top_for_board',['all']),/Invalid comparison/);
+});
+
+test('category-aware private imports preserve old actor receipts and reject mixed or wrong-board people atomically',async()=>{
+ await reset();
+ const actors=(await db.query("select id from hq_private.tt_people where board='actors'order by id")).rows.map(p=>p.id);
+ const actresses=(await db.query("select id from hq_private.tt_people where board='actresses'order by id")).rows.map(p=>p.id);
+ const actorItems=JSON.stringify([{a:actors[0],b:actors[1],winner:actors[0]}]),actressItems=JSON.stringify([{a:actresses[0],b:actresses[1],winner:actresses[0]}]);
+ const oldOp=randomUUID(),newOp=randomUUID();await rpc('this_that_import',[oldOp,actorItems]);
+ await rpc('this_that_import_for_board',['actors',oldOp,actorItems,player]);
+ await rpc('this_that_import_for_board',['actresses',newOp,actressItems,player]);await rpc('this_that_import_for_board',['actresses',newOp,actressItems,player]);
+ assert.equal(await val('select count(*) v from hq_private.tt_imports'),2);assert.equal(await val('select count(*) v from hq_private.tt_preferences'),2);
+ assert.equal(await val('select count(*) v from hq_private.tt_votes'),0);assert.equal(await val('select count(*) v from hq_private.tt_rounds'),0);
+ await assert.rejects(rpc('this_that_import_for_board',['actresses',oldOp,actorItems,player]),/different content/);
+ for(const [board,items] of [['actors',actressItems],['actresses',actorItems],['actresses',JSON.stringify([{a:actors[0],b:actresses[0],winner:actresses[0]}])]])
+  await assert.rejects(rpc('this_that_import_for_board',[board,randomUUID(),items,player]),/Invalid imported preference/);
+ assert.equal(await val('select count(*) v from hq_private.tt_preferences'),2);
+ await db.query('update hq_private.tt_people set active=false where id=$1',[actresses[0]]);
+ await rpc('this_that_import_for_board',['actresses',randomUUID(),actressItems,player]);
+ assert.deepEqual(await rpc('this_that_top_for_board',['actresses']),[]);
+});
+
+test('category endpoints enforce account/capability ownership and keep guest imports private',async()=>{
+ await reset();const g=await open(randomUUID(),'actresses');await choose(g);
+ await uid(other,null);await assert.rejects(rpc('this_that_top_for_board',['actresses',g.id]),/unavailable/);
+ await assert.rejects(rpc('this_that_import_for_board',['actresses',randomUUID(),'[]',player]),/Log in/);
+ await uid(null);const guest=await open(randomUUID(),'actresses');await choose(guest);assert.ok((await rpc('this_that_top_for_board',['actresses',guest.id])).length);
+ await db.exec('set role anon');try{await assert.rejects(rpc('this_that_import_for_board',['actresses',randomUUID(),'[]',player]),/permission denied/);}finally{await db.exec('reset role');}
+ await uid();await assert.rejects(rpc('this_that_top_for_board',['actresses',guest.id]),/unavailable/);
+ for(const board of [null,'all','mixed'])await assert.rejects(rpc('this_that_import_for_board',[board,randomUUID(),'[]',player]),/Invalid comparison/);
+});
+
+test('simultaneous actress imports use one operation and cannot create public ballots',{skip:!native},async()=>{
+ await reset();const ids=(await db.query("select id from hq_private.tt_people where board='actresses'order by id")).rows.map(p=>p.id);
+ const items=JSON.stringify([{a:ids[0],b:ids[1],winner:ids[0]}]),op=randomUUID();const clients=[new Client({connectionString:native}),new Client({connectionString:native})];
+ try{await Promise.all(clients.map(async c=>{await c.connect();await c.query("select set_config('request.jwt.claim.sub',$1,false)",[player]);}));
+  await Promise.all(clients.map(c=>c.query('select public.this_that_import_for_board($1,$2,$3,$4)',['actresses',op,items,player])));
+  assert.equal(await val('select count(*) v from hq_private.tt_preferences'),1);assert.equal(await val('select count(*) v from hq_private.tt_imports'),1);assert.equal(await val('select count(*) v from hq_private.tt_votes'),0);
+ }finally{await Promise.all(clients.map(c=>c.end()));}
+});

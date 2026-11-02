@@ -43,28 +43,28 @@
     "noindex": true
   },
   "time-attack": {
-    "title": "Movie & Actor Time Attack Quiz | Hard Quiz",
-    "description": "Play a free movie and actor quiz against one continuous timer. Choose your time pressure, play as a guest or sign in before starting to save a record.",
-    "heading": "Movie & Actor Time Attack",
-    "intro": "Identify movies from stills and actors from photos before one continuous timer runs out.",
+    "title": "Movie, TV & Actor Time Attack Quiz | Hard Quiz",
+    "description": "Identify movie and TV stills, actors and actresses against one continuous timer. Play free as a guest or sign in before starting to save a record.",
+    "heading": "Movie, TV & Actor Time Attack",
+    "intro": "Identify movie and TV stills, actors and actresses before one continuous timer runs out.",
     "url": "https://hard-quiz.com/time-attack"
   },
   "time-attack/play": {
     "title": "Play Time Attack | Hard Quiz",
-    "description": "Race the clock in the movie and actor quiz.",
+    "description": "Race the clock with movie and TV stills, actors or actresses.",
     "url": "https://hard-quiz.com/time-attack/play",
     "noindex": true
   },
   "this-or-that": {
-    "title": "This or That — Choose Your Favourite Actors | Hard Quiz",
-    "description": "Compare actor photos in This or That. Play free as a guest to build your private favourites, or sign in before choosing to contribute to the community ranking.",
-    "heading": "This or That: Actor Favourites",
-    "intro": "Compare actor photos and choose your favourites to build your personal top.",
+    "title": "This or That — Actors or Actresses | Hard Quiz",
+    "description": "Choose Actors or Actresses and compare photos in separate categories. Play free to build private favourites, or sign in to contribute to the community ranking.",
+    "heading": "This or That: Actors or Actresses",
+    "intro": "Choose Actors or Actresses, then compare photos to build your personal top.",
     "url": "https://hard-quiz.com/this-or-that"
   },
   "this-or-that/play": {
     "title": "This or That — Your Choices | Hard Quiz",
-    "description": "Compare random actor pairs and choose your favourites.",
+    "description": "Compare pairs in Actors or Actresses and choose your favourites.",
     "url": "https://hard-quiz.com/this-or-that/play",
     "noindex": true
   }

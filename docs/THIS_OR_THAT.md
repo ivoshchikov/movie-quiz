@@ -2,7 +2,7 @@
 
 First release: [PR #41](https://github.com/ivoshchikov/movie-quiz/pull/41). Production backend verification is complete; the PR records the frontend deployment and final publication evidence.
 
-The first release compares actors from the current actor photo/name bank. A future actress board has an independent server contract under the same rules; the first-release interface offers actors only. Movies and TV series are outside this release.
+Players choose **Actors** or **Actresses** from the current photo/name bank. Each is an independent board under the same rules. Every pair contains two people from the selected board; there is no combined board. Movies and TV series are outside this mode.
 
 ## Player experience
 
@@ -43,3 +43,13 @@ The production API enables pg-safeupdate. Refresh and invalidation updates expli
 Deployed calculator: `this-that-ranking` v3, source fingerprint `71618c0262f512f1b6149bab66eae41699955106f28cce6e04030d3ffa5cc321`, deployment bundle `d63543f0c441fae2b8eb26187ed5e6d514a4dd63be82cfca5269c26284139a41`. The retrieved deployed files match the privately saved source. Actual public HTTP refresh and signed scheduled refresh both return 200; raw/private RPCs reject browser callers. Pre/post migration hashes of the 320 questions, eight legacy best records, 31 Daily results and 43 Daily assignments match. No QA profiles, rounds or votes were created on production.
 
 Private imported favourites retain known participant IDs even during a temporary withdrawal; unavailable actors stay hidden from the personal top until reapproved. This never creates a public vote.
+
+## Category selection — 3 November 2026
+
+`board=actors|actresses` persists selection on the home setup, direct mode page, Rankings and My results. Game URLs identify the actress board without including profile/capability IDs. Continue, summary links, private favourites, community search and profile results keep the selected board. Search and old responses are reset/scoped when switching boards. The existing rating service already calculates and publishes separate boards; its private calculation code is not changed.
+
+Progress, pending actions, guest preferences and pending import batches are stored separately by owner/board. Actors retain their original local keys, so existing runs, device favourites and imports awaiting confirmation survive the upgrade. The Actress keys add `:actresses`; each device list retains the existing 20,000-item bound. Switching the selected category does not import or discard another board’s favourites. Guest import remains an explicit action, sends its board and cannot add public votes.
+
+Migration `20261102222731_all_game_categories.sql` adds `this_that_top_for_board(p_board, p_id?)` and authenticated-only `this_that_import_for_board(p_board, p_operation, p_choices, p_owner)`. Existing actor endpoints/signatures stay compatible. The top endpoint resolves the selected account profile or checks an explicit capability’s board before delegating to the existing owner-checked top. Actor import delegates to its original implementation and retains old receipts; actress receipts include the board in their immutable fingerprint. Every imported ID must belong to the selected board; mixed/wrong-board payloads roll back atomically. Withdrawn identities can retain private history as before.
+
+No participant, ballot, preference or live game is manufactured by the migration. SQL/browser fixtures cover category separation, ownership, old actor receipts, wrong/mixed imports, concurrent imports, independent continuations, pending retries, search/results, unavailable boards, mobile layouts and all active themes. Actual installation and production verification are recorded in the implementation PR.

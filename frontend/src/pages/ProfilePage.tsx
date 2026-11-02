@@ -102,7 +102,7 @@ export default function ProfilePage() {
       </section>
         <PlayerStatistics owner={owner} refresh={availabilityRefresh} categories={catalog.categories} difficulties={catalog.difficulties} view="daily" />
       </>}
-      {mode === "this-or-that" && <><PersonalTop key={owner} owner={owner} refresh={availabilityRefresh} /><Link className="hq-secondary" to="/this-or-that">Play This or That <SiteIcon name="arrow" /></Link></>}
+      {mode === "this-or-that" && <><PersonalTop key={owner} owner={owner} refresh={availabilityRefresh} selectable /><Link className="hq-secondary" to={`/this-or-that${params.get("board") === "actresses" ? "?board=actresses" : ""}`}>Play This or That <SiteIcon name="arrow" /></Link></>}
       {mode === "time-attack" && <AttackProfileRecords owner={owner} refresh={availabilityRefresh} />}
       {mode === "classic" && <>
       <section className="hq-profile-results" aria-labelledby="profile-bests-title" aria-busy={bests.loading}>
