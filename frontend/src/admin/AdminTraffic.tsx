@@ -33,7 +33,7 @@ export default function AdminTraffic({ owner }: { owner: string }) {
   return (
     <><section className="hq-admin-traffic" aria-label="Visitor activity">
       <div className="hq-traffic-heading">
-        <div><h2>Visitor activity</h2><p>Unique visitors · excludes you</p></div>
+        <div><h2>Visitor activity</h2><p>Unique visitors · bot-filtered · excludes you</p></div>
         <button type="button" className="hq-inline-action" onClick={retry} disabled={stats.loading}>
           {stats.loading && data ? "Refreshing…" : "Refresh stats"}
         </button>
@@ -56,7 +56,9 @@ export default function AdminTraffic({ owner }: { owner: string }) {
           multiple tabs in one browser count once. Different browsers or cleared storage can count separately.
           Today and the 7- and 30-day windows use America/Chicago, including today. Each visitor counts once per window.
           Collection starts on the date shown, so earlier visits are not included. Owner and administrative visits,
-          previews and opted-out browsers are excluded. Counts may differ from Google Analytics.
+          previews and opted-out browsers are excluded. Known bots and detected automation are filtered out;
+          unidentified bots can remain. These are visitor estimates, not a verified count of people.
+          Counts may differ from Google Analytics.
         </p></details>
       </div>
     </section><AdminPageViews owner={owner} /></>

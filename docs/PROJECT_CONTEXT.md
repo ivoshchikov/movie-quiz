@@ -1,3 +1,9 @@
+## Traffic bot filtering — 2 November 2026
+
+Owner requested bot filtering for the private visitor and page-view panels. Both first-party collection streams now skip known automation UAs and WebDriver in the browser; both existing ingestion RPCs independently reject known/blank HTTP UAs. Ordinary visits need no interaction. Public crawling and gameplay remain available, GA4 is unchanged. The panels label the result as bot-filtered estimates, since disguised bots cannot be ruled out.
+
+Migration `20261102075258_filter_automated_traffic.sql` preserves RPC signatures, owner cleanup, private-table grants, aggregate guards and retention. Exclusion reasons support precise log-supported historical corrections; unclassified visits remain. Contract and limits: [ADMIN_VISITORS.md](ADMIN_VISITORS.md). Installed migration, correction totals, CI and actual publication are recorded separately in the implementation PR.
+
 ## UI-15 — фильтры Admin и приватное табло посетителей
 
 Фильтры опубликованы отдельно через [PR #56](https://github.com/ivoshchikov/movie-quiz/pull/56), merge 1900a1280b3691492e4391fda9a82e3d7254ccc3; production Vercel success подтверждён. Общий native-select сохраняет picker/клавиатуру, использует отступы под SVG-шеврон и не обрезает значения на телефоне. Исправлена ширина Add questions на компьютере. Подробная проверка выпуска фиксируется в PR #56.

@@ -38,6 +38,12 @@ const source = await readFile(new URL('../migrations/20261101174455_admin_visito
 await db.exec(source.replaceAll('clock_timestamp()', 'hq_private.traffic_test_now()'));
 const pageViewSource = await readFile(new URL('../migrations/20261101212340_admin_page_views.sql', import.meta.url), 'utf8');
 await db.exec(pageViewSource.replaceAll('clock_timestamp()', 'hq_private.traffic_test_now()'));
+const botFilterSource = await readFile(new URL('../migrations/20261102075258_filter_automated_traffic.sql', import.meta.url), 'utf8');
+await db.exec(botFilterSource.replaceAll('clock_timestamp()', 'hq_private.traffic_test_now()'));
+const agents = JSON.parse(await readFile(new URL('./fixtures/traffic_user_agents.json', import.meta.url), 'utf8'));
+const policy = JSON.parse(await readFile(new URL('../../frontend/src/analytics/trafficBotPolicy.json', import.meta.url), 'utf8'));
+const humanAgent = agents.find(a => a.name === 'Chrome desktop').ua;
+const headers = agent => db.query("select set_config('request.headers',$1,false)", [JSON.stringify({ 'user-agent': agent })]);
 const scalar = async (sql, args) => (await db.query(sql, args)).rows[0].v;
 const uid = id => db.query("select set_config('request.jwt.claim.sub',$1,false)", [id ?? '']);
 const clock = at => db.query("select set_config('hq.test_now',$1,false)", [at]);
@@ -45,7 +51,7 @@ const beat = id => db.query('select public.site_visit_heartbeat($1)', [visitor(i
 const stats = (id = owner) => scalar('select public.admin_visitor_stats($1) v', [id]);
 async function reset(at = '2026-11-01T18:00:00Z') {
   await db.exec('truncate hq_private.site_visit_days,hq_private.site_visit_exclusions,hq_private.site_page_views');
-  await uid(null); await clock(at);
+  await uid(null); await clock(at); await headers(humanAgent);
   await db.exec("update hq_private.site_traffic_settings set started_at=hq_private.traffic_test_now()-interval '35 days', page_views_started_at=hq_private.traffic_test_now()-interval '1 hour'");
 }
 async function read() { await uid(owner); return stats(); }
@@ -145,7 +151,7 @@ test('invalid identifiers cannot create rows or override server dates', async ()
 });
 test('retention removes only data older than 35 Chicago dates and expired exclusions', async () => {
   await reset(); await seed(1,29); await seed(2,34); await seed(3,35);
-  await db.query("insert into hq_private.site_visit_exclusions values($1,hq_private.traffic_test_now()-interval '36 days'),($2,hq_private.traffic_test_now())",[visitor(4),visitor(5)]);
+  await db.query("insert into hq_private.site_visit_exclusions(visitor_id,excluded_at) values($1,hq_private.traffic_test_now()-interval '36 days'),($2,hq_private.traffic_test_now())",[visitor(4),visitor(5)]);
   await db.exec('select hq_private.prune_site_visits()');
   assert.equal(await scalar('select count(*)::integer v from hq_private.site_visit_days'),2);
   assert.equal(await scalar('select count(*)::integer v from hq_private.site_visit_exclusions'),1);
@@ -165,7 +171,10 @@ test('concurrent tabs and owner exclusion serialize on a native PostgreSQL conne
   await reset(); const a=new Client({connectionString:native}),b=new Client({connectionString:native});
   await a.connect();await b.connect();
   try {
-    for(const c of [a,b]) await c.query("select set_config('hq.test_now','2026-11-01T18:00:00Z',false)");
+    for(const c of [a,b]) {
+      await c.query("select set_config('hq.test_now','2026-11-01T18:00:00Z',false)");
+      await c.query("select set_config('request.headers',$1,false)",[JSON.stringify({'user-agent':humanAgent})]);
+    }
     await Promise.all([a.query('select public.site_visit_heartbeat($1)',[visitor(1)]),b.query('select public.site_visit_heartbeat($1)',[visitor(1)])]);
     assert.equal((await read()).today,1);
     await b.query("select set_config('request.jwt.claim.sub',$1,false)",[owner]);
@@ -271,11 +280,84 @@ test('concurrent duplicate views and owner sign-in serialize on native PostgreSQ
   await reset(); const a=new Client({connectionString:native}),b=new Client({connectionString:native});
   await a.connect();await b.connect();
   try {
-    for(const c of [a,b]) await c.query("select set_config('hq.test_now','2026-11-01T18:00:00Z',false)");
+    for(const c of [a,b]) {
+      await c.query("select set_config('hq.test_now','2026-11-01T18:00:00Z',false)");
+      await c.query("select set_config('request.headers',$1,false)",[JSON.stringify({'user-agent':humanAgent})]);
+    }
     await Promise.all([a.query('select public.site_record_page_view($1,$2)',[visitor(1),visitor(101)]),b.query('select public.site_record_page_view($1,$2)',[visitor(1),visitor(101)])]);
     assert.equal((await readPageStats()).hours24,1);
     await b.query("select set_config('request.jwt.claim.sub',$1,false)",[owner]);
     await Promise.all([a.query('select public.site_record_page_view($1,$2)',[visitor(1),visitor(102)]),b.query('select public.site_visit_heartbeat($1)',[visitor(1)])]);
     await uid(null);await view(1,103); assert.equal((await readPageStats()).hours24,0);
   } finally { await a.end(); await b.end(); }
+});
+
+test('client and server policies agree for known automation and ordinary browsers', async () => {
+  assert.ok(botFilterSource.includes(`ua ~* '${policy.userAgentPattern}'`), 'Update the migration when changing the client policy');
+  const pattern = new RegExp(policy.userAgentPattern, 'i');
+  await reset();
+  for (const agent of agents) {
+    await headers(agent.ua);
+    assert.equal(!agent.ua.trim() || pattern.test(agent.ua), agent.bot, agent.name);
+    assert.equal(await scalar('select hq_private.site_traffic_request_is_bot() v'), agent.bot, agent.name);
+  }
+});
+test('both ingestion RPCs discard known bots for guests and signed-in players', async () => {
+  for (const agent of agents) {
+    await reset(); await headers(agent.ua);
+    for (const [role, id, n] of [['anon',null,1],['authenticated',player,2]]) {
+      await uid(id);
+      await asRole(role, async () => {
+        await beat(n); await view(n,n+100); await view(n,n+100);
+      });
+    }
+    const visitors = await read(), pages = await pageStats();
+    assert.equal(visitors.today,agent.bot ? 0 : 2,agent.name);
+    assert.equal(visitors.online,agent.bot ? 0 : 2,agent.name);
+    assert.equal(pages.hours24,agent.bot ? 0 : 2,agent.name);
+    assert.equal(await scalar('select count(*)::integer v from hq_private.site_visit_exclusions'),0,'Rejected requests must not allocate exclusion rows');
+  }
+});
+test('missing request context is excluded while ordinary browsers do not need new RPC arguments', async () => {
+  for (const context of ['', '{}', '{"x-client-info":"supabase-js-web"}']) {
+    await reset();
+    await db.query("select set_config('request.headers',$1,false)",[context]);
+    await beat(1); await view(1,101);
+    assert.equal((await read()).today,0); assert.equal((await pageStats()).days30,0);
+  }
+  await reset(); await view(1,101); assert.equal((await read()).today,1);
+  assert.equal((await pageStats()).hours24,1);
+});
+test('a bot request does not erase or refresh earlier ordinary-browser observations', async () => {
+  await reset(); await view(1,101);
+  const first = await scalar('select last_seen::text v from hq_private.site_visit_days');
+  await clock('2026-11-01T18:10:00Z'); await headers(agents[0].ua);
+  await beat(1); await view(1,102);
+  assert.equal(await scalar('select last_seen::text v from hq_private.site_visit_days'),first);
+  assert.equal((await read()).today,1); assert.equal((await pageStats()).hours24,1);
+});
+test('owner cleanup and exclusions still win for bot or absent request headers', async () => {
+  for (const agent of [agents[0].ua,'']) {
+    await reset(); await view(1,101); await headers(agent); await uid(owner);
+    await asRole('authenticated', async () => { await view(1,102); });
+    assert.equal((await stats()).today,0); assert.equal((await pageStats()).hours24,0);
+    assert.equal(await scalar('select reason v from hq_private.site_visit_exclusions'),'owner');
+    await uid(null); await headers(humanAgent); await view(1,103);
+    assert.equal((await read()).today,0); assert.equal((await pageStats()).hours24,0);
+  }
+});
+test('verified historical bot exclusions prevent recurrence without touching another visitor', async () => {
+  await reset(); await view(1,101); await view(2,102);
+  await db.query("insert into hq_private.site_visit_exclusions(visitor_id,excluded_at,reason) values($1,hq_private.traffic_test_now(),'known_bot')",[visitor(1)]);
+  await db.query('delete from hq_private.site_page_views where visitor_id=$1',[visitor(1)]);
+  await db.query('delete from hq_private.site_visit_days where visitor_id=$1',[visitor(1)]);
+  await view(1,103); await beat(1);
+  assert.equal((await read()).today,1); assert.equal((await pageStats()).hours24,1);
+});
+test('request classification is private, fixed-path and stores no UA or IP fields', async () => {
+  for (const role of ['anon','authenticated','service_role']) {
+    assert.equal(await scalar("select has_function_privilege($1,'hq_private.site_traffic_request_is_bot()','execute') v",[role]),false);
+  }
+  assert.ok((await scalar("select proconfig v from pg_proc where oid='hq_private.site_traffic_request_is_bot()'::regprocedure")).includes('search_path=pg_catalog'));
+  assert.equal(await scalar("select count(*)::integer v from information_schema.columns where table_schema='hq_private' and table_name like 'site_%' and column_name ~ 'user_agent|headers|ip_address'"),0);
 });
