@@ -1,6 +1,8 @@
 import encode, { init } from "@jsquash/webp/encode.js";
 import wasmUrl from "@jsquash/webp/codec/enc/webp_enc.wasm?url";
 import wasmSimdUrl from "@jsquash/webp/codec/enc/webp_enc_simd.wasm?url";
+import { imageLimit } from "./imageLimits";
+export { imageLimit } from "./imageLimits";
 
 export interface ProcessedImage {
   blob: Blob;
@@ -12,8 +14,6 @@ export interface ProcessedImage {
   height: number;
 }
 let encoder: Promise<unknown> | undefined;
-export const imageLimit = (category: number) =>
-  category === 2 || category === 3 ? 1600 : 1920;
 const hash = async (bytes: ArrayBuffer) =>
   Array.from(
     new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),

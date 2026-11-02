@@ -33,3 +33,9 @@ jobs:
         run: HQ_NODE_PG_MODULE="$RUNNER_TEMP/hq-sql-test/node_modules/pg/lib/index.js" node --test supabase/tests/question_bank.test.mjs
       - name: Verify image decoding and upload recovery
         run: HQ_SUPABASE_SDK_MODULE="$RUNNER_TEMP/hq-sql-test/node_modules/@supabase/supabase-js/dist/main/index.js" node --test supabase/tests/question_import.test.mjs
+      - name: Install package validator dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Verify shared ZIP/schema/image contract
+        working-directory: frontend
+        run: npm run test:question-bundle

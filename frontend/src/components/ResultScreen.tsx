@@ -9,6 +9,7 @@ import type { GameResult } from "../game/resultStorage";
 import type { SiteOutletContext } from "./Layout";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
+import GameImageCredits from "./GameImageCredits";
 import "../result.css";
 import { formatQuizDuration } from "../utils/format";
 
@@ -93,6 +94,7 @@ function ResultCard({ result }: { result: GameResult }) {
         <p>{statusText}{failed && <button className="hq-inline-action" onClick={() => { void saveGameResult(result, session); }}>Retry</button>}</p>
         {failed && <p className="hq-result-save-note">{result.deviceStored === false ? "Keep this page open to retry; browser storage is unavailable." : "Your result is kept on this device. We’ll also retry when you’re online."}</p>}
       </div>
+      {result.serverGame && <GameImageCredits key={`${result.id}:${result.saveStatus}`} mode="normal" session={result.id} />}
       {canReplay && <Link className="hq-result-leaderboard hq-text-action" to={`/leaderboard?category=${result.categoryId}&difficulty=${result.difficultyId}`}>View leaderboard<SiteIcon name="arrow" /></Link>}
       {catalog.error && (!categoryName || !difficultyName) && <p className="hq-result-details-error">Quiz details couldn’t load. <button className="hq-inline-action" onClick={catalog.reload}>Try again</button></p>}
       {!user && <aside className="hq-result-guest" aria-label="Guest account">

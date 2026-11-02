@@ -1,4 +1,7 @@
+import { imageLimit } from "./imageLimits";
 import type { ProcessedImage } from "./imageProcessing";
+import type { BundleIdentity, ContentMetadata } from "../contentBundle/types";
+import { validateContentMetadata } from "../../../supabase/functions/admin-questions/content.mjs";
 export type CardPhase =
   | "Draft"
   | "Processing"
@@ -25,9 +28,19 @@ export interface QuestionDraft {
   allowDuplicate?: boolean;
   questionId?: number;
   imagePath?: string;
+  bundle?: BundleIdentity;
+  contentMetadata?: ContentMetadata;
+  contentWarnings?: string[];
+  selected?: boolean;
 }
 const TTL = 7 * 24 * 60 * 60 * 1000,
   BUDGET = 50 * 1024 * 1024;
+export function draftStorageBytes(cards: QuestionDraft[]) {
+  return 1000 + cards.filter(c => c.phase !== "Added" && !c.questionId).reduce((total, card) => {
+    const { processed, ...fields } = card;
+    return total + new TextEncoder().encode(JSON.stringify({ ...fields, processed: processed ? { ...processed, blob: "" } : undefined })).length + (processed ? 4 * Math.ceil(processed.blob.size / 3) : 0);
+  }, 0);
+}
 const database = () =>
   new Promise<IDBDatabase>((resolve, reject) => {
     const request = indexedDB.open("hq_private_question_drafts_v1", 1);
@@ -91,13 +104,10 @@ export async function saveDrafts(
     );
     if (
       pending.length > 50 ||
-      pending.reduce(
-        (n, c) => n + ((c.processed?.blob.size ?? 0) * 4) / 3 + 4000,
-        0,
-      ) > BUDGET
+      draftStorageBytes(pending) > BUDGET
     )
       throw new Error(
-        "Drafts exceed the 50 MiB limit. Remove completed cards or keep this tab open.",
+        "Drafts exceed 50 cards or 50 MiB. Select fewer questions or explicitly remove drafts to free space.",
       );
     const items = [];
     for (const card of pending) {
@@ -215,9 +225,16 @@ export async function loadDrafts(
   }
   return result;
 }
+function creditsReady(c: QuestionDraft) {
+  try { if (c.contentMetadata) validateContentMetadata(c.contentMetadata); return true; }
+  catch { return false; }
+}
 export const draftIsReady = (c: QuestionDraft) =>
+  c.phase !== "Processing" &&
   !!c.processed &&
-  c.correct !== null &&
+  Math.max(c.processed.width, c.processed.height) <= imageLimit(c.category) &&
+  creditsReady(c) &&
+  c.correct !== null && Number.isInteger(c.correct) && c.correct >= 0 && c.correct <= 3 &&
   c.options.length === 4 &&
   c.options.every(
     (s) =>

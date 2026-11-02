@@ -52,6 +52,7 @@ await db.exec(await readFile(new URL('../migrations/20261010200933_admin_daily_g
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011145955_admin_question_bank.sql',import.meta.url),'utf8'));await db.exec('commit');
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011161955_question_privacy.sql',import.meta.url),'utf8'));await db.exec('commit');
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261011170955_question_edit_delete.sql',import.meta.url),'utf8'));await db.exec('commit');
+await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261102122652_question_content_bundles.sql',import.meta.url),'utf8'));await db.exec('commit');
 const uid=async id=>db.query("select set_config('request.jwt.claim.sub',$1,false)",[id??'']);
 const scalar=async(sql,args)=>(await db.query(sql,args)).rows[0].v;
 const reserve=async(id,category=1,allow=false,hash=id.replaceAll('-','').repeat(2))=>scalar('select public.admin_import_reserve($1,$2,$3,$4,null,$5,1,$6,0,$7) v',[admin,id,'f'.repeat(64),hash,category,JSON.stringify(options),allow]);
@@ -228,4 +229,105 @@ test('deletion during a replacement upload prevents the upload from resurrecting
  await scalar('select public.admin_change_question(gen_random_uuid(),$1,1,null,null,true) v',[q]);
  await assert.rejects(scalar('select public.admin_import_finish($1,$2,$3,$4,$5) v',[admin,id,j.lease_token,fp,hash]),/Question unavailable/);
  assert.equal(await scalar('select image_url v from public.question where id=$1',[q]),'test/upload-delete.webp');assert.equal(await scalar('select status v from hq_private.question_imports where id=$1',[id]),'reserved');
+});
+
+const metadata = hash => ({ image: { sha256: hash, photographer: 'Example creator', source_page_url: 'https://example.com/subject-source', license: 'CC BY-SA 4.0', license_url: 'https://creativecommons.org/licenses/by-sa/4.0/', attribution_required: true, attribution_text: 'Example creator, CC BY-SA 4.0. Cropped.', share_alike_required: true, derivative_license: 'CC BY-SA 4.0', processing: { changes: 'Cropped; converted to WebP.' } }, identity: { wikidata_id: 'Q12345' } });
+const contentReserve = async (id, temp, category=3, hash='8'.repeat(64), meta=metadata(hash), owner=admin) => scalar('select public.admin_content_import_reserve($1,$2,$3,$4,null,$5,1,$6,0,true,$7,$8,$9) v',[owner,id,'9'.repeat(64),hash,category,JSON.stringify(options),'HQ-SQL-BUNDLE',temp,meta===null?null:JSON.stringify(meta)]);
+async function contentCommit(id, temp, category=3) {
+ const reserved=await contentReserve(id,temp,category);
+ const job=await scalar('select public.admin_import_claim($1,$2,$3) v',[admin,id,'9'.repeat(64)]);
+ await db.query('insert into storage.objects(bucket_id,name,user_metadata) values($1,$2,$3)',['movies',reserved.image_path,JSON.stringify({hq_import_id:id,sha256:'8'.repeat(64)})]);
+ return scalar('select public.admin_import_finish($1,$2,$3,$4,$5) v',[admin,id,job.lease_token,'9'.repeat(64),'8'.repeat(64)]);
+}
+test('bundle inspection is read-only; private credits and content reservation remain guarded', async()=>{
+ await uid(admin);const before=await scalar('select count(*)::integer v from hq_private.question_imports');
+ const numbers=(await db.query('select category_id,last_number from hq_private.question_namespaces order by category_id')).rows;
+ assert.deepEqual(await scalar("select public.admin_bundle_status('HQ-SQL-BUNDLE',array['unopened']) v"),{});
+ assert.deepEqual(await scalar(`select public.admin_bundle_warnings('[{"temp_id":"unopened","category_id":3,"names":["Nobody"],"sha256":"none"}]') v`),{unopened:[]});
+ assert.equal(await scalar('select count(*)::integer v from hq_private.question_imports'),before);
+ assert.deepEqual((await db.query('select category_id,last_number from hq_private.question_namespaces order by category_id')).rows,numbers);
+ for(const role of ['anon','authenticated']){
+  await uid(player);await db.exec(`set role ${role}`);try{
+   await assert.rejects(db.query('select * from hq_private.question_media'),/permission denied/);
+   await assert.rejects(db.query("select public.admin_bundle_status('HQ-SQL-BUNDLE',array['one'])"),/permission denied|Administrator/);
+   await assert.rejects(contentReserve('00000000-0000-5000-8000-000000000501','one'),/permission denied/);
+  }finally{await db.exec('reset role');}
+ }
+ await assert.rejects(contentReserve('00000000-0000-5000-8000-000000000501','one',3,'8'.repeat(64),metadata('8'.repeat(64)),player),/Administrator/);
+});
+const contentResults=[];
+test('selected approvals preserve image provenance atomically, keep namespaces and repeat exactly once in all four categories',async()=>{
+ await uid(admin);
+ for(const category of [1,2,3,4]) {
+  const id=`00000000-0000-5000-8000-00000000050${category}`,temp=`approved-${category}`;
+  const result=await contentCommit(id,temp,category);contentResults.push(result);
+  assert.equal(result.status,'committed');
+  const detail=await scalar('select public.admin_question_detail($1) v',[result.question_id]);
+  assert.deepEqual(detail.content_metadata,metadata('8'.repeat(64)));
+  assert.equal(detail.category_id,category);
+  assert.equal((await contentReserve(id,temp,category)).question_id,result.question_id);
+  const status=await scalar('select public.admin_bundle_status($1,$2) v',['HQ-SQL-BUNDLE',[temp]]);
+  assert.equal(status[temp].question_id,result.question_id);
+  await assert.rejects(contentReserve(id,temp,category,'8'.repeat(64),{...metadata('8'.repeat(64)),image:{...metadata('8'.repeat(64)).image,photographer:'Different creator'}}),/data changed/);
+  await assert.rejects(contentReserve(`00000000-0000-5000-8000-00000000051${category}`,temp,category),/already linked/);
+ }
+ assert.equal(await scalar('select count(*)::integer v from hq_private.question_media'),4);
+});
+test('possible names/aliases/diacritics and identical images warn independently and never merge questions',async()=>{
+ await uid(admin);
+ await db.query('update public.question set correct_answer=$1,options_json=$2 where id=$3',['Zoë Example',JSON.stringify(['Zoë Example','Two','Three','Four']),contentResults[2].question_id]);
+ const warnings=await scalar('select public.admin_bundle_warnings($1) v',[JSON.stringify([{temp_id:'review-me',category_id:3,names:['Stage Name','Zoe Example'],wikidata_id:null,sha256:'8'.repeat(64)}])]);
+ assert.equal(warnings['review-me'].length,2);
+ const wrongOptionsOnly=await scalar('select public.admin_bundle_warnings($1) v',[JSON.stringify([{temp_id:'wrong-options-only',category_id:3,names:['Two'],sha256:'no-match'}])]);
+ assert.deepEqual(wrongOptionsOnly['wrong-options-only'],[]);
+});
+test('full credits are unavailable before a completed owned run, and only issued images are returned afterwards',async()=>{
+ await db.exec(`create table hq_private.game_sessions(id uuid primary key,owner uuid,finished_at timestamptz);
+ create table hq_private.game_rounds(session_id uuid,number integer,image_url text,issued_at timestamptz);
+ create table hq_private.time_attack_sessions(id uuid primary key,owner uuid,finished_at timestamptz);
+ create table hq_private.time_attack_rounds(session_id uuid,number integer,image_url text,issued_at timestamptz);
+ create table hq_private.tt_people(id bigint primary key,image_url text,active boolean,source_question integer);`);
+ for(const mode of ['normal','time-attack']){
+  const sessions=mode==='normal'?'game_sessions':'time_attack_sessions',rounds=mode==='normal'?'game_rounds':'time_attack_rounds';
+  const id='00000000-0000-4000-8000-000000000550';
+  await db.query(`insert into hq_private.${sessions} values($1,$2,null)`,[id,player]);
+  await db.query(`insert into hq_private.${rounds} values($1,1,$2,now()),($1,2,$3,null)`,[id,contentResults[0].image_path,contentResults[1].image_path]);
+  await uid(player);await assert.rejects(scalar('select public.question_image_credits($1,$2) v',[mode,id]),/until.*finished/);
+  await db.query(`update hq_private.${sessions} set finished_at=now() where id=$1`,[id]);
+  await uid(admin);await assert.rejects(scalar('select public.question_image_credits($1,$2) v',[mode,id]),/until.*finished/);
+  await uid(null);await assert.rejects(scalar('select public.question_image_credits($1,$2) v',[mode,id]),/until.*finished/);
+  await uid(player);await db.exec('set role authenticated');try{
+   const credits=await scalar('select public.question_image_credits($1,$2) v',[mode,id]);
+   assert.equal(credits.length,1);assert.equal(credits[0].image_url,contentResults[0].image_path);
+   assert.equal(credits[0].metadata.image.license,'CC BY-SA 4.0');assert.equal(credits[0].metadata.identity,undefined);assert.equal(credits[0].metadata.editorial,undefined);
+  }finally{await db.exec('reset role');}
+ }
+});
+test('Daily credits require a saved answer; public preference portraits retain accessible credits',async()=>{
+ const date='2020-01-01',q=contentResults[1];
+ await uid(admin);await db.query('insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) values($1,$2,2,1)',[date,q.question_id]);
+ await uid(player);await assert.rejects(scalar("select public.question_image_credits('daily',null,$1) v",[date]),/until.*saved/);
+ await db.query('insert into public.daily_result(user_id,d,is_correct,time_spent) values($1,$2,true,4)',[player,date]);
+ const credits=await scalar("select public.question_image_credits('daily',null,$1) v",[date]);assert.equal(credits[0].image_url,q.image_path);
+ await uid(null);await assert.rejects(scalar("select public.question_image_credits('daily',null,$1) v",[date]),/until.*saved/);
+ await db.query('insert into hq_private.tt_people values(77,$1,true,$2)',[q.image_path,q.question_id]);
+ await db.exec('set role anon');try{assert.equal((await scalar("select public.question_image_credits('comparison',null,null,77) v"))[0].metadata.image.photographer,'Example creator');}finally{await db.exec('reset role');}
+});
+test('replacing a photo clears current attribution and keeps credits for historical snapshots',async()=>{
+ await uid(admin);const q=contentResults[2],id='00000000-0000-4000-8000-000000000560',hash='a'.repeat(64),fp='b'.repeat(64);
+ const revision=await scalar('select admin_revision v from public.question where id=$1',[q.question_id]);
+ await scalar('select public.admin_edit_import_reserve($1,$2,$3,$4,null,3,1,$5,0,true,$6,$7) v',[admin,id,fp,hash,JSON.stringify(options),q.question_id,revision]);
+ const j=await scalar('select public.admin_import_claim($1,$2,$3) v',[admin,id,fp]);
+ await db.query('insert into storage.objects(bucket_id,name,user_metadata) values($1,$2,$3)',['movies',j.image_path,JSON.stringify({hq_import_id:id,sha256:hash})]);
+ await scalar('select public.admin_import_finish($1,$2,$3,$4,$5) v',[admin,id,j.lease_token,fp,hash]);
+ assert.equal((await scalar('select public.admin_question_detail($1) v',[q.question_id])).content_metadata,null);
+ assert.deepEqual(await scalar('select content_metadata v from hq_private.question_media where image_path=$1',[q.image_path]),metadata('8'.repeat(64)));
+});
+test('concurrent approvals use one bundle identity and one production number',{skip:!native},async()=>{
+ const clients=[new Client({connectionString:native}),new Client({connectionString:native})];await Promise.all(clients.map(c=>c.connect()));
+ try{
+  const query='select public.admin_content_import_reserve($1,$2,$3,$4,null,3,1,$5,0,true,$6,$7,$8) v',args=[admin,'00000000-0000-5000-8000-000000000570','c'.repeat(64),'d'.repeat(64),JSON.stringify(options),'HQ-SQL-BUNDLE','concurrent',JSON.stringify(metadata('d'.repeat(64)))];
+  const result=await Promise.all(clients.map(c=>c.query(query,args)));assert.equal(result[0].rows[0].v.image_path,result[1].rows[0].v.image_path);
+  assert.equal(await scalar("select count(*)::integer v from hq_private.question_imports where package_id='HQ-SQL-BUNDLE' and temp_id='concurrent'"),1);
+ }finally{await Promise.all(clients.map(c=>c.end()));}
 });

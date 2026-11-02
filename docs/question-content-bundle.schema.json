@@ -1,0 +1,168 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hard-quiz.com/schemas/question-content-bundle-1.0.json",
+  "title": "Hard Quiz question content bundle 1.0",
+  "type": "object",
+  "required": ["schema_version", "package_id", "question_count", "questions"],
+  "properties": {
+    "schema_version": { "const": "hardquiz.question-content-bundle/1.0" },
+    "package_id": { "$ref": "#/definitions/tempId" },
+    "language": { "const": "en" },
+    "question_count": { "type": "integer", "minimum": 1, "maximum": 50 },
+    "correct_index_convention": { "const": "zero_based" },
+    "supported_by_current_admin_importer": { "type": "boolean" },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": { "$ref": "#/definitions/question" }
+    },
+    "category": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "enum": [1, 2, 3, 4] },
+        "name": { "type": "string" }
+      }
+    },
+    "difficulty_levels": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "key"],
+        "properties": {
+          "id": { "enum": [1, 2, 3] },
+          "name": { "type": "string" },
+          "key": { "type": "string" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "tempId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,119}$"
+    },
+    "text": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "httpUrl": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 2048,
+      "pattern": "^https?://[^\\s]+$"
+    },
+    "image": {
+      "type": "object",
+      "required": [
+        "file",
+        "mime_type",
+        "width",
+        "height",
+        "bytes",
+        "sha256",
+        "source_page_url",
+        "photographer",
+        "license",
+        "license_url",
+        "attribution_required",
+        "attribution_text",
+        "processing"
+      ],
+      "properties": {
+        "file": {
+          "type": "string",
+          "pattern": "^images/[A-Za-z0-9][A-Za-z0-9._/-]*\\.webp$",
+          "maxLength": 240
+        },
+        "mime_type": { "const": "image/webp" },
+        "width": { "type": "integer", "minimum": 1, "maximum": 1920 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 1920 },
+        "bytes": { "type": "integer", "minimum": 20, "maximum": 1048576 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "source_page_url": { "$ref": "#/definitions/httpUrl" },
+        "source_original_url": { "$ref": "#/definitions/httpUrl" },
+        "license_url": { "$ref": "#/definitions/httpUrl" },
+        "photographer": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "preferred_credit": { "type": "string", "maxLength": 2000 },
+        "license": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "attribution_required": { "type": "boolean" },
+        "attribution_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "attribution_html": { "type": "string", "maxLength": 16000 },
+        "creator_urls": {
+          "type": "array",
+          "maxItems": 10,
+          "items": { "$ref": "#/definitions/httpUrl" }
+        },
+        "share_alike_required": { "type": "boolean" },
+        "derivative_license": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "processing": {
+          "type": "object",
+          "required": ["changes"],
+          "properties": {
+            "changes": { "type": "string", "minLength": 1, "maxLength": 4000 },
+            "generative_editing": { "const": false }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "share_alike_required": { "const": true } },
+            "required": ["share_alike_required"]
+          },
+          "then": { "required": ["derivative_license"] }
+        }
+      ]
+    },
+    "question": {
+      "type": "object",
+      "required": [
+        "temp_id",
+        "correct_answer",
+        "options",
+        "correct_index",
+        "category_id",
+        "difficulty_level_id",
+        "image"
+      ],
+      "properties": {
+        "temp_id": { "$ref": "#/definitions/tempId" },
+        "question_id": { "type": "null" },
+        "production_image_path": { "type": "null" },
+        "published": { "const": false },
+        "correct_answer": { "$ref": "#/definitions/text" },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": { "$ref": "#/definitions/text" }
+        },
+        "correct_index": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "correct_option_label": { "enum": ["A", "B", "C", "D"] },
+        "category_id": { "enum": [1, 2, 3, 4] },
+        "difficulty_level_id": { "enum": [1, 2, 3] },
+        "image": { "$ref": "#/definitions/image" },
+        "identity": {
+          "type": "object",
+          "properties": {
+            "wikidata_id": { "type": "string", "pattern": "^Q[1-9][0-9]*$" },
+            "aliases": {
+              "type": "array",
+              "maxItems": 100,
+              "items": { "type": "string", "maxLength": 200 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

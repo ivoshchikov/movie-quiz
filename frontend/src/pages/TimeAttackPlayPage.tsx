@@ -5,6 +5,7 @@ import { useAuth } from "../AuthContext";
 import { getPublicUrl } from "../supabase";
 import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
+import GameImageCredits from "../components/GameImageCredits";
 import ThemeSlider from "../components/ThemeSlider";
 import { attackTime, isLevel, levelName } from "../timeAttack/api";
 import { readAttackRun } from "../timeAttack/storage";
@@ -61,6 +62,7 @@ export default function TimeAttackPlayPage() {
         {game.owner && game.bank_size > 0 ? <><p role="status">Saved with your account.{game.record_outcome === "first" ? " Your first record!" : game.record_outcome === "new" ? " New personal best!" : ""}</p>{game.personal_best && <p>Personal best: {game.personal_best.score} points · {attackTime(game.personal_best.score_time_ms)}</p>}</>
           : !game.owner && <p>Guest result. <Link className="hq-inline-action" to="/login?redirect=%2Ftime-attack">Log in before your next run</Link> to save records. This run stays a guest run.</p>}
         <div className="hq-attack-result-actions"><Link className="hq-primary" to={`/time-attack?${query}`}>Play again <SiteIcon name="arrow" /></Link><Link className="hq-secondary" to="/">Choose another game</Link><Link className="hq-text-action" to={`/leaderboard?mode=time-attack&attack-category=${game.category_id}&level=${game.level}`}>View leaderboard</Link></div>
+        <GameImageCredits mode="time-attack" session={game.id} />
       </section> : <section className="hq-game hq-attack-game" aria-label="Time Attack game">
         <div className="hq-game-heading"><div><h1>Time Attack</h1><span>{title} · {levelName(game.level)}</span></div><span className="hq-question-number">Question {r?.number ?? "…"}</span></div>
         <div className="hq-game-image" aria-busy={phase === "image-loading" || phase === "loading"}>
