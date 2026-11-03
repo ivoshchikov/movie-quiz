@@ -14,7 +14,7 @@ async function events(page: Page, name: string) {
 }
 async function start(page: Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.getByRole("button", { name: gameAnswers[0], exact: true })).toBeEnabled();
 }
 async function end(page: Page) {
@@ -65,7 +65,7 @@ test("debug mode is explicit and does not leak into ordinary visits after reload
 test("QA opt-out survives navigation and reload and can be explicitly cleared", async ({ page }) => {
   await mockQuizApi(page);
   await page.goto("/?analytics=off");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   expect(await commands(page)).toEqual([]);
   await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Blog", exact: true }).click();
   await page.reload();
@@ -82,7 +82,7 @@ test("a preview hostname cannot send fixture or production analytics", async ({ 
     await route.fulfill({ response });
   });
   await page.goto("http://preview.invalid:5173/");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   expect(await commands(page)).toEqual([]);
   expect(await page.locator('script[src*="googletagmanager"]').count()).toBe(0);
 });
@@ -122,7 +122,7 @@ test("article CTA connects to one three-answer game without internal UTM or capa
   await page.goto("/blog/is-whalefall-based-on-a-book?utm_source=x&utm_medium=social");
   await page.getByRole("link", { name: "Choose a game", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   for (let number = 1; number <= 3; number++) {
     await expect(page.getByText(`Question ${number}`, { exact: true })).toBeVisible();
     await page.getByRole("button", { name: gameAnswers[0], exact: true }).evaluate(button => {

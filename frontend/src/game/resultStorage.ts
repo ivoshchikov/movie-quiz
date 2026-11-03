@@ -13,6 +13,7 @@ export interface GameResult {
   userId: string | null;
   categoryId: number;
   difficultyId: number;
+  rulesVersion?: 1 | 2;
   score: number;
   elapsedSecs: number;
   finishReason: FinishReason;
@@ -53,7 +54,7 @@ export function isGameResult(value: unknown): value is GameResult {
   const result = value as Partial<GameResult>;
   return typeof result.id === "string" && typeof result.playKey === "string" &&
     (result.userId === null || typeof result.userId === "string") && Number.isInteger(result.categoryId) &&
-    Number.isInteger(result.difficultyId) && Number.isInteger(result.score) && (result.score ?? -1) >= 0 &&
+    (result.rulesVersion === undefined || result.rulesVersion === 1 || result.rulesVersion === 2) && Number.isInteger(result.difficultyId) && Number.isInteger(result.score) && (result.score ?? -1) >= 0 &&
     Number.isInteger(result.elapsedSecs) && (result.elapsedSecs ?? -1) >= 0 &&
     ["out-of-lives", "completed", "exit", "inactive"].includes(result.finishReason ?? "") &&
     ["saved", "pending", "device", "memory"].includes(result.saveStatus ?? "") &&
@@ -108,7 +109,7 @@ export function recoverInterruptedGame() {
 
 export function confirmedGameResult(result: GameResult, game: ServerGame): GameResult {
   if (game.id !== result.id || game.category_id !== result.categoryId || game.difficulty_id !== result.difficultyId || game.status !== "finished" || !game.finish_reason) throw new Error("invalid-game-receipt");
-  return { ...result, score: game.score, elapsedSecs: game.time_secs, finishReason: game.finish_reason,
+  return { ...result, rulesVersion: game.rules_version, score: game.score, elapsedSecs: game.time_secs, finishReason: game.finish_reason,
     saveStatus: result.userId ? "saved" : result.saveStatus === "memory" ? "memory" : "device",
     previousBest: game.previous_best, personalBest: game.personal_best, recordOutcome: game.record_outcome ?? undefined };
 }

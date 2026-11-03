@@ -17,7 +17,7 @@ async function prepare(p: Page) {
 }
 async function ready(p: Page) {
   await expect(p.getByRole("button", { name: "Pause Christmas animations" })).toBeVisible();
-  await expect(p.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(p.getByRole("button", { name: "Play Movies" })).toBeEnabled();
 }
 async function pose(p: Page, name: string, time: number) {
   return p.evaluate(({ name, time }) => {
@@ -90,7 +90,7 @@ for (const mode of ["Classic", "Daily", "Time Attack", "This or That"]) test(`${
     if (mode === "Daily") await dailyFixture(page); else await mockQuizApi(page);
   }
   await page.goto(mode === "Classic" ? "/" : mode === "Daily" ? "/daily" : mode === "Time Attack" ? "/time-attack" : "/this-or-that");
-  const start = page.getByRole("button", { name: mode === "Classic" ? "Play Movie Stills" : mode === "Daily" ? "Start Daily" : mode === "Time Attack" ? "Start Time Attack" : "Choose my first pair", exact: true });
+  const start = page.getByRole("button", { name: mode === "Classic" ? "Play Movies" : mode === "Daily" ? "Start Daily" : mode === "Time Attack" ? "Start Time Attack" : "Choose my first pair", exact: true });
   await expect(start).toBeEnabled(); await expect(page.locator(".hq-winter-snow")).toHaveCount(1);
   await page.clock.runFor(18000); await expect(page.locator(".hq-winter-flight")).toHaveCount(1);
   await start.click();

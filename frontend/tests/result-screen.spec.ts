@@ -26,7 +26,7 @@ async function seed(page: Page, r: GameResult) {
 }
 async function play(page: Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(
     page.getByRole("button", { name: gameAnswers[0], exact: true }),
   ).toBeEnabled();
@@ -53,7 +53,7 @@ test("fresh guest result shows mode, server duration and local status with conte
     page.getByRole("heading", { name: "Quiz ended", exact: true }),
   ).toBeVisible();
   await expect(page.locator(".hq-result-mode")).toHaveText(
-    "Movie Stills · Easy",
+    "Movies · Easy",
   );
   await expect(page.locator(".hq-result-score strong")).toHaveText("1");
   await expect(page.locator(".hq-result-stats dd")).toHaveText("00:02");
@@ -217,7 +217,7 @@ test("result leaderboard link preserves its mode through a reload", async ({
   page,
 }) => {
   await gameFixture(page);
-  await seed(page, storedResult({ categoryId: 2, difficultyId: 3 }));
+  await seed(page, storedResult({ categoryId: 2, difficultyId: 3, rulesVersion: 2 }));
   await page.goto("/result");
   await page
     .getByRole("link", { name: "View leaderboard", exact: true })
@@ -317,7 +317,7 @@ for (const size of [
       });
     await page.getByRole("link", { name: "Choose another game", exact: true }).click();
     await expect(
-      page.getByRole("button", { name: "Play Movie Stills" }),
+      page.getByRole("button", { name: "Play Movies" }),
     ).toBeVisible();
   });
 }

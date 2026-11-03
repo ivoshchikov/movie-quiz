@@ -151,7 +151,7 @@ for (const theme of ["dark", "light", "christmas"] as const) {
   test(`${theme}: changing during a regular quiz keeps choices, timer and score intact`, async ({ page }) => {
     await page.clock.install(); await page.clock.pauseAt(new Date());
     const calls = await mockQuizApi(page); await savedTheme(page, theme);
-    await page.goto("/"); await page.getByRole("button", { name: "Play Movie Stills" }).click();
+    await page.goto("/"); await page.getByRole("button", { name: "Play Movies" }).click();
     await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
     const stats = await page.locator(".hq-game-stats").innerText();
     const timer = await page.locator(".hq-game-timer").innerText();
@@ -236,7 +236,7 @@ test("touch selection is usable at 320px and keeps game controls within the view
   let box = (await slider(page).boundingBox())!;
   await page.touchscreen.tap(box.x + box.width - 12, box.y + box.height / 2);
   await expect(slider(page)).toHaveAttribute("aria-valuetext", "Christmas");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
   await expect(page.locator(".hq-winter-band")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);

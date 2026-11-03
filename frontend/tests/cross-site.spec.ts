@@ -25,7 +25,7 @@ test("unknown addresses keep their URL and offer a clear next step", async ({ pa
   await expect(page.getByRole("heading", { name: "Page not found", exact: true })).toBeVisible();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
   await page.getByRole("link", { name: "Choose a quiz", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   await page.goto("/blog/missing/nested-address");
   await expect(page.getByRole("heading", { name: "Article not found", exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Back to blog", exact: true })).toHaveAttribute("href", "/blog");
@@ -72,7 +72,7 @@ test("query filters retain focus and do not reset the page", async ({ page }) =>
 test("keyboard users can skip the header and continue into quiz controls", async ({ page }) => {
   await mockQuizApi(page);
   await page.goto("/");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: "Skip to content", exact: true });
   await expect(skip).toBeFocused();
@@ -83,8 +83,8 @@ test("keyboard users can skip the header and continue into quiz controls", async
   await page.keyboard.press("Tab");
   await expect(page.getByRole("radio", { name: "Classic", exact: true })).toBeFocused();
   await page.keyboard.press("Tab");
-  await expect(page.getByRole("radio", { name: /Movie Stills/ })).toBeFocused();
-  await expect(page.getByRole("radio", { name: /Movie Stills/ })).toHaveCSS("outline-style", "solid");
+  await expect(page.getByRole("radio", { name: /Movies/ })).toBeFocused();
+  await expect(page.getByRole("radio", { name: /Movies/ })).toHaveCSS("outline-style", "solid");
 });
 
 test("a stalled catalog becomes retryable instead of a permanent loading state", async ({ page }) => {
@@ -99,7 +99,7 @@ test("a stalled catalog becomes retryable instead of a permanent loading state",
   await expect(page.getByRole("alert")).toContainText("Quiz options could not be loaded.");
   stall = false;
   await page.getByRole("button", { name: "Try again", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
 });
 
 test("a stalled question check can retry with the same selected quiz", async ({ page }) => {
@@ -107,10 +107,10 @@ test("a stalled question check can retry with the same selected quiz", async ({ 
   await page.clock.install();
   let stall = false;
   await page.route("**/rest/v1/rpc/count_questions", async route => {
-    if (!stall || route.request().postDataJSON().p_difficulty_id == null) await route.fallback();
+    if (!stall || route.request().postDataJSON().p_category_id !== 2) await route.fallback();
   });
   await page.goto("/");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   stall = true;
   await page.getByRole("radio", { name: /Actors/ }).click();
   await page.getByRole("radio", { name: "Hard", exact: true }).click();
@@ -160,7 +160,7 @@ test("primary text remains readable on hover and article actions are styled butt
   await mockQuizApi(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  const button = page.getByRole("button", { name: "Play Movie Stills", exact: true });
+  const button = page.getByRole("button", { name: "Play Movies", exact: true });
   await expect(button).toBeEnabled();
   for (const hover of [false, true]) {
     if (hover) await button.hover();
@@ -180,7 +180,7 @@ for (const width of [320, 375, 768, 1440]) {
     await page.setViewportSize({ width, height: 844 });
     await mockQuizApi(page);
     await page.goto("/");
-    await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeEnabled();
+    await expect(page.getByRole("button", { name: "Play Movies", exact: true })).toBeEnabled();
     const boxes = await page.locator(".hq-nav-link, .hq-account-button, .hq-category-option, .hq-difficulty-option, .hq-primary").evaluateAll(elements => elements.map(element => element.getBoundingClientRect().toJSON()));
     for (const box of boxes) { expect(box.width).toBeGreaterThanOrEqual(44); expect(box.height).toBeGreaterThanOrEqual(44); }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -230,7 +230,7 @@ test("large gameplay text stays inside its card and remains reachable by scrolli
   await page.setViewportSize({ width: 320, height: 568 });
   await mockQuizApi(page);
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills", exact: true }).click();
+  await page.getByRole("button", { name: "Play Movies", exact: true }).click();
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeEnabled();
   await page.addStyleTag({ content: ".hq-game-answer, .hq-game-feedback > span { font-size: 26px !important; line-height: 1.5 !important } .hq-game-heading h1 { font-size: 26px !important }" });
   const bounds = await page.locator(".hq-game").evaluate(element => ({ card: element.getBoundingClientRect().toJSON(), controls: [...element.querySelectorAll(".hq-game-answer, .hq-game-feedback, .hq-game-stats, .hq-game-footer")].map(child => child.getBoundingClientRect().toJSON()) }));
@@ -247,7 +247,7 @@ test("reduced motion retains loading feedback without animating a spinner", asyn
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.route("**/fixture.svg", async () => {});
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills", exact: true }).click();
+  await page.getByRole("button", { name: "Play Movies", exact: true }).click();
   await expect(page.getByText("Loading image…", { exact: true })).toBeVisible();
   expect(await page.locator(".hq-game-spinner").evaluate(element => getComputedStyle(element).animationName)).toBe("none");
   await expect(page.getByRole("button", { name: "Fixture answer", exact: true })).toBeDisabled();

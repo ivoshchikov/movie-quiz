@@ -425,7 +425,7 @@ test("a stalled SDK initialization refresh is cancelled and can recover on retry
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sb-quiz-fixture-auth-token") || "{}").user.id)).toBe("fixture-user");
   release();
   await quiz.getByRole("button", { name: "Try again", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies", exact: true })).toBeEnabled();
 });
 
 test("nickname setup keeps its return page and never permits renaming", async ({ page }) => {

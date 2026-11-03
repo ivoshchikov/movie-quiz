@@ -70,7 +70,7 @@ for(const theme of ["dark","light","christmas"])for(const width of [320,1440])te
 });
 test("loads, path transitions and Back count, filters and heartbeats do not",async({page})=>{
  await page.clock.install();const {views,beats,calls}=await telemetry(page);await page.goto("/?private=not-collected#secret");
- await expect(page.getByRole("button",{name:"Play Movie Stills"})).toBeEnabled();await expect.poll(()=>views.length).toBe(1);await expect.poll(()=>beats.length).toBe(1);
+ await expect(page.getByRole("button",{name:"Play Movies"})).toBeEnabled();await expect.poll(()=>views.length).toBe(1);await expect.poll(()=>beats.length).toBe(1);
  expect(views[0].p_visitor).toBe(beats[0].p_visitor);expect(Object.keys(views[0]).sort()).toEqual(["p_view","p_visitor"]);
  await nav(page,"Blog").click();await expect.poll(()=>views.length).toBe(2);
  await page.getByRole("button",{name:/^Movie guides, /}).click();await expect(page).toHaveURL(/topic=streaming/);
@@ -83,7 +83,7 @@ test("loads, path transitions and Back count, filters and heartbeats do not",asy
 test("lost confirmation retries the same view and preserves each queued route",async({page})=>{
  await page.clock.install();const {views}=await telemetry(page);let first=true,release=()=>{};const held=new Promise<void>(r=>{release=r;});
  await page.route("**/rest/v1/rpc/site_record_page_view",async r=>{views.push(r.request().postDataJSON());if(first){first=false;await held;}await r.fulfill({status:204});});
- await page.goto("/");await expect(page.getByRole("button",{name:"Play Movie Stills"})).toBeEnabled();await expect.poll(()=>views.length).toBe(1);
+ await page.goto("/");await expect(page.getByRole("button",{name:"Play Movies"})).toBeEnabled();await expect.poll(()=>views.length).toBe(1);
  await nav(page,"Blog").click();await expect(page.getByRole("heading",{name:"Blog",exact:true})).toBeVisible();
  await page.locator(".hq-blog-card").first().getByRole("link").click();await expect(page.getByRole("link",{name:"← Back to blog"}).first()).toBeVisible();
  const aborted=page.waitForEvent("requestfailed",r=>r.url().endsWith("/rpc/site_record_page_view"));await page.clock.fastForward(11000);await aborted;
@@ -93,7 +93,7 @@ test("lost confirmation retries the same view and preserves each queued route",a
 test("hidden and offline pages wait, then recover without recounting",async({page})=>{
  await page.clock.install();const {views}=await telemetry(page);
  await page.addInitScript(()=>Object.defineProperty(document,"visibilityState",{configurable:true,get:()=>"hidden"}));
- await page.goto("/");await expect(page.getByRole("button",{name:"Play Movie Stills"})).toBeEnabled();await page.clock.fastForward(61000);expect(views).toHaveLength(0);
+ await page.goto("/");await expect(page.getByRole("button",{name:"Play Movies"})).toBeEnabled();await page.clock.fastForward(61000);expect(views).toHaveLength(0);
  await page.evaluate(()=>{Object.defineProperty(document,"visibilityState",{configurable:true,get:()=>"visible"});document.dispatchEvent(new Event("visibilitychange"));});await expect.poll(()=>views.length).toBe(1);
  await page.evaluate(()=>Object.defineProperty(navigator,"onLine",{configurable:true,get:()=>false}));
  await nav(page,"Blog").click();await expect(page.getByRole("heading",{name:"Blog",exact:true})).toBeVisible();await page.clock.fastForward(61000);expect(views).toHaveLength(1);
@@ -102,7 +102,7 @@ test("hidden and offline pages wait, then recover without recounting",async({pag
 });
 for(const path of ["/?analytics=off","/admin/questions"])test(`collection excluded at ${path}`,async({page})=>{
  const {views}=await telemetry(page);await page.goto(path);
- await expect(page.getByRole(path.startsWith("/admin")?"heading":"button",{name:path.startsWith("/admin")?"Administration":"Play Movie Stills",exact:true})).toBeVisible();expect(views).toHaveLength(0);
+ await expect(page.getByRole(path.startsWith("/admin")?"heading":"button",{name:path.startsWith("/admin")?"Administration":"Play Movies",exact:true})).toBeVisible();expect(views).toHaveLength(0);
 });
 test("owner and the owner's signed-out browser do not add views",async({page})=>{
  await page.clock.install();const {views}=await telemetry(page);await mockSignedIn(page,owner);await page.goto("/");await expect(page.getByRole("button",{name:"Account menu"})).toBeVisible();expect(views).toHaveLength(0);
@@ -111,5 +111,5 @@ test("owner and the owner's signed-out browser do not add views",async({page})=>
 });
 test("preview pages never collect views",async({page})=>{
  const {views}=await telemetry(page);await page.route("http://preview.invalid:5173/**",async r=>{const response=await r.fetch({url:r.request().url().replace("preview.invalid","localhost")});await r.fulfill({response});});
- await page.goto("http://preview.invalid:5173/");await expect(page.getByRole("button",{name:"Play Movie Stills"})).toBeEnabled();expect(views).toHaveLength(0);
+ await page.goto("http://preview.invalid:5173/");await expect(page.getByRole("button",{name:"Play Movies"})).toBeEnabled();expect(views).toHaveLength(0);
 });

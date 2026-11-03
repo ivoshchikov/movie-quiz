@@ -4,14 +4,14 @@ import { formatQuizDuration, useLeaderboard } from "../leaderboard/useLeaderboar
 import type { SiteOutletContext } from "./Layout";
 import SiteIcon from "./SiteIcon";
 
-interface Props { categoryId: number; difficultyId: number; categoryLabel: string; difficultyLabel: string; }
+interface Props { categoryId: number; difficultyId: number; categoryLabel: string; difficultyLabel: string; legacy: boolean; }
 
-export default function Leaderboard({ categoryId, difficultyId, categoryLabel, difficultyLabel }: Props) {
-  const key = `${categoryId}:${difficultyId}`;
+export default function Leaderboard({ categoryId, difficultyId, categoryLabel, difficultyLabel, legacy }: Props) {
+  const key = `${categoryId}:${difficultyId}:${legacy}`;
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
   const limit = expandedKey === key ? 20 : 10;
   const { openLogin } = useOutletContext<SiteOutletContext>();
-  const { user, authLoading, scores, availability, personal } = useLeaderboard(categoryId, difficultyId, limit);
+  const { user, authLoading, scores, availability, personal } = useLeaderboard(categoryId, difficultyId, limit, legacy);
   const rows = scores.query?.phase === "ready" ? scores.query.value.top : [];
   const hasMore = scores.query?.phase === "ready" && scores.query.value.total > limit;
   const playable = availability.query?.phase === "ready" && availability.query.value > 0;
@@ -35,7 +35,7 @@ export default function Leaderboard({ categoryId, difficultyId, categoryLabel, d
       <div ref={resultsArea} className="hq-leaderboard-results" aria-busy={!scores.query} style={!scores.query ? { minHeight: loadingHeight } : undefined}>
         {!scores.query ? <><p className="hq-leaderboard-loading" role="status">Loading scores…</p><div className="hq-leaderboard-skeleton" aria-hidden="true">{Array.from({ length: loadingRows }, (_, i) => <div key={i}><span /><span /><span /></div>)}</div></>
           : scores.query.phase === "error" ? <div className="hq-leaderboard-empty" role="alert"><p>Scores could not be loaded.</p><button className="hq-secondary" onClick={scores.retry}>Retry scores</button></div>
-          : !rows.length ? <div className="hq-leaderboard-empty"><SiteIcon name="trophy" /><h3>{unavailable ? "This quiz isn’t available yet" : playable ? "No scores yet" : "No scores to show"}</h3><p>{unavailable ? "Choose another category or difficulty to play." : playable ? "Set the first personal best in this quiz." : "Quiz availability is shown below."}</p></div>
+          : !rows.length ? <div className="hq-leaderboard-empty"><SiteIcon name="trophy" /><h3>{legacy ? "No archived scores" : unavailable ? "This quiz isn’t available yet" : playable ? "No scores yet" : "No scores to show"}</h3><p>{legacy ? "No records were saved under the old rules for this quiz." : unavailable ? "Choose another category to play." : playable ? "Set the first personal best in this quiz." : "Quiz availability is shown below."}</p></div>
           : <table className="hq-leaderboard-table"><caption className="sr-only">{mode}. All-time personal bests.</caption><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col" className="hq-leaderboard-numeric">Score</th><th scope="col" className="hq-leaderboard-numeric hq-leaderboard-duration">Quiz duration</th></tr></thead><tbody>
             {rows.map((row, index) => {
               const own = !!user && row.user_id === user.id;
@@ -63,14 +63,14 @@ export default function Leaderboard({ categoryId, difficultyId, categoryLabel, d
         : <dl><div><dt>Score</dt><dd>{personal.query.value.score}<span> {personal.query.value.score === 1 ? "point" : "points"}</span></dd></div><div><dt>Quiz duration</dt><dd>{formatQuizDuration(personal.query.value.time)}</dd></div></dl>}
     </section>}
 
-    <div className="hq-leaderboard-actions">
+    {!legacy && <div className="hq-leaderboard-actions">
       {!availability.query ? <p role="status">Checking quiz availability…</p>
         : availability.query.phase === "error" ? <p role="alert">Quiz availability could not be checked. <button className="hq-inline-action" onClick={availability.retry}>Retry quiz availability</button></p>
         : unavailable && rows.length > 0 ? <p>This quiz is currently unavailable. Saved records are still shown.</p>
-        : unavailable && <p>Choose another category or difficulty to play.</p>}
+        : unavailable && <p>Choose another category to play.</p>}
       {playable ? <Link className="hq-primary" to="/play" state={{ categoryId, difficultyId }}>Play this quiz<SiteIcon name="arrow" /></Link> : <button className="hq-primary" disabled>{unavailable ? "Quiz unavailable" : "Play this quiz"}</button>}
       {!authLoading && !user && <aside className="hq-leaderboard-guest" aria-label="Leaderboard account"><p>Log in to save your scores and appear on the leaderboard.</p><button className="hq-inline-action" onClick={openLogin}>Log in</button></aside>}
-    </div>
+    </div>}
     <details className="hq-leaderboard-rules"><summary>How ranking works</summary><p>Higher scores rank first. Equal scores are ordered by shorter Quiz duration, then the earlier saved record and a stable player ID. Each player’s saved personal best is shown.</p><p>Quiz duration is the total elapsed time of the saved quiz, including loading and feedback. It keeps running when you switch tabs.</p><p>Guest results stay on the device and don’t appear here. Logging in doesn’t transfer earlier guest results.</p></details>
   </>;
 }

@@ -38,7 +38,7 @@ export default function HowToPlay() {
       <section id="classic" className="hq-howto-section" aria-labelledby="howto-classic"><h2 id="howto-classic">Classic</h2><p>Recognize movies and actors. Four answers, a timer for each question and a limited number of lives. Each correct answer earns one point.</p><Link className="hq-text-action" to="/?mode=classic">Play Classic <SiteIcon name="arrow" /></Link>
       <details className="hq-copy-details hq-howto-expanded"><summary>Classic rules & difficulty</summary>
       <ol className="hq-howto-steps" aria-label="Three steps to play a Classic quiz">
-        <li><span aria-hidden="true">1</span><div><h2>Choose your quiz</h2><p>Pick a category and difficulty on the Games page.</p></div></li>
+        <li><span aria-hidden="true">1</span><div><h2>Choose your quiz</h2><p>Pick Actors, Actresses, Movies or TV Series, then choose a level.</p></div></li>
         <li><span aria-hidden="true">2</span><div><h2>Look at the image</h2><p>The server starts your question timer when it issues the question. Loading time counts.</p></div></li>
         <li><span aria-hidden="true">3</span><div><h2>Choose an answer</h2><p>Tap one of four choices, or use keys 1–4.</p></div></li>
       </ol>
@@ -55,7 +55,7 @@ export default function HowToPlay() {
 
       <section className="hq-howto-section" aria-labelledby="howto-difficulty">
         <h2 id="howto-difficulty">Difficulty levels</h2>
-        <p>These are the current settings used by the game. Choose from the quizzes available on the Games page.</p>
+        <p>Easy, Medium and Hard use the same question bank within your chosen category. Only the time per question and starting lives change.</p>
         <div className="hq-howto-levels" aria-busy={levels.loading}>
           {levels.loading && <p role="status">Loading difficulty settings…</p>}
           {levels.value && levels.value.length > 0 && <table>
@@ -91,14 +91,14 @@ export default function HowToPlay() {
         <figure>
           <img src="/how-to-play-game.png" width="720" height="684" loading="lazy" decoding="async"
             alt="Example quiz screen: an image, four answer buttons, Time left, Score, Lives and Elapsed." />
-          <figcaption>The current game layout, with an illustrative image and sample answers. Your quiz uses movie stills or actor photos.</figcaption>
+          <figcaption>The current game layout, with an illustrative image and sample answers. Your quiz uses images from the category you choose.</figcaption>
         </figure>
       </details>
 
       <section className="hq-howto-section" aria-labelledby="howto-records">
         <h2 id="howto-records">Guests & saved records</h2>
         <p>You can play Classic quizzes without an account. Your last guest result stays on this device while browser storage is available; logging in later does not add it to your account.</p>
-        <p>Log in <strong>before starting a quiz</strong> to save personal bests and join the leaderboard. Records are kept separately for each category and difficulty. Higher scores rank first; equal scores are ordered by shorter Quiz duration. The server measures time, so your connection can affect it.</p>
+        <p>Log in <strong>before starting a quiz</strong> to save personal bests and join the leaderboard. Current records are kept separately for each category and difficulty. Previous records remain available in the Classic archive on Rankings and your profile. Higher scores rank first; equal scores are ordered by shorter Quiz duration. The server measures time, so your connection can affect it.</p>
         <div className="hq-howto-links"><Link to="/profile">Your records <SiteIcon name="arrow" /></Link><Link to="/leaderboard">Leaderboard <SiteIcon name="arrow" /></Link></div>
       </section>
 

@@ -36,7 +36,7 @@ test("difficulty names, values and order come from live data rather than old def
   await page.getByRole("link", { name: "Choose a game", exact: true }).first().click();
   await expect(page.getByRole("radio", { name: "First level", exact: true })).toBeVisible();
   await page.getByRole("radio", { name: "First level", exact: true }).click();
-  await expect(page.locator(".hq-rule-summary")).toContainText("51 sec per question");
+  await expect(page.getByRole("radio", { name: "First level", exact: true })).toHaveAccessibleDescription("51 s · 4 lives");
 });
 
 test("slow settings do not block the rules or primary actions", async ({ page }) => {
@@ -122,7 +122,7 @@ test("the next step chooses a mode and does not auto-start a regular quiz or Dai
   await page.goto("/how-to-play"); await page.getByText("Classic rules & difficulty", { exact: true }).click();
   await page.getByRole("link", { name: "Choose a game", exact: true }).last().click();
   await expect(page).toHaveURL("http://localhost:5173/");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeVisible();
   expect(calls.filter(call => call.name === "quiz_start")).toHaveLength(0);
   await page.getByRole("link", { name: "How to play", exact: true }).click();
   await page.getByRole("link", { name: "View Daily & its reset countdown", exact: true }).click();
@@ -148,7 +148,7 @@ test("page metadata has one owner on direct load and after client-side navigatio
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", "https://hard-quiz.com/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.locator('meta[name="robots"]')).toHaveCount(1);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
@@ -208,7 +208,7 @@ for (const [width, height] of [[320, 480], [375, 812], [390, 844], [568, 320], [
     if (width === 1366 || width === 375) {
       await page.route("**/rest/v1/difficulty_level?**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify(difficulties.map(level => ({ ...level, time_limit_secs: 30 }))) }));
       await page.reload(); await page.getByText("Classic rules & difficulty", { exact: true }).click();
-      await expect(page.getByRole("row", { name: "Easy 30 s 3", exact: true })).toBeVisible();
+      await expect(page.getByRole("row", { name: "Easy 30 s 5", exact: true })).toBeVisible();
       const file = process.env.HQ_REVIEW_DIR ? path.join(process.env.HQ_REVIEW_DIR, `hard-quiz-how-to-play-${width === 1366 ? "desktop" : "mobile"}.png`) : testInfo.outputPath(`how-to-play-${width}.png`);
       await page.screenshot({ path: file, fullPage: true });
     }
@@ -229,7 +229,7 @@ test("capture the current game demonstration with an isolated sample question", 
   const scene = await readFile(path.resolve("tests/assets/how-to-play-scene.svg"), "utf8");
   await page.route("**/how-to-play-scene.svg", route => route.fulfill({ contentType: "image/svg+xml", body: scene }));
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.getByRole("button", { name: choices[0], exact: true })).toBeEnabled();
   await page.clock.runFor(6000);
   await expect(page.locator(".hq-game-timer-label strong")).toHaveText("24 s");

@@ -32,10 +32,10 @@ async function fixture(page: Page, signedIn = false) {
     bestCalls: 0,
     saves: [] as Record<string, number | string>[],
   };
-  await page.route("**/rest/v1/rpc/quiz_leaderboard", (route) => {
+  await page.route("**/rest/v1/rpc/classic_leaderboard", (route) => {
     data.scoresCalls++;
     const payload = route.request().postDataJSON();
-    calls.push({ name: "quiz_leaderboard", payload });
+    calls.push({ name: "classic_leaderboard", payload });
     return route.fulfill({
       status: data.failScores ? 503 : 200,
       contentType: "application/json",
@@ -72,7 +72,7 @@ async function fixture(page: Page, signedIn = false) {
       body: JSON.stringify(data.missingCount ? null : data.count),
     }),
   );
-  await page.route("**/rest/v1/user_best?**", (route) => {
+  await page.route("**/rest/v1/classic_bests?**", (route) => {
     data.bestCalls++;
     const url = new URL(route.request().url());
     return route.fulfill({
@@ -193,7 +193,7 @@ test("filters update URLs, retain other parameters, reload and browser history",
   ).toHaveAttribute("aria-checked", "true");
   await page.goBack();
   await expect(
-    page.getByRole("radio", { name: "Movie Stills", exact: true }),
+    page.getByRole("radio", { name: "Movies", exact: true }),
   ).toHaveAttribute("aria-checked", "true");
   await page.goForward();
   await expect(
@@ -348,7 +348,7 @@ test("a held scores request times out and can be retried", async ({ page }) => {
     release = resolve;
   });
   let first = true;
-  await page.route("**/rest/v1/rpc/quiz_leaderboard", async (route) => {
+  await page.route("**/rest/v1/rpc/classic_leaderboard", async (route) => {
     if (first) {
       first = false;
       await held;
@@ -379,7 +379,7 @@ test("late responses cannot replace the selected category", async ({
     release = resolve;
   });
   let first = true;
-  await page.route("**/rest/v1/rpc/quiz_leaderboard", async (route) => {
+  await page.route("**/rest/v1/rpc/classic_leaderboard", async (route) => {
     if (first) {
       first = false;
       await held;
@@ -524,7 +524,7 @@ test("a late private response stays hidden after sign-out", async ({
   const held = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("**/rest/v1/user_best?**", async (route) => {
+  await page.route("**/rest/v1/classic_bests?**", async (route) => {
     await held;
     await route.fallback().catch(() => {});
   });
@@ -562,6 +562,7 @@ test("confirmation of a pending save refreshes the visible leaderboard and recor
       new CustomEvent("hq:quiz:result-updated", {
         detail: {
           id: "confirmed-queued-run",
+          rulesVersion: 2,
           playKey: "another-play",
           userId: "fixture-user",
           categoryId: 1,
@@ -618,7 +619,7 @@ test("loading another category keeps the previous list height", async ({
   const held = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("**/rest/v1/rpc/quiz_leaderboard", async (route) => {
+  await page.route("**/rest/v1/rpc/classic_leaderboard", async (route) => {
     await held;
     await route.fallback();
   });

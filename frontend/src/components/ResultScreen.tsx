@@ -3,7 +3,7 @@ import { Link, useLocation, useOutletContext } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { getPersonalBest } from "../api";
 import type { PersonalBest } from "../api";
-import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
+import { classicCategoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import { dismissRecentGameResult, isGameResult, isRecentGameResult, isSavingGameResult, lastGameResult, RESULT_UPDATED, saveGameResult } from "../game/resultStorage";
 import type { GameResult } from "../game/resultStorage";
 import type { SiteOutletContext } from "./Layout";
@@ -20,11 +20,11 @@ function ResultCard({ result }: { result: GameResult }) {
   const [fresh] = useState(() => isRecentGameResult(result.id));
   const [bestAttempt, retryBest] = useReducer(value => value + 1, 0);
   const [bestQuery, setBestQuery] = useState<{ key: string; phase: "loading" | "ready" | "error"; value: PersonalBest | null } | null>(null);
-  const bestKey = `${result.id}:${user?.id ?? "guest"}`;
+  const bestKey = `${result.id}:${user?.id ?? "guest"}:${result.rulesVersion ?? 1}`;
   const category = catalog.categories.find(item => item.id === result.categoryId);
   const difficulty = catalog.difficulties.find(item => item.id === result.difficultyId);
-  const categoryName = category ? categoryLabel(category) : typeof result.categoryName === "string" ?
-    categoryLabel({ id: result.categoryId, name: result.categoryName }) : null;
+  const categoryName = category ? classicCategoryLabel(category) : typeof result.categoryName === "string" ?
+    classicCategoryLabel({ id: result.categoryId, name: result.categoryName }) : null;
   const difficultyName = difficulty?.name ?? (typeof result.difficultyName === "string" ? result.difficultyName : null);
   const canReplay = result.categoryId > 0 && result.difficultyId > 0 && (catalog.loading || catalog.error || (!!category && !!difficulty));
   const completed = result.finishReason === "completed";
@@ -55,12 +55,12 @@ function ResultCard({ result }: { result: GameResult }) {
     const abort = new AbortController();
     const timeout = window.setTimeout(() => abort.abort(), 4000);
     setBestQuery({ key: bestKey, phase: "loading", value: null });
-    getPersonalBest(user.id, result.categoryId, result.difficultyId, abort.signal)
+    getPersonalBest(user.id, result.categoryId, result.difficultyId, abort.signal, result.rulesVersion !== 2)
       .then(value => { if (active) setBestQuery({ key: bestKey, phase: "ready", value }); })
       .catch(() => { if (active) setBestQuery({ key: bestKey, phase: "error", value: null }); })
       .finally(() => window.clearTimeout(timeout));
     return () => { active = false; abort.abort(); window.clearTimeout(timeout); };
-  }, [user, bestKey, result.userId, result.categoryId, result.difficultyId, result.saveStatus, bestAttempt]);
+  }, [user, bestKey, result.userId, result.categoryId, result.difficultyId, result.rulesVersion, result.saveStatus, bestAttempt]);
 
   const statusText = syncing ? "Syncing…" : failed ? "Couldn’t sync with your account." :
     result.saveStatus === "saved" ? "Synced with your account" : result.saveStatus === "memory" ?
@@ -76,6 +76,7 @@ function ResultCard({ result }: { result: GameResult }) {
         </p>
         <h1 id="result-title">{title}</h1>
         <p className="hq-result-explanation">{explanation}</p>
+        {result.rulesVersion === 1 && <p className="hq-result-date">Played under the previous Classic rules</p>}
         {!fresh && finishedAt && <time className="hq-result-date" dateTime={finishedAt.toISOString()}>{new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" }).format(finishedAt)}</time>}
       </header>
       <div className="hq-result-score"><strong>{result.score}</strong><span>{result.score === 1 ? "point" : "points"}</span></div>
@@ -95,7 +96,7 @@ function ResultCard({ result }: { result: GameResult }) {
         {failed && <p className="hq-result-save-note">{result.deviceStored === false ? "Keep this page open to retry; browser storage is unavailable." : "Your result is kept on this device. We’ll also retry when you’re online."}</p>}
       </div>
       {result.serverGame && <GameImageCredits key={`${result.id}:${result.saveStatus}`} mode="normal" session={result.id} />}
-      {canReplay && <Link className="hq-result-leaderboard hq-text-action" to={`/leaderboard?category=${result.categoryId}&difficulty=${result.difficultyId}`}>View leaderboard<SiteIcon name="arrow" /></Link>}
+      {canReplay && <Link className="hq-result-leaderboard hq-text-action" to={`/leaderboard?category=${result.categoryId}&difficulty=${result.difficultyId}${result.rulesVersion === 2 ? "" : "&rules=legacy"}`}>View leaderboard<SiteIcon name="arrow" /></Link>}
       {catalog.error && (!categoryName || !difficultyName) && <p className="hq-result-details-error">Quiz details couldn’t load. <button className="hq-inline-action" onClick={catalog.reload}>Try again</button></p>}
       {!user && <aside className="hq-result-guest" aria-label="Guest account">
         <p>Keep your personal bests</p>

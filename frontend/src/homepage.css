@@ -63,6 +63,8 @@
 .hq-difficulty-option > span { min-width: 0; overflow-wrap: anywhere; }
 .hq-difficulty-option .hq-icon { width: 14px; height: 14px; }
 .hq-difficulty-option[aria-checked="true"] { background: var(--hq-surface); color: var(--hq-text); border-color: var(--hq-border); }
+.hq-classic-level-description { display: block; font-size: 11px; font-weight: 400; color: var(--hq-muted); }
+.hq-classic-setup .hq-filters { margin-bottom: 14px; }
 .hq-rule-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 14px 0 20px; font-size: 12px; color: var(--hq-muted); }
 .hq-rule-summary span { display: inline-flex; align-items: center; gap: 5px; }
 .hq-rule-summary .hq-icon { width: 14px; height: 14px; }

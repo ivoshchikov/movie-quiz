@@ -133,7 +133,7 @@ test("guest telemetry has only an opaque browser ID and survives reload without 
   expect(Object.keys(beats[0])).toEqual(["p_visitor"]);
   const visitor = beats[0].p_visitor;
   expect(visitor).toMatch(/^[0-9a-f-]{36}$/);
-  await page.reload(); await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await page.reload(); await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   expect(beats).toHaveLength(1);
   await page.clock.fastForward(61000); await expect.poll(() => beats.length).toBe(2);
   expect(beats[1].p_visitor).toBe(visitor);
@@ -161,11 +161,11 @@ test("a timed-out heartbeat does not permanently stop reporting or affect the pa
   });
   await page.goto("/"); await expect.poll(() => reads).toBe(1);
   // Finish unrelated catalogue reads before advancing every timer past 10 seconds.
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   const aborted = page.waitForEvent("requestfailed", request => request.url().endsWith("/rpc/site_visit_heartbeat"));
   await page.clock.fastForward(11000);
   await aborted;
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   await page.clock.fastForward(51000); await expect.poll(() => reads).toBe(2);
   release();
 });
@@ -183,7 +183,7 @@ test("owner exclusion removes prior guest telemetry and survives logout", async 
 test("owner without a visitor ID, opt-out, administration and preview never collect visits", async ({ page }) => {
   const { beats } = await telemetry(page);
   await page.goto("/?analytics=off");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   await page.reload(); expect(beats).toHaveLength(0);
   await page.goto("/admin/questions"); await expect(page.getByRole("heading", { name: "Administration", exact: true })).toBeVisible();
   expect(beats).toHaveLength(0);
@@ -208,7 +208,7 @@ test("a preview host never sends visitor telemetry", async ({ page }) => {
     await route.fulfill({ response });
   });
   await page.goto("http://preview.invalid:5173/");
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   expect(beats).toHaveLength(0);
 });
 test("simultaneous new tabs share one browser identifier", async ({ page, context }) => {

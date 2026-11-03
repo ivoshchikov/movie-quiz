@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import { categoryLabel } from "../hooks/useQuizCatalog";
+import { classicCategoryLabel as categoryLabel } from "../hooks/useQuizCatalog";
 import { useNormalGame } from "../game/useNormalGame";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";

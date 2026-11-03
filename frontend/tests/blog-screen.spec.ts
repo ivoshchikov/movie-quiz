@@ -204,7 +204,7 @@ test("the primary and Daily links select a next step without starting a game", a
   const calls = await open(page);
   await page.getByRole("link", { name: "Choose a game", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/");
-  await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Play Movies", exact: true })).toBeVisible();
   await page.getByRole("radio", { name: "Daily", exact: true }).click(); await page.getByRole("link", { name: "Play Daily", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:5173/daily");
   expect(calls.filter(call => ["quiz_start", "daily_begin", "submit_daily_answer", "quiz_finish"].includes(call.name))).toEqual([]);

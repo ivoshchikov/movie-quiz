@@ -1,3 +1,9 @@
+## Classic v2 — единый банк на категорию
+
+Classic делает снимок всех действующих корректных вопросов выбранной категории, независимо от метки сложности вопроса. Время на вопрос и стартовые жизни: Easy 45/5, Medium 30/3, Hard 20/1. Сервер выдаёт отдельный дедлайн каждому вопросу и принимает только один исход раунда. Вопросы, вес выбора и начисление очков одинаковы для трёх уровней.
+
+Миграция `20261103090649_classic_category_bank.sql` маркирует новые сессии версией 2; начатые ранее сессии завершаются с прежними снимками и параметрами. Текущие рекорды хранятся в `classic_bests`, прежние остаются в `user_best`. Рейтинги и профиль открывают текущую версию по умолчанию; `rules=legacy` открывает архив. Доступ к личным рекордам ограничен владельцем, публичный рейтинг выдаёт ограниченный список и точное место аккаунта. Time Attack, Daily и This or That сохраняют свои контракты. Статус выкладки фиксируется в PR.
+
 ## Traffic bot filtering — 2 November 2026
 
 Owner requested bot filtering for the private visitor and page-view panels. Both first-party collection streams now skip known automation UAs and WebDriver in the browser; both existing ingestion RPCs independently reject known/blank HTTP UAs. Ordinary visits need no interaction. Public crawling and gameplay remain available, GA4 is unchanged. The panels label the result as bot-filtered estimates, since disguised bots cannot be ruled out.
