@@ -4,6 +4,8 @@ Classic делает снимок всех действующих коррект
 
 Миграция `20261103090649_classic_category_bank.sql` маркирует новые сессии версией 2; начатые ранее сессии завершаются с прежними снимками и параметрами. Текущие рекорды хранятся в `classic_bests`, прежние остаются в `user_best`. Рейтинги и профиль открывают текущую версию по умолчанию; `rules=legacy` открывает архив. Доступ к личным рекордам ограничен владельцем, публичный рейтинг выдаёт ограниченный список и точное место аккаунта. Time Attack, Daily и This or That сохраняют свои контракты. Статус выкладки фиксируется в PR.
 
+В Admin → Question bank сводка показывает количество записей и доступных в Classic вопросов по категориям. Игровой счётчик использует тот же вызов `count_questions(category_id, null)`, что и Classic. Время и жизни берутся из текущих настроек уровней. Поле **Difficulty tag** остаётся доступно в фильтрах, карточках вопросов и импорте.
+
 ## Traffic bot filtering — 2 November 2026
 
 Owner requested bot filtering for the private visitor and page-view panels. Both first-party collection streams now skip known automation UAs and WebDriver in the browser; both existing ingestion RPCs independently reject known/blank HTTP UAs. Ordinary visits need no interaction. Public crawling and gameplay remain available, GA4 is unchanged. The panels label the result as bot-filtered estimates, since disguised bots cannot be ruled out.

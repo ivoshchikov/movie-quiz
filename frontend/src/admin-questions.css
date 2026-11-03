@@ -40,6 +40,11 @@
   color: var(--hq-muted);
   margin: 0;
 }
+.hq-bank-pool-note {
+  color: var(--hq-muted);
+  font-size: 0.85rem;
+  margin-block: 0.75rem;
+}
 .hq-bank-heading .hq-primary,
 .hq-bank-heading .hq-secondary {
   white-space: nowrap;

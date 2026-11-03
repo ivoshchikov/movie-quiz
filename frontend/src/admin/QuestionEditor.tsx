@@ -206,7 +206,7 @@ export default function QuestionEditor({
       <h3>Edit question #{row.id}</h3>
       <p>
         Changes apply to new quizzes. Assigned Daily questions and started games
-        keep their original answers and difficulty. Unsaved edits are kept only
+        keep their original answers and difficulty tag. Unsaved edits are kept only
         while this window is open.
       </p>
       {!row.admin_revision && (
@@ -215,7 +215,7 @@ export default function QuestionEditor({
       <fieldset disabled={busy || processing || locked || deleting}>
         <legend>Question settings</legend>
         <label>
-          Difficulty
+          Difficulty tag
           <AdminSelect
             value={difficulty}
             disabled={!levels.length}
@@ -225,7 +225,8 @@ export default function QuestionEditor({
             {levels.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
           </AdminSelect>
         </label>
-        {!levels.length && <p role="status">Difficulty settings are unavailable. <button type="button" className="hq-inline-action" onClick={reloadLevels}>Reload difficulty settings</button></p>}
+        <p>Classic uses the same playable questions at every level. This tag helps organise the bank and is used by other modes.</p>
+        {!levels.length && <p role="status">Difficulty tags are unavailable. <button type="button" className="hq-inline-action" onClick={reloadLevels}>Reload difficulty tags</button></p>}
         {options.map((value, i) => (
           <div className="hq-edit-answer" key={i}>
             <label>

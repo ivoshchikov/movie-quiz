@@ -633,9 +633,9 @@ function QuestionUploader({ owner }: { owner: string }) {
             </AdminSelect>
           </label>
           <label>
-            Default difficulty
+            Default difficulty tag
             <AdminSelect
-              aria-label="Default difficulty"
+              aria-label="Default difficulty tag"
               value={difficulty}
               onChange={(e) => commonDifficulty(Number(e.target.value))}
             >
@@ -646,7 +646,7 @@ function QuestionUploader({ owner }: { owner: string }) {
               ))}
             </AdminSelect>
           </label>
-          <details className="hq-copy-details"><summary>About defaults</summary><p>Defaults apply to cards without an individual override.</p></details>
+          <details className="hq-copy-details"><summary>About defaults</summary><p>Defaults apply to cards without an individual override. Classic uses the same playable questions at every level. Difficulty tags help organise the bank and are used by other modes.</p></details>
         </div>
       )}
       <ContentBundleImport
@@ -949,9 +949,9 @@ function DraftCard({
             </AdminSelect>
           </label>
           <label>
-            Difficulty
+            Difficulty tag
             <AdminSelect
-              aria-label="Difficulty"
+              aria-label="Difficulty tag"
               value={card.difficulty}
               onChange={(e) =>
                 change({
