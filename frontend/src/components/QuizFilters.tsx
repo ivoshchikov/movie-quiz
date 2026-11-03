@@ -1,4 +1,3 @@
-import { useId } from "react";
 import { RadioGroup } from "@headlessui/react";
 import type { Category } from "../api";
 import { categoryLabel } from "../hooks/useQuizCatalog";
@@ -20,7 +19,6 @@ export default function QuizFilters<LevelId extends number | string>({
   categories, difficulties, categoryId, difficultyId, difficultyLabel = "Difficulty",
   onCategoryChange, onDifficultyChange, labelCategory = categoryLabel, describeLevel,
 }: Props<LevelId>) {
-  const descriptionId = useId();
   return <div className="hq-filters">
     <RadioGroup value={categoryId ?? null} onChange={onCategoryChange} aria-label="Select category" className="hq-fieldset">
       <RadioGroup.Label className="hq-legend">Category</RadioGroup.Label>
@@ -37,10 +35,9 @@ export default function QuizFilters<LevelId extends number | string>({
       <div className="hq-level-grid" style={{ gridTemplateColumns: `repeat(${Math.max(difficulties.length, 1)}, minmax(0, 1fr))` }}>
         {difficulties.map(level => {
           const description = describeLevel?.(level.id);
-          const id = `${descriptionId}-${level.id}`;
           return <RadioGroup.Option as="button" type="button" key={level.id} value={level.id} className="hq-difficulty-option"
-            aria-label={description ? level.name : undefined} aria-describedby={description ? id : undefined}>
-            {({ checked }) => <><span>{level.name}{description && <small className="hq-classic-level-description" id={id}>{description}</small>}</span>{checked && <SiteIcon name="check" />}</>}
+            aria-label={description ? level.name : undefined}>
+            {({ checked }) => <><span>{level.name}{description && <RadioGroup.Description as="small" className="hq-classic-level-description">{description}</RadioGroup.Description>}</span>{checked && <SiteIcon name="check" />}</>}
           </RadioGroup.Option>;
         })}
       </div>

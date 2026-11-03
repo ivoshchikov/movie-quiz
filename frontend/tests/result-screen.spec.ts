@@ -217,7 +217,7 @@ test("result leaderboard link preserves its mode through a reload", async ({
   page,
 }) => {
   await gameFixture(page);
-  await seed(page, storedResult({ categoryId: 2, difficultyId: 3 }));
+  await seed(page, storedResult({ categoryId: 2, difficultyId: 3, rulesVersion: 2 }));
   await page.goto("/result");
   await page
     .getByRole("link", { name: "View leaderboard", exact: true })

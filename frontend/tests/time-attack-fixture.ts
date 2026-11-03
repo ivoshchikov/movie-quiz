@@ -5,7 +5,7 @@ import { gameAnswers } from './game-fixtures';
 export { gameAnswers as attackAnswers };
 const epoch=new Date('2026-10-19T12:00:00Z');
 export async function attackFixture(page: Page, options: {signedIn?:boolean;size?:number;resume?:AttackGame;games?:Map<string,AttackGame>}={}) {
-  await page.clock.install({time:epoch});await page.clock.pauseAt(new Date(epoch.getTime()+1000));
+  await page.clock.install({time:new Date(epoch.getTime()-60000)});await page.clock.pauseAt(new Date(epoch.getTime()+1000));
   const calls=await mockQuizApi(page);if(options.signedIn)await mockSignedIn(page);
   const games=options.games??new Map<string,AttackGame>();if(options.resume)games.set(options.resume.id,options.resume);
   const data={calls,games,accepted:0,failAction:false,loseActionResponse:false,failNext:false,failFinish:false,failCatalog:false,holdAction:null as Promise<void>|null,
