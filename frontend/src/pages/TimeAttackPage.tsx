@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext, useSearchParams, useLocation } from "react-router-dom";
-import { RadioGroup } from "@headlessui/react";
 import { useAuth } from "../AuthContext";
 import { useReadRequest } from "../hooks/useReadRequest";
 import type { SiteOutletContext } from "../components/Layout";
 import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
+import QuizFilters from "../components/QuizFilters";
 import pageMetadata from "../pageMetadata.json";
 import { activeAttack, attackCatalog, attackCategoryName, isLevel } from "../timeAttack/api";
 import type { AttackLevel } from "../timeAttack/api";
@@ -55,15 +55,20 @@ export function TimeAttackSetup({ embedded = false }: { embedded?: boolean }) {
     writeAttackRun(run); navigate("/time-attack/play", { state: { run } });
   }
   return <>
-    <div className="hq-rule-summary"><span>+2 correct</span><span>−1 wrong</span><span>Skip −3 s</span></div>
       {catalog.loading && <p role="status">Loading Time Attack options…</p>}
       {catalog.error && <p role="alert">Quiz options could not load. <button className="hq-inline-action" onClick={catalog.retry}>Retry options</button></p>}
       {catalog.value && !catalog.value.categories.length && <p>New questions are on the way. <Link to="/">All games</Link></p>}
-      {category && selection && <div className="hq-attack-setup">
-        <RadioGroup value={category.id} onChange={id => select(id, level)} aria-label="Time Attack category"><RadioGroup.Label className="hq-legend">Category</RadioGroup.Label><div className="hq-attack-choices">
-          {catalog.value!.categories.map(c => <RadioGroup.Option as="button" key={c.id} value={c.id} className="hq-category-option">{({ checked }) => <><span>{attackCategoryName(c.id)}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div></RadioGroup>
-        <RadioGroup value={level} onChange={key => select(category.id, key)} aria-label="Time Attack difficulty"><RadioGroup.Label className="hq-legend">Time pressure</RadioGroup.Label><div className="hq-attack-choices">
-          {catalog.value!.levels.map(l => <RadioGroup.Option as="button" key={l.key} value={l.key} className="hq-difficulty-option">{({ checked }) => <><span>{l.name} · {l.duration_secs} s</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div></RadioGroup>
+      {catalog.value && category && selection && <div className="hq-attack-setup">
+        <QuizFilters
+          categories={catalog.value.categories.map(c => ({ id: c.id, name: attackCategoryName(c.id) }))}
+          difficulties={catalog.value.levels.map(l => ({ id: l.key, name: `${l.name} · ${l.duration_secs} s` }))}
+          categoryId={category.id}
+          difficultyId={level}
+          difficultyLabel="Time pressure"
+          onCategoryChange={id => select(id, level)}
+          onDifficultyChange={key => select(category.id, key)}
+        />
+        <div className="hq-rule-summary"><span>+2 correct</span><span>−1 wrong</span><span>Skip −3 s</span></div>
         <p className="hq-mode-warning">One continuous timer, including loading and time away.</p>
         {authLoading && <p role="status">Checking account…</p>}
         {authError && <p role="alert">Your sign-in status could not be checked. <button className="hq-inline-action" onClick={retrySession}>Retry sign-in check</button></p>}
