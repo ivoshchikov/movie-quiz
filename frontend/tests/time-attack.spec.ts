@@ -64,6 +64,37 @@ for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:320
  const brand=await page.locator('.hq-play-header .hq-brand').boundingBox(), actions=await page.locator('.hq-play-actions').boundingBox();expect(brand!.x+brand!.width).toBeLessThanOrEqual(actions!.x);
  await page.screenshot({path:`../ui08-verification/time-attack-${viewport.width}.png`,fullPage:true});
 });
+test('Time Attack setup keeps two category columns and one time pressure row on both entry points', async ({ page }) => {
+  const data = await attackFixture(page);
+  for (const width of [320, 957]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of ['/?mode=time-attack', '/time-attack']) {
+      await page.goto(path);
+      const categories = page.getByRole('radiogroup', { name: 'Category', exact: true }).getByRole('radio');
+      const levels = page.getByRole('radiogroup', { name: 'Time pressure', exact: true }).getByRole('radio');
+      await expect(categories).toHaveText(['Movie Stills', 'Actors', 'Actresses', 'TV Series']);
+      await expect(levels).toHaveText(['Easy · 120 s', 'Medium · 90 s', 'Hard · 60 s']);
+
+      const [movies, actors, actresses, series] = await categories.evaluateAll(buttons => buttons.map(button => {
+        const { x, y, height } = button.getBoundingClientRect();
+        return { x, y, height };
+      }));
+      expect(movies.y).toBeCloseTo(actors.y);
+      expect(actresses.y).toBeCloseTo(series.y);
+      expect(actresses.y).toBeGreaterThanOrEqual(movies.y + movies.height);
+      expect(movies.x).toBeCloseTo(actresses.x);
+      expect(actors.x).toBeCloseTo(series.x);
+      expect(actors.x).toBeGreaterThan(movies.x);
+
+      const levelRows = await levels.evaluateAll(buttons => buttons.map(button => button.getBoundingClientRect().y));
+      expect(new Set(levelRows).size).toBe(1);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await expect(page.getByRole('button', { name: 'Start Time Attack', exact: true })).toBeEnabled();
+    }
+  }
+  expect(data.games.size).toBe(0);
+});
+
 test('Time Attack is indexed with initial HTML and its live route is noindex',async({page})=>{
  await attackFixture(page);await page.goto('/time-attack');await expect(page.getByRole('button',{name:'Start Time Attack',exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page).toHaveTitle('Movie, TV & Actor Time Attack Quiz | Hard Quiz');await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://hard-quiz.com/time-attack');
  await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();await expect(page.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();await page.clock.runFor(50);await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content','noindex, nofollow');

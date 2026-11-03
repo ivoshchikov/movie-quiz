@@ -20,6 +20,7 @@
 .hq-mode-panel .hq-pick-start .hq-primary { min-width: 0; }
 .hq-mode-panel .hq-pick-start p { font-size: 12px; line-height: 1.6; color: var(--hq-muted); margin-top: 12px; }
 .hq-mode-panel .hq-rule-summary { gap: 12px; margin-block: 12px 18px; }
+.hq-mode-panel .hq-attack-setup > .hq-rule-summary { margin-block: 0; }
 .hq-mode-panel .hq-secondary { margin-top: 10px; width: 100%; }
 .hq-games-links { display: flex; justify-content: space-between; gap: 16px; margin-top: 8px; }
 .hq-games-home .hq-hero { padding-bottom: 24px; }
