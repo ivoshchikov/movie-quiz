@@ -250,5 +250,47 @@
     "srcSet": "/blog-assets/best-sci-fi-movies-2026-480.webp 480w, /blog-assets/best-sci-fi-movies-2026-640.webp 640w, /blog-assets/best-sci-fi-movies-2026-800.webp 800w",
     "width": 640,
     "height": 360
+  },
+  "/blog-assets/sci-fi-2026-project-hail-mary-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-project-hail-mary-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-project-hail-mary-still-480.webp 480w, /blog-assets/sci-fi-2026-project-hail-mary-still-800.webp 800w, /blog-assets/sci-fi-2026-project-hail-mary-still.webp 1200w",
+    "width": 1200,
+    "height": 668
+  },
+  "/blog-assets/sci-fi-2026-disclosure-day-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-disclosure-day-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-disclosure-day-still-480.webp 480w, /blog-assets/sci-fi-2026-disclosure-day-still-800.webp 800w, /blog-assets/sci-fi-2026-disclosure-day-still.webp 1200w",
+    "width": 1200,
+    "height": 494
+  },
+  "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-480.webp 480w, /blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-800.webp 800w, /blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp 1200w",
+    "width": 1200,
+    "height": 496
+  },
+  "/blog-assets/sci-fi-2026-hoppers-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-hoppers-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-hoppers-still-480.webp 480w, /blog-assets/sci-fi-2026-hoppers-still-800.webp 800w, /blog-assets/sci-fi-2026-hoppers-still.webp 1200w",
+    "width": 1200,
+    "height": 636
+  },
+  "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still-480.webp 480w, /blog-assets/sci-fi-2026-the-end-of-oak-street-still-800.webp 800w, /blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp 1200w",
+    "width": 1200,
+    "height": 495
+  },
+  "/blog-assets/sci-fi-2026-redux-redux-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-redux-redux-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-redux-redux-still-480.webp 480w, /blog-assets/sci-fi-2026-redux-redux-still-800.webp 800w, /blog-assets/sci-fi-2026-redux-redux-still.webp 1200w",
+    "width": 1200,
+    "height": 494
+  },
+  "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp": {
+    "src": "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp",
+    "srcSet": "/blog-assets/sci-fi-2026-rose-of-nevada-still-480.webp 480w, /blog-assets/sci-fi-2026-rose-of-nevada-still-800.webp 800w, /blog-assets/sci-fi-2026-rose-of-nevada-still.webp 1200w",
+    "width": 1200,
+    "height": 881
   }
 }

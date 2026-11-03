@@ -31,11 +31,35 @@ for (const width of [320, 1440]) {
       await expect(page.locator(target!)).toHaveText(name);
     }
 
-    const cover = page.locator(".hq-article-prose img");
+    const cover = page.locator('img[src="/blog-assets/best-sci-fi-movies-2026-cover.webp"]');
     await expect.poll(() => cover.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
     expect(await cover.evaluate((image: HTMLImageElement) => image.currentSrc)).toMatch(width === 320 ? /-480\.webp$/ : /-800\.webp$/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await table.screenshot({ path: testInfo.outputPath(`sci-fi-table-${width}.png`) });
+
+    const stills = page.locator(".hq-film-still");
+    await expect(stills).toHaveCount(choices.length);
+    const variant = width === 320 ? /-still-480\.webp$/ : /-still-800\.webp$/;
+    for (const [name] of choices) {
+      const still = page.getByRole("region", { name, exact: true }).locator(".hq-film-still");
+      const image = still.getByRole("img");
+      await expect(image).toHaveAttribute("alt", /\S/);
+      await expect(image).toHaveAttribute("loading", "lazy");
+      await expect(still.locator("figcaption")).toHaveText(/\S/);
+      await image.scrollIntoViewIfNeeded();
+      await expect.poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
+      const display = await image.evaluate((el: HTMLImageElement) => ({
+        src: el.currentSrc,
+        fit: getComputedStyle(el).objectFit,
+        ratio: el.clientWidth / el.clientHeight,
+        originalRatio: Number(el.getAttribute("width")) / Number(el.getAttribute("height")),
+      }));
+      expect(display.src).toMatch(variant);
+      expect(display.fit).toBe("contain");
+      expect(display.ratio).toBeCloseTo(display.originalRatio, 1);
+    }
+    await stills.first().screenshot({ path: testInfo.outputPath(`sci-fi-still-${width}.png`) });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
     const contents = page.getByRole("navigation", { name: "Article contents" });
     await contents.locator("summary").click();

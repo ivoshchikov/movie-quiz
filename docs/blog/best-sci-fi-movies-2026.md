@@ -19,3 +19,9 @@ Apple TV Store lists Redux Redux at 109 minutes and AMC at 107. The article roun
 Original illustrated cover and share image generated with [artwork/sci-fi-2026.py](artwork/sci-fi-2026.py). The four symbols show types of sci-fi stories. The artwork uses no film frames or likenesses. Total WebP size across all five files is 77,172 bytes. Native article sections, comparison table, contents, sources and FAQ use the existing blog components. Release verification is tracked in the pull request. Google indexation requires a separate observation.
 
 Planned follow-ups on November 4 (delivery, viewing and assets), November 10 (links and Google inspection if available), December 1 (search and game referrals), and December 18–20 and January 4 (release and year-end checks).
+
+## November 3 stills update
+
+Added one owner-supplied still to each of the seven film sections. English captions and alt text describe the visible frames. The responsive WebP versions are 480, 800 and 1200 pixels wide and retain the original framing. The article reserves space before images load and requests stills lazily.
+
+The seven source PNGs total 13,956,859 bytes. The seven 480 px WebPs total 127,628 bytes. The seven 800 px WebPs total 247,350 bytes, and the seven 1200 px WebPs total 397,360 bytes. The existing cover continues to serve as the lead image.

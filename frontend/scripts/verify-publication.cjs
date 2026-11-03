@@ -256,7 +256,7 @@ async function runChecks(options = {}) {
       } catch (error) { fail("404", canonicalOrigin + route, error.message); }
     }
     // Fetch only image URLs from the trusted build, with deduplication and a bounded budget.
-    if (assets.size > 180) throw new Error("Image budget exceeded; review the catalog before increasing it");
+    if (assets.size > 190) throw new Error("Image budget exceeded; review the catalog before increasing it");
     for (const url of assets) {
       report.currentUrl = url; checkpoint();
       try {
