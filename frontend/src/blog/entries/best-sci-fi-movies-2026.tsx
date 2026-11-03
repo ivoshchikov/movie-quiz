@@ -6,6 +6,7 @@ const cover = "/blog-assets/best-sci-fi-movies-2026-cover.webp";
 const films = [
   {
     id: "project-hail-mary",
+    still: { height: 668, alt: "Ryland Grace sits inside a circular spacecraft cabin surrounded by illuminated instrument panels.", caption: "Ryland Grace in the spacecraft cabin." },
     title: "Project Hail Mary",
     angle: "For a space adventure with some warmth",
     mood: "First contact, spaceflight and a hopeful streak",
@@ -18,6 +19,7 @@ const films = [
   },
   {
     id: "disclosure-day",
+    still: { height: 494, alt: "A woman in pink speaks with two seated guests on a television news set as another man looks on.", caption: "A conversation on the television news set in Disclosure Day." },
     title: "Disclosure Day",
     angle: "For a first-contact mystery on Earth",
     mood: "Alien contact, secrecy and public panic",
@@ -30,6 +32,7 @@ const films = [
   },
   {
     id: "good-luck-have-fun-dont-die",
+    still: { height: 496, alt: "A man in makeshift gear stands among diners gathered around a long table.", caption: "The stranger and the diner patrons in Good Luck, Have Fun, Don’t Die." },
     title: "Good Luck, Have Fun, Don’t Die",
     angle: "For an AI comedy that runs hot",
     mood: "Time travel, AI anxiety and dark comedy",
@@ -42,6 +45,7 @@ const films = [
   },
   {
     id: "hoppers",
+    still: { height: 636, alt: "A large bear holds up a beaver in front of a group of woodland animals.", caption: "A gathering of woodland animals in Hoppers." },
     title: "Hoppers",
     angle: "For a family movie with an actual sci-fi idea",
     mood: "Robot bodies, animal communication and comedy",
@@ -54,6 +58,7 @@ const films = [
   },
   {
     id: "the-end-of-oak-street",
+    still: { height: 495, alt: "A person runs past a row of suburban houses with a large creature close behind.", caption: "A chase through the neighborhood in The End of Oak Street." },
     title: "The End of Oak Street",
     angle: "For a creature adventure under two hours",
     mood: "A displaced neighborhood and creature suspense",
@@ -66,6 +71,7 @@ const films = [
   },
   {
     id: "redux-redux",
+    still: { height: 494, alt: "Two people face each other in a dark scene, one holding a long object in the firelight.", caption: "A nighttime encounter in Redux Redux." },
     title: "Redux Redux",
     angle: "For a dark story about parallel worlds",
     mood: "Alternate realities, grief and revenge",
@@ -78,6 +84,7 @@ const films = [
   },
   {
     id: "rose-of-nevada",
+    still: { height: 881, alt: "A red fishing boat sits alongside a stone pier with a striped harbor marker.", caption: "The fishing boat at the harbor in Rose of Nevada." },
     title: "Rose of Nevada",
     angle: "For a strange, slow time-travel film",
     mood: "Time displacement, coastal life and unease",
@@ -154,6 +161,10 @@ const post: BlogPost = {
     {films.map(film => <section className="hq-watchlist-entry" key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{film.title}</h2>
       <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · US release {film.release} · {film.runtime} · <a href={film.url}>{film.viewing}</a></p>
+      <figure className="hq-film-still">
+        <ArticleImage src={`/blog-assets/sci-fi-2026-${film.id}-still.webp`} width={1200} height={film.still.height} alt={film.still.alt} />
+        <figcaption>{film.still.caption}</figcaption>
+      </figure>
       <p>{film.premise}</p>
       <p>{film.reason}</p>
     </section>)}
