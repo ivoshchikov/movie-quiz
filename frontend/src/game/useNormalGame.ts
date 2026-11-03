@@ -63,11 +63,11 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       if (value.id !== id || value.category_id !== catId || value.difficulty_id !== diffId) throw new Error("unexpected-game");
       server = value; serverAt = Date.parse(value.server_now); receivedAt = performance.now();
       update({ score: value.score, lives: value.lives, elapsed: value.time_secs });
-      if (game) { game.score = value.score; game.elapsedSecs = value.time_secs; checkpointGame(game); }
+      if (game) { game.rulesVersion = value.rules_version; game.score = value.score; game.elapsedSecs = value.time_secs; checkpointGame(game); }
     }
     function baseResult(reason: FinishReason): GameResult {
       return { id, serverGame: true, playKey, userId: game!.userId, categoryId: catId, difficultyId: diffId,
-        categoryName: game!.categoryName, difficultyName: game!.difficultyName, score: state.score,
+        rulesVersion: game!.rulesVersion, categoryName: game!.categoryName, difficultyName: game!.difficultyName, score: state.score,
         elapsedSecs: state.elapsed, finishReason: reason, finishedAt: Date.now(), saveStatus: game!.userId ? "pending" : "device" };
     }
     function finish(reason: FinishReason, show = true, keepalive = false) {
@@ -170,7 +170,7 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       if (server.status !== "finished") update({ elapsed: Math.max(0, Math.floor((now() - Date.parse(server.started_at)) / 1000)) });
       if (["playing", "image-loading", "image-error"].includes(state.phase) && server.round) {
         const ms = Math.max(0, Date.parse(server.round.deadline_at) - now());
-        update({ seconds: Math.ceil(ms / 1000), remaining: ms / ((state.level?.time_limit_secs ?? 1) * 1000) });
+        update({ seconds: Math.ceil(ms / 1000), remaining: Math.min(1, ms / Math.max(1, Date.parse(server.round.deadline_at) - Date.parse(server.round.issued_at))) });
         if (ms === 0) sendAnswer(null);
       } else if (state.phase === "feedback" && performance.now() >= feedbackAt) {
         if (server.status === "finished") finish(server.finish_reason!); else void loadQuestion();

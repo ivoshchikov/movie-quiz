@@ -25,7 +25,7 @@ async function fixture(page: Page) {
     }
     return route.fulfill({ status: data.failProfile ? 503 : 200, contentType: "application/json", body: JSON.stringify(data.failProfile ? { message: "fixture account error" } : data.profile) });
   });
-  await page.route("**/rest/v1/user_best?**", route => {
+  await page.route("**/rest/v1/classic_bests?**", route => {
     data.bestCalls++;
     const url = new URL(route.request().url());
     const category = url.searchParams.get("category_id"), difficulty = url.searchParams.get("difficulty_level_id");
@@ -47,15 +47,15 @@ async function fixture(page: Page) {
 async function loaded(page: Page) {
   await page.goto("/profile");
   await expect(page.getByRole("heading", { name: "MovieFan", exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Play again: Movie Stills — Hard", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Play again: Movies — Hard", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Refresh results", exact: true })).toBeEnabled();
 }
 
 test("records group in catalog order, with a count, correct duration and a fixed identity", async ({ page }) => {
   const { calls, data } = await fixture(page);
   await loaded(page);
-  await expect(page.locator(".hq-profile-group h3")).toHaveText(["Movie Stills", "Actors"]);
-  await expect(page.getByRole("table", { name: "Movie Stills personal bests" }).getByRole("rowheader")).toHaveText(["Easy", "Hard"]);
+  await expect(page.locator(".hq-profile-group h3")).toHaveText(["Movies", "Actors"]);
+  await expect(page.getByRole("table", { name: "Movies personal bests" }).getByRole("rowheader")).toHaveText(["Easy", "Hard"]);
   await expect(page.locator(".hq-profile-count")).toHaveText("3");
   await expect(page.getByRole("cell", { name: "00:00", exact: true })).toBeVisible();
   await expect(page.getByRole("cell", { name: "01:05", exact: true })).toBeVisible();
@@ -84,13 +84,13 @@ test("record actions pass the exact category and difficulty to the game and lead
   expect(calls.filter(call => call.name === "quiz_start").at(-1)?.payload).toMatchObject({ p_category_id: 2, p_difficulty_id: 3 });
 });
 
-test("historical scores stay visible when only that exact quiz is unavailable", async ({ page }) => {
-  const { data } = await fixture(page); data.counts.set("1:3", 0);
+test("records stay visible when their entire category is unavailable", async ({ page }) => {
+  const { data } = await fixture(page); data.counts.set("1:null", 0);
   await page.goto("/profile");
-  await expect(page.getByText("Quiz unavailable", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Play again: Movie Stills — Hard", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Play again: Movie Stills — Easy", exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "View leaderboard: Movie Stills — Hard", exact: true })).toBeVisible();
+  await expect(page.getByText("Quiz unavailable", { exact: true })).toHaveCount(2);
+  await expect(page.getByRole("link", { name: "Play again: Movies — Hard", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Play again: Movies — Easy", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "View leaderboard: Movies — Hard", exact: true })).toBeVisible();
   await expect(page.getByRole("cell", { name: "01:05", exact: true })).toBeVisible();
 });
 
@@ -114,7 +114,7 @@ test("a catalog failure keeps records and Daily visible, with its own retry", as
   await page.getByRole("radio", { name: "Classic", exact: true }).click();
   data.failCatalog = false;
   await page.getByRole("button", { name: "Retry quiz details", exact: true }).click();
-  await expect(page.getByRole("link", { name: "Play again: Movie Stills — Hard", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Play again: Movies — Hard", exact: true })).toBeVisible();
 });
 
 test("a results failure leaves identity and Daily available and is never an empty profile", async ({ page }) => {
@@ -160,7 +160,7 @@ test("empty results explain how to earn a record and offer a working quiz entry"
   await expect(page.getByText(/save your first record/)).toBeVisible();
   await page.getByRole("link", { name: "Start a quiz", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole("button", { name: "Play Movie Stills", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Play Movies", exact: true })).toBeVisible();
 });
 
 for (const [label, invalid] of [["negative score", { best_score: -1 }], ["fractional score", { best_score: 1.5 }], ["missing duration", { best_time: null }], ["negative duration", { best_time: -1 }], ["invalid category", { category_id: "1" }]] as const) {
@@ -196,12 +196,12 @@ for (const invalid of [{ current_streak: -1, longest_streak: 7, total_correct: 1
 for (const missing of [false, true]) test(`availability ${missing ? "missing metadata" : "failure"} is not an unavailable quiz`, async ({ page }) => {
   const { data } = await fixture(page); data.failCount = !missing; data.missingCount = missing;
   await page.goto("/profile");
-  await expect(page.getByRole("button", { name: "Retry availability for Movie Stills — Hard", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Retry availability for Movies — Hard", exact: true })).toBeVisible();
   await expect(page.getByText("Quiz unavailable", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "View leaderboard: Movie Stills — Hard", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View leaderboard: Movies — Hard", exact: true })).toBeVisible();
   data.failCount = false; data.missingCount = false;
-  await page.getByRole("button", { name: "Retry availability for Movie Stills — Hard", exact: true }).click();
-  await expect(page.getByRole("link", { name: "Play again: Movie Stills — Hard", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Retry availability for Movies — Hard", exact: true }).click();
+  await expect(page.getByRole("link", { name: "Play again: Movies — Hard", exact: true })).toBeVisible();
 });
 
 test("account load failure never opens nickname creation and can recover independently", async ({ page }) => {
@@ -376,7 +376,7 @@ test("a held read times out; its late response cannot replace a retried result",
   await fixture(page);
   let release = () => {}, first = true;
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/user_best?**", async route => {
+  await page.route("**/rest/v1/classic_bests?**", async route => {
     if (first) { first = false; await held; await route.fulfill({ contentType: "application/json", body: JSON.stringify([row(1, 1, 999, 1)]) }).catch(() => {}); }
     else await route.fallback();
   });
@@ -397,7 +397,7 @@ test("late private reads stay hidden after sign-out", async ({ page }) => {
   await fixture(page);
   let release = () => {};
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/user_best?**", async route => { await held; await route.fallback().catch(() => {}); });
+  await page.route("**/rest/v1/classic_bests?**", async route => { await held; await route.fallback().catch(() => {}); });
   await page.goto("/profile");
   await expect(page.getByText("Loading your results…", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Account menu" }).click();
@@ -412,7 +412,7 @@ test("switching accounts isolates identity, records and Daily from late response
   await fixture(page);
   let release = () => {}, waiting = false;
   const held = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/rest/v1/user_best?**", async route => {
+  await page.route("**/rest/v1/classic_bests?**", async route => {
     if (new URL(route.request().url()).searchParams.get("user_id") === "eq.fixture-user") {
       waiting = true; await held;
       await route.fulfill({ contentType: "application/json", body: JSON.stringify([row(1, 1, 999, 1)]) }).catch(() => {});
@@ -477,7 +477,7 @@ for (const [width, height] of [[320, 480], [320, 568], [375, 812], [430, 932], [
     ]) });
   });
   await page.goto("/profile");
-  await expect(page.getByRole("link", { name: "Play again: Movie Stills — Hard", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Play again: Movies — Hard", exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   for (const action of await page.locator(".hq-profile-record-actions a, .hq-profile-refresh, .hq-profile-daily a").all()) {
     const rect = await action.boundingBox();
@@ -487,4 +487,28 @@ for (const [width, height] of [[320, 480], [320, 568], [375, 812], [430, 932], [
     expect(rect!.x + rect!.width).toBeLessThanOrEqual(width);
   }
   if (width === 1366 || width === 375) await page.screenshot({ path: testInfo.outputPath(`profile-${width}.png`), fullPage: true });
+});
+
+test("Classic archives remain separate in profile and public rankings", async ({ page }) => {
+  await fixture(page);
+  await page.route("**/rest/v1/user_best?**", route => route.fulfill({
+    contentType: "application/json", body: JSON.stringify([row(1,3,99,200)]),
+  }));
+  await page.route("**/rest/v1/rpc/quiz_leaderboard", route => route.fulfill({
+    contentType: "application/json", body: JSON.stringify({
+      total: 1, top: [{ rank: 1, user_id: "fixture-user", nickname: "Archived player", best_score: 99, best_time: 200 }], me: null,
+    }),
+  }));
+  await loaded(page);
+  await expect(page.getByRole("cell", { name: "99", exact: true })).toHaveCount(0);
+  await page.getByRole("link", { name: "Archived Classic records" }).click();
+  await expect(page.getByRole("heading", { name: /Archived personal bests/ })).toBeVisible();
+  await expect(page.getByRole("cell", { name: "99", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Play again:/ })).toHaveCount(0);
+  await page.getByRole("link", { name: "View leaderboard: Movies — Hard" }).click();
+  await expect(page).toHaveURL(/rules=legacy/);
+  await expect(page.getByRole("cell", { name: /Archived player/ })).toBeVisible();
+  await page.getByRole("link", { name: "Current Classic rankings" }).click();
+  await expect(page.getByRole("cell", { name: "FilmExpert" })).toBeVisible();
+  await expect(page.getByRole("cell", { name: /Archived player/ })).toHaveCount(0);
 });

@@ -174,8 +174,8 @@ export async function checkAnswer(token: string, answer: string) {
 }
 
 /* МОИ ЛУЧШИЕ */
-export async function getMyBest(userId: string, signal?: AbortSignal): Promise<UserBestRow[]> {
-  const query = supabase.from("user_best")
+export async function getMyBest(userId: string, signal?: AbortSignal, legacy = false): Promise<UserBestRow[]> {
+  const query = supabase.from(legacy ? "user_best" : "classic_bests")
     .select("category_id,difficulty_level_id,best_score,best_time,updated_at")
     .eq("user_id", userId).order("updated_at", { ascending: false });
   const { data, error } = await (signal ? query.abortSignal(signal) : query);
@@ -189,8 +189,8 @@ export async function getMyBest(userId: string, signal?: AbortSignal): Promise<U
     best_score: row.best_score, best_time: row.best_time, updated_at: typeof row.updated_at === "string" ? row.updated_at : "" }));
 }
 
-export async function getPersonalBest(userId: string, categoryId: number, difficultyId: number, signal: AbortSignal): Promise<PersonalBest | null> {
-  const { data, error } = await supabase.from("user_best")
+export async function getPersonalBest(userId: string, categoryId: number, difficultyId: number, signal: AbortSignal, legacy = false): Promise<PersonalBest | null> {
+  const { data, error } = await supabase.from(legacy ? "user_best" : "classic_bests")
     .select("category_id,difficulty_level_id,best_score,best_time")
     .eq("user_id", userId).eq("category_id", categoryId).eq("difficulty_level_id", difficultyId)
     .limit(1).abortSignal(signal);

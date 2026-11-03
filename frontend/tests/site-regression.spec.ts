@@ -5,7 +5,7 @@ import { dailyFixture } from './daily-fixtures';
 test('analytics keeps Google Arguments commands and records quiz events once', async ({ page }) => {
   await mockQuizApi(page);
   await page.goto('/');
-  await page.getByRole('button', { name: 'Play Movie Stills' }).click();
+  await page.getByRole('button', { name: 'Play Movies' }).click();
   await page.getByRole('button', { name: 'Fixture answer', exact: true }).click();
   await expect(page.getByText('Correct! +1 point', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Exit quiz', exact: true }).click();

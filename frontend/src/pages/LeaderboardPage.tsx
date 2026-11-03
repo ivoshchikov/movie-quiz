@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { Link, useSearchParams } from "react-router-dom";
-import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
+import { classicCategoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import { LEADERBOARD_TIMEOUT } from "../leaderboard/useLeaderboard";
 import Leaderboard from "../components/Leaderboard";
 import SiteIcon from "../components/SiteIcon";
@@ -24,8 +24,9 @@ import "../daily.css";
 import "../leaderboard.css";
 
 function ClassicRankings() {
-  const { categories, difficulties, loading, error, reload } = useQuizCatalog(false, LEADERBOARD_TIMEOUT);
+  const { categories, difficulties, loading, error, reload } = useQuizCatalog(LEADERBOARD_TIMEOUT);
   const [params, setParams] = useSearchParams();
+  const legacy = params.get("rules") === "legacy";
   const requestedCategory = Number(params.get("category"));
   const requestedDifficulty = Number(params.get("difficulty"));
   const category = categories.find(cat => cat.id === requestedCategory) ?? categories[0];
@@ -45,7 +46,13 @@ function ClassicRankings() {
     setParams(next);
   }
 
+  const otherRules = new URLSearchParams(params);
+  if (legacy) otherRules.delete("rules"); else otherRules.set("rules", "legacy");
   return <>
+      <div className="hq-classic-record-scope">
+        <p>{legacy ? "Classic archive · Records from the previous rules." : "Classic · Records under the current rules."}</p>
+        <Link className="hq-text-action" to={`?${otherRules}`}>{legacy ? "Current Classic rankings" : "Archived Classic rankings"}</Link>
+      </div>
       {loading ? <StatusMessage tone="loading">Loading quiz options…</StatusMessage>
         : error ? <StatusMessage tone="error">Quiz options could not be loaded. <button className="hq-inline-action" onClick={reload}>Try again</button></StatusMessage>
         : !category || !difficulty ? <StatusMessage>No quizzes available yet.</StatusMessage>
@@ -53,15 +60,15 @@ function ClassicRankings() {
           <div className="hq-leaderboard-filters">
             <RadioGroup value={category.id} onChange={id => select(id, difficulty.id)} aria-label="Select category" className="hq-leaderboard-category-desktop">
               <RadioGroup.Label className="hq-legend">Category</RadioGroup.Label>
-              <div className="hq-leaderboard-category-options">{categories.map(cat => <RadioGroup.Option as="button" type="button" key={cat.id} value={cat.id} className="hq-leaderboard-filter">{({ checked }) => <><span>{categoryLabel(cat)}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div>
+              <div className="hq-leaderboard-category-options">{categories.map(cat => <RadioGroup.Option as="button" type="button" key={cat.id} value={cat.id} className="hq-leaderboard-filter">{({ checked }) => <><span>{classicCategoryLabel(cat)}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div>
             </RadioGroup>
-            <div className="hq-leaderboard-category-mobile"><label className="hq-legend" htmlFor="leaderboard-category">Category</label><select id="leaderboard-category" value={category.id} onChange={event => select(Number(event.target.value), difficulty.id)}>{categories.map(cat => <option key={cat.id} value={cat.id}>{categoryLabel(cat)}</option>)}</select></div>
+            <div className="hq-leaderboard-category-mobile"><label className="hq-legend" htmlFor="leaderboard-category">Category</label><select id="leaderboard-category" value={category.id} onChange={event => select(Number(event.target.value), difficulty.id)}>{categories.map(cat => <option key={cat.id} value={cat.id}>{classicCategoryLabel(cat)}</option>)}</select></div>
             <RadioGroup value={difficulty.id} onChange={id => select(category.id, id)} aria-label="Select level">
               <RadioGroup.Label className="hq-legend">Difficulty</RadioGroup.Label>
               <div className="hq-leaderboard-level-options">{difficulties.map(level => <RadioGroup.Option as="button" type="button" key={level.id} value={level.id} className="hq-leaderboard-filter">{({ checked }) => <><span>{level.name}</span>{checked && <SiteIcon name="check" />}</>}</RadioGroup.Option>)}</div>
             </RadioGroup>
           </div>
-          <Leaderboard categoryId={category.id} difficultyId={difficulty.id} categoryLabel={categoryLabel(category)} difficultyLabel={difficulty.name} />
+          <Leaderboard categoryId={category.id} difficultyId={difficulty.id} categoryLabel={classicCategoryLabel(category)} difficultyLabel={difficulty.name} legacy={legacy} />
         </>}
   </>;
 }

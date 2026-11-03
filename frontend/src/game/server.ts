@@ -19,6 +19,7 @@ export interface ServerGame {
   status: "active" | "finished";
   category_id: number;
   difficulty_id: number;
+  rules_version?: 1 | 2;
   bank_size: number;
   started_at: string;
   server_now: string;
@@ -64,6 +65,7 @@ export function parseServerGame(value: unknown): ServerGame {
     !["active", "finished"].includes(g.status) ||
     !Number.isInteger(g.category_id) ||
     !Number.isInteger(g.difficulty_id) ||
+    (g.rules_version !== undefined && g.rules_version !== 1 && g.rules_version !== 2) ||
     !Number.isInteger(g.bank_size) ||
     !Number.isInteger(g.time_secs) ||
     g.time_secs < 0 ||

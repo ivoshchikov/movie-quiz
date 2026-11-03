@@ -24,7 +24,7 @@ for (const agent of agents.filter(a => a.browser)) test.describe(agent.name, () 
     await page.clock.install();
     const calls = await telemetry(page);
     await page.goto("/");
-    await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+    await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
     if (!agent.bot) await expect.poll(() => calls.length).toBe(2);
     await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Blog", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Blog", exact: true })).toBeVisible();
@@ -43,9 +43,9 @@ test("WebDriver with an ordinary UA does not collect, including after reload", a
   const calls = await telemetry(page);
   await page.goto("/");
   expect(await page.evaluate(() => navigator.webdriver)).toBe(true);
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   await page.reload();
-  await expect(page.getByRole("button", { name: "Play Movie Stills" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
   expect(calls).toEqual([]);
   expect(await page.evaluate(() => localStorage.getItem("hq_visitor_id"))).toBeNull();
 });

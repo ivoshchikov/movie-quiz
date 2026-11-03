@@ -86,7 +86,7 @@ export async function gameFixture(
       ),
     }),
   );
-  await page.route("**/rest/v1/user_best?**", (route) => {
+  await page.route("**/rest/v1/classic_bests?**", (route) => {
     const u = new URL(route.request().url());
     return route.fulfill({
       contentType: "application/json",
@@ -139,6 +139,7 @@ export async function gameFixture(
         id: p.p_session,
         category_id: p.p_category_id,
         difficulty_id: p.p_difficulty_id,
+        rules_version: 2,
         bank_size: options.size ?? 6,
         score: 0,
         lives: options.lives ?? 3,

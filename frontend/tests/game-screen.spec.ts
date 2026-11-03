@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { gameFixture, gameAnswers as answers } from "./game-fixtures";
 async function start(page: Page, choices = answers) {
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(
     page.getByRole("button", { name: choices[0], exact: true }),
   ).toBeEnabled();
@@ -24,7 +24,7 @@ test("server clock runs during image loading and a missing image cannot grant ex
     await r.fallback();
   });
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.getByText("Loading image…", { exact: true })).toBeVisible();
   await page.clock.runFor(10000);
   await expect(page.getByText("Time’s up. 1 life lost.")).toBeVisible();
@@ -193,7 +193,7 @@ test("failed setup and malformed server responses are recoverable without invent
   const d = await gameFixture(page);
   d.failStart = true;
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.getByRole("alert")).toContainText("couldn’t load");
   d.failStart = false;
   d.malformed = true;
@@ -229,7 +229,7 @@ test("direct play without settings remains usable and an empty bank is not a vic
   await page.goto("/play");
   await expect(page.getByRole("link", { name: "Choose a quiz" })).toBeVisible();
   await page.goto("/");
-  await page.getByRole("button", { name: "Play Movie Stills" }).click();
+  await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(
     page.getByRole("heading", { name: "More questions are on the way" }),
   ).toBeVisible();
@@ -255,7 +255,7 @@ for (const viewport of [
         : route.fallback(),
     );
     await page.goto("/");
-    await page.getByRole("button", { name: "Play Movie Stills" }).click();
+    await page.getByRole("button", { name: "Play Movies" }).click();
     await expect(page.getByRole("alert")).toContainText("image couldn’t load");
     const fits = async () => {
       const geometry = await page.evaluate(() => ({
@@ -423,7 +423,7 @@ test("a resumed tab displays the authoritative inactive result without submittin
 test('guest admission limits explain the wait and retry the same attempt without a fabricated result',async({page})=>{
  const data=await gameFixture(page);let limited=true;
  await page.route('**/rest/v1/rpc/quiz_start',route=>limited?route.fulfill({status:429,contentType:'application/json',body:JSON.stringify({code:'PT429',message:'Too many new guest games'})}):route.fallback());
- await page.goto('/');await page.getByRole('button',{name:'Play Movie Stills'}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Play Movies'}).click();
  await expect(page.getByRole('alert')).toHaveText('Guest games are temporarily busy. Please wait and try again.');expect(data.games.size).toBe(0);
  limited=false;await page.getByRole('button',{name:'Try again',exact:true}).click();await expect(page.getByRole('button',{name:answers[0],exact:true})).toBeEnabled();expect(data.games.size).toBe(1);
 });

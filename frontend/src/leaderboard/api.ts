@@ -37,9 +37,10 @@ export async function quizRanking(
   difficultyId: number,
   limit: number,
   signal?: AbortSignal,
+  legacy = false,
 ) {
   const value = await gameplayRpc(
-    "quiz_leaderboard",
+    legacy ? "quiz_leaderboard" : "classic_leaderboard",
     {
       p_category_id: categoryId,
       p_difficulty_id: difficultyId,

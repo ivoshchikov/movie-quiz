@@ -30,7 +30,7 @@ for (const width of [320, 1440]) test(`direct mode links stay passive and open t
     }
     if (path === '/time-attack') await expect(page.getByRole('button', { name: 'Start Time Attack', exact: true })).toBeEnabled();
     if (path === '/this-or-that') await expect(page.getByRole('button', { name: 'Choose my first pair', exact: true })).toBeEnabled();
-    if (path === '/') await expect(page.getByRole('button', { name: 'Play Movie Stills', exact: true })).toBeEnabled();
+    if (path === '/') await expect(page.getByRole('button', { name: 'Play Movies', exact: true })).toBeEnabled();
     await page.screenshot({ path: test.info().outputPath(`landing-${path.replaceAll('/', '') || 'home'}-${width}.png`), fullPage: true });
   }
   expect(calls.filter(c => /^(quiz_start|daily_begin|time_attack_start|this_that_open|submit_daily_answer)$/.test(c.name))).toEqual([]);

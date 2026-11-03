@@ -763,3 +763,120 @@ test('Time Attack admits all categories and isolates new category snapshots, ret
   await assert.rejects(attackStart(0),/Invalid Time Attack/);await assert.rejects(attackStart(5),/Invalid Time Attack/);
  }finally{await db.exec('delete from public.question where id between 13030 and 13049');await attackCleanup();}
 });
+
+test('Classic migration preserves legacy results and isolates the full category banks and new records', async t => {
+  await reset();
+  const seed = "2055-01-10T12:00:00Z";
+  const clock = ms => setTime(new Date(Date.parse(seed) + ms).toISOString());
+  const ids = (await db.query(`insert into public.question(id,image_url,correct_answer,options_json,category_id,difficulty_level_id,retired_at)
+    select 15000+c*100+n,'classic/'||c||'-'||n||'.webp','One','["One","Two","Three","Four"]',c,1+(n%3),
+      case when n=7 then clock_timestamp() end
+    from generate_series(1,4)c cross join generate_series(1,7)n returning id`)).rows.map(r=>r.id);
+  const questions = () => value("select md5(jsonb_agg(to_jsonb(q) order by id)::text) v from public.question q");
+  const before = await questions();
+  await clock(0);
+  const legacy = await next((await start(1,1)).id);
+  await db.query("insert into public.user_best(user_id,category_id,difficulty_level_id,best_score,best_time) values($1,1,1,99,123)",[player]);
+  const archive = () => value("select jsonb_agg(to_jsonb(b) order by user_id,category_id,difficulty_level_id) v from public.user_best b");
+  const oldRecords = await archive();
+  const sql = await readFile(new URL('../migrations/20261103090649_classic_category_bank.sql',import.meta.url),'utf8');
+  await db.exec('begin');
+  try { await db.exec(sql.replaceAll('clock_timestamp()', 'hq_private.test_clock()')); await db.exec('commit'); }
+  catch(e) { await db.exec('rollback'); throw e; }
+  try {
+    await t.test('pre-release snapshots, clocks, metadata and records stay intact', async () => {
+      assert.equal(await questions(), before);
+      assert.deepEqual(await archive(), oldRecords);
+      const resumed = await start(1,1,legacy.id);
+      assert.equal(resumed.rules_version,1);
+      assert.equal(resumed.bank_size,3);
+      assert.equal(resumed.lives,3);
+      assert.equal(Date.parse(resumed.round.deadline_at)-Date.parse(resumed.round.issued_at),30000);
+      await answer(resumed,'One');
+      const ended = await finish(legacy.id);
+      assert.deepEqual(ended.personal_best,{score:99,time:123});
+      assert.equal(await value('select count(*) v from public.classic_bests'),0);
+    });
+    await t.test('all twelve settings take the same eligible questions per category, with independent clocks and records', async () => {
+      let i=0;
+      for (const category of [1,2,3,4]) {
+        const expected=(await db.query(`select q.id from public.question q
+          where q.category_id=$1 and q.retired_at is null and hq_private.valid_question(q.options_json,q.correct_answer) order by q.id`,[category])).rows.map(r=>r.id);
+        assert.equal(await value('select public.count_questions($1,null) v',[category]),expected.length);
+        for (const [level,seconds,lives] of [[1,45,5],[2,30,3],[3,20,1]]) {
+          const time=(++i)*60000;
+          await clock(time);
+          const s=await start(category,level);
+          assert.equal(s.rules_version,2);assert.equal(s.lives,lives);assert.equal(s.bank_size,expected.length);
+          const bank=(await db.query('select question_id from hq_private.game_rounds where session_id=$1 order by question_id',[s.id])).rows.map(r=>r.question_id);
+          assert.deepEqual(bank,expected);
+          const first=await next(s.id);
+          assert.equal(Date.parse(first.round.deadline_at)-Date.parse(first.round.issued_at),seconds*1000);
+          await clock(time+1000);
+          const hit=await answer(first,'One');assert.equal(hit.score,1);assert.equal(hit.lives,lives);
+          await clock(time+2000);
+          const second=await next(s.id);assert.equal(second.round.number,2);assert.notEqual(second.round.question_id,first.round.question_id);
+          assert.equal(Date.parse(second.round.deadline_at)-Date.parse(second.round.issued_at),seconds*1000);
+          assert.equal(Date.parse(second.round.issued_at),Date.parse(seed)+time+2000);
+          const done=await finish(s.id);
+          assert.equal(done.record_outcome,'first');assert.equal(done.previous_best,null);assert.deepEqual(done.personal_best,{score:1,time:2});
+          const board=await value('select public.classic_leaderboard($1,$2) v',[category,level]);
+          assert.equal(board.total,1);assert.equal(board.me.best_score,1);
+        }
+      }
+      assert.equal(await value('select count(*) v from public.classic_bests'),12);
+      assert.deepEqual(await archive(),oldRecords);
+      assert.equal((await value('select public.quiz_leaderboard(1,1) v')).me.best_score,99);
+      assert.equal((await value('select public.classic_leaderboard(1,1) v')).me.best_score,1);
+    });
+    await t.test('wrong answers spend one life and concurrent answers at the exact deadline settle only once', async () => {
+      for(const [level,seconds,lives] of [[1,45,5],[2,30,3],[3,20,1]]) {
+        let time=3600000+level*600000;
+        await clock(time);
+        const first=await next((await start(3,level)).id);
+        await clock(time+seconds*1000-1);
+        assert.equal((await answer(first,null)).lives,lives);
+        await clock(time+seconds*1000);
+        const results=[];
+        if(native){
+          const clients=[new Client({connectionString:native}),new Client({connectionString:native})];
+          try {
+            await Promise.all(clients.map(c=>c.connect()));
+            await Promise.all(clients.map(c=>c.query("select set_config('request.jwt.claim.sub',$1,false)",[player])));
+            results.push(...(await Promise.all(clients.map((c,i)=>c.query('select public.quiz_answer($1,$2,$3) v',[first.id,first.round.id,i===0?'One':null])))).map(r=>r.rows[0].v));
+          } finally { await Promise.all(clients.map(c=>c.end())); }
+        } else {
+          results.push(await answer(first,'One'),await answer(first,null));
+        }
+        for(const r of results){assert.equal(r.lives,lives-1);assert.equal(r.score,0);assert.equal(r.round.outcome,'timeout');}
+        assert.equal(await value('select count(*) v from hq_private.answer_events where round_id=$1',[first.round.id]),1);
+        let current=results[0];
+        for(let i=1;i<lives;i++){
+          time+=i===1?seconds*1000+1800:1800;
+          await clock(time);
+          current=await answer(await next(first.id),'Two');
+          assert.equal(current.lives,lives-i-1);assert.equal(current.round.outcome,'wrong');
+        }
+        assert.equal(current.status,'finished');assert.equal(current.finish_reason,'out-of-lives');
+        assert.equal((await answer(first,'One')).lives,0);
+      }
+    });
+    await t.test('current records are owner-readable and cannot be forged', async () => {
+      await uid(player);await db.exec('set role authenticated');
+      try {
+        assert.equal(await value('select count(*) v from public.classic_bests'),12);
+        await assert.rejects(db.exec('update public.classic_bests set best_score=1000'),/permission denied/);
+        await uid(other);
+        assert.equal(await value('select count(*) v from public.classic_bests'),0);
+      } finally { await db.exec('reset role'); }
+      await uid(null);await db.exec('set role anon');
+      try {
+        await assert.rejects(db.exec('select * from public.classic_bests'),/permission denied/);
+        assert.equal((await value('select public.classic_leaderboard(1,1) v')).top[0].best_score,1);
+      } finally { await db.exec('reset role'); }
+    });
+  } finally {
+    await setTime(null);
+    await db.query('delete from public.question where id=any($1)',[ids]);
+  }
+});

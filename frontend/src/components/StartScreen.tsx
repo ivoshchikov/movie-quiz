@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { countQuestions } from "../api";
 import featuredPost from "../featuredPostMetadata.json";
-import { categoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
+import { classicCategoryLabel, useQuizCatalog } from "../hooks/useQuizCatalog";
 import QuizFilters from "./QuizFilters";
 import pageMetadata from "../pageMetadata.json";
 import Seo from "./Seo";
@@ -26,11 +26,11 @@ export function ClassicSetup() {
   const navigate = useNavigate();
   const location = useLocation();
   const requested = location.state as QuizSelection | null;
-  const { categories, difficulties, loading, error, reload } = useQuizCatalog(true);
+  const { categories, difficulties, loading, error, reload } = useQuizCatalog();
   const categoryId = (categories.find(c => c.id === Number(params.get("category"))) ?? categories.find(c => c.id === requested?.categoryId) ?? categories[0])?.id;
   const difficultyId = (difficulties.find(d => d.id === Number(params.get("difficulty"))) ?? difficulties.find(d => d.id === requested?.difficultyId) ?? difficulties.find(d => d.key === "easy") ?? difficulties[0])?.id;
-  const selectionKey = `${categoryId}:${difficultyId}`;
-  const loadAvailability = useCallback((signal: AbortSignal) => countQuestions(categoryId ?? 0, difficultyId, signal), [categoryId, difficultyId]);
+  const selectionKey = String(categoryId);
+  const loadAvailability = useCallback((signal: AbortSignal) => countQuestions(categoryId ?? 0, undefined, signal), [categoryId]);
   const availability = useReadRequest(selectionKey, loadAvailability, !loading && !error && categoryId != null && difficultyId != null);
 
   const category = categories.find(cat => cat.id === categoryId);
@@ -46,16 +46,17 @@ export function ClassicSetup() {
             : error ? <StatusMessage tone="error">Quiz options could not be loaded. <button className="hq-inline-action" onClick={reload}>Try again</button></StatusMessage>
             : !categories.length || !difficulties.length ? <StatusMessage>New quizzes are coming soon.</StatusMessage>
             : <>
-              <QuizFilters categories={categories} difficulties={difficulties} categoryId={categoryId} difficultyId={difficultyId} onCategoryChange={id => select("category", id)} onDifficultyChange={id => select("difficulty", id)} />
-              <div className="hq-rule-summary" aria-live="polite">
-                {level && <><span><SiteIcon name="timer" />{level.time_limit_secs} sec per question</span><span><SiteIcon name="heart" />{level.lives} {level.lives === 1 ? "life" : "lives"}</span></>}
-              </div>
+              <QuizFilters categories={categories} difficulties={difficulties} categoryId={categoryId} difficultyId={difficultyId} onCategoryChange={id => select("category", id)} onDifficultyChange={id => select("difficulty", id)}
+                labelCategory={classicCategoryLabel} describeLevel={id => {
+                  const item = difficulties.find(d => d.id === id);
+                  return item && `${item.time_limit_secs} s · ${item.lives} ${item.lives === 1 ? "life" : "lives"}`;
+                }} />
               {availability.error && <StatusMessage tone="error">Questions could not be checked. <button className="hq-inline-action" onClick={availability.retry}>Try again</button></StatusMessage>}
-              {count === 0 && <StatusMessage>No questions for this difficulty yet. Try another level.</StatusMessage>}
+              {count === 0 && <StatusMessage>No questions in this category yet. Try another category.</StatusMessage>}
               <span className="sr-only" role="status">{availability.loading ? "Checking questions…" : ""}</span>
             </>}
           <button className="hq-primary" disabled={!canPlay} onClick={() => { if (canPlay) navigate("/play", { state: { categoryId, difficultyId } }); }}>
-            {loading ? "Loading…" : error || !category || !level || availability.error ? "Play quiz" : count === 0 ? "Coming soon" : count == null ? "Checking questions…" : `Play ${categoryLabel(category)}`}
+            {loading ? "Loading…" : error || !category || !level || availability.error ? "Play quiz" : count === 0 ? "Coming soon" : count == null ? "Checking questions…" : `Play ${classicCategoryLabel(category)}`}
             <SiteIcon name="arrow" />
           </button>
       <p className="hq-mode-note">No account needed. <Link className="hq-inline-action" to="/how-to-play#classic">Classic rules</Link></p>
@@ -66,7 +67,7 @@ export default function StartScreen() {
   const [params, setParams] = useSearchParams();
   const mode = gameMode(params.get("mode"));
   const titles = { classic: "Classic", "time-attack": "Time Attack", "this-or-that": "This or That", daily: "Daily Challenge" };
-  const copy = { classic: "Pick the movie title or actor’s name from four answers. Keep guessing while you have lives.", "time-attack": pageMetadata["time-attack"].intro, "this-or-that": pageMetadata["this-or-that"].intro, daily: pageMetadata.daily.intro };
+  const copy = { classic: "Guess a title or a name from four answers. All levels use the same questions in each category.", "time-attack": pageMetadata["time-attack"].intro, "this-or-that": pageMetadata["this-or-that"].intro, daily: pageMetadata.daily.intro };
   return <><Seo {...pageMetadata.home} /><div className="hq-home hq-games-home">
     <header className="hq-hero"><h1>{pageMetadata.home.heading}</h1><p>{pageMetadata.home.intro}</p></header>
     <ModeSwitcher value={mode} onChange={value => { const next = new URLSearchParams(params); next.set("mode", value); setParams(next, { preventScrollReset: true }); }} />
