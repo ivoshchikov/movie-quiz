@@ -50,8 +50,8 @@ function Statistics({ owner }: { owner: string }) {
       <label className="hq-bank-search">Search<input type="search" value={search} maxLength={200} placeholder="Answer, ID or path" onChange={e => setSearch(e.target.value)} /></label>
       <label>Category<AdminSelect aria-label="Category" value={filters.category ?? ""} onChange={e => change("category", e.target.value)} disabled={catalog.loading}>
         <option value="">All categories</option>{categories.map(c => <option key={c.id} value={c.id}>{categoryLabel(c)}</option>)}<option value="0">Uncategorised</option></AdminSelect></label>
-      <label>Difficulty<AdminSelect aria-label="Difficulty" value={filters.difficulty ?? ""} onChange={e => change("difficulty", e.target.value)} disabled={catalog.loading}>
-        <option value="">All difficulties</option>{levels.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}</AdminSelect></label>
+      <label>Difficulty tag<AdminSelect aria-label="Difficulty tag" value={filters.difficulty ?? ""} onChange={e => change("difficulty", e.target.value)} disabled={catalog.loading}>
+        <option value="">All difficulty tags</option>{levels.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}</AdminSelect></label>
       <label>Mode<AdminSelect aria-label="Mode" value={filters.mode} onChange={e => change("mode", e.target.value)}><option value="all">All guessing modes</option><option value="normal">Classic</option><option value="daily">Daily</option><option value="time_attack">Time Attack</option></AdminSelect></label>
       <label>Versions<AdminSelect aria-label="Versions" value={filters.versions} onChange={e => change("versions", e.target.value)}><option value="all">All versions</option><option value="current">Current version</option></AdminSelect></label>
       <label>Sort<AdminSelect aria-label="Sort" value={filters.sort} onChange={e => change("sort", e.target.value)}>
@@ -71,7 +71,7 @@ function Statistics({ owner }: { owner: string }) {
         <tbody role="rowgroup">{data.rows.map(r => <tr key={r.id} role="row">
           <th scope="row" role="rowheader"><div className="hq-stat-question"><AdminImage key={r.image_url} src={getPublicUrl(r.image_url)} alt={`Question ${r.id} image`} />
             <div><span className="hq-bank-id">#{r.id}</span><Link className="hq-stat-answer" aria-label={`View question ${r.id}: ${r.correct_answer}`} to={`/admin/questions?question=${r.id}`}>{r.correct_answer || "Missing answer"}</Link>
-              <span className="hq-stat-meta">{category(r.category_id)} · {difficulty(r.difficulty_level_id)}</span></div></div></th>
+              <span className="hq-stat-meta">{category(r.category_id)} · {difficulty(r.difficulty_level_id)} tag</span></div></div></th>
           <td role="cell"><span className="hq-stat-mobile-label">Shown</span>{format.format(r.shown)}</td><td role="cell"><span className="hq-stat-mobile-label">Correct</span>{format.format(r.correct)}</td><td role="cell"><span className="hq-stat-mobile-label">Correct %</span>{r.accuracy === null ? "—" : `${r.accuracy}%`}</td>
         </tr>)}</tbody>
       </table> : <div className="hq-bank-empty"><h2>No questions match these filters</h2><button className="hq-secondary" onClick={reset}>Show all questions</button></div>}

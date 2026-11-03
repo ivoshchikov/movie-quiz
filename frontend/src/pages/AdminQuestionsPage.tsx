@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import { getCategories, getDifficulties } from "../api";
+import { countQuestions, getCategories, getDifficulties } from "../api";
 import { getPublicUrl } from "../supabase";
 import { categoryLabel } from "../hooks/useQuizCatalog";
 import { useReadRequest } from "../hooks/useReadRequest";
@@ -87,6 +87,14 @@ function QuestionBank({ owner }: { owner: string }) {
     [],
   );
   const catalog = useReadRequest(`${owner}:catalog`, catalogLoad);
+  const [overviewOpen, setOverviewOpen] = useState(false);
+  const classicPoolsLoad = useCallback(async (signal: AbortSignal) => {
+    const entries = await Promise.all((catalog.value?.[0] ?? []).map(async ({ id }) =>
+      [id, await countQuestions(id, undefined, signal)] as const,
+    ));
+    return new Map(entries);
+  }, [catalog.value]);
+  const classicPools = useReadRequest(`${owner}:classic-pools`, classicPoolsLoad, overviewOpen && !!catalog.value);
   const bankLoad = useCallback(
     (signal: AbortSignal) => loadBank(filters, signal),
     [filters],
@@ -94,6 +102,7 @@ function QuestionBank({ owner }: { owner: string }) {
   const bank = useReadRequest(`${owner}:${JSON.stringify(filters)}`, bankLoad);
   const [categories, levels] = catalog.value ?? [[], []];
   const data = bank.value;
+  const playableCounts = classicPools.loading || classicPools.error ? undefined : classicPools.value;
   const category = (id: number | null) =>
     categories.find((c) => c.id === id)
       ? categoryLabel(categories.find((c) => c.id === id)!)
@@ -193,13 +202,13 @@ function QuestionBank({ owner }: { owner: string }) {
           </AdminSelect>
         </label>
         <label>
-          Difficulty
+          Difficulty tag
           <AdminSelect
-            aria-label="Difficulty"
+            aria-label="Difficulty tag"
             value={filters.difficulty ?? ""}
             onChange={(e) => change("difficulty", e.target.value)}
           >
-            <option value="">All difficulties</option>
+            <option value="">All difficulty tags</option>
             {levels.map((l) => (
               <option key={l.id} value={l.id}>
                 {l.name}
@@ -229,6 +238,9 @@ function QuestionBank({ owner }: { owner: string }) {
           Reset filters
         </button>
       </div>
+      <p className="hq-bank-pool-note">
+        All Classic levels share one playable question pool per category. Difficulty tags help organise the bank and are used by other modes.
+      </p>
       {catalog.error && (
         <p role="alert">
           Categories or difficulties could not load.{" "}
@@ -289,7 +301,7 @@ function QuestionBank({ owner }: { owner: string }) {
               <span>ID</span>
               <span>Correct answer</span>
               <span>Category</span>
-              <span>Difficulty</span>
+              <span>Difficulty tag</span>
             </div>
             <ul className="hq-bank-rows" aria-label="Questions">
               {data.rows.map((row) => (
@@ -316,7 +328,7 @@ function QuestionBank({ owner }: { owner: string }) {
                     {category(row.category_id)}
                   </span>
                   <span className="hq-bank-difficulty">
-                    {difficulty(row.difficulty_level_id)}
+                    {difficulty(row.difficulty_level_id)} tag
                   </span>
                 </li>
               ))}
@@ -344,18 +356,22 @@ function QuestionBank({ owner }: { owner: string }) {
         </>
       ) : null}
       {data && catalog.value && (
-        <details className="hq-bank-summary">
+        <details className="hq-bank-summary" open={overviewOpen} onToggle={event => setOverviewOpen(event.currentTarget.open)}>
           <summary>Bank overview · {data.bank_total} questions</summary>
+          {classicPools.loading && <p role="status">Checking Classic question counts…</p>}
+          {classicPools.error && (
+            <p role="alert">Classic question counts could not load.{" "}
+              <button className="hq-inline-action" onClick={classicPools.retry}>Retry counts</button>
+            </p>
+          )}
           <div className="hq-bank-summary-scroll">
             <table>
-              <caption>All questions by category and difficulty</caption>
+              <caption>Question pools by category</caption>
               <thead>
                 <tr>
-                  <th>Category</th>
-                  {levels.map((l) => (
-                    <th key={l.id}>{l.name}</th>
-                  ))}
-                  <th>Total</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">In bank</th>
+                  <th scope="col">Playable in Classic</th>
                 </tr>
               </thead>
               <tbody>
@@ -368,26 +384,26 @@ function QuestionBank({ owner }: { owner: string }) {
                     : []),
                 ].map((c) => (
                   <tr key={c.id}>
-                    <th>{c.id === 0 ? "Uncategorised" : categoryLabel(c)}</th>
-                    {levels.map((l) => (
-                      <td key={l.id}>
-                        {data.summary.find(
-                          (s) =>
-                            s.category_id === c.id &&
-                            s.difficulty_level_id === l.id,
-                        )?.count ?? 0}
-                      </td>
-                    ))}
+                    <th scope="row">{c.id === 0 ? "Uncategorised" : categoryLabel(c)}</th>
                     <td>
                       {data.summary
                         .filter((s) => s.category_id === c.id)
                         .reduce((n, s) => n + s.count, 0)}
                     </td>
+                    <td>{c.id === 0 ? 0 : playableCounts?.get(c.id) ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <h3 className="hq-bank-pool-note" id="classic-level-settings">Classic level settings</h3>
+          <ul className="hq-rule-summary" aria-labelledby="classic-level-settings">
+            {levels.map(level => (
+              <li key={level.id}>
+                <strong>{level.name}</strong> · {level.time_limit_secs} s per question · {level.lives} {level.lives === 1 ? "life" : "lives"}
+              </li>
+            ))}
+          </ul>
         </details>
       )}
       <Dialog open={!!questionId} onClose={close} className="hq-bank-dialog">
@@ -412,6 +428,7 @@ function QuestionBank({ owner }: { owner: string }) {
                 guard={registerGuard}
                 changed={(deleted) => {
                   bank.retry();
+                  classicPools.retry();
                   setNotice(
                     deleted
                       ? `Question #${questionId} deleted from the bank.`
@@ -544,7 +561,7 @@ function QuestionDetail({
           <dd>{category(row.category_id)}</dd>
         </div>
         <div>
-          <dt>Difficulty</dt>
+          <dt>Difficulty tag</dt>
           <dd>{difficulty(row.difficulty_level_id)}</dd>
         </div>
         <div>

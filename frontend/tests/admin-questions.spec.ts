@@ -25,8 +25,10 @@ async function fixture(
   const data = {
     rows: Array.from({ length: 60 }, (_, i) => row(i + 1)),
     bankCalls: [] as Record<string, unknown>[],
+    classicCountCalls: [] as Record<string, unknown>[],
     detailCalls: 0,
     failBank: false,
+    failClassicCounts: false,
     failKey: false,
     failImport: false,
     loseResponse: false,
@@ -49,6 +51,17 @@ async function fixture(
     activity: { shown: 31, correct: 12, accuracy: 38.7 } as { shown: number; correct: number; accuracy: number | null },
     failMetrics: false,
   };
+  await page.route("**/rest/v1/rpc/count_questions", r => {
+    const p = r.request().postDataJSON();
+    data.classicCountCalls.push(p);
+    return r.fulfill({
+      status: data.failClassicCounts ? 503 : 200,
+      json: data.rows.filter(q =>
+        q.category_id === p.p_category_id && !q.needs_review &&
+        (p.p_difficulty_id == null || q.difficulty_level_id === p.p_difficulty_id),
+      ).length,
+    });
+  });
   await page.route("**/rest/v1/rpc/is_admin", (r) =>
     r.fulfill({
       contentType: "application/json",
@@ -314,6 +327,35 @@ test("25 server rows, filters, sorting, page and detail preserve the list and ba
     page.getByRole("table").getByRole("row", { name: /Actresses/ }),
   ).toContainText("0");
 });
+test("bank overview shows one Classic pool per category and keeps difficulty tags as editorial filters", async ({ page }) => {
+  const { data } = await fixture(page);
+  data.rows[0].difficulty_level_id = 3;
+  data.rows[1].needs_review = true;
+  data.failClassicCounts = true;
+  await page.goto("/admin/questions?difficulty=3");
+
+  await expect(page.getByRole("status").filter({ hasText: "Showing" })).toHaveText("Showing 1–1 of 1 matching questions");
+  await expect(page.getByLabel("Difficulty tag", { exact: true })).toHaveValue("3");
+  await expect(page.getByRole("list", { name: "Questions" })).toContainText("Hard tag");
+  expect(data.classicCountCalls).toHaveLength(0);
+
+  await page.getByText("Bank overview · 60 questions", { exact: true }).click();
+  const overview = page.getByRole("table", { name: /Question pools by category/ });
+  const movies = overview.getByRole("row", { name: /Movie Stills/ });
+  await expect(page.getByRole("alert").filter({ hasText: "Classic question counts could not load" })).toBeVisible();
+  await expect(movies.locator("td")).toHaveText(["60", "—"]);
+  data.failClassicCounts = false;
+  await page.getByRole("button", { name: "Retry counts", exact: true }).click();
+  await expect(movies.locator("td")).toHaveText(["60", "59"]);
+  await expect(overview.getByRole("columnheader")).toHaveText(["Category", "In bank", "Playable in Classic"]);
+  await expect(page.getByRole("list", { name: "Classic level settings" }).getByRole("listitem")).toHaveText([
+    "Easy · 45 s per question · 5 lives",
+    "Medium · 30 s per question · 3 lives",
+    "Hard · 20 s per question · 1 life",
+  ]);
+  expect(data.classicCountCalls.slice(-4).map(call => call.p_category_id).sort()).toEqual([1, 2, 3, 4]);
+  expect(data.classicCountCalls.every(call => call.p_difficulty_id === null)).toBe(true);
+});
 test("API failures retry; empty bank, no results and bad image are distinct states", async ({
   page,
 }) => {
@@ -380,9 +422,9 @@ test("batch processing preserves proportions, defaults and individual overrides;
     page.getByText("Processing image…", { exact: true }),
   ).toHaveCount(0);
   await page
-    .getByLabel("Default difficulty", { exact: true })
+    .getByLabel("Default difficulty tag", { exact: true })
     .selectOption("3");
-  await second.getByLabel("Difficulty", { exact: true }).selectOption("2");
+  await second.getByLabel("Difficulty tag", { exact: true }).selectOption("2");
   await page.getByRole("button", { name: "Add 2 ready questions" }).click();
   await expect(page.getByText("Added", { exact: true })).toHaveCount(2);
   expect(
@@ -655,11 +697,11 @@ test("difficulty-only edits retry the frozen operation and persist after reopeni
   data.loseChangeResponse = true;
   await page.goto("/admin/questions?question=60");
   await page.getByRole("button", { name: "Edit or delete question" }).click();
-  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption("3");
+  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true }).selectOption("3");
   await page.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(page.getByRole("alert").filter({ hasText: "could not be confirmed" })).toBeVisible();
   await expect(page.getByText("Question #60 changes saved.", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toBeDisabled();
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true })).toBeDisabled();
   await page.getByRole("button", { name: "Retry same operation" }).click();
   await expect(page.getByText("Question #60 changes saved.", { exact: true })).toBeVisible();
   expect(data.changes).toHaveLength(2);
@@ -670,21 +712,21 @@ test("difficulty-only edits retry the frozen operation and persist after reopeni
   await page.getByRole("button", { name: "Close", exact: true }).click();
   await page.getByRole("button", { name: "View question 60", exact: true }).click();
   await page.getByRole("button", { name: "Edit or delete question" }).click();
-  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toHaveValue("3");
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true })).toHaveValue("3");
 });
 
 test("cancelling only a difficulty edit asks to discard and does not save", async ({ page }) => {
   const { data } = await fixture(page);
   await page.goto("/admin/questions?question=60");
   await page.getByRole("button", { name: "Edit or delete question" }).click();
-  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption("2");
+  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true }).selectOption("2");
   page.once("dialog", d => d.dismiss());
   await page.getByRole("button", { name: "Cancel editing" }).click();
-  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toHaveValue("2");
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true })).toHaveValue("2");
   page.once("dialog", d => d.accept());
   await page.getByRole("button", { name: "Cancel editing" }).click();
   await page.getByRole("button", { name: "Edit or delete question" }).click();
-  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true })).toHaveValue("1");
+  await expect(page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true })).toHaveValue("1");
   expect(data.changes).toHaveLength(0);
   await expect(page.getByRole("region", { name: "Question statistics", exact: true })).toHaveCount(1);
 });
@@ -807,7 +849,7 @@ test("conflicting edits show reload and never claim a successful save", async ({
   await page.goto("/admin/questions?question=60");
   await page.getByRole("button", { name: "Edit or delete question" }).click();
   await page.getByLabel("Answer A", { exact: true }).fill("Updated title");
-  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption("2");
+  await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true }).selectOption("2");
   await page.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(
     page.getByRole("alert").filter({ hasText: "changed or was deleted" }),
@@ -821,7 +863,7 @@ test("conflicting edits show reload and never claim a successful save", async ({
 
 test("replace an image on mobile without changing the question ID",async({page})=>{
  const {data}=await fixture(page);await page.setViewportSize({width:390,height:844});await page.goto('/admin/questions?question=60');await page.getByRole('button',{name:'Edit or delete question'}).click();
- await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty", exact: true }).selectOption('2');
+ await page.getByRole("dialog").getByRole("combobox", { name: "Difficulty tag", exact: true }).selectOption('2');
  await page.getByLabel('Replace image (optional)',{exact:true}).setInputFiles('tests/assets/question-frame.png');await expect(page.getByAltText('Replacement image preview')).toBeVisible({timeout:20000});
  await expect(page.getByRole('button',{name:'Save changes',exact:true})).toBeEnabled();
  const bounds=await page.getByRole('dialog').evaluate(e=>({width:e.scrollWidth,viewport:window.innerWidth}));expect(bounds.width).toBeLessThanOrEqual(bounds.viewport);

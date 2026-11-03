@@ -38,7 +38,7 @@ for(const account of ["","fixture-user"])test(`${account||"guest"} cannot see or
 test("filters and search are sent to the server, survive reload, and reset pending input",async({page})=>{
  const {state}=await fixture(page);await page.goto("/admin/question-statistics");await expect(row(page,60)).toBeVisible();
  await panel(page).getByLabel("Mode",{exact:true}).selectOption("time_attack");await panel(page).getByLabel("Versions",{exact:true}).selectOption("current");
- await panel(page).getByLabel("Category",{exact:true}).selectOption("2");await panel(page).getByLabel("Difficulty",{exact:true}).selectOption("2");
+ await panel(page).getByLabel("Category",{exact:true}).selectOption("2");await panel(page).getByLabel("Difficulty tag",{exact:true}).selectOption("2");
  await panel(page).getByLabel("Sort",{exact:true}).selectOption("accuracy_asc");await panel(page).getByLabel("Search",{exact:true}).fill("#60");
  await expect(page).toHaveURL(/q=%2360/);await expect.poll(()=>state.reads.at(-1)?.p_search).toBe("#60");
  expect(state.reads.at(-1)).toMatchObject({p_mode:"time_attack",p_versions:"current",p_category_id:2,p_difficulty_id:2,p_sort:"accuracy_asc"});
