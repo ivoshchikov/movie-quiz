@@ -135,6 +135,28 @@
       }
     },
     {
+      "path": "/blog/sci-fi-mystery-movies",
+      "url": "https://hard-quiz.com/blog/sci-fi-mystery-movies",
+      "kind": "article",
+      "slug": "sci-fi-mystery-movies",
+      "publishedOn": "2026-11-06",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/best-sci-fi-movies-2026",
       "url": "https://hard-quiz.com/blog/best-sci-fi-movies-2026",
       "kind": "article",
