@@ -11,10 +11,12 @@ for (const width of [320, 1440]) {
     const table = page.getByRole("table");
     const rows = table.locator("tbody tr");
     await expect(rows).toHaveCount(10);
+    const filmIds: string[] = [];
     for (const row of await rows.all()) {
       const link = row.getByRole("rowheader").getByRole("link");
       const name = await link.innerText();
       const target = await link.getAttribute("href");
+      filmIds.push(target!.slice(1));
       await expect(page.locator(target!)).toContainText(name);
       await expect(row.locator("td").last().getByRole("link")).toHaveAttribute("href", /^https:\/\//);
     }
@@ -26,6 +28,27 @@ for (const width of [320, 1440]) {
     expect(await cover.evaluate((image: HTMLImageElement) => image.currentSrc)).toMatch(width === 320 ? /-480\.webp$/ : /-800\.webp$/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await table.screenshot({ path: testInfo.outputPath(`mystery-table-${width}.png`) });
+    await expect(page.locator(".hq-film-still")).toHaveCount(filmIds.length);
+    for (const id of filmIds) {
+      const figure = page.locator(`section[aria-labelledby="${id}"] .hq-film-still`);
+      const image = figure.getByRole("img");
+      await expect(image).toHaveAttribute("alt", /\S/);
+      await expect(image).toHaveAttribute("loading", "lazy");
+      await expect(figure.locator("figcaption")).toHaveText(/\S/);
+      await image.scrollIntoViewIfNeeded();
+      await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth)).toBeGreaterThan(0);
+      const display = await image.evaluate((element: HTMLImageElement) => ({
+        src: element.currentSrc,
+        fit: getComputedStyle(element).objectFit,
+        ratio: element.clientWidth / element.clientHeight,
+        originalRatio: Number(element.getAttribute("width")) / Number(element.getAttribute("height")),
+      }));
+      expect(display.src).toMatch(width === 320 ? /-still-480\.webp$/ : /-still-800\.webp$/);
+      expect(display.fit).toBe("contain");
+      expect(display.ratio).toBeCloseTo(display.originalRatio, 1);
+    }
+    await page.locator(".hq-film-still").first().screenshot({ path: testInfo.outputPath(`mystery-still-${width}.png`) });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const contents = page.getByRole("navigation", { name: "Article contents" });
     await contents.locator("summary").click();
     await contents.getByRole("link", { name: "Dark City", exact: true }).focus();

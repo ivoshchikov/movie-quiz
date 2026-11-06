@@ -304,5 +304,65 @@
     "srcSet": "/blog-assets/sci-fi-mystery-movies-480.webp 480w, /blog-assets/sci-fi-mystery-movies-640.webp 640w, /blog-assets/sci-fi-mystery-movies-800.webp 800w",
     "width": 640,
     "height": 360
+  },
+  "/blog-assets/sci-fi-mystery-arrival-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-arrival-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-arrival-still-480.webp 480w, /blog-assets/sci-fi-mystery-arrival-still-800.webp 800w, /blog-assets/sci-fi-mystery-arrival-still.webp 1200w",
+    "width": 1200,
+    "height": 495
+  },
+  "/blog-assets/sci-fi-mystery-moon-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-moon-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-moon-still-480.webp 480w, /blog-assets/sci-fi-mystery-moon-still-800.webp 800w, /blog-assets/sci-fi-mystery-moon-still.webp 1200w",
+    "width": 1200,
+    "height": 495
+  },
+  "/blog-assets/sci-fi-mystery-coherence-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-coherence-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-coherence-still-480.webp 480w, /blog-assets/sci-fi-mystery-coherence-still-800.webp 800w, /blog-assets/sci-fi-mystery-coherence-still.webp 1200w",
+    "width": 1200,
+    "height": 507
+  },
+  "/blog-assets/sci-fi-mystery-source-code-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-source-code-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-source-code-still-480.webp 480w, /blog-assets/sci-fi-mystery-source-code-still-800.webp 800w, /blog-assets/sci-fi-mystery-source-code-still.webp 1200w",
+    "width": 1200,
+    "height": 671
+  },
+  "/blog-assets/sci-fi-mystery-ex-machina-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-ex-machina-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-ex-machina-still-480.webp 480w, /blog-assets/sci-fi-mystery-ex-machina-still-800.webp 800w, /blog-assets/sci-fi-mystery-ex-machina-still.webp 1200w",
+    "width": 1200,
+    "height": 500
+  },
+  "/blog-assets/sci-fi-mystery-dark-city-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-dark-city-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-dark-city-still-480.webp 480w, /blog-assets/sci-fi-mystery-dark-city-still-800.webp 800w, /blog-assets/sci-fi-mystery-dark-city-still.webp 1200w",
+    "width": 1200,
+    "height": 669
+  },
+  "/blog-assets/sci-fi-mystery-minority-report-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-minority-report-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-minority-report-still-480.webp 480w, /blog-assets/sci-fi-mystery-minority-report-still-800.webp 800w, /blog-assets/sci-fi-mystery-minority-report-still.webp 1200w",
+    "width": 1200,
+    "height": 670
+  },
+  "/blog-assets/sci-fi-mystery-gattaca-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-gattaca-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-gattaca-still-480.webp 480w, /blog-assets/sci-fi-mystery-gattaca-still-800.webp 800w, /blog-assets/sci-fi-mystery-gattaca-still.webp 1200w",
+    "width": 1200,
+    "height": 669
+  },
+  "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-480.webp 480w, /blog-assets/sci-fi-mystery-the-thirteenth-floor-still-800.webp 800w, /blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp 1200w",
+    "width": 1200,
+    "height": 498
+  },
+  "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp": {
+    "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp",
+    "srcSet": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-480.webp 480w, /blog-assets/sci-fi-mystery-the-vast-of-night-still-800.webp 800w, /blog-assets/sci-fi-mystery-the-vast-of-night-still.webp 1200w",
+    "width": 1200,
+    "height": 494
   }
 }

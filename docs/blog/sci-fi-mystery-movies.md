@@ -13,7 +13,7 @@ The article helps a reader choose a standalone film by the kind of mystery, pace
 - Coherence uses film year 2013, supported by SFFILM; the US store says 2014. Festival runtime is 89 minutes, Apple rounds to 88. The article explains both.
 - The Vast of Night uses US release year 2020, with its 2019 festival premiere explained. About 90 minutes accommodates 89–91-minute listings. November 5–6 US offers show rentals and purchases; its original Amazon distribution is not taken as proof of a current Prime subscription.
 - Minority Report uses the Apple US 145-minute listing, corroborated by BFI. Some distributor materials round to 146.
-- Original artwork is drawn by `artwork/sci-fi-mystery.py`. It is decorative editorial artwork, not a film frame. Five WebP assets provide the cover, three responsive listing sizes and a separate social preview. Ten film stills will be added after the owner supplies them; the published article has no empty image slots.
+- Original artwork is drawn by `artwork/sci-fi-mystery.py`. It is decorative editorial artwork, not a film frame. Five WebP assets provide the cover, three responsive listing sizes and a separate social preview. Ten owner-supplied stills have been prepared from Archive(5).zip, with one per film. The original cover remains the article and listing artwork.
 - Internal links lead to the published 2026 sci-fi list, Knives Out recommendations and the widescreen explainer. The existing footer selects a game; it makes no claim that these films occur in the question bank.
 
 ## CI compatibility repair
@@ -27,3 +27,13 @@ The entry joins BlogPost, blog listing, tags, responsive images, prerendered HTM
 Local build, TypeScript and ESLint passed. All 16 publication tests passed; the built catalog passed for 18 pages and 182 image checks. All 77 affected blog browser tests passed; after the final scoped table layout and viewing link edits, both new article tests passed again at 320 and 1440 px. Visual inspection confirmed the two-column table and cover/social layouts. Verify the deployed revision, article and collection HTML, canonical, BlogPosting, OG/Twitter, feed, sitemap and image decoding before recording publication. Browser tests use the isolated fixture API and do not create production game attempts.
 
 Follow-up dates: November 7 (+1) for page/assets; November 13 (+7) for source/viewing links and URL Inspection if available; December 4 (+28) for queries, impressions, clicks and game transitions after sufficient data. Editorial review in six months. The next calendar article remains N08, Thanksgiving Movies, November 10.
+
+## Owner-supplied stills — November 6, 2026
+
+The ten PNG files in Archive(5).zip were inspected and matched to the film sections. macOS resource files were ignored. The images contain no captions, player controls or scene explanations that reveal the solutions. Alt text and captions describe visible details; the Source Code passenger is not identified by name or role. No external source links or credits were included in the archive; provenance is recorded as owner-supplied.
+
+The 47,582,367 source bytes become 301,730 bytes for the ten 1200 px files and 98,902 bytes for the ten 480 px files (586,448 bytes for all 30 variants). The 30 WebP files are produced at 480, 800 and 1200 px, preserving composition and source aspect ratios. Images use the existing ArticleImage component, contain rendering, reserved aspect ratios and lazy loading. The asset manifest records source hashes, dimensions and every derivative. The publication verifier budget increases from 190 to 220 for precisely these 30 new assets. Its oversize-catalog test still stops before image reads and preserves earlier publication evidence.
+
+The article URL, first publication date, watchlist, fact-check date and cover are preserved. Build, types, lint, publication checks, image rendering at 320/1440 px and post-deployment byte/decoding checks are required for the update. Publication evidence is recorded in the PR and editorial plans after release.
+
+Local validation for the stills update passed: build, both TypeScript configurations, ESLint, 16 publication tests, the local SEO check (18 pages / 212 image checks) and 77 focused browser tests. All ten stills decoded and selected the 480/800 px variants at 320/1440 px, retained their declared aspect ratios and used lazy loading. Narrow and desktop screenshots were inspected.
