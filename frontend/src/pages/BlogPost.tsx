@@ -60,6 +60,7 @@ export default function BlogPostPage() {
       <section className="hq-article-cta" aria-labelledby="quiz-next">
         <div><h2 id="quiz-next">Choose your next game</h2><p>Classic, Time Attack, This or That or Daily.</p></div>
         <div className="hq-article-actions"><Link to="/" className="hq-primary" onClick={() => articleToQuiz(post.slug, "games")}>Choose a game</Link></div>
+        <nav className="hq-article-actions" aria-label="Picture quizzes"><Link to="/movie-quiz" className="hq-text-action" onClick={() => articleToQuiz(post.slug, "normal")}>Movie stills quiz</Link><Link to="/actor-quiz" className="hq-text-action" onClick={() => articleToQuiz(post.slug, "normal")}>Actor photo quiz</Link><Link to="/tv-series-quiz" className="hq-text-action" onClick={() => articleToQuiz(post.slug, "normal")}>TV series quiz</Link></nav>
       </section>
       <Link to={backToBlog} className="hq-article-back">← Back to blog</Link>
     </article>

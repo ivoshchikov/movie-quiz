@@ -117,11 +117,11 @@ for (const [referrer, ignore] of [["https://accounts.google.com/o/oauth2/?code=p
   });
 }
 
-test("article CTA connects to one three-answer game without internal UTM or capability IDs", async ({ page }) => {
+for (const directCategory of [false, true]) test(`article CTA connects to one three-answer game without internal UTM or capability IDs${directCategory ? " via a category page" : ""}`, async ({ page }) => {
   const data = await gameFixture(page, { size: 3 });
   await page.goto("/blog/is-whalefall-based-on-a-book?utm_source=x&utm_medium=social");
-  await page.getByRole("link", { name: "Choose a game", exact: true }).click();
-  await expect(page).toHaveURL("http://localhost:5173/");
+  await page.getByRole("link", { name: directCategory ? "Movie stills quiz" : "Choose a game", exact: true }).click();
+  await expect(page).toHaveURL(`http://localhost:5173/${directCategory ? "movie-quiz" : ""}`);
   await page.getByRole("button", { name: "Play Movies" }).click();
   for (let number = 1; number <= 3; number++) {
     await expect(page.getByText(`Question ${number}`, { exact: true })).toBeVisible();
@@ -133,7 +133,7 @@ test("article CTA connects to one three-answer game without internal UTM or capa
   }
   await expect(page).toHaveURL(/\/result$/);
   const clicked = await events(page, "article_to_quiz_click"), started = await events(page, "quiz_start");
-  expect(clicked).toHaveLength(1); expect(clicked[0]).toMatchObject({ game_mode: "games" }); expect(started).toHaveLength(1);
+  expect(clicked).toHaveLength(1); expect(clicked[0]).toMatchObject({ game_mode: directCategory ? "normal" : "games" }); expect(started).toHaveLength(1);
   expect(started[0]).toMatchObject({ cta_id: clicked[0].cta_id, article_slug: "is-whalefall-based-on-a-book", game_mode: "normal", analytics_version: 2 });
   expect(await events(page, "quiz_answer")).toHaveLength(3);
   expect(await events(page, "quiz_first_answer")).toHaveLength(1);

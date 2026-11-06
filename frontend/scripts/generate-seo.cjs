@@ -94,8 +94,10 @@ const ensureDir =
 
   fs.writeFileSync(path.join(DEST_DIR, "feed.xml"), rss, "utf8");
 
+  const categories = JSON.parse(fs.readFileSync(path.join(ROOT, "src/games/classicCategories.json"), "utf8"));
+
   // Sitemap
-  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/daily", "/time-attack", "/this-or-that"];
+  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/daily", "/time-attack", "/this-or-that", ...categories.map(category => `/${category.slug}`)];
   const paths = [...staticPaths.map(url => ({ url })), ...sorted.map(post => ({ url: `/blog/${post.slug}`, lastmod: post.modified || post.date }))];
   const urls = paths
     .map(
@@ -138,10 +140,11 @@ ${urls}
       define: { ...SITE_DEFINE, "import.meta.env.VITE_SUPABASE_URL": JSON.stringify("https://prerender.invalid"), "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify("prerender-placeholder"), "import.meta.env.VITE_SUPABASE_BUCKET": JSON.stringify("movies") },
       loader: { ".css": "empty" }, logLevel: "silent",
     });
-    const { renderPublicPage } = require(publicBundle);
+    const { renderPublicPage, categoryMetadata } = require(publicBundle);
     const pageStyles = (html, name) => {
+      const isCategory = categories.some(category => category.slug === name);
       // Lazy route CSS must also style the content served before JavaScript starts.
-      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || [];
+      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || (isCategory ? ["ClassicCategoryPage", "quiz-categories"] : []);
       const assetDir = path.join(DEST_DIR, "assets");
       if (!fs.existsSync(assetDir)) return html;
       const tags = fs.readdirSync(assetDir).filter(file => file.endsWith(".css") && prefixes.some(prefix => file.startsWith(prefix + "-"))).map(file => `<link rel="stylesheet" crossorigin href="/assets/${file}" />`).join("");
@@ -212,15 +215,16 @@ ${urls}
     fs.writeFileSync(path.join(DEST_DIR, "404.html"), withArticleMetadata({
       title: "Page not found | Hard Quiz", description: "This page is unavailable. Choose a movie quiz or explore the Hard Quiz blog.", image: `${SITE_URL}/og/logo.webp?v=og2`,
     }, renderNotFoundPage(), null, true), "utf8");
-    for (const [name, meta] of Object.entries(pages)) {
+    const categoryPages = Object.fromEntries(categories.map(category => [category.slug, categoryMetadata(category, SITE_URL)]));
+    for (const [name, meta] of Object.entries({ ...pages, ...categoryPages })) {
       const routePath = new URL(meta.url).pathname;
       const metadata = { ...meta, url: SITE_URL + routePath, image: `${SITE_URL}/og/logo.webp?v=og2` };
       const body = meta.noindex ? "" : renderPublicPage(routePath);
-      const structured = name === "home" ? { "@context": "https://schema.org", "@type": "WebSite", name: "Hard Quiz", url: `${SITE_URL}/` } : null;
+      const structured = name === "home" ? { "@context": "https://schema.org", "@type": "WebSite", name: "Hard Quiz", url: `${SITE_URL}/` } : meta.jsonLd || null;
       ensureDir(path.dirname(path.join(DEST_DIR, `${name}.html`)));
       fs.writeFileSync(path.join(DEST_DIR, name === "home" ? "index.html" : `${name}.html`), pageStyles(withArticleMetadata(metadata, body, structured, !!meta.noindex).replace('property="og:type" content="article"', 'property="og:type" content="website"'), name), "utf8");
     }
-    for (const entry of ["/", "/play", "/result", "/daily", "/leaderboard", "/profile", "/time-attack", "/time-attack/play", "/this-or-that", "/this-or-that/play"]) {
+    for (const entry of ["/", "/play", "/result", "/daily", "/leaderboard", "/profile", "/time-attack", "/time-attack/play", "/this-or-that", "/this-or-that/play", ...categories.map(category => `/${category.slug}`)]) {
       const route = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(entry));
       if (!route || route.status || route.dest !== (entry === "/" ? "/index.html" : "/$1.html")) throw new Error(`Missing application entry route for ${entry} in vercel.json`);
     }

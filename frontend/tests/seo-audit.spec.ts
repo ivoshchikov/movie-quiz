@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { mockQuizApi } from "./fixtures";
 
 const origin = "https://hard-quiz.com";
-const publicPages = [{ path: "/time-attack", file: "time-attack", heading: "Movie, TV & Actor Time Attack" }, { path: "/this-or-that", file: "this-or-that", heading: "This or That: Actors or Actresses" }, { path: "/", file: "index", heading: "Movie & Actor Quiz" }, { path: "/daily", file: "daily", heading: "Daily Movie, TV & Actor Quiz" }, { path: "/leaderboard", file: "leaderboard", heading: "Rankings" }, { path: "/how-to-play", file: "how-to-play", heading: "How to play" }];
+const publicPages = [{ path: "/time-attack", file: "time-attack", heading: "Movie, TV & Actor Time Attack" }, { path: "/this-or-that", file: "this-or-that", heading: "This or That: Actors or Actresses" }, { path: "/", file: "index", heading: "Movie & Actor Quiz Games" }, { path: "/daily", file: "daily", heading: "Daily Movie, TV & Actor Quiz" }, { path: "/leaderboard", file: "leaderboard", heading: "Rankings" }, { path: "/how-to-play", file: "how-to-play", heading: "How to play" }];
 for (const entry of publicPages) test(`first response for ${entry.path} has readable content and unique metadata`, async ({ browser }) => {
   test.skip(!existsSync(`dist/${entry.file}.html`), "Generated HTML is checked in the build job");
   const context = await browser.newContext({ javaScriptEnabled: false });

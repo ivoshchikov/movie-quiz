@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "movie-quiz",
+    "catalogName": "All movies",
+    "label": "Movie quiz",
+    "summary": "Guess the movie from a still and four possible titles.",
+    "title": "Movie Quiz — Guess the Movie from a Still | Hard Quiz",
+    "description": "Play a free movie picture quiz: identify films from stills and choose from four titles. Pick Easy, Medium or Hard. No account needed for Classic.",
+    "heading": "Movie Quiz: Guess the Movie from a Still",
+    "intro": "Recognise the scene? Look at a movie still, compare four titles and choose your answer before the question timer runs out. Play Classic free without an account.",
+    "guideHeading": "Read the whole frame",
+    "paragraphs": [
+      "A movie still can give you more than a recognisable face. Costumes, locations, props and the way a scene is lit can help you separate four plausible titles. You are identifying the film shown in the image; you do not need to name its director, quote a line or type a title from memory.",
+      "Start with Easy if you want more time to inspect each frame. Medium and Hard change the time limit and your lives, while drawing from the same movie question pool. A harder setting means less room for mistakes, rather than a separate collection of obscure films."
+    ],
+    "tips": [
+      "Check the setting before focusing on a face: a room, vehicle or landscape can narrow the choices.",
+      "Compare every title. Recognising an actor can help, but that actor may appear in more than one of the films you are considering.",
+      "Keep an eye on Time left. A wrong answer or a timeout costs one life; a correct answer adds one point."
+    ],
+    "questions": [
+      { "question": "Is this a movie trivia quiz or a picture quiz?", "answer": "It is a movie picture quiz. Each question shows a still and four possible film titles. Choose the movie in the image rather than answering a written trivia question." },
+      { "question": "Can I play more than one movie quiz a day?", "answer": "Yes. Classic is separate from the one-answer Daily Challenge, so you can start another Classic run after your result. Each run ends when you lose your last life, finish the available questions or exit." }
+    ]
+  },
+  {
+    "slug": "actor-quiz",
+    "catalogName": "Actors",
+    "label": "Actor quiz",
+    "summary": "Match an actor’s photo to the right name.",
+    "title": "Actor Quiz — Guess the Actor from a Photo | Hard Quiz",
+    "description": "How well do you recognise actors? Play a free actor photo quiz with four name choices. Choose your difficulty and start Classic without an account.",
+    "heading": "Actor Quiz: Guess the Actor from a Photo",
+    "intro": "You know the face — can you match the name? Identify the actor in a photo from four possible answers. Choose a Classic difficulty and play free as a guest.",
+    "guideHeading": "Put a name to a familiar face",
+    "paragraphs": [
+      "This actor quiz tests recognition of a person, rather than the title of a film or the name of a character. A face may bring a familiar role to mind, but the answer you need is the actor’s name. Read all four choices before committing.",
+      "Look beyond a hairstyle or a costume you remember from one performance. Expression, facial features and the overall shape of the face can be more useful than trying to recall an entire filmography. Easy gives you more thinking time; all Classic difficulty settings use the same questions in this category."
+    ],
+    "tips": [
+      "Separate the actor’s real name from the character you associate with the face.",
+      "Use the four names to test your first impression instead of guessing before you have read the options.",
+      "Choose a difficulty by the time and lives shown in the setup. The timer keeps running while the question loads or you switch tabs."
+    ],
+    "questions": [
+      { "question": "Do I need to type the actor’s name?", "answer": "No. Each photo comes with four answer buttons. Select the name you think matches the actor before the question deadline." },
+      { "question": "How is the actor quiz different from This or That?", "answer": "Classic has a correct name for each photo and a score. This or That compares two people and asks for your preference; it has no wrong answers. You can choose that mode below if you want to build personal favourites." }
+    ]
+  },
+  {
+    "slug": "actress-quiz",
+    "catalogName": "Actresses",
+    "label": "Actress quiz",
+    "summary": "Recognise actresses from photos and choose their names.",
+    "title": "Actress Quiz — Guess the Actress from a Photo | Hard Quiz",
+    "description": "Test your recognition with a free actress photo quiz. Match each face to one of four names, choose a Classic difficulty and play without an account.",
+    "heading": "Actress Quiz: Guess the Actress from a Photo",
+    "intro": "Match a familiar face to the right name in the Actresses category. Each Classic question gives you a photo, four names and a running timer. No account needed.",
+    "guideHeading": "Recognise the person behind the role",
+    "paragraphs": [
+      "Remembering a performance and remembering the performer’s name are different challenges. This actress picture quiz asks for the person in the photo, so you do not need to recall a character’s name, an award or a film’s release year.",
+      "If you recognise a role first, use it as a route to the performer’s name, then compare that memory with the four choices. Photos can look different from the screen appearance you remember. This category is separate from Actors, so starting here keeps your Classic run on Actresses."
+    ],
+    "tips": [
+      "Focus on facial features rather than relying only on hair colour, makeup or a familiar screen costume.",
+      "Read similar names carefully before choosing. One correct answer earns one point; a mistake or timeout uses a life.",
+      "Use Easy when you want more time to connect a face with a name. Medium and Hard use the same category pool with different limits."
+    ],
+    "questions": [
+      { "question": "Does this page start the Actresses category?", "answer": "Yes. The setup on this page is fixed to Actresses. Choose your difficulty, then press Play Actresses. To change to another category, use the quiz links below." },
+      { "question": "Can I save an actress quiz record?", "answer": "You can play as a guest, but sign in before starting if you want an eligible record saved to your account. Signing in after a guest run does not transfer that result." }
+    ]
+  },
+  {
+    "slug": "tv-series-quiz",
+    "catalogName": "TV series",
+    "label": "TV series quiz",
+    "summary": "Identify the TV show from a still and four titles.",
+    "title": "TV Series Quiz — Guess the Show from a Still | Hard Quiz",
+    "description": "Recognise TV shows from stills in a free picture quiz. Choose the series from four titles, pick a Classic difficulty and play without an account.",
+    "heading": "TV Series Quiz: Guess the Show from a Still",
+    "intro": "Recognise a show from a single scene? Look at a TV still and choose the series from four titles. Start a free Classic run in the TV Series category.",
+    "guideHeading": "Look for the world of the show",
+    "paragraphs": [
+      "A familiar set, a costume or a group of characters can point to a series before you recognise the exact scene. The TV series quiz asks for the show’s title. You do not need to identify an episode, season number or the actor playing a particular role.",
+      "An actor’s face is only one clue: the same performer can appear in several shows. Compare the setting and visual style with all four titles. Classic keeps your run in TV Series, while the separate Daily Challenge can feature different categories on different days."
+    ],
+    "tips": [
+      "Check the location and period of the scene, especially when several answers feature the same performer.",
+      "Look at the whole cast in the frame. A combination of faces can be more distinctive than one close-up.",
+      "Pick Easy for more time to examine the still. The difficulty changes time and lives, not the TV question pool."
+    ],
+    "questions": [
+      { "question": "Do I need to guess a specific episode?", "answer": "No. Choose the TV series shown in the image from four possible show titles. The quiz does not ask you to name an episode or season." },
+      { "question": "Is this the daily TV show challenge?", "answer": "This is a repeatable Classic TV Series quiz. The separate Daily Challenge allows one answer a day, requires an account and resets at midnight US Central (America/Chicago)." }
+    ]
+  }
+]

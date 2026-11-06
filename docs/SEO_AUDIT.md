@@ -1,5 +1,7 @@
 # SEO-01 — technical audit and implementation
 
+Latest game-discovery work: [6 November 2026 category landing pages](seo/game-discovery-2026-11-06.md). The dated audit below remains historical.
+
 Date: 2026-10-11. Status: published and verified in production through PR #23. This supersedes earlier pending SEO-01 entries in PROJECT_CONTEXT.md and DECISIONS.md.
 
 ## Confirmed findings and fixes

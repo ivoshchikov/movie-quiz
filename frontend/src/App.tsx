@@ -12,6 +12,8 @@ import PrivateRoute        from "./PrivateRoute";
 import DailyPage from "./pages/DailyPage";
 // ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
 import NotFound            from "./components/NotFound";
+import { classicCategories } from "./games/classicCategories";
+const ClassicCategoryPage = lazy(() => import("./pages/ClassicCategoryPage"));
 const ThisThatPage = lazy(() => import("./pages/ThisThatPage"));
 const ThisThatPlayPage = lazy(() => import("./pages/ThisThatPlayPage"));
 const TimeAttackPage = lazy(() => import("./pages/TimeAttackPage"));
@@ -46,6 +48,7 @@ export default function App() {
         <Route element={<Layout />}>
           {/* публичные экраны */}
           <Route index                element={<StartScreen />} />
+          {classicCategories.map(category => <Route key={category.slug} path={category.slug} element={<ClassicCategoryPage category={category} />} />)}
           <Route path="how-to-play"   element={<HowToPlay />} />
           <Route path="login"         element={<LoginScreen />} />
           <Route path="setup-profile" element={<ProfileSetupScreen />} />
