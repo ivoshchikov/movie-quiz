@@ -1,0 +1,336 @@
+{
+  "source": "Archive(5).zip, supplied by the site owner on November 6, 2026",
+  "externalSourceLinks": [],
+  "films": [
+    {
+      "id": "arrival",
+      "original": "Arrival.png",
+      "originalBytes": 2401552,
+      "originalSha256": "7ab72fb2ce7664cd934e63e70a6ca03f83ce56f183a384f8c8753ab23277010d",
+      "originalWidth": 3420,
+      "originalHeight": 1410,
+      "alt": "Louise Banks in an orange protective suit holds a board reading HUMAN in Arrival (2016).",
+      "caption": "Louise Banks introduces a word in Arrival (2016).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-arrival-still-480.webp",
+          "width": 480,
+          "height": 198,
+          "bytes": 3520,
+          "sha256": "8a794c5fac98e177f1b7e70429afae94fe9155aa775b1582aa9e964de96bdd2b"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-arrival-still-800.webp",
+          "width": 800,
+          "height": 330,
+          "bytes": 6790,
+          "sha256": "5f9db57690a056deae1738213a0fba03afa9165c9380abe25b434081ddc76e39"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-arrival-still.webp",
+          "width": 1200,
+          "height": 495,
+          "bytes": 10934,
+          "sha256": "45a5121594696989caaf5436036bc9049c1401d8da3582c6554b11d3b03f69cd"
+        }
+      ]
+    },
+    {
+      "id": "moon",
+      "original": "Moon.png",
+      "originalBytes": 5236232,
+      "originalSha256": "1ccf1743dbcc2b5058b3abb440c7258886e6f42d04a99ed4bfa381949cb651b8",
+      "originalWidth": 3420,
+      "originalHeight": 1410,
+      "alt": "GERTY's robotic unit displays a yellow smiling face inside the lunar base in Moon (2009).",
+      "caption": "GERTY aboard the lunar base in Moon (2009).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-moon-still-480.webp",
+          "width": 480,
+          "height": 198,
+          "bytes": 8720,
+          "sha256": "38a46d8103a6eb238e60b76597c13f4029fa1bf294a38057f78b2232a984b6d3"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-moon-still-800.webp",
+          "width": 800,
+          "height": 330,
+          "bytes": 17154,
+          "sha256": "d1d2ed622d249aab6f23b86d328469b97c384ef4d53b9678221c5d3004454e93"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-moon-still.webp",
+          "width": 1200,
+          "height": 495,
+          "bytes": 29190,
+          "sha256": "4c0636bc3dc4a6a97ef2e6e16b8e0e7880c416dd250136f9c76e52fecb1d336b"
+        }
+      ]
+    },
+    {
+      "id": "coherence",
+      "original": "Coherence.png",
+      "originalBytes": 4514061,
+      "originalSha256": "6045e7a2c56dbb2200072218b44a1385053576960adbddb02d70a6ffa3345700",
+      "originalWidth": 3420,
+      "originalHeight": 1446,
+      "alt": "Em sits at a warmly lit dinner table with friends in Coherence (2013).",
+      "caption": "Em at the dinner gathering in Coherence (2013).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-coherence-still-480.webp",
+          "width": 480,
+          "height": 203,
+          "bytes": 8954,
+          "sha256": "0a3ec0d2b7acfc3ce280c637c190fbc1703e690a8561806c4f7a98401b6da1fa"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-coherence-still-800.webp",
+          "width": 800,
+          "height": 338,
+          "bytes": 16310,
+          "sha256": "f9ea0b6738888bba7672f81ed7cef75ad6444f84ebef41a451a0b9e3d9266b66"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-coherence-still.webp",
+          "width": 1200,
+          "height": 507,
+          "bytes": 26092,
+          "sha256": "0c93566f91ba526ad887c238ff397aacdd0b052485463dc72050e28e1cb6b918"
+        }
+      ]
+    },
+    {
+      "id": "source-code",
+      "original": "Source Code.png",
+      "originalBytes": 8003645,
+      "originalSha256": "c605521035dae250531193c0a91e1ae99c599d58c52810e320a4d4a43b950dec",
+      "originalWidth": 3420,
+      "originalHeight": 1912,
+      "alt": "Colter Stevens stands beside another passenger at the doorway of a commuter train in Source Code (2011).",
+      "caption": "At a commuter train doorway in Source Code (2011).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-source-code-still-480.webp",
+          "width": 480,
+          "height": 268,
+          "bytes": 20974,
+          "sha256": "63fbf557f6d4893ab532e35aef9651fec29acdda87a7716b73f0cab65d4344a5"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-source-code-still-800.webp",
+          "width": 800,
+          "height": 447,
+          "bytes": 41116,
+          "sha256": "04e93ca3a2281950ae3adeff0be207309e4054d363e51bdc789c68f9ec35532a"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-source-code-still.webp",
+          "width": 1200,
+          "height": 671,
+          "bytes": 67170,
+          "sha256": "077dfe696d6832429744d62b3c8e9e713a2eaa8336722ed4c13ead06661330cf"
+        }
+      ]
+    },
+    {
+      "id": "ex-machina",
+      "original": "Ex Machina.png",
+      "originalBytes": 4016036,
+      "originalSha256": "fe79d88219ea8d0be92debb0651a459a01278148fa925dfa4ca739b8ae0fcd04",
+      "originalWidth": 3420,
+      "originalHeight": 1426,
+      "alt": "Ava's face and reflection appear on a glass partition in Ex Machina (2015).",
+      "caption": "Ava behind glass in Ex Machina (2015).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-ex-machina-still-480.webp",
+          "width": 480,
+          "height": 200,
+          "bytes": 4174,
+          "sha256": "add9bc344a2aeaad2a5341a7dfaeccd03f446484607627d0f00a530a9a37e977"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-ex-machina-still-800.webp",
+          "width": 800,
+          "height": 334,
+          "bytes": 8728,
+          "sha256": "4b06bfbb3017ca213105b787ff80108c318b9d0b610be3373bcd06bfe265b95b"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-ex-machina-still.webp",
+          "width": 1200,
+          "height": 500,
+          "bytes": 15894,
+          "sha256": "536e4a10d61ffaf47477d500e6af648b99587e46ea5269349800b4ca8530b74e"
+        }
+      ]
+    },
+    {
+      "id": "dark-city",
+      "original": "Dark City.png",
+      "originalBytes": 3047889,
+      "originalSha256": "44d6be0c4f09c198ff3256f164717c7eac1daae8b0730eef26510725bf833966",
+      "originalWidth": 3420,
+      "originalHeight": 1908,
+      "alt": "Three figures in dark coats and hats stand in a dimly lit room in Dark City (1998).",
+      "caption": "A shadowy interior in Dark City (1998).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-dark-city-still-480.webp",
+          "width": 480,
+          "height": 268,
+          "bytes": 4880,
+          "sha256": "470ad898be71961686851b4493d4051f96672168d60ef83b8ef40d78dbb7068c"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-dark-city-still-800.webp",
+          "width": 800,
+          "height": 446,
+          "bytes": 9112,
+          "sha256": "b6826eca7985e01bd2ea894cdfbd43d53f69482e53894d1ea9c4729a0ce34be2"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-dark-city-still.webp",
+          "width": 1200,
+          "height": 669,
+          "bytes": 15314,
+          "sha256": "32ca46bd551436b8f263c19bc19f6b450023b53a30f10a1543017cca6f210ca4"
+        }
+      ]
+    },
+    {
+      "id": "minority-report",
+      "original": "Minority Report.png",
+      "originalBytes": 6351110,
+      "originalSha256": "3adcef5bf984a79ab037b9c949335eb493ce74e077d6ff434bdb0f2688a4f0e5",
+      "originalWidth": 3420,
+      "originalHeight": 1910,
+      "alt": "Faces are projected across the curved displays above the Precrime operations room in Minority Report (2002).",
+      "caption": "The Precrime operations room in Minority Report (2002).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-minority-report-still-480.webp",
+          "width": 480,
+          "height": 268,
+          "bytes": 19588,
+          "sha256": "e15c4854db8751cdab5d256cfa349956229076c4461d0040b70c73a70a8737d8"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-minority-report-still-800.webp",
+          "width": 800,
+          "height": 447,
+          "bytes": 36382,
+          "sha256": "9b034ed1dc911abe4ca16ea24ccb5e35b9e529b7c17bc3e927d0d1b74858f3e2"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-minority-report-still.webp",
+          "width": 1200,
+          "height": 670,
+          "bytes": 56842,
+          "sha256": "5b7a8c9b3e5dc71ea8ec8983825703fd0fe2fb7235c3e047420365207da4bcdb"
+        }
+      ]
+    },
+    {
+      "id": "gattaca",
+      "original": "Gattaca.png",
+      "originalBytes": 5267061,
+      "originalSha256": "744b5f796ada486661494c5bba1a78de6cd2caa839c386fa42931e757a0b8954",
+      "originalWidth": 3420,
+      "originalHeight": 1906,
+      "alt": "Vincent sits at a workstation as an older man stands beside him in Gattaca (1997).",
+      "caption": "Vincent at work in Gattaca (1997).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-gattaca-still-480.webp",
+          "width": 480,
+          "height": 268,
+          "bytes": 10442,
+          "sha256": "029ad7deb0bae46af4269a022fed2d73ba35e39fdb026afd6b1dc2f61412dcdd"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-gattaca-still-800.webp",
+          "width": 800,
+          "height": 446,
+          "bytes": 18262,
+          "sha256": "9a18006d4c1866943610160abc7ecdac0a6ad7d4890d2299f13a6a9af6de3ba2"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-gattaca-still.webp",
+          "width": 1200,
+          "height": 669,
+          "bytes": 28014,
+          "sha256": "da8f077b9574c6b563ccf63bda624c0b54a834093f64c96e3bdfa4bddcaf8d51"
+        }
+      ]
+    },
+    {
+      "id": "the-thirteenth-floor",
+      "original": "The Thirteenth Floor.png",
+      "originalBytes": 5084025,
+      "originalSha256": "cc80035c6c1c6c01ee93189e5df71a6f25e73ec3ff6c07dfb1f728a2af42babe",
+      "originalWidth": 3420,
+      "originalHeight": 1418,
+      "alt": "A cream-colored Checker taxi passes along a busy period street in The Thirteenth Floor (1999).",
+      "caption": "A period street scene in The Thirteenth Floor (1999).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-480.webp",
+          "width": 480,
+          "height": 199,
+          "bytes": 12674,
+          "sha256": "38c13d4e32e96e2b8f5aded57fdea673e4cb8e24f7d215320ccf7f6a300eb02b"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-800.webp",
+          "width": 800,
+          "height": 332,
+          "bytes": 22494,
+          "sha256": "af8bd3de210e3bd02144a2608bb95b5adb8157bd69936e57f2489088e77e0ca1"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp",
+          "width": 1200,
+          "height": 498,
+          "bytes": 36276,
+          "sha256": "0ebb0a0d1fd0ce6a03c1211c45d276de48d6654a8652451f9bbde23b97b6fc79"
+        }
+      ]
+    },
+    {
+      "id": "the-vast-of-night",
+      "original": "The Vast of Night.png",
+      "originalBytes": 3660756,
+      "originalSha256": "2dca86508362b70298374edf6624e4b7695da7ee4087a5eb3c155db8e914f5ee",
+      "originalWidth": 3420,
+      "originalHeight": 1408,
+      "alt": "Fay and Everett stand outside at night with a microphone between them in The Vast of Night (2020).",
+      "caption": "Fay and Everett in The Vast of Night (2020).",
+      "variants": [
+        {
+          "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-480.webp",
+          "width": 480,
+          "height": 198,
+          "bytes": 4976,
+          "sha256": "152788ab52c01503e872edd530797027185dd71a81e45c5c82673da4bb52915a"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-800.webp",
+          "width": 800,
+          "height": 329,
+          "bytes": 9468,
+          "sha256": "0a4d63dd81328c5b0944b278c2bd4442d825440d9803e712b0aa7f5d3dfe7143"
+        },
+        {
+          "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp",
+          "width": 1200,
+          "height": 494,
+          "bytes": 16004,
+          "sha256": "c3f9a19fb052003b4402331efe927401a8171eea4f774abeecee6dfb9d05972f"
+        }
+      ]
+    }
+  ]
+}

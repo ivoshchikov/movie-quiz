@@ -7,6 +7,7 @@ const catalog = (slug: string) => `https://www.justwatch.com/us/movie/${slug}`;
 const films = [
   {
     id: "arrival", title: "Arrival", year: "2016", director: "Denis Villeneuve", runtime: "116 min",
+    still: {"height": 495, "alt": "Louise Banks in an orange protective suit holds a board reading HUMAN in Arrival (2016).", "caption": "Louise Banks introduces a word in Arrival (2016)."},
     puzzle: "First contact", angle: "For a moving mystery about communication",
     viewing: "Paramount+ subscription", url: "https://www.paramountplus.com/movies/video/b252p_he2WOl_CT2pCO6vXWDXv1A5M9F/",
     premise: "Spacecraft appear around the world, and linguist Louise Banks is brought in to work out what their visitors are saying. Amy Adams plays a researcher whose first obstacle is basic but enormous: before anyone can ask why the aliens have come, both sides need a way to understand the question.",
@@ -14,6 +15,7 @@ const films = [
   },
   {
     id: "moon", title: "Moon", year: "2009", director: "Duncan Jones", runtime: "97 min",
+    still: {"height": 495, "alt": "GERTY's robotic unit displays a yellow smiling face inside the lunar base in Moon (2009).", "caption": "GERTY aboard the lunar base in Moon (2009)."},
     puzzle: "Identity", angle: "For an intimate puzzle in an isolated workplace",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/moon/umc.cmc.kn4jms59nt6y439vqjwgom31",
     premise: "Sam Bell is nearly finished with a three-year stint at a lunar mining base. His company is the computer GERTY, and home is a long way away. An accident interrupts the routine and gives Sam a reason to question the job he thought he understood. Sam Rockwell plays the exhausted worker at the center of it.",
@@ -21,6 +23,7 @@ const films = [
   },
   {
     id: "coherence", title: "Coherence", year: "2013", director: "James Ward Byrkit", runtime: "About 89 min",
+    still: {"height": 507, "alt": "Em sits at a warmly lit dinner table with friends in Coherence (2013).", "caption": "Em at the dinner gathering in Coherence (2013)."},
     puzzle: "Reality", angle: "For a dinner party that becomes a group investigation",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/coherence/umc.cmc.hdoayzcx3u9ofxfawjrt3hgc",
     premise: "Eight friends get together for dinner on the night a comet passes overhead. Ordinary interruptions begin to feel connected, and the guests have to compare what they have seen with what the others remember. The less you know about the evening's complications, the more room the film has to surprise you.",
@@ -28,6 +31,7 @@ const films = [
   },
   {
     id: "source-code", title: "Source Code", year: "2011", director: "Duncan Jones", runtime: "93 min",
+    still: {"height": 671, "alt": "Colter Stevens stands beside another passenger at the doorway of a commuter train in Source Code (2011).", "caption": "At a commuter train doorway in Source Code (2011)."},
     puzzle: "Time and evidence", angle: "For a brisk investigation with a ticking clock",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/source-code/umc.cmc.3qh64tqrye0qklconl4j5ihmb",
     premise: "A soldier wakes on a Chicago commuter train in another man's body. His assignment is to identify a bomber, using a program that gives him access to the same short stretch of events. Jake Gyllenhaal plays an investigator who has to learn the rules of the assignment while doing the work.",
@@ -35,6 +39,7 @@ const films = [
   },
   {
     id: "ex-machina", title: "Ex Machina", year: "2015", director: "Alex Garland", runtime: "108 min",
+    still: {"height": 500, "alt": "Ava's face and reflection appear on a glass partition in Ex Machina (2015).", "caption": "Ava behind glass in Ex Machina (2015)."},
     puzzle: "Consciousness and trust", angle: "For a tense conversation where motives matter",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/ex-machina/umc.cmc.3px5tjkllmjkrluv2ui9m6hbw",
     premise: "A young programmer, Caleb, visits his employer's remote home to evaluate an artificial intelligence called Ava. The task puts three people in an unequal relationship: the employee asking questions, the creator who controls the test and the being asked to prove she has a mind. Domhnall Gleeson, Oscar Isaac and Alicia Vikander play those roles.",
@@ -42,6 +47,7 @@ const films = [
   },
   {
     id: "dark-city", title: "Dark City", year: "1998", director: "Alex Proyas", runtime: "111 min — Director's Cut",
+    still: {"height": 669, "alt": "Three figures in dark coats and hats stand in a dimly lit room in Dark City (1998).", "caption": "A shadowy interior in Dark City (1998)."},
     puzzle: "Memory", angle: "For a noir mystery in an unfamiliar city",
     viewing: "Director's Cut: digital purchase", url: "https://play.google.com/store/movies/details/Dark_City_Director_s_Cut?hl=en&id=1fmPIU7x7-o",
     premise: "John Murdoch wakes without his memory and finds himself pursued through a city he cannot make sense of. People seem to know things about his life that he cannot confirm. Rufus Sewell plays the fugitive, with William Hurt, Jennifer Connelly and Kiefer Sutherland in the cast.",
@@ -49,6 +55,7 @@ const films = [
   },
   {
     id: "minority-report", title: "Minority Report", year: "2002", director: "Steven Spielberg", runtime: "145 min",
+    still: {"height": 670, "alt": "Faces are projected across the curved displays above the Precrime operations room in Minority Report (2002).", "caption": "The Precrime operations room in Minority Report (2002)."},
     puzzle: "Prediction and guilt", angle: "For a full-scale futuristic detective thriller",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/minority-report/umc.cmc.4e8pvt0eezl2rnq71x4nx3atn",
     premise: "In a future Washington, D.C., a police unit arrests people for murders predicted before they happen. Officer John Anderton believes in the system until it identifies him as a future killer. Tom Cruise plays a detective suddenly forced to investigate the evidence being used against him.",
@@ -56,6 +63,7 @@ const films = [
   },
   {
     id: "gattaca", title: "Gattaca", year: "1997", director: "Andrew Niccol", runtime: "106 min",
+    still: {"height": 669, "alt": "Vincent sits at a workstation as an older man stands beside him in Gattaca (1997).", "caption": "Vincent at work in Gattaca (1997)."},
     puzzle: "Identity and a murder", angle: "For a controlled, elegant thriller about passing as someone else",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/gattaca/umc.cmc.5ezqaeo0qqkflzp5ofr6s33ny",
     premise: "In a society that sorts people by their genes, Vincent takes another man's identity to pursue a place on a space mission. A murder investigation at his workplace threatens to expose him. Ethan Hawke, Uma Thurman and Jude Law star in a story where a tiny biological trace can have life-changing consequences.",
@@ -63,6 +71,7 @@ const films = [
   },
   {
     id: "the-thirteenth-floor", title: "The Thirteenth Floor", year: "1999", director: "Josef Rusnak", runtime: "100 min",
+    still: {"height": 498, "alt": "A cream-colored Checker taxi passes along a busy period street in The Thirteenth Floor (1999).", "caption": "A period street scene in The Thirteenth Floor (1999)."},
     puzzle: "Memory and simulated reality", angle: "For a murder case with an unreliable frame of reference",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/the-thirteenth-floor/umc.cmc.4zxdrzgea9fj0i3pi54278l3r",
     premise: "Douglas Hall works on a computer simulation of 1930s Los Angeles. When the project's leader is murdered, Hall becomes a suspect, with gaps in his recollection making it difficult to defend himself. Investigating the death means returning to a constructed world that already complicates the meaning of evidence.",
@@ -70,6 +79,7 @@ const films = [
   },
   {
     id: "the-vast-of-night", title: "The Vast of Night", year: "2020", director: "Andrew Patterson", runtime: "About 90 min",
+    still: {"height": 494, "alt": "Fay and Everett stand outside at night with a microphone between them in The Vast of Night (2020).", "caption": "Fay and Everett in The Vast of Night (2020)."},
     puzzle: "An unexplained signal", angle: "For an eerie investigation driven by listening",
     viewing: "Digital rental or purchase", url: "https://tv.apple.com/us/movie/the-vast-of-night/umc.cmc.631ylsyfs43wyhf3x1he1wmhz",
     premise: "On a night in 1950s New Mexico, a switchboard operator and a radio DJ hear a strange frequency. Fay and Everett follow calls, recordings and local accounts to find its source. Sierra McCormick and Jake Horowitz play two young people whose practical knowledge of communications becomes a way into a much larger question.",
@@ -138,6 +148,10 @@ const post: BlogPost = {
     {films.map((film, index) => <section className="hq-watchlist-entry" key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{index + 1}. {film.title} ({film.year})</h2>
       <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · Directed by {film.director} · {film.runtime} · <a href={film.url}>{film.viewing}</a></p>
+      <figure className="hq-film-still">
+        <ArticleImage src={`/blog-assets/sci-fi-mystery-${film.id}-still.webp`} width={1200} height={film.still.height} alt={film.still.alt} />
+        <figcaption>{film.still.caption}</figcaption>
+      </figure>
       <p>{film.premise}</p>
       <p>{film.reason}</p>
     </section>)}
