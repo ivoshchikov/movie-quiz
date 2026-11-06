@@ -4,7 +4,7 @@ import { mockQuizApi, mockSignedIn } from './fixtures';
 test('balanced homepage launches the selected category and actual difficulty rules', async ({ page }) => {
   const calls = await mockQuizApi(page);
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Movie & Actor Quiz' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Movie & Actor Quiz Games' })).toBeVisible();
   await expect(page.getByRole('radio', { name: /Movies/ })).toHaveAttribute('aria-checked', 'true');
   await expect(page.getByRole('radio', { name: "Actresses", exact: true })).toBeVisible();
   await expect(page.getByRole('radio', { name: 'TV Series', exact: true })).toBeVisible();

@@ -1,3 +1,4 @@
+import { classicCategories } from "../games/classicCategories";
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
@@ -142,7 +143,7 @@ export default function Layout() {
       <div className="hq-shell hq-header-inner">
         <Link to="/" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span>Hard Quiz</Link>
         <nav className="hq-nav" aria-label="Main navigation">
-          <Link to="/" className="hq-nav-link" aria-current={["/", "/daily", "/time-attack", "/this-or-that"].includes(pathname) ? "page" : undefined}>Games</Link>
+          <Link to="/" className="hq-nav-link" aria-current={["/", "/daily", "/time-attack", "/this-or-that", ...classicCategories.map(category => `/${category.slug}`)].includes(pathname) ? "page" : undefined}>Games</Link>
           <NavLink to="/leaderboard" className="hq-nav-link">Rankings</NavLink>
           <NavLink to="/blog" className="hq-nav-link">Blog</NavLink>
         </nav>

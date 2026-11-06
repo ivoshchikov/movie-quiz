@@ -144,7 +144,7 @@ test("page metadata has one owner on direct load and after client-side navigatio
     await expect(page.locator(selector)).toHaveCount(1);
   }
   await page.getByRole("link", { name: "Choose a game", exact: true }).first().click();
-  await expect(page).toHaveTitle("Movie & Actor Quiz | Hard Quiz");
+  await expect(page).toHaveTitle("Movie & Actor Quiz Games — Play Free | Hard Quiz");
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", "https://hard-quiz.com/");

@@ -11,16 +11,17 @@ interface Props<LevelId extends number | string> {
   difficultyLabel?: string;
   labelCategory?: (category: Category) => string;
   describeLevel?: (id: LevelId) => string | undefined;
+  showCategory?: boolean;
   onCategoryChange: (id: number) => void;
   onDifficultyChange: (id: LevelId) => void;
 }
 
 export default function QuizFilters<LevelId extends number | string>({
   categories, difficulties, categoryId, difficultyId, difficultyLabel = "Difficulty",
-  onCategoryChange, onDifficultyChange, labelCategory = categoryLabel, describeLevel,
+  onCategoryChange, onDifficultyChange, labelCategory = categoryLabel, describeLevel, showCategory = true,
 }: Props<LevelId>) {
   return <div className="hq-filters">
-    <RadioGroup value={categoryId ?? null} onChange={onCategoryChange} aria-label="Select category" className="hq-fieldset">
+    {showCategory && <RadioGroup value={categoryId ?? null} onChange={onCategoryChange} aria-label="Select category" className="hq-fieldset">
       <RadioGroup.Label className="hq-legend">Category</RadioGroup.Label>
       <div className="hq-category-grid">
         {categories.map(category => <RadioGroup.Option as="button" type="button" key={category.id} value={category.id} className="hq-category-option">
@@ -29,7 +30,7 @@ export default function QuizFilters<LevelId extends number | string>({
           {checked && <SiteIcon name="check" className="hq-category-check" />}</>}
         </RadioGroup.Option>)}
       </div>
-    </RadioGroup>
+    </RadioGroup>}
     <RadioGroup value={difficultyId ?? null} onChange={onDifficultyChange} aria-label="Select level" className="hq-fieldset">
       <RadioGroup.Label className="hq-legend">{difficultyLabel}</RadioGroup.Label>
       <div className="hq-level-grid" style={{ gridTemplateColumns: `repeat(${Math.max(difficulties.length, 1)}, minmax(0, 1fr))` }}>

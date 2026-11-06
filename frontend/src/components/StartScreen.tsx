@@ -10,6 +10,7 @@ import SiteIcon from "./SiteIcon";
 import StatusMessage from "./StatusMessage";
 import ModeSwitcher from "./ModeSwitcher";
 import GameModeLinks from "./GameModeLinks";
+import QuizCategoryLinks from "./QuizCategoryLinks";
 import { gameMode } from "../games/modes";
 import ModePreview from "./ModePreview";
 import DailySetup from "./DailySetup";
@@ -21,13 +22,16 @@ const ThisThatSetup = lazy(() => import("../pages/ThisThatPage").then(module => 
 
 interface QuizSelection { categoryId?: number; difficultyId?: number; }
 
-export function ClassicSetup() {
+export function ClassicSetup({ fixedCategoryName }: { fixedCategoryName?: string } = {}) {
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const requested = location.state as QuizSelection | null;
   const { categories, difficulties, loading, error, reload } = useQuizCatalog();
-  const categoryId = (categories.find(c => c.id === Number(params.get("category"))) ?? categories.find(c => c.id === requested?.categoryId) ?? categories[0])?.id;
+  // Resolve the live catalog by name. A category URL must never start another
+  // category through query parameters, navigation state or numeric ID fallback.
+  const categoryId = (fixedCategoryName ? categories.find(c => c.name === fixedCategoryName)
+    : categories.find(c => c.id === Number(params.get("category"))) ?? categories.find(c => c.id === requested?.categoryId) ?? categories[0])?.id;
   const difficultyId = (difficulties.find(d => d.id === Number(params.get("difficulty"))) ?? difficulties.find(d => d.id === requested?.difficultyId) ?? difficulties.find(d => d.key === "easy") ?? difficulties[0])?.id;
   const selectionKey = String(categoryId);
   const loadAvailability = useCallback((signal: AbortSignal) => countQuestions(categoryId ?? 0, undefined, signal), [categoryId]);
@@ -44,10 +48,12 @@ export function ClassicSetup() {
   return <div className="hq-classic-setup" aria-busy={loading || availability.loading}>
           {loading ? <StatusMessage tone="loading">Loading quiz options…</StatusMessage>
             : error ? <StatusMessage tone="error">Quiz options could not be loaded. <button className="hq-inline-action" onClick={reload}>Try again</button></StatusMessage>
+            : fixedCategoryName && !category ? <StatusMessage>This quiz category is currently unavailable. <Link className="hq-inline-action" to="/">Choose another quiz</Link></StatusMessage>
             : !categories.length || !difficulties.length ? <StatusMessage>New quizzes are coming soon.</StatusMessage>
             : <>
+              {fixedCategoryName && category && <p className="hq-fixed-category">Category: <strong>{classicCategoryLabel(category)}</strong></p>}
               <QuizFilters categories={categories} difficulties={difficulties} categoryId={categoryId} difficultyId={difficultyId} onCategoryChange={id => select("category", id)} onDifficultyChange={id => select("difficulty", id)}
-                labelCategory={classicCategoryLabel} describeLevel={id => {
+                showCategory={!fixedCategoryName} labelCategory={classicCategoryLabel} describeLevel={id => {
                   const item = difficulties.find(d => d.id === id);
                   return item && `${item.time_limit_secs} s · ${item.lives} ${item.lives === 1 ? "life" : "lives"}`;
                 }} />
@@ -80,6 +86,8 @@ export default function StartScreen() {
     </section>
     <div className="hq-games-links"><Link className="hq-text-action" to={`/leaderboard?${new URLSearchParams({ ...Object.fromEntries(params), mode })}`}><SiteIcon name="trophy" />{mode === "this-or-that" ? "Actor favourites" : "View rankings"}</Link></div>
     <GameModeLinks current="classic" />
+    <QuizCategoryLinks />
+    <section className="hq-home-guide" aria-labelledby="home-picture-quiz"><h2 id="home-picture-quiz">Four ways to test your screen knowledge</h2><p>In Classic, identify a movie or TV series from a still, or match an actor or actress to a photo. Each question has four answers. A correct answer earns one point; a mistake or timeout costs one life. Play free without an account, and choose a difficulty by its time limit and lives.</p><p>For a different pace, try <Link className="hq-inline-action" to="/time-attack">Time Attack</Link> with one continuous timer. <Link className="hq-inline-action" to="/this-or-that">This or That</Link> asks for your favourites rather than a correct answer. The <Link className="hq-inline-action" to="/daily">Daily Challenge</Link> offers one answer per day and requires an account.</p><Link className="hq-inline-action" to="/how-to-play">Compare the rules before you play</Link></section>
     <div className="hq-blog-strip">{featuredPost && <div><p className="hq-blog-label">From the blog</p><Link className="hq-blog-title" to={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link></div>}<Link to="/blog" className="hq-text-action">Explore the blog <SiteIcon name="arrow" /></Link></div>
   </div></>;
 }

@@ -4,6 +4,7 @@ import { getDifficultyLevels } from "../api";
 import { useReadRequest } from "../hooks/useReadRequest";
 import howToPlayMetadata from "../howToPlayMetadata.json";
 import Seo from "./Seo";
+import QuizCategoryLinks from "./QuizCategoryLinks";
 import SiteIcon from "./SiteIcon";
 import "../how-to-play.css";
 
@@ -134,6 +135,7 @@ export default function HowToPlay() {
         </details><Link to="/daily" className="hq-howto-daily-link">View Daily & its reset countdown <SiteIcon name="arrow" /></Link>
       </section>
 
+      <QuizCategoryLinks />
       <footer className="hq-howto-bottom"><p>Ready to play?</p><Link to="/" className="hq-primary">Choose a game <SiteIcon name="arrow" /></Link></footer>
     </article>
   </>;

@@ -1,0 +1,24 @@
+.hq-category-links { margin-block: 28px; }
+.hq-category-links h2, .hq-category-guide h2, .hq-home-guide h2 { color: var(--hq-text); font-size: 20px; font-weight: 650; line-height: 1.35; margin-bottom: 14px; }
+.hq-category-links-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.hq-category-links-grid a { display: flex; flex-direction: column; gap: 6px; padding: 18px; border: 1px solid var(--hq-border); border-radius: 12px; background: var(--hq-surface); text-decoration: none; }
+.hq-category-links-grid a:hover { border-color: var(--hq-purple); }
+.hq-category-links-grid strong { color: var(--hq-text); font-size: 15px; font-weight: 600; }
+.hq-category-links-grid span { color: var(--hq-muted); font-size: 14px; line-height: 1.6; }
+.hq-category-page { max-width: 1040px; margin-inline: auto; }
+.hq-category-breadcrumb { display: flex; flex-wrap: wrap; gap: 9px; color: var(--hq-muted); font-size: 13px; margin-bottom: 20px; }
+.hq-category-breadcrumb a { color: var(--hq-purple); }
+.hq-category-guide { display: grid; gap: 26px; max-width: 760px; margin-block: 30px; color: var(--hq-muted); font-size: 15px; line-height: 1.8; }
+.hq-category-guide p + p { margin-top: 12px; }
+.hq-category-guide :is(ol,ul) { padding-left: 22px; margin-block: 12px; }
+.hq-category-guide ol { list-style: decimal; }
+.hq-category-guide ul { list-style: disc; }
+.hq-category-guide li + li { margin-top: 8px; }
+.hq-category-guide details { padding-block: 13px; border-bottom: 1px solid var(--hq-border); }
+.hq-category-guide summary { color: var(--hq-text); cursor: pointer; font-weight: 500; }
+.hq-category-guide details p { margin-top: 10px; }
+.hq-fixed-category { color: var(--hq-muted); font-size: 14px; margin-bottom: 20px; }
+.hq-fixed-category strong { color: var(--hq-text); font-weight: 600; }
+.hq-home-guide { max-width: 760px; margin-block: 28px; color: var(--hq-muted); font-size: 14px; line-height: 1.8; }
+.hq-home-guide p { margin-bottom: 10px; }
+@media(max-width:620px) { .hq-category-links-grid { grid-template-columns: minmax(0,1fr); } .hq-category-links-grid a { padding: 15px; } .hq-category-page .hq-hero h1 { font-size: 27px; } }

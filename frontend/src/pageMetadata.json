@@ -1,9 +1,9 @@
 {
   "home": {
-    "title": "Movie & Actor Quiz | Hard Quiz",
-    "description": "Guess movies from stills and actors from photos. Play a free Classic quiz without an account, race the clock in Time Attack or try the Daily Challenge.",
-    "heading": "Movie & Actor Quiz",
-    "intro": "Guess movies from stills and actors from photos. Play Classic free, with no account.",
+    "title": "Movie & Actor Quiz Games — Play Free | Hard Quiz",
+    "description": "Play free movie, TV series, actor and actress picture quizzes. Guess from four answers in Classic, race in Time Attack or try the Daily Challenge.",
+    "heading": "Movie & Actor Quiz Games",
+    "intro": "Guess movies and TV shows from stills, or actors and actresses from photos. Play Classic free, with no account.",
     "url": "https://hard-quiz.com/",
     "jsonLd": {
       "@context": "https://schema.org",

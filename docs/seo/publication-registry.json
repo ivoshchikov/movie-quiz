@@ -135,6 +135,82 @@
       }
     },
     {
+      "path": "/movie-quiz",
+      "url": "https://hard-quiz.com/movie-quiz",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/actor-quiz",
+      "url": "https://hard-quiz.com/actor-quiz",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/actress-quiz",
+      "url": "https://hard-quiz.com/actress-quiz",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
+      "path": "/tv-series-quiz",
+      "url": "https://hard-quiz.com/tv-series-quiz",
+      "kind": "page",
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/sci-fi-mystery-movies",
       "url": "https://hard-quiz.com/blog/sci-fi-mystery-movies",
       "kind": "article",
