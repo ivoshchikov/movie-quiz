@@ -1,4 +1,19 @@
-# React + TypeScript + Vite
+# Hard Quiz frontend
+
+## Cloudflare staging
+
+The staging Worker is `hard-quiz-staging`, connected to the GitHub branch
+`feat/cloudflare-staging`. In Workers Builds, use root directory `/frontend`,
+build command `npm run build:cloudflare`, and deploy command
+`npm run deploy:cloudflare`. Changes pushed to that branch trigger automatic
+builds and deployments; the owner does not need to deploy each update manually.
+
+Use Node 22 and the committed npm lockfile. The Cloudflare build is staging-only
+and sends noindex headers. Do not attach the production domain to this configuration.
+The full setup, variable names, verification criteria and cutover dependencies
+are in [Cloudflare deployment](../docs/CLOUDFLARE_DEPLOYMENT.md).
+
+## Original Vite template notes
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

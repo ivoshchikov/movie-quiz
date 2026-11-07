@@ -7,7 +7,15 @@ No custom domain, DNS change, paid plan or production cutover is included.
 ## Deployment status
 
 - Configuration and local validation are prepared in this branch.
-- Cloudflare account publication is pending the owner's GitHub connection.
+- The owner created `hard-quiz-staging` and connected this GitHub repository.
+- The initial build failed with `Missing script: build:cloudflare`, using source
+  without the staging scripts. On 8 November the owner confirmed the selected
+  branch is now `feat/cloudflare-staging`, root `/frontend`, with the intended
+  build/deploy commands and builds enabled.
+- All seven GitHub Actions workflows for implementation commit
+  `b7354dd0fb2ece956933b88575da27267e6c93f4` passed, including both full browser
+  runs on Node 22. This follow-up records the setup and triggers a fresh branch build.
+- A successful Cloudflare deployment and its exact URL still require verification.
 - The branch is not merged. Production continues to use Vercel.
 - Supabase, game rules, RPC contracts and Daily's America/Chicago date are unchanged.
 
@@ -74,7 +82,7 @@ Use the ordinary browser where the Cloudflare session already works.
    | --- | --- |
    | Worker/project name | `hard-quiz-staging` |
    | Git branch / production branch of this staging Worker | `feat/cloudflare-staging` |
-   | Root directory | `frontend` |
+   | Root directory / Path | `/frontend` |
    | Build command | `npm run build:cloudflare` |
    | Deploy command | `npm run deploy:cloudflare` |
    | Install command, if offered | `npm ci` |
@@ -83,7 +91,8 @@ Use the ordinary browser where the Cloudflare session already works.
    Cloudflare calls the selected branch the Worker's "production branch". Here
    that means only the temporary staging Worker; it does not move hard-quiz.com.
    If branch controls appear only after creation, set **Settings → Build → Branch
-   control** to this branch, then run its build. Do not merge this PR to make an
+   control** to this branch, then push an update to that branch for a fresh build.
+   Retrying an old build can still use its old source commit. Do not merge this PR to make an
    initially selected main build pass. Existing wrangler.jsonc must be used;
    automatic framework migration or an automatically generated configuration PR
    is not needed.
