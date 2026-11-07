@@ -8,6 +8,10 @@ build command `npm run build:cloudflare`, and deploy command
 `npm run deploy:cloudflare`. Changes pushed to that branch trigger automatic
 builds and deployments; the owner does not need to deploy each update manually.
 
+Staging URL: https://hard-quiz-staging.i-voschikov.workers.dev/.
+The first successful automatic publication and browser loading were verified on
+8 November 2026. Full migration acceptance is tracked separately from deployment.
+
 Use Node 22 and the committed npm lockfile. The Cloudflare build is staging-only
 and sends noindex headers. Do not attach the production domain to this configuration.
 The full setup, variable names, verification criteria and cutover dependencies

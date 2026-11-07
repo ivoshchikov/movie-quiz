@@ -15,7 +15,13 @@ No custom domain, DNS change, paid plan or production cutover is included.
 - All seven GitHub Actions workflows for implementation commit
   `b7354dd0fb2ece956933b88575da27267e6c93f4` passed, including both full browser
   runs on Node 22. This follow-up records the setup and triggers a fresh branch build.
-- A successful Cloudflare deployment and its exact URL still require verification.
+- Workers Builds completed successfully for `f45628214d14b5909912fcabaa0fa5150157cd5f`.
+  The published site is https://hard-quiz-staging.i-voschikov.workers.dev/.
+  Its public `seo-release.json` identifies that exact revision and the production
+  canonical origin, and the HTTP noindex header is present. The homepage was also
+  opened in Chrome: categories and difficulty settings loaded and the play button
+  became available without starting a game. Roadmap task 3 is complete; full
+  acceptance of gameplay, authentication and mobile performance remains task 4.
 - The branch is not merged. Production continues to use Vercel.
 - Supabase, game rules, RPC contracts and Daily's America/Chicago date are unchanged.
 
@@ -121,8 +127,10 @@ Use the ordinary browser where the Cloudflare session already works.
    settings screen with environment values hidden before submitting a different
    configuration.
 
-Task 3 is complete only after the deployed URL, build revision, noindex and
-basic HTTP responses are verified. Real email/Google sign-in on that URL may
+Task 3's deployed URL, build revision, noindex and basic page loading were verified
+on 8 November. Later branch commits automatically deploy again; the current
+deployment and verification revision are recorded in PR #73 and the roadmap.
+Real email/Google sign-in on that URL may
 require an exact Supabase redirect allowlist entry, which is checked separately
 at task 4; do not add broad wildcard domains preemptively.
 
