@@ -23,7 +23,8 @@
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "validate:question-bundle": "node scripts/validate-question-bundle.cjs",
-    "test:question-bundle": "node --test scripts/__tests__/question-bundle.test.cjs"
+    "test:question-bundle": "node --test scripts/__tests__/question-bundle.test.cjs",
+    "test:acceptance": "playwright test -c playwright.acceptance.config.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",

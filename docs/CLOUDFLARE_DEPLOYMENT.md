@@ -27,6 +27,11 @@ No custom domain, DNS change, paid plan or production cutover is included.
 
 ## Runtime and routing
 
+Task 4 acceptance is documented in [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
+Automated hosted checks passed; the owner's real Google/email round trip remains
+required before task 4 can close. `npm run test:acceptance` uses fixtures and a
+context-level network guard. It does not exercise production game writes.
+
 `frontend/wrangler.jsonc` defines `hard-quiz-staging`, a Worker with Static Assets.
 Existing files, including prerendered HTML, scripts, styles and images, use the
 asset service directly. The Worker handles legacy social-image endpoints and

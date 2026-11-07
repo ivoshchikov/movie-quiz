@@ -17,6 +17,13 @@ and sends noindex headers. Do not attach the production domain to this configura
 The full setup, variable names, verification criteria and cutover dependencies
 are in [Cloudflare deployment](../docs/CLOUDFLARE_DEPLOYMENT.md).
 
+`npm run test:acceptance` checks the hosted staging build on desktop/mobile,
+with intercepted game/auth APIs and a context-level guard against real writes.
+`QUIZ_PERFORMANCE=1 npm run test:acceptance` compares cold frontend loads with
+Vercel using the same isolated API responses. Run these commands sequentially.
+Scope, results, limitations and the owner's remaining real-login check are in
+[Cloudflare acceptance](../docs/CLOUDFLARE_ACCEPTANCE.md).
+
 ## Original Vite template notes
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

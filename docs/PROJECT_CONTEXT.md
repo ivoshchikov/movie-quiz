@@ -1,3 +1,21 @@
+## Cloudflare staging acceptance — 8 November 2026
+
+Roadmap task 4 has passed its automated frontend checks on the hosted Worker:
+34 desktop/mobile functional cases and two JavaScript-disabled checks covering
+all 22 public documents. Games use intercepted, in-memory API responses; a
+deny-by-default context guard prevents synthetic API writes. Classic's reload
+termination, Daily save/retry, Time Attack resume/deadline, This or That's ten
+pairs, result privacy, rankings, profile and non-admin guards were checked.
+Mobile screenshots were inspected. Eight local workerd groups, full lint,
+application TypeScript and two existing Daily fixture regressions passed.
+
+The real Supabase redirect allowlist and Google/email account round trips remain
+unverified: no getter is exposed and the dashboard requires sign-in. Task 4 stays
+open until the owner completes the controlled staging login check, without
+starting a real game. Performance measurements, limits and exact owner steps:
+[CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md). Production, DNS and ads remain
+unchanged; the staging PR is still a draft.
+
 ## Cloudflare staging published — 8 November 2026
 
 Roadmap task 3 is complete in `feat/cloudflare-staging`, based on main `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`. Workers with Static Assets preserve prerendered HTML, 33 legacy HTML redirects, private-route headers and true root/blog 404s. Five social cards are generated during the existing postbuild; eight current WebP covers stay intact. Legacy OG endpoints serve prebuilt images. Known assets bypass the small Worker; only legacy API and error/missing paths need it.

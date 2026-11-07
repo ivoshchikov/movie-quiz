@@ -1,5 +1,15 @@
 ## HOST-01 — Cloudflare staging before monetization
 
+Task 4 update, 8 November 2026: hosted frontend acceptance uses isolated API
+fixtures plus a network guard; it must not create synthetic attempts in the
+production Supabase project. Automated game/mobile/static-HTML checks passed.
+Do not close acceptance until the owner verifies actual Google and email login
+returns on the controlled staging host. Keep the production Site URL and existing
+Google/Supabase callback; use only the exact temporary frontend redirect URLs
+needed for the check, then remove them when staging is retired. Lab performance
+is compared with Vercel and must not be presented as field Core Web Vitals.
+Results and remaining actions: [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
+
 8 November 2026 (Asia/Nicosia). The owner chose Cloudflare and authorized roadmap task 3. Prepare a separate `hard-quiz-staging` Worker with Static Assets from `feat/cloudflare-staging`; retain Vite/prerendering and Supabase. Generate remaining social cards at build time using the existing renderer, with lightweight compatibility handlers for published OG links. Keep normal assets outside Worker execution. Explicit fallback handling preserves the distinct root/blog 404 responses. Staging is globally noindex; production needs a separate reviewed configuration at task 6.
 
 No DNS change, paid upgrade, production merge or ad activation is part of this preparation. Cloudflare's `_redirects` does not support domain-level redirects, so the www → apex 308 Redirect Rule is a prerequisite to the later cutover. The owner completed the GitHub connection and branch selection; a branch push produced a successful Cloudflare deployment, verified release identity, noindex response and a working homepage with loaded quiz options. Routine publications now use automatic Workers Builds; full acceptance remains task 4. Instructions and evidence: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
