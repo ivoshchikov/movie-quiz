@@ -95,6 +95,11 @@ test("reopening an answered Daily reads the receipt without requesting any quest
   page,
 }) => {
   const d = await dailyFixture(page);
+  let creditReads = 0;
+  await page.route("**/rest/v1/rpc/question_image_credits", route => {
+    creditReads++;
+    return route.fulfill({ json: [] });
+  });
   d.results.set("fixture-user:2026-10-07", {
     is_answered: true,
     is_correct: true,
@@ -106,6 +111,12 @@ test("reopening an answered Daily reads the receipt without requesting any quest
     page.getByRole("heading", { name: "Correct!", exact: true }),
   ).toBeVisible();
   expect(d.calls.some((c) => c.name === "daily_begin")).toBe(false);
+  await expect(page.getByText("Image credits", { exact: true })).toHaveCount(0);
+  await expect(page.getByAltText(/^Credited image/)).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Correct!", exact: true })).toBeVisible();
+  await expect(page.getByText("Image credits", { exact: true })).toHaveCount(0);
+  expect(creditReads).toBe(0);
 });
 test("competing clicks and keys freeze one choice immediately", async ({
   page,

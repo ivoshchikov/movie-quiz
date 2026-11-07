@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { webcrypto } from "node:crypto";
 import { zipSync, unzipSync, strToU8 } from "fflate";
 import { mockQuizApi, mockSignedIn } from "./fixtures";
+import { pickFixture } from "./this-that-fixture";
 import {
   bundleOperationId,
   canonical,
@@ -752,7 +753,7 @@ test("a category edit resizes only when necessary and updates the saved credit f
   );
 });
 
-test("full image credits load only on request after a result and imported HTML stays inert", async ({
+test("Classic results and restored results do not show session photos or request image credits", async ({
   page,
 }) => {
   await mockQuizApi(page);
@@ -794,19 +795,39 @@ test("full image credits load only on request after a result and imported HTML s
     });
   });
   await page.goto("/result");
-  await expect(page.getByText("Image credits", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Play again", exact: true })).toBeVisible();
+  await expect(page.getByText("Image credits", { exact: true })).toHaveCount(0);
+  await expect(page.getByAltText(/^Credited image/)).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Image source", exact: true })).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("link", { name: "Play again", exact: true })).toBeVisible();
+  await expect(page.getByText("Image credits", { exact: true })).toHaveCount(0);
   expect(reads).toBe(0);
-  await page.getByText("Image credits", { exact: true }).click();
-  await expect(
-    page
-      .locator(".hq-image-credit p")
-      .filter({ hasText: "<script>window.creditExecuted=true</script>" }),
-  ).toBeVisible();
-  await expect(
-    page
-      .locator(".hq-image-credit")
-      .getByRole("link", { name: "Image source", exact: true }),
-  ).toHaveAttribute("href", sample.image.source_page_url);
+
+});
+
+test("public comparison portraits keep safe attribution links and render imported HTML as text", async ({ page }) => {
+  await pickFixture(page);
+  let reads = 0;
+  await page.route("**/rest/v1/rpc/question_image_credits", route => {
+    const payload = route.request().postDataJSON();
+    reads++;
+    expect(payload.p_mode).toBe("comparison");
+    expect(payload.p_person).toBeGreaterThan(0);
+    expect(payload.p_session).toBeNull();
+    expect(payload.p_date).toBeNull();
+    return route.fulfill({ json: [{
+      image_url: "fixture.svg",
+      metadata: { image: { ...sample.image, attribution_text: "<script>window.creditExecuted=true</script>" } },
+    }] });
+  });
+  await page.goto("/this-or-that");
+  await page.getByRole("button", { name: "Choose my first pair", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Choose Actor 1", exact: true })).toBeVisible();
+  expect(reads).toBe(0);
+  await page.getByText("Image credits", { exact: true }).first().click();
+  await expect(page.locator(".hq-image-credit p").filter({ hasText: "<script>window.creditExecuted=true</script>" })).toBeVisible();
+  await expect(page.locator(".hq-image-credit").getByRole("link", { name: "Image source", exact: true })).toHaveAttribute("href", sample.image.source_page_url);
   expect(reads).toBe(1);
   expect(await page.evaluate(() => "creditExecuted" in window)).toBe(false);
 });

@@ -1,3 +1,7 @@
+## Result photo privacy — 7 November 2026
+
+Classic, Time Attack and Daily results display scores/outcomes with replay controls. They omit the former image-credit gallery. Migration `20261107202508_result_image_answer_privacy.sql` rejects guessing-mode credit requests for old clients as well, regardless of session ownership or completion. `GameImageCredits` accepts only public comparison portraits. Admin image sources and licence records are retained. Current credited images have public This or That counterparts, where names and attribution are already displayed. This shared-image mode permits cross-mode visual matching. Delivery evidence is recorded in the implementation PR.
+
 ## Classic v2 — единый банк на категорию
 
 Classic делает снимок всех действующих корректных вопросов выбранной категории, независимо от метки сложности вопроса. Время на вопрос и стартовые жизни: Easy 45/5, Medium 30/3, Hard 20/1. Сервер выдаёт отдельный дедлайн каждому вопросу и принимает только один исход раунда. Вопросы, вес выбора и начисление очков одинаковы для трёх уровней.

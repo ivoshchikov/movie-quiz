@@ -64,6 +64,7 @@ create table hq_private.question_cohort_metrics(question_id integer,revision int
 await db.exec(`select set_config('request.jwt.claim.sub','${admin}',false);
 select public.admin_change_question('00000000-0000-4000-8000-000000000600',100,1,'["One","Two","Three","Four"]',0,false);`);
 await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261102170738_question_editor_details.sql',import.meta.url),'utf8'));await db.exec('commit');
+await db.exec('begin');await db.exec(await readFile(new URL('../migrations/20261107202508_result_image_answer_privacy.sql',import.meta.url),'utf8'));await db.exec('commit');
 const uid=async id=>db.query("select set_config('request.jwt.claim.sub',$1,false)",[id??'']);
 const scalar=async(sql,args)=>(await db.query(sql,args)).rows[0].v;
 const reserve=async(id,category=1,allow=false,hash=id.replaceAll('-','').repeat(2))=>scalar('select public.admin_import_reserve($1,$2,$3,$4,null,$5,1,$6,0,$7) v',[admin,id,'f'.repeat(64),hash,category,JSON.stringify(options),allow]);
@@ -294,37 +295,60 @@ test('possible names/aliases/diacritics and identical images warn independently 
  const wrongOptionsOnly=await scalar('select public.admin_bundle_warnings($1) v',[JSON.stringify([{temp_id:'wrong-options-only',category_id:3,names:['Two'],sha256:'no-match'}])]);
  assert.deepEqual(wrongOptionsOnly['wrong-options-only'],[]);
 });
-test('full credits are unavailable before a completed owned run, and only issued images are returned afterwards',async()=>{
+test('guessing-game credits deny active, finished and guest sessions for every caller', async () => {
  await db.exec(`create table hq_private.game_sessions(id uuid primary key,owner uuid,finished_at timestamptz);
  create table hq_private.game_rounds(session_id uuid,number integer,image_url text,issued_at timestamptz);
  create table hq_private.time_attack_sessions(id uuid primary key,owner uuid,finished_at timestamptz);
  create table hq_private.time_attack_rounds(session_id uuid,number integer,image_url text,issued_at timestamptz);
  create table hq_private.tt_people(id bigint primary key,image_url text,active boolean,source_question integer);`);
- for(const mode of ['normal','time-attack']){
-  const sessions=mode==='normal'?'game_sessions':'time_attack_sessions',rounds=mode==='normal'?'game_rounds':'time_attack_rounds';
-  const id='00000000-0000-4000-8000-000000000550';
-  await db.query(`insert into hq_private.${sessions} values($1,$2,null)`,[id,player]);
-  await db.query(`insert into hq_private.${rounds} values($1,1,$2,now()),($1,2,$3,null)`,[id,contentResults[0].image_path,contentResults[1].image_path]);
-  await uid(player);await assert.rejects(scalar('select public.question_image_credits($1,$2) v',[mode,id]),/until.*finished/);
-  await db.query(`update hq_private.${sessions} set finished_at=now() where id=$1`,[id]);
-  await uid(admin);await assert.rejects(scalar('select public.question_image_credits($1,$2) v',[mode,id]),/until.*finished/);
-  await uid(null);await assert.rejects(scalar('select public.question_image_credits($1,$2) v',[mode,id]),/until.*finished/);
-  await uid(player);await db.exec('set role authenticated');try{
-   const credits=await scalar('select public.question_image_credits($1,$2) v',[mode,id]);
-   assert.equal(credits.length,1);assert.equal(credits[0].image_url,contentResults[0].image_path);
-   assert.equal(credits[0].metadata.image.license,'CC BY-SA 4.0');assert.equal(credits[0].metadata.identity,undefined);assert.equal(credits[0].metadata.editorial,undefined);
-  }finally{await db.exec('reset role');}
+ for (const mode of ['normal', 'time-attack']) {
+  const sessions = mode === 'normal' ? 'game_sessions' : 'time_attack_sessions';
+  const rounds = mode === 'normal' ? 'game_rounds' : 'time_attack_rounds';
+  const id = '00000000-0000-4000-8000-000000000550';
+  await db.query(`insert into hq_private.${sessions} values($1,$2,null)`, [id, player]);
+  await db.query(`insert into hq_private.${rounds} values($1,1,$2,now()),($1,2,$3,null)`, [id, contentResults[0].image_path, contentResults[1].image_path]);
+  for (const finished of [false, true]) {
+   if (finished) await db.query(`update hq_private.${sessions} set finished_at=now() where id=$1`, [id]);
+   for (const caller of [player, admin, null]) {
+    await uid(caller);
+    await db.exec(caller ? 'set role authenticated' : 'set role anon');
+    try {
+     await assert.rejects(scalar('select public.question_image_credits($1,$2) v', [mode, id]), { code: '42501' });
+    } finally { await db.exec('reset role'); }
+   }
+  }
+  await db.query(`update hq_private.${sessions} set owner=null where id=$1`, [id]);
+  await uid(null);
+  await assert.rejects(scalar('select public.question_image_credits($1,$2) v', [mode, id]), { code: '42501' });
+  assert.deepEqual(await scalar("select public.question_image_credits('comparison',$1) v", [id]), []);
  }
+ await uid(admin);
+ const detail = await scalar('select public.admin_question_detail($1) v', [contentResults[0].question_id]);
+ assert.equal(detail.content_metadata.image.license, 'CC BY-SA 4.0');
 });
-test('Daily credits require a saved answer; public preference portraits retain accessible credits',async()=>{
- const date='2020-01-01',q=contentResults[1];
- await uid(admin);await db.query('insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) values($1,$2,2,1)',[date,q.question_id]);
- await uid(player);await assert.rejects(scalar("select public.question_image_credits('daily',null,$1) v",[date]),/until.*saved/);
- await db.query('insert into public.daily_result(user_id,d,is_correct,time_spent) values($1,$2,true,4)',[player,date]);
- const credits=await scalar("select public.question_image_credits('daily',null,$1) v",[date]);assert.equal(credits[0].image_url,q.image_path);
- await uid(null);await assert.rejects(scalar("select public.question_image_credits('daily',null,$1) v",[date]),/until.*saved/);
- await db.query('insert into hq_private.tt_people values(77,$1,true,$2)',[q.image_path,q.question_id]);
- await db.exec('set role anon');try{assert.equal((await scalar("select public.question_image_credits('comparison',null,null,77) v"))[0].metadata.image.photographer,'Example creator');}finally{await db.exec('reset role');}
+test('Daily credits stay private after answering and comparison credits only resolve public portraits', async () => {
+ const date = '2020-01-01', q = contentResults[1];
+ await uid(admin);
+ await db.query('insert into public.daily_challenge(d,question_id,category_id,difficulty_level_id) values($1,$2,2,1)', [date,q.question_id]);
+ await uid(player);
+ await assert.rejects(scalar("select public.question_image_credits('daily',null,$1) v", [date]), { code:'42501' });
+ await db.query('insert into public.daily_result(user_id,d,is_correct,time_spent) values($1,$2,true,4)', [player,date]);
+ for (const caller of [player,admin,null]) {
+  await uid(caller);
+  await assert.rejects(scalar("select public.question_image_credits('daily',null,$1) v", [date]), { code:'42501' });
+ }
+ await db.query('insert into hq_private.tt_people values(77,$1,true,$2)', [q.image_path,q.question_id]);
+ await uid(null);
+ await db.exec('set role anon');
+ try {
+  const credits = await scalar("select public.question_image_credits('comparison',null,null,77) v");
+  assert.equal(credits[0].metadata.image.photographer, 'Example creator');
+  assert.equal(credits[0].metadata.identity, undefined);
+  assert.deepEqual(await scalar("select public.question_image_credits('comparison',null,null,77,$1) v", [contentResults[0].image_path]), []);
+  assert.deepEqual(await scalar("select public.question_image_credits('comparison',null,null,999) v"), []);
+ } finally { await db.exec('reset role'); }
+ await db.query('update hq_private.tt_people set active=false where id=77');
+ assert.deepEqual(await scalar("select public.question_image_credits('comparison',null,null,77) v"), []);
 });
 test('replacing a photo clears current attribution and keeps credits for historical snapshots',async()=>{
  await uid(admin);const q=contentResults[2],id='00000000-0000-4000-8000-000000000560',hash='a'.repeat(64),fp='b'.repeat(64);

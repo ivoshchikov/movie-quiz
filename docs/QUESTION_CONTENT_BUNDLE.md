@@ -165,20 +165,28 @@ image path when `admin_import_finish` creates/updates the question. Private
 `question_media` keeps historical credits for issued game snapshots. Existing
 questions with no metadata remain valid.
 
-In Administration, credits are visible in drafts and question detail. For players,
-**Image credits** is available after a finished Classic/Time Attack run or a saved
-Daily answer. The read-only RPC checks session ownership/capability and completion,
-and returns credits only for images actually issued, not prepared future rounds.
-It returns no editorial or identity object. Source titles/URLs may reveal the answer,
-so full credits are never included in a live guessing question response. Credits
-follow normal snapshot retention (guest sessions about one day; account snapshots
-about 30 days). They do not create or finish attempts. Public This or That portraits
-have credits next to their pair/ranking/favourites, tied to the displayed image path.
+In Administration, credits are visible in drafts and question detail. Classic,
+Time Attack and Daily results show the player's outcome and score. Their result
+screens have no photo/credit gallery, and `question_image_credits` rejects these
+modes even for an owned, completed session or a saved Daily answer. Source text,
+titles and links can contain the correct answer and stay out of guessing-game
+responses.
+
+Public This or That portraits retain credits beside their pair, ranking and
+favourites. That mode already displays names. Its lookup accepts only an active
+public person and that person's current or historical image. Full provenance is
+retained privately when a photo is replaced. Attribution obligations continue to
+apply to licensed images. The current credited actor/actress photos also have
+public comparison portraits. Future content needs a suitable attribution path.
+
+The guessing endpoints protect gameplay responses. This or That uses some of the
+same portraits, so cross-mode visual matching and identification through external
+image sources remain possible.
 
 Replacing a photograph clears its previous draft attribution. A manual replacement
 in the bank resolves credits by its new path, never by the old question's author.
 Changing only answers retains that photograph's credits. Historic image credits
-remain available to already-issued game snapshots.
+remain in the private media records for editorial use.
 
 ## Repeat imports and duplicate review
 
