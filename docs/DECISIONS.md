@@ -1,3 +1,9 @@
+## HOST-01 — Cloudflare staging before monetization
+
+8 November 2026 (Asia/Nicosia). The owner chose Cloudflare and authorized roadmap task 3. Prepare a separate `hard-quiz-staging` Worker with Static Assets from `feat/cloudflare-staging`; retain Vite/prerendering and Supabase. Generate remaining social cards at build time using the existing renderer, with lightweight compatibility handlers for published OG links. Keep normal assets outside Worker execution. Explicit fallback handling preserves the distinct root/blog 404 responses. Staging is globally noindex; production needs a separate reviewed configuration at task 6.
+
+No DNS change, paid upgrade, production merge or ad activation is part of this preparation. Cloudflare's `_redirects` does not support domain-level redirects, so the www → apex 308 Redirect Rule is a prerequisite to the later cutover. The account deployment awaits the owner's GitHub connection; local checks do not count as a published deployment. Instructions and evidence: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
+
 ## ANSWER-01 — Result photo metadata
 
 7 November 2026. The owner requested removing the post-session image list because attribution titles and source links identify the correct answers. Classic, Time Attack and Daily remove that list. A versioned migration denies their `question_image_credits` requests before looking up a session, including completed and guest sessions. Admin provenance and credits for public comparison portraits remain accessible through their existing checks. This or That shares portraits with the question bank and displays names, so matching those public portraits remains a separate limitation.

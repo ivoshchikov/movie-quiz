@@ -24,7 +24,7 @@ import "../login.css";
 import "../nickname.css";
 
 const CANON_BASE = "https://hard-quiz.com";
-const DEFAULT_OG = `${CANON_BASE}/api/og/post?title=${encodeURIComponent("Hard Quiz — Guess Movies from Stills & Faces")}&tags=${encodeURIComponent("Play now,Daily Challenge")}`;
+const DEFAULT_OG = `${CANON_BASE}/og/default.png`;
 export interface SiteOutletContext {
   chooseNickname: () => void; openLogin: () => void; setDailyPlaying: (value: boolean) => void;
   profileReady: boolean; hasNickname: boolean; nickname: string | null;

@@ -30,3 +30,4 @@ dist-ssr
 /playwright/.cache/
 .cache
 seo-reports/
+.wrangler/

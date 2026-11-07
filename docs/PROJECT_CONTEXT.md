@@ -1,3 +1,9 @@
+## Cloudflare staging preparation — 8 November 2026
+
+Roadmap task 3 is prepared in `feat/cloudflare-staging` from main `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`. Workers with Static Assets preserve prerendered HTML, 33 legacy HTML redirects, private-route headers and true root/blog 404s. Five social cards are generated during the existing postbuild; eight current WebP covers stay intact. Legacy OG endpoints serve prebuilt images. Known assets bypass the small Worker; only legacy API and error/missing paths need it.
+
+This is a staging-only configuration, with noindex on all responses and no custom domain. Production remains on Vercel; DNS, Supabase and monetization settings are unchanged. Cloudflare publication requires the owner's one-time GitHub connection and build variables. Task 3 remains open until the actual workers.dev deployment is verified. Node 22 is pinned for CI/new hosting; local and hosted validation evidence are kept separate. Setup, checks and the www redirect dependency before cutover: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
+
 ## Result photo privacy — 7 November 2026
 
 Classic, Time Attack and Daily results display scores/outcomes with replay controls. They omit the former image-credit gallery. Migration `20261107202508_result_image_answer_privacy.sql` rejects guessing-mode credit requests for old clients as well, regardless of session ownership or completion. `GameImageCredits` accepts only public comparison portraits. Admin image sources and licence records are retained. Current credited images have public This or That counterparts, where names and attribution are already displayed. This shared-image mode permits cross-mode visual matching. Delivery evidence is recorded in the implementation PR.
