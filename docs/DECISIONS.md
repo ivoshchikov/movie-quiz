@@ -1,3 +1,7 @@
+## ANSWER-01 — Result photo metadata
+
+7 November 2026. The owner requested removing the post-session image list because attribution titles and source links identify the correct answers. Classic, Time Attack and Daily remove that list. A versioned migration denies their `question_image_credits` requests before looking up a session, including completed and guest sessions. Admin provenance and credits for public comparison portraits remain accessible through their existing checks. This or That shares portraits with the question bank and displays names, so matching those public portraits remains a separate limitation.
+
 ## GAME-05 — Classic: общий банк внутри категории
 
 3 ноября 2026 года владелец согласовал единый банк на категорию для Classic. Actors, Actresses, Movies и TV Series остаются раздельными. Easy — 45 секунд и 5 жизней, Medium — 30 и 3, Hard — 20 и 1. Правильный ответ даёт 1 очко, ошибка или тайм-аут отнимают одну жизнь. Вес вопроса, выдача без повторов и серверный момент начала отсчёта сохраняются на всех уровнях. Метки сложности вопросов остаются в банке для админки, импорта и других режимов.

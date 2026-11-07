@@ -7,10 +7,22 @@ async function start(page:Page,level='Easy · 120 s'){
 }
 async function end(page:Page){await page.getByRole('button',{name:'End run',exact:true}).click();await page.getByRole('button',{name:'End run & save'}).click();await expect(page.getByRole('heading',{name:'Time Attack result'})).toBeVisible();}
 test('a guest can discover Time Attack, choose its own time pressure and save a negative result',async({page})=>{
- const d=await attackFixture(page);await page.goto('/');await page.getByRole('radio',{name:'Time Attack',exact:true}).click();await page.getByRole('radio',{name:'Hard · 60 s',exact:true}).click();await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();
+ const d=await attackFixture(page);
+ let creditReads=0;
+ await page.route('**/rest/v1/rpc/question_image_credits',route=>{
+  creditReads++;
+  return route.fulfill({json:[]});
+ });
+ await page.goto('/');await page.getByRole('radio',{name:'Time Attack',exact:true}).click();await page.getByRole('radio',{name:'Hard · 60 s',exact:true}).click();await page.getByRole('button',{name:'Start Time Attack',exact:true}).click();
  await expect(page.getByRole('button',{name:answers[1],exact:true})).toBeEnabled();await page.keyboard.press('2');await expect(page.getByText('Incorrect. −1 point',{exact:true})).toBeVisible();expect(d.accepted).toBe(1);
  await page.clock.runFor(600);await expect(page.getByText('Question 2',{exact:true})).toBeVisible();await end(page);await expect(page.getByLabel('Score -1',{exact:true})).toBeVisible();await expect(page.getByText('Guest result.',{exact:false})).toBeVisible();
  expect(d.calls.find(c=>c.name==='time_attack_start')?.payload.p_level).toBe('hard');expect(d.calls.some(c=>['upsert_user_best','touch_question_stats'].includes(c.name))).toBe(false);
+ await expect(page.getByText('Image credits',{exact:true})).toHaveCount(0);
+ await expect(page.getByAltText(/^Credited image/)).toHaveCount(0);
+ await page.reload();
+ await expect(page.getByRole('heading',{name:'Time Attack result',exact:true})).toBeVisible();
+ await expect(page.getByText('Image credits',{exact:true})).toHaveCount(0);
+ expect(creditReads).toBe(0);
 });
 test('double clicks and an answer/skip race issue only one action; skip changes the single overall timer',async({page})=>{
  const d=await attackFixture(page);await start(page);await page.getByRole('button',{name:answers[0],exact:true}).evaluate(b=>{(b as HTMLButtonElement).click();(b as HTMLButtonElement).click();document.querySelector<HTMLButtonElement>('.hq-attack-skip')?.click();});

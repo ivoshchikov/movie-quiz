@@ -13,7 +13,6 @@ import pageMetadata from "../pageMetadata.json";
 import Seo from "../components/Seo";
 import GameModeLinks from "../components/GameModeLinks";
 import SiteIcon from "../components/SiteIcon";
-import GameImageCredits from "../components/GameImageCredits";
 import ThemeSlider from "../components/ThemeSlider";
 import YourDailyCard from "../components/YourDailyCard";
 import StreakLeaderboard from "../components/StreakLeaderboard";
@@ -116,7 +115,6 @@ export default function DailyPage() {
               <p>{correct === true ? "Well played! A correct Daily adds to your streak." : correct === false ? "Your answer is saved. Come back tomorrow for a fresh challenge." : "You’ve already answered this Daily."}</p>
               <div className="hq-daily-result-time"><span>Answer time</span><strong>{result.time_spent == null ? "Unavailable" : dailyTime(result.time_spent)}</strong></div><span className="hq-daily-saved">Synced with your account</span>
             </div>
-            <GameImageCredits mode="daily" date={game.date} />
             <YourDailyCard date={game.today} refreshKey={game.refreshKey} />
             <div className="hq-daily-actions">{previousDay ? <button className="hq-primary" onClick={() => game.actions.current?.openToday()}>Play today’s Daily</button> : <Link className="hq-primary" to="/">Choose another game <SiteIcon name="arrow" /></Link>}</div>
             <a className="hq-secondary hq-daily-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://hard-quiz.com/daily")}`} onClick={() => gaEvent("share_click", { method: "x", game_mode: "daily", d: game.date })} target="_blank" rel="noopener noreferrer"><SiteIcon name="x" />Share on X</a>{next}

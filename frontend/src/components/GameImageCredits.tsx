@@ -7,10 +7,9 @@ import type { ContentMetadata } from "../contentBundle/types";
 import ImageCredit from "./ImageCredit";
 
 interface Props {
-  mode: "normal" | "time-attack" | "daily" | "comparison";
-  session?: string;
-  date?: string;
-  person?: number;
+  // These portraits already show their names in the preference game.
+  mode: "comparison";
+  person: number;
   imagePath?: string;
   label?: string;
 }
@@ -18,7 +17,7 @@ interface Credit {
   image_url: string;
   metadata: ContentMetadata;
 }
-function CreditList({ mode, session, date, person, imagePath }: Props) {
+function CreditList({ mode, person, imagePath }: Props) {
   const { user } = useAuth();
   const load = useCallback(
     async (signal: AbortSignal) => {
@@ -26,9 +25,9 @@ function CreditList({ mode, session, date, person, imagePath }: Props) {
         "question_image_credits",
         {
           p_mode: mode,
-          p_session: session ?? null,
-          p_date: date ?? null,
-          p_person: person ?? null,
+          p_session: null,
+          p_date: null,
+          p_person: person,
           p_image_path: imagePath ?? null,
         },
         signal,
@@ -47,10 +46,10 @@ function CreditList({ mode, session, date, person, imagePath }: Props) {
         throw Error("Credits unavailable");
       return value;
     },
-    [mode, session, date, person, imagePath],
+    [mode, person, imagePath],
   );
   const request = useReadRequest(
-    `${user?.id ?? "guest"}:${mode}:${session}:${date}:${person}:${imagePath}`,
+    `${user?.id ?? "guest"}:${mode}:${person}:${imagePath}`,
     load,
   );
   return request.loading ? (
