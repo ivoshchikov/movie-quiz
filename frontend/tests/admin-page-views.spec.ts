@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mockHumanBrowser, mockQuizApi, mockSignedIn } from "./fixtures";
-test.beforeEach(async ({ page }) => { await mockHumanBrowser(page); });
+import { mockConsent } from "./privacy-fixtures";
+test.beforeEach(async ({ page }) => { await mockHumanBrowser(page); await mockConsent(page, { granted: true }); });
 const owner="112743d7-f683-4bbb-8117-068e89a00f22";
 const sample=()=>({hours24:45,days7:345,days30:12345,since:"2026-11-01T12:00:00Z",updated_at:"2026-11-01T18:00:00Z"});
 const panel=(p:Page)=>p.getByRole("region",{name:"Page views",exact:true});

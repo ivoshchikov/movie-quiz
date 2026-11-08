@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { consentIsMocked } from './privacy-fixtures';
 
 export const categories = [
   { id: 1, name: 'All movies' }, { id: 2, name: 'Actors' },
@@ -20,6 +21,7 @@ export async function mockQuizApi(page: Page) {
   const games = new Map<string, Record<string, unknown>>();
   // Keep analytics in its local command queue; never send test events to Google.
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'text/javascript', body: '' }));
+  if (!consentIsMocked(page)) await page.route('https://fundingchoicesmessages.google.com/**', route => route.fulfill({ contentType: 'text/javascript', body: '' }));
   await page.route('https://hard-quiz.com/blog-assets/movies-like-knives-out-640.webp', route => route.fulfill({ contentType: 'image/webp', path: 'public/blog-assets/movies-like-knives-out-640.webp' }));
   await page.route('https://hard-quiz.com/blog-assets/best-thriller-movies-2026-cover.webp', route => route.fulfill({ contentType: 'image/webp', path: 'public/blog-assets/best-thriller-movies-2026-cover.webp' }));
   await page.route('https://hard-quiz.com/blog-assets/best-horror-movies-2026-cover.webp', route => route.fulfill({ contentType: 'image/webp', path: 'public/blog-assets/best-horror-movies-2026-cover.webp' }));

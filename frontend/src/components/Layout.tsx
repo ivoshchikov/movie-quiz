@@ -1,5 +1,5 @@
 import { classicCategories } from "../games/classicCategories";
-import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
@@ -16,6 +16,8 @@ import PageErrorBoundary from "./PageErrorBoundary";
 import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
 import { useSiteVisits } from "../analytics/useSiteVisits";
 import { useSitePageViews } from "../analytics/useSitePageViews";
+import PrivacyControls from "../privacy/PrivacyControls";
+import { getConsent, getServerConsent, initializeConsent, isPrivacyDocument, setConsentGameActive, subscribeConsent } from "../privacy/consent";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
@@ -49,6 +51,15 @@ export default function Layout() {
   const isAdministration = /^\/admin(?:\/|$)/.test(pathname);
   const isGameView = isPlaying || (pathname === "/daily" && dailyPlaying);
   const owner = user?.id ?? "";
+  const consent = useSyncExternalStore(subscribeConsent, getConsent, getServerConsent);
+  useLayoutEffect(() => {
+    setConsentGameActive(isGameView);
+    // A fresh policy document must contain neither the CMP tag nor analytics tags.
+    if (isPrivacyDocument(pathname) && document.getElementById("hq-google-cmp")) {
+      location.replace(loc.pathname + loc.search + loc.hash); return;
+    }
+    initializeConsent();
+  }, [isGameView, pathname, loc.pathname, loc.search, loc.hash]);
   const loadProfile = useCallback((signal: AbortSignal) => getProfile(owner, signal), [owner]);
   const account = useReadRequest(owner, loadProfile, !authLoading && !!owner);
   const nickname = account.value?.nickname ?? null;
@@ -115,12 +126,12 @@ export default function Layout() {
   const isBlogIndex = pathname === "/blog";
   const isBlogArticle = pathname.startsWith("/blog/") && !isBlogIndex;
   const search = publicSearch(loc.search);
-  const analyticsBlocked = authLoading || isAdministration || owner === '112743d7-f683-4bbb-8117-068e89a00f22';
+  const analyticsBlocked = authLoading || isAdministration || isPrivacyDocument(pathname) || owner === '112743d7-f683-4bbb-8117-068e89a00f22';
   // Disable the tag for the owner on every route, including automatic history measurement.
-  useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked]);
-  useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`, loc.key); }, [pathname, search, loc.key, analyticsBlocked]);
-  useSiteVisits(analyticsBlocked, owner);
-  useSitePageViews(analyticsBlocked, owner, pathname);
+  useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked, consent.epoch]);
+  useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`, loc.key); }, [pathname, search, loc.key, analyticsBlocked, consent.epoch]);
+  useSiteVisits(analyticsBlocked || !consent.measurement, owner);
+  useSitePageViews(analyticsBlocked || !consent.measurement, owner, pathname);
   const loginViewed = useRef(false);
   const loginVisible = !user && (showLogin || pathname === "/login");
   useEffect(() => {
@@ -177,6 +188,7 @@ export default function Layout() {
       </PageErrorBoundary>
     </main>
     {!isGameView && <SiteFooter />}
+    {!isPrivacyDocument(pathname) && <PrivacyControls playing={isGameView} />}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
     <NicknameModal key={owner} open={showNickname && !!user && !authLoading && profileReady && !nickname && !isProfileSetup && !isGameView} onClose={() => setShowNickname(false)} destination={safeReturnPath(loc.pathname + loc.search + loc.hash)} onSaved={confirmNickname} />
   </div>;

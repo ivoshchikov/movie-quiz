@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { supabase } from "../supabase";
 import { canMeasureVisits } from "./ga";
-import { SITE_OWNER, existingVisitorId, getVisitorId, isOwnerBrowser, markOwnerBrowser } from "./visitorIdentity";
+import { onConsentRevoked } from "../privacy/consent";
+import { SITE_OWNER, getVisitorId, isOwnerBrowser, markOwnerBrowser } from "./visitorIdentity";
 
 const lastSentKey = "hq_visitor_last_sent";
 let lastSent = 0;
@@ -10,20 +11,19 @@ export function useSiteVisits(blocked: boolean, owner: string) {
   useEffect(() => {
     const controller = new AbortController();
     if (owner === SITE_OWNER) {
-      // Also remove any earlier guest observations from this owner's browser.
-      const id = existingVisitorId();
       markOwnerBrowser();
-      if (id) void supabase.rpc("site_visit_heartbeat", { p_visitor: id }).abortSignal(controller.signal).then(() => {}, () => {});
       return () => controller.abort();
     }
     if (blocked || isOwnerBrowser() || !canMeasureVisits()) return;
+    const unsubscribe = onConsentRevoked(() => { lastSent = 0; controller.abort(); });
     let busy = false;
     const heartbeat = async () => {
       if (busy || controller.signal.aborted || isOwnerBrowser() || !canMeasureVisits() ||
         document.visibilityState !== "visible" || !navigator.onLine) return;
       busy = true;
       try {
-        const id = await getVisitorId();
+        const id = await getVisitorId(canMeasureVisits);
+        if (!id) return;
         if (controller.signal.aborted || isOwnerBrowser() || !canMeasureVisits() || document.visibilityState !== "visible") return;
         let previous = lastSent;
         try {
@@ -54,6 +54,7 @@ export function useSiteVisits(blocked: boolean, owner: string) {
     window.addEventListener("online", wake);
     return () => {
       controller.abort();
+      unsubscribe();
       window.clearInterval(timer);
       document.removeEventListener("visibilitychange", wake);
       window.removeEventListener("online", wake);

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { supabase } from "../supabase";
 import { canMeasureVisits } from "./ga";
+import { onConsentRevoked } from "../privacy/consent";
 import { SITE_OWNER, getVisitorId, isOwnerBrowser } from "./visitorIdentity";
 
 // Retries live only in this document: no URLs or durable browsing history.
@@ -25,7 +26,9 @@ export function useSitePageViews(blocked: boolean, owner: string, pathname: stri
     // A pathname transition (including Back/Forward) is a new view. Query/hash
     // changes and StrictMode effect replay keep the same activation and token.
     if (activation.current.path !== pathname) activation.current = { path: pathname };
-    if (owner === SITE_OWNER || isOwnerBrowser()) pending.current.clear();
+    if (blocked || owner === SITE_OWNER || isOwnerBrowser()) {
+      pending.current.clear(); activation.current = { path: pathname };
+    }
     if (!blocked && eligible()) {
       enqueue(activation.current, pending.current);
       wake.current?.();
@@ -35,13 +38,17 @@ export function useSitePageViews(blocked: boolean, owner: string, pathname: stri
   useEffect(() => {
     if (blocked || owner === SITE_OWNER || isOwnerBrowser()) return;
     const lifecycle = new AbortController();
+    const unsubscribe = onConsentRevoked(() => {
+      lifecycle.abort(); pending.current.clear(); activation.current = { path: activation.current.path };
+    });
     let busy = false;
     const flush = async () => {
       if (busy || lifecycle.signal.aborted || !eligible()) return;
       enqueue(activation.current, pending.current);
       busy = true;
       try {
-        const visitor = await getVisitorId();
+        const visitor = await getVisitorId(canMeasureVisits);
+        if (!visitor) return;
         while (!lifecycle.signal.aborted && eligible() && pending.current.size) {
           const id = pending.current.keys().next().value!;
           const request = new AbortController();
@@ -69,6 +76,7 @@ export function useSitePageViews(blocked: boolean, owner: string, pathname: stri
     return () => {
       wake.current = null;
       lifecycle.abort();
+      unsubscribe();
       window.clearInterval(timer);
       document.removeEventListener("visibilitychange", resume);
       window.removeEventListener("online", resume);

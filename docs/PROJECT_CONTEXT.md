@@ -1,3 +1,16 @@
+## Consent before optional analytics — 8 November 2026
+
+Stage 11 replaces the earlier opt-out model with prior permission for GA4 and
+the separate visitor/page-view counters. Google Privacy & messaging supplies
+TCF/Consent Mode choices; a confirmed non-European flow asks for independent
+site-counter and GA opt-ins. Unknown, denied, failed and expired choices stay off.
+Privacy settings stops measurement synchronously, aborts active counter requests,
+clears optional identifiers and defers its full dialog until an active game ends.
+The privacy-policy document loads neither CMP nor GA. Advertising remains off;
+the standalone consent tag introduces no ad SDK or placement. See
+[Consent management](CONSENT_MANAGEMENT.md) for the mapping and test boundaries.
+This source change still requires CI, merge and live release verification.
+
 ## AdSense ownership preparation — 8 November 2026
 
 Stage 10 uses the signed-in existing publisher `pub-7817531684692124` and

@@ -1,8 +1,9 @@
 import { test, expect } from "@playwright/test";
 import type { Page } from "@playwright/test";
 import { mockHumanBrowser, mockQuizApi, mockSignedIn } from "./fixtures";
+import { mockConsent } from "./privacy-fixtures";
 
-test.beforeEach(async ({ page }) => { await mockHumanBrowser(page); });
+test.beforeEach(async ({ page }) => { await mockHumanBrowser(page); await mockConsent(page, { granted: true }); });
 
 const owner = "112743d7-f683-4bbb-8117-068e89a00f22";
 const id = "77777777-7777-4777-8777-777777777777";
@@ -169,16 +170,16 @@ test("a timed-out heartbeat does not permanently stop reporting or affect the pa
   await page.clock.fastForward(51000); await expect.poll(() => reads).toBe(2);
   release();
 });
-test("owner exclusion removes prior guest telemetry and survives logout", async ({ page }) => {
+test("owner exclusion makes no telemetry cleanup request and survives logout", async ({ page }) => {
   await page.clock.install(); const { beats } = await telemetry(page);
   await mockSignedIn(page, owner);
   await page.addInitScript(id => localStorage.setItem("hq_visitor_id", id), id);
-  await page.goto("/"); await expect.poll(() => beats.length).toBe(1);
-  expect(beats[0]).toEqual({ p_visitor: id }); // This authenticated call purges/excludes; it never records a visit.
+  await page.goto("/"); await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
+  expect(beats).toHaveLength(0);
   await page.getByRole("button", { name: "Account menu" }).click();
   await page.getByRole("menuitem", { name: "Log out" }).click();
   await expect(page.getByRole("button", { name: "Log in", exact: true })).toBeVisible();
-  await page.clock.fastForward(180000); expect(beats).toHaveLength(1);
+  await page.clock.fastForward(180000); expect(beats).toHaveLength(0);
 });
 test("owner without a visitor ID, opt-out, administration and preview never collect visits", async ({ page }) => {
   const { beats } = await telemetry(page);
@@ -214,6 +215,7 @@ test("a preview host never sends visitor telemetry", async ({ page }) => {
 test("simultaneous new tabs share one browser identifier", async ({ page, context }) => {
   const other = await context.newPage();
   await mockHumanBrowser(other);
+  await mockConsent(other, { granted: true });
   const a = await telemetry(page), b = await telemetry(other);
   await Promise.all([page.goto("/"), other.goto("/")]);
   await expect.poll(() => a.beats.length + b.beats.length).toBeGreaterThan(0);

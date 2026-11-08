@@ -4,6 +4,9 @@ import { mockQuizApi, mockSignedIn } from "./fixtures";
 import { gameFixture, gameAnswers } from "./game-fixtures";
 import { dailyFixture, dailyChoices } from "./daily-fixtures";
 import { pickFixture } from "./this-that-fixture";
+import { mockConsent } from "./privacy-fixtures";
+
+test.beforeEach(async ({ page }) => { await mockConsent(page, { granted: true }); });
 
 async function commands(page: Page) {
   return page.evaluate(() => (window.dataLayer ?? []).map(entry => Array.from(entry as IArguments)));
@@ -66,12 +69,16 @@ test("QA opt-out survives navigation and reload and can be explicitly cleared", 
   await mockQuizApi(page);
   await page.goto("/?analytics=off");
   await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
-  expect(await commands(page)).toEqual([]);
+  expect((await commands(page)).filter(args => args[0] !== "consent")).toEqual([]);
   await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Blog", exact: true }).click();
   await page.reload();
-  expect(await commands(page)).toEqual([]);
+  expect((await commands(page)).filter(args => args[0] !== "consent")).toEqual([]);
   expect(await page.locator('script[src*="googletagmanager"]').count()).toBe(0);
   await page.goto("/?analytics=on");
+  await expect(page.getByRole("dialog")).toBeVisible();
+  expect(await events(page, "page_view")).toHaveLength(0);
+  await page.getByRole("button", { name: "Manage Google privacy choices" }).click();
+  await page.evaluate(() => (window as unknown as { __consentFixture: { emit: (patch: unknown, mode: number) => void } }).__consentFixture.emit({ eventStatus: "useractioncomplete", publisher: { consents: {1:true,8:true,9:true} } },1));
   await expect.poll(async () => (await events(page, "page_view")).length).toBe(1);
 });
 
@@ -83,7 +90,7 @@ test("a preview hostname cannot send fixture or production analytics", async ({ 
   });
   await page.goto("http://preview.invalid:5173/");
   await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
-  expect(await commands(page)).toEqual([]);
+  expect((await commands(page)).filter(args => args[0] !== "consent")).toEqual([]);
   expect(await page.locator('script[src*="googletagmanager"]').count()).toBe(0);
 });
 
@@ -92,10 +99,10 @@ test("owner visits and administrative paths stay outside analytics", async ({ pa
   await mockSignedIn(page, "112743d7-f683-4bbb-8117-068e89a00f22");
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
-  expect(await commands(page)).toEqual([]);
+  expect((await commands(page)).filter(args => args[0] !== "consent")).toEqual([]);
   await page.goto("/admin/questions?search=private-answer");
   await expect(page.locator("#main-content")).toBeVisible();
-  expect(await commands(page)).toEqual([]);
+  expect((await commands(page)).filter(args => args[0] !== "consent")).toEqual([]);
 });
 
 for (const [referrer, ignore] of [["https://accounts.google.com/o/oauth2/?code=private-code", true], ["https://quiz-fixture.supabase.co/", true], ["https://quiz-fixture.supabase.co/auth/v1/callback?code=private-code", true], ["https://www.google.com/search?q=movie+quiz", false], ["https://www.bing.com/search?q=movie+quiz", false], ["https://cinema.example/guide", false], ["https://quiz-fixture.supabase.co/storage/v1/object/public/guide", false]] as const) {
@@ -316,7 +323,8 @@ test("a fresh browser restoring an account comparison does not invent a new star
   const existing = [...data.games.values()][0];
   const fresh = await browser.newContext({ baseURL: "http://localhost:5173" });
   try {
-    const second = await fresh.newPage(), restored = await pickFixture(second, { signedIn: true, games: data.games });
+    const second = await fresh.newPage(); await mockConsent(second, { granted: true });
+    const restored = await pickFixture(second, { signedIn: true, games: data.games });
     await second.goto("/blog/is-whalefall-based-on-a-book");
     await second.getByRole("link", { name: "Choose a game", exact: true }).click();
     await second.getByRole("radio", { name: "This or That", exact: true }).click();
