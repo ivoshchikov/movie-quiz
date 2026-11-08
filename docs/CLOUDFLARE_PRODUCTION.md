@@ -185,8 +185,10 @@ Official references checked 8 November 2026:
 ## Task 7: production diagnostics
 
 `wrangler.production.json` enables persisted invocation logs at 100%, traces at
-10% and `redact_query_string`. Query parameters are removed before URL logging;
-no new logging of headers, credentials or application payloads is added. Static
+10% and `redact_query_string`. Query parameters are removed before URL logging.
+Managed invocation records still include request metadata; this setting does
+not remove every header or other field. No custom application logging or
+external export destination is added. Static
 assets continue to bypass the user Worker except for the reviewed API/error
 routes. Build/deployment guards, production canonical and HSTS stay unchanged.
 
@@ -197,6 +199,16 @@ verify invocation visibility without creating a game, account or analytics
 observation. Empty historical results from the old disabled configuration do
 not establish that no errors occurred. Sampling, free limits and retention also
 limit later coverage; never report a guaranteed zero error rate from absent data.
+
+Select `datasets: ["cloudflare-workers"]` explicitly for Workers Logs in the
+Observability API. During acceptance, `datasets: []` returned no events/services
+while the explicit dataset contained the two controlled invocation records.
+The observed production release is `1b17bb98f92ca676afdbc7b65da18e7de01e0180`:
+push-event build `8d53b7ea-9c0f-42c2-8120-3f0df3c76066` succeeded, deploying
+Worker version `2a3197a9-69b0-4039-a9ad-8bbdde99fa87` at 100%. Both probes returned
+expected 404s with outcome `ok`, and the query marker was absent from persisted
+request URLs/messages. The narrow post-release error query returned zero matches;
+this is limited diagnostic acceptance, not historical or complete traffic coverage.
 
 No paid service or export destination is configured. Workers Free currently
 includes 200,000 log events/day with three-day retention. Starting December 1,

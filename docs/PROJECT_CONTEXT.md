@@ -1,4 +1,49 @@
-## Cloudflare production diagnostics acceptance — 8 November 2026
+## Cloudflare production acceptance evidence — 8 November 2026
+
+Task 7 remains open only for a genuine owner sign-in and subsequent retirement
+of Vercel. PR #76 passed all seven workflows and automatically published main
+revision `1b17bb98f92ca676afdbc7b65da18e7de01e0180` through a push-event Workers
+Build. The live production release passed 29 HTTP checks: all 22 public pages,
+release manifest, sitemap, feed, robots and three crawler user-agent probes.
+Metadata/JSON-LD match the source build. Those probes do not prove a real Google
+crawl or AdSense approval.
+
+Persisted invocation records are readable in dataset `cloudflare-workers`.
+Explicitly select that dataset: this account's empty/default dataset query
+returned no records even though the explicit dataset contained the probes.
+Two controlled read-only 404s completed with outcome `ok`; the unique query
+marker was absent from the saved request URL and message. The narrow interval
+13:23:40–13:28:47 UTC contained two expected 404s and zero matching error events.
+This verifies diagnostic delivery, not an error-rate claim for ordinary traffic.
+Managed invocation metadata includes request information; query redaction is
+not a claim that every header or other field is removed. No custom application
+logging or external export destination was added.
+
+One explicit GA4 debug `page_view` reached the existing collector with HTTP 204,
+the existing measurement identity and sanitized production page URL. A separate
+`analytics=off` visit emitted no GA script/collect request. First-party production
+observations continued to arrive; browser tests created no private visitor/game
+records. Collector acceptance does not prove processed GA4 reporting counts;
+the reporting connector is unavailable without an active trial/subscription,
+and no paid plan was purchased.
+
+Twelve alternating cold-browser loads compared Cloudflare and Vercel at the
+same `1d92566` source under identical proxy/network/CPU conditions and fixture
+APIs/images, with analytics opted out. Median LCP differed by +80 ms on desktop
+and -56 ms on mobile; CLS matched. This limited lab comparison found no material
+hosting regression. Proxy-dominated absolute timing, fixture data and three
+loads per provider/viewport do not establish field Core Web Vitals or INP.
+
+The production login page and anonymous OAuth start passed: Supabase returned
+302 to Google with its existing callback, using the production profile return
+URL. The browser stopped before provider sign-in. As of 13:30:55 UTC, backend
+audit still showed no new owner login after cutover; the owner's last sign-in
+was 00:04 UTC. This preflight does not replace the real owner session check.
+Keep Vercel and its Git publication path until that check passes, then remove
+the old publication path and unwanted public duplicates before ads. Sanitized
+evidence: [task-7 snapshot](verification/cloudflare-acceptance-2026-11-08.json).
+
+## Cloudflare production diagnostics configuration — 8 November 2026
 
 Task 7 is in progress. PR #75 was merged after all seven checks passed; a
 push-event Workers Build automatically published main revision
