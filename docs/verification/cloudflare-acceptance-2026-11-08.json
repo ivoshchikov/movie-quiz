@@ -1,0 +1,155 @@
+{
+  "checkedAt": "2026-11-08T13:43:21.728Z",
+  "status": "in_progress_owner_sign_in_required",
+  "repository": "ivoshchikov/movie-quiz",
+  "verifiedSourceRevision": "1b17bb98f92ca676afdbc7b65da18e7de01e0180",
+  "publication": {
+    "pullRequest": 76,
+    "requiredWorkflowsPassed": 7,
+    "build": {
+      "uuid": "8d53b7ea-9c0f-42c2-8120-3f0df3c76066",
+      "status": "stopped",
+      "outcome": "success",
+      "created_on": "2026-11-08T13:23:08.378Z",
+      "running_on": "2026-11-08T13:23:10.403Z",
+      "stopped_on": "2026-11-08T13:23:43.704Z",
+      "source": "push_event",
+      "commit": "1b17bb98f92ca676afdbc7b65da18e7de01e0180",
+      "branch": "main",
+      "repo": "movie-quiz",
+      "build_command": "npm run build:cloudflare:production",
+      "deploy_command": "npm run deploy:cloudflare:production",
+      "root": "/frontend"
+    },
+    "deployments": [
+      {
+        "id": "6c95ca39-9c28-42c1-8fb6-4887b7aee5b4",
+        "createdOn": "2026-11-08T13:23:40.572984Z",
+        "versions": [
+          {
+            "version_id": "2a3197a9-69b0-4039-a9ad-8bbdde99fa87",
+            "percentage": 100
+          }
+        ]
+      }
+    ],
+    "observability": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "redact_query_string": true,
+      "logs": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "persist": true,
+        "invocation_logs": true
+      },
+      "traces": {
+        "enabled": true,
+        "persist": true,
+        "head_sampling_rate": 0.1
+      }
+    },
+    "customDomainEnabled": true,
+    "workersDevEnabled": false,
+    "manualDeploy": false,
+    "automatedSeoVerification": {
+      "observedFailureRun": 42484771017,
+      "observedSourceRevision": "1b17bb98f92ca676afdbc7b65da18e7de01e0180",
+      "issue": "Generic and Cloudflare-prepared manifests differed only in provider preparation metadata; source SHA matched.",
+      "fix": "Keep exact source/catalog comparison and separately validate production/no-fixtures/header-fingerprint metadata. Separate Cloudflare and Vercel event concurrency groups.",
+      "status": "Prepared in PR 77; live post-merge result belongs in PR and roadmap."
+    }
+  },
+  "http": {
+    "checks": 29,
+    "publicPages": 22,
+    "status": "passed",
+    "scope": "Source-build equality of prerendered title, heading, canonical, description, social metadata and JSON-LD; manifest/XML/robots; three crawler-UA accessibility probes, not genuine crawler or AdSense approval."
+  },
+  "observability": {
+    "dataset": "cloudflare-workers",
+    "emptyDatasetQueryReturnedNoRecords": true,
+    "probeCount": 2,
+    "apiProbe": {
+      "method": "GET",
+      "url": "https://hard-quiz.com/api/acceptance-observability-20261108",
+      "status": 404,
+      "outcome": "ok",
+      "queryMarkerPersisted": false,
+      "queryParameterNamePersisted": false
+    },
+    "errorWindow": {
+      "from": 1794144220000,
+      "to": 1794144527664
+    },
+    "errorEvents": 0,
+    "coverage": "Narrow controlled invocation window only. Static asset bypass, sampling, retention and caps limit coverage. Managed invocation metadata includes request fields; query-string redaction does not remove every header."
+  },
+  "analytics": {
+    "measurementId": "G-Q0QH7XCD8B",
+    "collectorHost": "www.google-analytics.com",
+    "collectorPath": "/g/collect",
+    "status": 204,
+    "event": "page_view",
+    "debug": true,
+    "pageLocation": "https://hard-quiz.com/",
+    "optOutSuppressedGoogle": true,
+    "productionGameWrites": false,
+    "firstPartyStatisticsWritesFromTests": false,
+    "reportingCountsVerified": false,
+    "reportingLimitation": "Connected reporting service requires active trial/subscription; no paid service purchased.",
+    "observedFirstPartySnapshot": {
+      "asOf": "2026-11-08T12:49:12Z",
+      "pageViewsSinceCutover": 9,
+      "browserIdentifiersSinceCutover": 6,
+      "note": "Existing backend observations; identifiers are not proof of human visitors."
+    }
+  },
+  "performance": {
+    "sourceRevision": "1d92566de8410e7926cb194dbcb7457473fe2c24",
+    "loads": 12,
+    "loadsPerProviderPerViewport": 3,
+    "network": {
+      "latencyMs": 150,
+      "downMbps": 1.6,
+      "upMbps": 0.75,
+      "cpuSlowdown": 4
+    },
+    "medians": [
+      {
+        "viewport": "desktop",
+        "cloudflareLcpMs": 6872,
+        "vercelLcpMs": 6792,
+        "cloudflareCls": 0.04049410936227388,
+        "vercelCls": 0.04049410936227388
+      },
+      {
+        "viewport": "mobile",
+        "cloudflareLcpMs": 6452,
+        "vercelLcpMs": 6508,
+        "cloudflareCls": 0.017044844357157293,
+        "vercelCls": 0.017044844357157293
+      }
+    ],
+    "limitations": "Cold browser through managed HTTPS proxy, fixture APIs/images, opted-out analytics. Proxy-dominated absolute timing. No field CWV, INP or Lighthouse TBT claim."
+  },
+  "authentication": {
+    "productionLoginHttp": 200,
+    "googleAuthorizeHttp": 302,
+    "requestedReturnUrl": "https://hard-quiz.com/profile",
+    "callback": "https://vgjfbcihppxbtrjcxoci.supabase.co/auth/v1/callback",
+    "ownerSessionVerified": false,
+    "ownerAuditAsOf": "2026-11-08T13:30:55Z",
+    "ownerLoginsSinceCutover": 0,
+    "ownerLastSignIn": "2026-11-08T00:04:13.654929Z"
+  },
+  "remaining": [
+    "Genuine owner Google sign-in and profile/admin read-only acceptance",
+    "Then retire Vercel publication path and unwanted public duplicates; keep recovery configuration"
+  ],
+  "billing": {
+    "newPaidResources": false,
+    "adsEnabled": false
+  },
+  "privacy": "No credentials, raw DNS verification TXT, visitor identifiers, IPs or request headers included. Browser screenshots remain internal."
+}

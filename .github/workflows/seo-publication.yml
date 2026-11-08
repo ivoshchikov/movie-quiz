@@ -22,7 +22,7 @@ jobs:
        github.event.check_run.app.slug == 'cloudflare-workers-and-pages' &&
        github.event.check_run.name == 'Workers Builds: hard-quiz'))
     concurrency:
-      group: seo-publication-production
+      group: seo-publication-production-${{ github.event_name }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
     container:

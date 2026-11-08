@@ -1,3 +1,21 @@
+## HOST-07 — Verify source identity separately from Cloudflare preparation metadata
+
+8 November 2026. Production acceptance exposed a correct Cloudflare source SHA
+being rejected by the publication checker: its manifest includes the provider's
+preparation extension, while the CI expected build is generic. Compare source
+identity/catalog exactly and validate the optional Cloudflare extension rather
+than dropping release identity or copying live metadata into the expected build.
+Require production, no deployed fixtures and a valid header fingerprint; compare
+that fingerprint as well when the expected artifact was prepared for Cloudflare.
+Keep deploy guards, content/metadata/XML/image checks and evidence-write gating.
+
+Separate the temporary Vercel deployment_status and Cloudflare check_run
+concurrency groups. A later Vercel event must not cancel the Cloudflare verifier.
+Validate isolated positive/negative HTTP fixtures and then the real automatic
+post-merge workflow. An independent manual HTTP pass or unit tests alone do not
+establish that the automated publication gate passed. Keep task 7 open for the
+real owner sign-in and subsequent Vercel retirement.
+
 ## HOST-06 — Persist production diagnostics without query-string disclosure
 
 8 November 2026. Task 7 needs inspectable production failures; the previous
@@ -5,7 +23,10 @@ configuration disabled persisted Worker diagnostics. Enable invocation logs
 with sampling 1 and traces with sampling 0.1 in the production config. Set
 `redact_query_string: true` so callback/test/query parameters are not persisted
 as request URLs. Keep static-asset routing and the existing runtime/bindings;
-do not introduce logging into game code or capture client credentials.
+do not introduce custom logging into game code. Managed invocation records
+include request metadata by default; query-string redaction does not remove
+every header or field. Do not add custom credential/payload logging or external
+export destinations.
 
 Use the included Workers Free allowances and no external log destination or
 paid upgrade. The current Workers Logs allowance is 200,000 events/day with
@@ -19,6 +40,17 @@ release and readable post-deployment logs. Keep task 7 open until actual owner
 sign-in, analytics delivery and performance are accepted; do not retire Vercel
 based only on the main-trigger build. Pricing and diagnostics setup:
 [CLOUDFLARE_PRODUCTION.md](CLOUDFLARE_PRODUCTION.md).
+
+Acceptance of PR #76 verified an automatic push-event main build, source
+`1b17bb98f92ca676afdbc7b65da18e7de01e0180`, 29 public HTTP checks and readable
+controlled invocation records. Explicitly query dataset `cloudflare-workers`;
+the empty/default dataset returned no results in this account. Two expected
+read-only 404s completed normally and their query marker was redacted. Treat
+the short zero-error query as a delivery check rather than a general traffic
+error rate. GA4 collector/opt-out and the comparative lab performance check
+also passed within their stated limits. A real owner login is still pending;
+keep Vercel available until that gate passes, then retire its publication path
+and public duplicates before ads. See the sanitized verification snapshot.
 
 ## HOST-05 — Execute the production domain cutover through connected Cloudflare
 

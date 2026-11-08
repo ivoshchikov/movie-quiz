@@ -13,6 +13,20 @@ const shaPattern = /^[a-f0-9]{40}$/;
 const blocksIndexing = value => /\bnoindex\b|(?:^|,)\s*(?:(?:googlebot|bingbot)\s*:\s*)?none\s*(?:,|$)/i.test(value);
 const writeJson = (file, data) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n"); };
 const readJson = file => JSON.parse(fs.readFileSync(file, "utf8"));
+function matchesPublishedRelease(actual, expected) {
+  if (!actual || typeof actual !== "object" || Array.isArray(actual)) return false;
+  const { cloudflare, ...published } = actual;
+  const { cloudflare: prepared, ...source } = expected;
+  if (cloudflare !== undefined) {
+    if (!cloudflare || !equal(sorted(Object.keys(cloudflare)), ["headersSha256", "profile", "usesFixtureData"]) ||
+        cloudflare.profile !== "production" || cloudflare.usesFixtureData !== false ||
+        !/^[a-f0-9]{64}$/.test(cloudflare.headersSha256 || "")) return false;
+    if (prepared && (prepared.profile !== "production" || prepared.headersSha256 !== cloudflare.headersSha256)) return false;
+  } else if (prepared) return false;
+  // Provider preparation metadata is separate from source identity. In CI the
+  // expected HTML uses fixture API values; the published artifact must not.
+  return equal(published, source);
+}
 const catalog = manifest => manifest.pages.map(({ path: route, kind, slug, publishedOn, modifiedOn }) => ({
   path: route, url: manifest.canonicalOrigin + route, kind,
   ...(kind === "article" ? { slug, publishedOn, modifiedOn } : {}),
@@ -160,10 +174,10 @@ async function runChecks(options = {}) {
       let observed;
       do {
         try { const response = await fetcher(liveUrl("/seo-release.json")); observed = response.status === 200 ? JSON.parse(response.text) : { status: response.status }; } catch (error) { observed = { error: error.message }; }
-        if (equal(observed, manifest)) break;
+        if (matchesPublishedRelease(observed, manifest)) break;
         if (Date.now() >= deadline) throw new Error(`Published release does not match ${report.revision}; observed revision: ${observed?.revision || "unavailable"}. No publication is marked verified.`);
         await new Promise(resolve => setTimeout(resolve, 10000));
-      } while (!equal(observed, manifest));
+      } while (!matchesPublishedRelease(observed, manifest));
     }
     browser = await chromium.launch();
     context = await browser.newContext({ javaScriptEnabled: false, serviceWorkers: "block" });
