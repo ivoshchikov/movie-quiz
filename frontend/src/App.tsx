@@ -13,6 +13,8 @@ import DailyPage from "./pages/DailyPage";
 // ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
 import NotFound            from "./components/NotFound";
 import { classicCategories } from "./games/classicCategories";
+import { publicDocumentPaths } from "./publicDocuments";
+const PublicDocumentPage = lazy(() => import("./pages/PublicDocumentPage"));
 const ClassicCategoryPage = lazy(() => import("./pages/ClassicCategoryPage"));
 const ThisThatPage = lazy(() => import("./pages/ThisThatPage"));
 const ThisThatPlayPage = lazy(() => import("./pages/ThisThatPlayPage"));
@@ -50,6 +52,7 @@ export default function App() {
           <Route index                element={<StartScreen />} />
           {classicCategories.map(category => <Route key={category.slug} path={category.slug} element={<ClassicCategoryPage category={category} />} />)}
           <Route path="how-to-play"   element={<HowToPlay />} />
+          {publicDocumentPaths.map(document => <Route key={document} path={document} element={<PublicDocumentPage document={document} />} />)}
           <Route path="login"         element={<LoginScreen />} />
           <Route path="setup-profile" element={<ProfileSetupScreen />} />
           <Route path="this-or-that" element={<ThisThatPage />} />

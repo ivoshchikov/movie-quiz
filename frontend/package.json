@@ -15,7 +15,7 @@
     "gen:seo:dist": "node scripts/generate-seo.cjs dist",
     "seo:check": "node scripts/verify-publication.cjs",
     "seo:sync": "node scripts/verify-publication.cjs --sync-registry",
-    "test:publication": "node --test scripts/__tests__/publication-check.test.cjs",
+    "test:publication": "node --test --test-concurrency=1 scripts/__tests__/publication-check.test.cjs scripts/__tests__/public-documents.test.cjs",
     "growth:report": "node scripts/report-growth.cjs",
     "test:growth": "node --test scripts/__tests__/growth-report.test.cjs",
     "lint": "eslint . --max-warnings=0",
@@ -28,7 +28,8 @@
     "build:cloudflare:production": "npm run build && node scripts/prepare-cloudflare.cjs production && tsc --noEmit -p tsconfig.worker.json",
     "preview:cloudflare:production": "wrangler dev --config wrangler.production.json --port 8787",
     "deploy:cloudflare:production": "node scripts/check-cloudflare-artifact.cjs production && wrangler deploy --config wrangler.production.json",
-    "test:cloudflare:production": "CLOUDFLARE_TEST_PROFILE=production node --test scripts/__tests__/cloudflare.test.cjs"
+    "test:cloudflare:production": "CLOUDFLARE_TEST_PROFILE=production node --test scripts/__tests__/cloudflare.test.cjs",
+    "check:public-contact": "node scripts/public-contact.cjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",

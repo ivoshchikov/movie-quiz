@@ -1,7 +1,8 @@
-// Adapt the finished Vite/prerender build without changing the Vercel deployment.
+// Adapt the finished Vite/prerender build for the chosen Cloudflare profile.
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
+const { contactDetailsApproved, requireApprovedContact } = require('./public-contact.cjs');
 
 async function prepare() {
   const profile = process.argv[2] || 'staging';
@@ -9,7 +10,9 @@ async function prepare() {
   const { loadEnv } = await import('vite');
   const publicEnv = loadEnv('production', process.cwd(), 'VITE_');
   const fixture = publicEnv.VITE_SUPABASE_URL === 'https://quiz-fixture.supabase.co';
+  const contactDetails = JSON.parse(fs.readFileSync(path.resolve('src/publicSiteDetails.json'), 'utf8'));
   if (profile === 'production') {
+    if (!fixture) requireApprovedContact(contactDetails);
     for (const name of ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY', 'VITE_SUPABASE_BUCKET']) {
       if (!publicEnv[name]?.trim()) throw new Error(`Production build requires ${name}.`);
     }
@@ -72,6 +75,7 @@ async function prepare() {
   const headers = headerLines.join('\n') + '\n';
   fs.writeFileSync(path.join(dist, '_headers'), headers);
   fs.writeFileSync(path.join(dist, '.assetsignore'), '**/*.map\n');
+  release.publicDocuments = { contactDetailsApproved: contactDetailsApproved(contactDetails) };
   release.cloudflare = { profile, usesFixtureData: fixture || publicEnv.VITE_ANALYTICS_TEST_MODE === 'true',
     headersSha256: createHash('sha256').update(headers).digest('hex') };
   fs.writeFileSync(releasePath, JSON.stringify(release, null, 2) + '\n');

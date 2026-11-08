@@ -13,6 +13,7 @@ function checkArtifact(profile, { directory, offline = false } = {}) {
     throw new Error('Artifact headers changed after preparation; rebuild before deploying.');
   }
   if (!offline && release.cloudflare.usesFixtureData) throw new Error('Fixture data must not be deployed to a real Cloudflare service.');
+  if (!offline && profile === 'production' && !release.publicDocuments?.contactDetailsApproved) throw new Error('Owner-approved public contact details are required before production publication.');
   if (!offline && !/^[a-f0-9]{40}$/.test(release.revision || '')) throw new Error('Deployment requires an identified source revision.');
   return release;
 }

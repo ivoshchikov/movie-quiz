@@ -11,6 +11,7 @@ const DEST = process.argv[2] || "public"; // public | dist
 const DEST_DIR = path.join(ROOT, DEST);
 const CACHE_DIR = path.join(ROOT, ".cache");
 const BUNDLE = path.join(CACHE_DIR, "posts.cjs");
+const publicDocumentMetadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src/publicDocumentMetadata.json"), "utf8"));
 const SRC_POSTS = path.resolve(ROOT, "src/blog/index.ts"); // ← ТУТ НОВЫЙ ПУТЬ
 const PRESENTATION_BUNDLE = path.join(CACHE_DIR, "blog-presentation.cjs");
 
@@ -98,7 +99,7 @@ const ensureDir =
   const categories = JSON.parse(fs.readFileSync(path.join(ROOT, "src/games/classicCategories.json"), "utf8"));
 
   // Sitemap
-  const staticPaths = ["/", "/how-to-play", "/blog", "/leaderboard", "/daily", "/time-attack", "/this-or-that", ...categories.map(category => `/${category.slug}`)];
+  const staticPaths = ["/", "/how-to-play", ...Object.keys(publicDocumentMetadata).map(name => `/${name}`), "/blog", "/leaderboard", "/daily", "/time-attack", "/this-or-that", ...categories.map(category => `/${category.slug}`)];
   const paths = [...staticPaths.map(url => ({ url })), ...sorted.map(post => ({ url: `/blog/${post.slug}`, lastmod: post.modified || post.date }))];
   const urls = paths
     .map(
@@ -144,13 +145,13 @@ ${urls}
     const pageStyles = (html, name) => {
       const isCategory = categories.some(category => category.slug === name);
       // Lazy route CSS must also style the content served before JavaScript starts.
-      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || (isCategory ? ["ClassicCategoryPage", "quiz-categories"] : []);
+      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || (Object.hasOwn(publicDocumentMetadata, name) ? ["PublicDocumentPage"] : isCategory ? ["ClassicCategoryPage", "quiz-categories"] : []);
       const assetDir = path.join(DEST_DIR, "assets");
       if (!fs.existsSync(assetDir)) return html;
       const tags = fs.readdirSync(assetDir).filter(file => file.endsWith(".css") && prefixes.some(prefix => file.startsWith(prefix + "-"))).map(file => `<link rel="stylesheet" crossorigin href="/assets/${file}" />`).join("");
       return html.replace("</head>", `${tags}</head>`);
     };
-    const pages = JSON.parse(fs.readFileSync(path.join(ROOT, "src/pageMetadata.json"), "utf8"));
+    const pages = { ...JSON.parse(fs.readFileSync(path.join(ROOT, "src/pageMetadata.json"), "utf8")), ...publicDocumentMetadata };
     for (const [name, file, noindex] of [["how-to-play", "howToPlayMetadata.json", false], ["login", "loginMetadata.json", true], ["setup-profile", "profileSetupMetadata.json", true], ["blog", "blogMetadata.json", false], ["admin/question-statistics", "adminQuestionStatisticsMetadata.json", true], ["admin/daily", "adminDailyMetadata.json", true], ["admin/questions", "adminQuestionsMetadata.json", true], ["admin/questions/new", "adminQuestionsNewMetadata.json", true]]) {
       const metadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src", file), "utf8"));
       metadata.url = SITE_URL + new URL(metadata.url).pathname;

@@ -768,3 +768,11 @@ Preserve the existing movies bucket, category namespaces, transactional numberin
 - Reuse existing board-aware issuance and private ranking service. Add category-checked public top/import endpoints, retaining old signatures, owner/capability checks, immutable receipts, quotas and withdrawn-person private history. Reject mixed-board imports atomically. Keep private calculation code outside the public repository.
 - Preserve selection through URLs, Back/Forward, sign-in, reload, summary, rankings and profile. Never silently substitute Actors for an unavailable selected Actress board. Update public mode metadata and full rules. Verify with isolated SQL/browser fixtures and deliver through the established migration/PR/CI/Vercel workflow, recording real release evidence in the PR.
 - Keep the original two-category Time Attack catalog for older clients that strictly validate IDs; expose the expanded catalog through `time_attack_category_catalog()` and a separate compatibility migration. Deploy the backend before the new frontend without requiring already-open old clients to accept a changed catalog.
+
+## 2026-11-08 — Public documents, draft pending owner contact details
+
+- Prepare English About, Privacy Policy and Contact as public lazy React routes and prerendered HTML, with shared footer, sign-in Privacy link, metadata, sitemap and Cloudflare redirect coverage.
+- Reflect actual processing and verified cleanup targets. Describe analytics as currently opt-out and ads as not active. Do not claim consent management is complete; stage 11 must implement and reconcile it before ad launch.
+- The owner explicitly requires consultation before an email is published. Keep operator/email empty and approval false until exact public details are supplied; enforce the dependency in production build/deployment checks while allowing nondeployable fixture builds. Do not infer public contact approval from login/account data.
+- Preserve existing images and unresolved audit findings under the owner's stage 8 decision. No separate Terms page is introduced for this information-page change; reconsider on relevant feature or requirement changes.
+- Keep draft implementation, CI, merge and actual production verification distinct. Details and audit evidence: [PUBLIC_DOCUMENTS.md](PUBLIC_DOCUMENTS.md).
