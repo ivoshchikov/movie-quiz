@@ -22,24 +22,17 @@ account and its site verification screen confirm publisher
   merge, deployment, live HTTP results and Google account results belong in the
   PR and owner roadmap; source preparation alone is not publication or approval.
 
-## Observed account state and remaining gates
+## Account checks and remaining gates
 
-The initial live account check on 8 November shows `hard-quiz.com` requires
-review and `ads.txt` is not found. Payment onboarding reports a completed
-individual Cyprus profile. No identity/address verification is currently
-requested; the verification page says that personal-data checks may be required
-at the verification threshold. Policy Center currently lists no serving-related
-violations; that does not establish site approval or image-rights clearance.
-Recipient and postal details stay in the private payment
-profile; do not copy them into source, policy pages, screenshots or reports.
-Physical delivery to that address requires the owner's confirmation when
-needed; reading a populated field cannot establish delivery.
+Record account-specific onboarding, verification, policy and settings observations
+in the private owner report. Payment-recipient, postal, identity, tax and bank
+information do not belong in public source, policy pages or screenshots. Any
+required personal or payment decision remains with the owner.
 
-Auto ads are off. Site-level auto-optimization is on, with automatic application
-of winning experiments and 50% experiment traffic. A proposed change was not
-saved; switching it off requires the owner's specific confirmation before
-launch. Do not claim it is disabled based on an unsaved preview control. Keep
-advertising off and check the persisted settings before any future activation.
+Keep advertising off during preparation. Before activation, verify the persisted
+Auto ads and auto-optimization settings against the agreed launch plan and obtain
+specific authorization for any required account change. An unsaved preview
+control does not prove that a dashboard setting changed.
 
 Google's recognition of the file and ownership, site review status and account
 tasks are separate from a successful HTTP fetch. Use the existing site entry;

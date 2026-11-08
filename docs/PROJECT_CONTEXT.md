@@ -4,11 +4,10 @@ Stage 10 uses the signed-in existing publisher `pub-7817531684692124` and
 existing `hard-quiz.com` site entry. The application shell now supplies the
 passive account-verification meta tag to prerendered first-response HTML;
 `/ads.txt` publishes the matching direct-seller record as plain text. No ad
-loader, slots, CMP or advertising requests are introduced. Existing Auto ads
-remain off; site auto-optimization was observed on and its proposed disabling
-was not saved. Explicit confirmation is pending before that account change.
-Payment onboarding reports a completed Cyprus profile; private recipient and
-address details are not copied into source or public documents. Site ownership,
+loader, slots, CMP or advertising requests are introduced. Keep advertising off
+during preparation. Account-specific onboarding, verification and settings
+observations belong in the private owner report, with specific authorization
+for any required account changes. Site ownership,
 Google crawl/ads.txt recognition, review and HTTP publication are distinct gates.
 See [AdSense preparation](ADSENSE_PREPARATION.md) for scope and verification.
 
