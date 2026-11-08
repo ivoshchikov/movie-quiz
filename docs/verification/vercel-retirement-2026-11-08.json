@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-11-08T14:15:06.082Z",
+  "status": "hosting_retired_source_controls_prepared",
+  "ownerAcceptance": {
+    "confirmedByOwner": true,
+    "checks": [
+      "fresh Google login",
+      "profile access",
+      "admin/questions read access",
+      "session persists after reload"
+    ],
+    "auditLastSignIn": "2026-11-08T14:05:55.200221Z",
+    "ownerLoginsAfterCutover": 1,
+    "auditObservedAt": "2026-11-08T14:09:45.877642Z"
+  },
+  "cloudflarePreflight": {
+    "source": "758388a8e96d5a7ffe8d3bf9d5372c15248a55de",
+    "publicPages": 22,
+    "worker": "hard-quiz",
+    "customDomain": "hard-quiz.com",
+    "customDomainEnabled": true
+  },
+  "vercel": {
+    "projectId": "prj_QcOLD9LBfw6KIiIbjJKERx2G0ZxF",
+    "team": "ivans-projects-a806f387",
+    "pauseApiAccepted": true,
+    "previewDisableApiAccepted": true,
+    "standardProtection": {
+      "enabled": true,
+      "deploymentType": "prod_deployment_urls_and_all_previews"
+    },
+    "retainedDeployment": "dpl_2gueX1g51GEgQZUakvuH7Et5VTMw",
+    "projectDeleted": false,
+    "publicHttpObservedAt": "2026-11-08T14:12:23Z",
+    "pausedHosts": [
+      "movie-quiz-navy.vercel.app",
+      "movie-quiz-ivans-projects-a806f387.vercel.app",
+      "movie-quiz-git-main-ivans-projects-a806f387.vercel.app",
+      "movie-quiz-louj8oe2x-ivans-projects-a806f387.vercel.app"
+    ],
+    "olderProtectedHost": "movie-quiz-enyl69yoo-ivans-projects-a806f387.vercel.app",
+    "olderProtectedStatus": 302
+  },
+  "sourceControls": {
+    "gitDeploymentEnabled": false,
+    "publicationEvents": [
+      "check_run:completed from trusted Cloudflare app/check",
+      "workflow_dispatch on main"
+    ],
+    "vercelDeploymentStatusHookRemoved": true,
+    "legacyRoutesPreserved": true
+  },
+  "releaseValidation": "Actual merged source, Cloudflare build/automatic SEO result and no-new-Vercel-build result are recorded in the PR/roadmap after publication.",
+  "preserved": {
+    "productionDns": true,
+    "supabase": true,
+    "authSettings": true,
+    "gameRules": true,
+    "ga4Identity": true,
+    "adsRemainOff": true,
+    "newPaidResources": false
+  },
+  "scope": "Read-only site/API acceptance; no production gameplay, private visitor records or email/OTP generation."
+}

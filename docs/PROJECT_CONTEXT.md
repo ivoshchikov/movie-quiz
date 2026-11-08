@@ -1,3 +1,28 @@
+## Owner acceptance and Vercel retirement — 8 November 2026
+
+The owner confirmed the requested fresh Google login, profile/admin access and
+session persistence after reload. Read-only Supabase audit independently records
+the owner login at 14:05:55 UTC, after the domain cutover. No auth/schema or game
+changes were needed.
+
+The Vercel project `movie-quiz` (`prj_QcOLD9LBfw6KIiIbjJKERx2G0ZxF`) is paused
+through the connected API; disabling new preview deployments was also accepted.
+Four tested current production/branch/immutable URLs return 503
+`DEPLOYMENT_PAUSED`; an older deployment redirects to Vercel authentication.
+Existing Standard Protection remains enabled. The project/configuration is
+retained for deliberate recovery, with no paid upgrade or deletion.
+
+`frontend/vercel.json` now disables automatic Git deployments for all branches.
+Its existing routes remain as compatibility input for Cloudflare preparation
+and recovery. The publication workflow accepts the trusted Cloudflare build or
+manual main dispatch; its old Vercel deployment-status event/commit fallback is
+removed. The script still requires the source SHA to be merged into main before
+checking canonical production. No browser, analytics, auth or gameplay behavior
+changes. Actual merge/release and no-new-Vercel-build evidence belongs in the PR
+and roadmap. [Retirement snapshot](verification/vercel-retirement-2026-11-08.json).
+
+Earlier sections below record the accepted migration stages before retirement.
+
 ## Cloudflare publication verifier compatibility — 8 November 2026
 
 Task 7 found a post-build verification defect: the live Cloudflare manifest
