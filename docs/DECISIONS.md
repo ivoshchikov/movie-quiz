@@ -1,3 +1,21 @@
+## HOST-02 — Cloudflare DNS cutover preparation
+
+8 November 2026. Task 5 records the owner's full export and fresh public DNS,
+DNSSEC, HTTP and Vercel baseline without changing service settings. Task 6 will
+attach the apex to a production Worker through Custom Domains and replace the
+www CNAME with a proxied originless A plus the prepared native 308 redirect,
+preserving path/query and the existing TXT, nameservers and DNSSEC. Do not point
+DNS manually at workers.dev, import the archive wholesale, or attach the current
+globally-noindex staging artifact to production.
+
+Keep the current Vercel production/domain associations through task 7 acceptance.
+Recovery detaches the apex binding and restores the original A/CNAME; retain the
+www rule until its placeholder is gone and propagation is checked. Private
+Cloudflare rule/route/certificate inspection remains a required task-6 preflight
+because the cloud login is unavailable. This is a prepared rollback procedure,
+not a production rollback drill. Details:
+[CLOUDFLARE_DNS_CUTOVER.md](CLOUDFLARE_DNS_CUTOVER.md).
+
 ## HOST-01 — Cloudflare staging before monetization
 
 Task 4 update, 8 November 2026: hosted frontend acceptance uses isolated API

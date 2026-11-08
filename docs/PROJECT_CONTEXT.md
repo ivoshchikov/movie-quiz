@@ -1,3 +1,24 @@
+## Cloudflare DNS preparation — 8 November 2026
+
+Roadmap task 5 preparation is complete. The owner's three-record zone export was
+matched against 28 live queries from Google and Cloudflare DoH; root DNSSEC and
+the www CNAME validate and the parent DS matches RDAP. Production remains on
+Vercel at `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`; the READY production
+deployment and original A/CNAME are pinned for recovery. Twelve HTTP checks
+confirm production, www/query-preserving 308, HTTPS upgrades, real 404 and the
+separate noindex staging deployment.
+
+The prepared task-6 plan uses a production Worker Custom Domain for the apex,
+plus a proxied originless www record and a native 308 Single Redirect. The rule
+JSON is a disabled draft, not deployed. Rollback restores only the changed web
+records/binding/rule; it does not replace the zone or alter NS/DNSSEC. No live
+settings were changed. The cloud dashboard still has a sign-in error, so private
+rules/routes/certificate/quota checks are explicit task-6 gates, not completed
+account checks. The original export is retained privately; live observations
+cannot enumerate unknown newly added hostnames. Runbook and evidence:
+[CLOUDFLARE_DNS_CUTOVER.md](CLOUDFLARE_DNS_CUTOVER.md). Next is task 6; its
+production artifact must remove staging-only noindex before domain attachment.
+
 ## Cloudflare staging acceptance — 8 November 2026
 
 Roadmap task 4 is complete. Automated frontend checks on the hosted Worker passed:
@@ -16,7 +37,7 @@ was not independently inspected. All seven CI workflows passed at code revision
 `e078cbdf637e28dc0bbaf41c0d1ba1ac6ee4c81d`, including both full Node 22 browser
 runs. A documentation-only follow-up records these results. Performance limits
 and verification scope: [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
-Next is task 5, existing DNS/redirect/rollback preparation. Production remains
+Task 5 preparation is subsequently recorded above. Production remains
 on Vercel and the staging PR remains a draft; DNS and ads have not switched.
 
 ## Cloudflare staging published — 8 November 2026

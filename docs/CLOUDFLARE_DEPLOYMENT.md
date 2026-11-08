@@ -27,6 +27,11 @@ No custom domain, DNS change, paid plan or production cutover is included.
 
 ## Runtime and routing
 
+Task 5 DNS preparation is complete without a live change. The exact record
+changes, disabled www rule, private-account preflight and Vercel recovery order
+are in [CLOUDFLARE_DNS_CUTOVER.md](CLOUDFLARE_DNS_CUTOVER.md). They apply at task 6;
+the production domain must not use this staging configuration.
+
 Task 4 acceptance is documented in [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
 Automated hosted checks and all seven CI workflows passed. The owner confirmed
 real Google/email sign-in on staging; task 4 is complete. `npm run test:acceptance` uses fixtures and a
@@ -56,9 +61,10 @@ the production domain. A separately reviewed production configuration and worker
 exclusions are required at task 6.
 
 **Host redirect is a cutover dependency:** `_redirects` does not support
-domain-level matching. Before the domain switches, task 5 must prepare a Cloudflare
-Redirect Rule for `www.hard-quiz.com` to `https://hard-quiz.com`, retaining path and
-query, with status 308. Do not point www to this asset service without that rule.
+domain-level matching. Task 5 prepared a disabled Cloudflare Redirect Rule for
+`www.hard-quiz.com` to `https://hard-quiz.com`, retaining path/query with status
+308. Review and enable it during task 6 before proxying www; the runbook also
+requires an active www certificate. It is not applied by the staging build.
 
 ## Social images and build identity
 

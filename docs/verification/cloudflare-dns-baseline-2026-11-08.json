@@ -1,0 +1,171 @@
+{
+  "checkedAtUTC": "2026-11-08T00:26:25.679510+00:00",
+  "displayDate": "8 November 2026 (Asia/Nicosia)",
+  "sourceExport": {
+    "exportedAtUTC": "2026-11-07 22:00:36",
+    "sha256": "c94ca0d84ca68778f76f469e4eceb84955947e81b13e314a7e0224a4785477bf",
+    "editableRecordCount": 3,
+    "note": "Owner-supplied full zone export retained privately. Public DNS cannot enumerate every possible hostname."
+  },
+  "nameservers": [
+    "lou.ns.cloudflare.com",
+    "nina.ns.cloudflare.com"
+  ],
+  "dnssec": {
+    "delegationSigned": true,
+    "DS": {
+      "keyTag": 2371,
+      "algorithm": 13,
+      "digestType": 2,
+      "digest": "CA6E8B7E46DE036B7065942EE024D57D5783489B86D51D94CC32CE25DA441C82"
+    }
+  },
+  "resolverChecks": [
+    {
+      "provider": "google",
+      "rootA": "76.76.21.21",
+      "wwwCNAME": "movie-quiz-navy.vercel.app",
+      "webTTL": 300,
+      "rootAAAA": [],
+      "rootMX": [],
+      "rootCAA": [],
+      "googleVerificationMatchesExport": true,
+      "rootAnswersAuthenticated": true,
+      "wwwCnameAuthenticated": true,
+      "DSMatchesParentRDAP": true,
+      "dnskeyCount": 2
+    },
+    {
+      "provider": "cloudflare",
+      "rootA": "76.76.21.21",
+      "wwwCNAME": "movie-quiz-navy.vercel.app",
+      "webTTL": 300,
+      "rootAAAA": [],
+      "rootMX": [],
+      "rootCAA": [],
+      "googleVerificationMatchesExport": true,
+      "rootAnswersAuthenticated": true,
+      "wwwCnameAuthenticated": true,
+      "DSMatchesParentRDAP": true,
+      "dnskeyCount": 2
+    }
+  ],
+  "googleTxtValueSHA256": "b76b707302085188ddc28757db914e44630b3d16f9d0969cfe4bd05b1e7461ac",
+  "vercelProduction": {
+    "id": "dpl_FPYzrTukJGk9w8ncUBiNDpas19bm",
+    "url": "movie-quiz-l52wnyvur-ivans-projects-a806f387.vercel.app",
+    "revision": "88a840ca5ae703f99f3b9a5090bd0658428bfe4a",
+    "state": "READY"
+  },
+  "httpChecks": [
+    {
+      "url": "https://hard-quiz.com/",
+      "status": 200,
+      "location": null,
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": "https://hard-quiz.com/"
+    },
+    {
+      "url": "https://hard-quiz.com/seo-release.json",
+      "status": 200,
+      "location": null,
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": null,
+      "revision": "88a840ca5ae703f99f3b9a5090bd0658428bfe4a"
+    },
+    {
+      "url": "https://www.hard-quiz.com/",
+      "status": 308,
+      "location": "https://hard-quiz.com/",
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": null
+    },
+    {
+      "url": "https://www.hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=dns-audit&x=a%2Bb",
+      "status": 308,
+      "location": "https://hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=dns-audit&x=a%2Bb",
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": null
+    },
+    {
+      "url": "https://www.hard-quiz.com/movie-quiz.html?category=1&utm_source=dns-audit",
+      "status": 308,
+      "location": "https://hard-quiz.com/movie-quiz.html?category=1&utm_source=dns-audit",
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": null
+    },
+    {
+      "url": "https://hard-quiz.com/blog/sci-fi-mystery-movies",
+      "status": 200,
+      "location": null,
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": "https://hard-quiz.com/blog/sci-fi-mystery-movies"
+    },
+    {
+      "url": "https://hard-quiz.com/dns-audit-missing-page",
+      "status": 404,
+      "location": null,
+      "vercelResponse": true,
+      "robots": "noindex, nofollow",
+      "hsts": "max-age=63072000",
+      "canonical": null
+    },
+    {
+      "url": "https://hard-quiz.com/robots.txt",
+      "status": 200,
+      "location": null,
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000",
+      "canonical": null
+    },
+    {
+      "url": "https://hard-quiz-staging.i-voschikov.workers.dev/seo-release.json",
+      "status": 200,
+      "location": null,
+      "vercelResponse": false,
+      "robots": "noindex, nofollow",
+      "hsts": null,
+      "canonical": null,
+      "revision": "dc93f9378db603010f8163965d983e1bee21b20b"
+    },
+    {
+      "url": "https://movie-quiz-navy.vercel.app/",
+      "status": 200,
+      "location": null,
+      "vercelResponse": true,
+      "robots": null,
+      "hsts": "max-age=63072000; includeSubDomains; preload",
+      "canonical": "https://hard-quiz.com/"
+    },
+    {
+      "url": "http://hard-quiz.com/",
+      "status": 308,
+      "location": "https://hard-quiz.com/",
+      "client": "curl, inherited proxy"
+    },
+    {
+      "url": "http://www.hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=dns-audit",
+      "status": 308,
+      "location": "https://www.hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=dns-audit",
+      "client": "curl, inherited proxy"
+    }
+  ],
+  "limits": [
+    "Cloudflare private zone settings, rules and certificate state were not read: cloud dashboard retains a sign-in error; no usable Cloudflare connector is exposed.",
+    "Two initial plain-HTTP Playwright proxy requests reset; inherited-proxy curl confirmed both expected HTTPS redirects.",
+    "No DNS, account settings, certificate, binding, Supabase or production-hosting change was applied."
+  ]
+}
