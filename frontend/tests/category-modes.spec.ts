@@ -27,7 +27,7 @@ for (const category of [{ id: 3, name: 'Actresses', alt: 'Actress photograph to 
     await page.getByRole('link', { name: 'View leaderboard', exact: true }).click();
     await expect(page.getByRole('radiogroup', { name: 'Category' }).getByRole('radio', { name: category.name, exact: true })).toHaveAttribute('aria-checked', 'true');
     await expect(page.locator('.hq-attack-ranking')).toContainText(category.name);
-    expect(d.calls.filter(c => c.name === 'time_attack_leaderboard').at(-1)?.payload.p_category_id).toBe(category.id);
+    await expect.poll(() => d.calls.filter(c => c.name === 'time_attack_leaderboard').at(-1)?.payload.p_category_id).toBe(category.id);
   });
 }
 

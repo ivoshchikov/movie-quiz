@@ -42,12 +42,13 @@ test('public documents are readable in the first HTML response with a single can
   }
 });
 
-test('privacy text distinguishes current opt-out analytics, actual cleanup and advertising preparation', () => {
+test('privacy text distinguishes prior consent, actual cleanup and advertising preparation', () => {
   const html = fs.readFileSync('dist/privacy.html','utf8');
-  for (const wording of ['Optional analytics currently runs unless you turn it off', '35-day retention window', 'no automatic deletion simply because an account is inactive', 'Third-party advertising is not currently enabled']) assert.ok(html.includes(wording),wording);
-  assert.ok(html.includes('href="/privacy?analytics=off#analytics-choices"'));
-  assert.ok(html.includes('href="/privacy?analytics=on#analytics-choices"'));
-  assert.doesNotMatch(html,/we only load analytics after your consent|all images are licensed|all images are public domain/i);
+  for (const wording of ['Optional analytics is off until you give permission', '35-day retention window', 'no automatic deletion simply because an account is inactive', 'Third-party advertising is not currently enabled']) assert.ok(html.includes(wording),wording);
+  assert.ok(html.includes('href="/?privacy=settings"'));
+  assert.ok(html.includes('Turn off analytics'));
+  assert.ok(html.includes('This policy page does not load the CMP or Google Analytics'));
+  assert.doesNotMatch(html,/all images are licensed|all images are public domain/i);
 });
 
 test('a real production artifact cannot pass the deployment check without approved contact details', () => {

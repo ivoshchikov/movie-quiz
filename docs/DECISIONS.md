@@ -1,3 +1,17 @@
+## ADS-02 — Require permission before optional measurement
+
+8 November 2026. The owner authorized stage 11. Use the existing Google CMP and
+publisher; keep ad serving off. Require explicit purpose consent for GA4 and
+first-party counters, never interpreting an inapplicable regional rule as a grant.
+Provide independent opt-ins outside European TCF, preserve explicit prior opt-outs,
+honour GPC conservatively and fail closed when consent is unknown or unavailable.
+Withdrawal must stop transports and remove optional storage without changing
+auth/game records. Delay consent overlays until a running game ends and keep
+Privacy settings accessible. Reconcile the public policy with implemented behaviour.
+Test consent with isolated fixtures and distinguish that evidence from real Google
+regional delivery, CI, merge and Cloudflare publication. No game/schema, image,
+contact identity or dependency change is authorized by this stage.
+
 ## ADS-01 — Prepare existing AdSense ownership without advertising requests
 
 8 November 2026. The owner authorized stage 10. Reuse the signed-in existing

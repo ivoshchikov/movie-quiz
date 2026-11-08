@@ -6,6 +6,7 @@ import { boardName, boardUrl, personName } from "../thisThat/boards";
 import { useAuth } from "../AuthContext";
 import SiteIcon from "../components/SiteIcon";
 import ThemeSlider from "../components/ThemeSlider";
+import { GamePrivacyControls } from "../privacy/PrivacyControls";
 import "../game.css";
 import Seo from "../components/Seo";
 import { getPublicUrl } from "../supabase";
@@ -78,5 +79,5 @@ function PlaySession({ owner }: { owner: string | null }) {
 export default function ThisThatPlayPage() {
   const { user, loading, error, retrySession } = useAuth();
   const [board] = useBoard();
-  return <div className="hq-pick-page"><header className="hq-play-header"><Link to="/" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></Link><div className="hq-play-actions"><ThemeSlider /></div></header><Seo title="This or That — Your choices | Hard Quiz" noindex />{loading ? <p role="status">Checking account…</p> : error ? <p role="alert">Your account could not be checked. <button className="hq-inline-action" onClick={retrySession}>Retry sign-in check</button></p> : <PlaySession key={`${user?.id ?? "guest"}:${board}`} owner={user?.id ?? null} />}</div>;
+  return <div className="hq-pick-page"><header className="hq-play-header"><Link to="/" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></Link><div className="hq-play-actions"><ThemeSlider /><GamePrivacyControls /></div></header><Seo title="This or That — Your choices | Hard Quiz" noindex />{loading ? <p role="status">Checking account…</p> : error ? <p role="alert">Your account could not be checked. <button className="hq-inline-action" onClick={retrySession}>Retry sign-in check</button></p> : <PlaySession key={`${user?.id ?? "guest"}:${board}`} owner={user?.id ?? null} />}</div>;
 }

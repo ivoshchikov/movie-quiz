@@ -12,8 +12,9 @@ export function existingVisitorId() {
   } catch { /* Denied storage falls back to one identifier for this document. */ }
   return memoryId;
 }
-export function getVisitorId() {
+export function getVisitorId(permitted: () => boolean) {
   const create = () => {
+    if (!permitted()) return null;
     const existing = existingVisitorId();
     if (existing) return existing;
     memoryId = crypto.randomUUID();
@@ -22,6 +23,10 @@ export function getVisitorId() {
   };
   // Presence and page views, including first creation in concurrent tabs, share an ID.
   return navigator.locks ? navigator.locks.request("hq-visitor-id", create) : Promise.resolve(create());
+}
+export function clearVisitorIdentity() {
+  memoryId = null;
+  try { localStorage.removeItem(visitorKey); localStorage.removeItem("hq_visitor_last_sent"); } catch { /* Optional storage may be unavailable. */ }
 }
 export function isOwnerBrowser() {
   if (excludedBrowser) return true;

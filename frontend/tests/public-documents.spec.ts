@@ -37,27 +37,21 @@ test('footer links, back navigation and contents anchors keep the right page and
   await expect(page.getByRole('heading',{name:'About Hard Quiz',exact:true})).toBeVisible();
 });
 
-test('the privacy choice stops both optional counters and GA after reload and persists on navigation',async({page})=>{
+test('the privacy page stays unmeasured and its settings link opens choices without granting',async({page})=>{
   await mockHumanBrowser(page); await mockQuizApi(page);
   let optional=0;
   await page.route('**/rest/v1/rpc/site_visit_heartbeat',route=>{optional++;return route.fulfill({status:204});});
   await page.route('**/rest/v1/rpc/site_record_page_view',route=>{optional++;return route.fulfill({status:204});});
   await page.goto('/privacy');
-  await expect(page.locator('.hq-info-choice [role="status"]')).toContainText('Your saved analytics choice is on');
-  await expect.poll(()=>optional).toBeGreaterThan(0);
-  await page.getByRole('link',{name:'Turn off analytics',exact:true}).click();
-  await expect(page.locator('.hq-info-choice [role="status"]')).toContainText('Your saved analytics choice is off');
-  const afterOff=optional;
+  await expect(page.locator('.hq-info-choice [role="status"]').first()).toContainText('Analytics is off on this policy page');
+  expect(optional).toBe(0);
+  await page.getByRole('button',{name:'Turn off analytics',exact:true}).click();
   expect(await page.evaluate(()=>localStorage.getItem('hq_analytics_opt_out'))).toBe('1');
-  expect(await page.evaluate(()=>window.dataLayer??[])).toEqual([]);
-  await page.getByRole('navigation',{name:'Site information'}).getByRole('link',{name:'About',exact:true}).click();
-  await page.waitForTimeout(150);
-  expect(optional).toBe(afterOff);
-  await page.getByRole('navigation',{name:'Site information'}).getByRole('link',{name:'Privacy Policy',exact:true}).click();
-  await page.getByRole('link',{name:'Turn on analytics',exact:true}).click();
-  await expect(page.locator('.hq-info-choice [role="status"]')).toContainText('Your saved analytics choice is on');
-  expect(await page.evaluate(()=>localStorage.getItem('hq_analytics_opt_out'))).toBeNull();
-  await expect.poll(()=>optional).toBeGreaterThan(afterOff);
+  expect(await page.locator('#hq-google-cmp, script[src*="googletagmanager"]').count()).toBe(0);
+  await page.locator('.hq-info-choice').getByRole('link',{name:'Privacy settings',exact:true}).click();
+  await expect(page).toHaveURL(/\/\?privacy=settings$/);
+  await expect(page.getByRole('dialog')).toBeVisible();
+  expect(optional).toBe(0);
 });
 
 test('the sign-in form links to privacy without sending a sign-in request', async({page})=>{

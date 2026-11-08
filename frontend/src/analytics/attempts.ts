@@ -1,4 +1,5 @@
-import { gaEvent } from "./ga";
+import { canTrack, gaEvent } from "./ga";
+import { getConsent, onConsentRevoked } from "../privacy/consent";
 import type { AnalyticsParameters } from "./ga";
 
 type Mode = "normal" | "daily" | "time_attack" | "this_or_that";
@@ -11,8 +12,10 @@ const prefix = "hq:analytics:v2:";
 const originKey = `${prefix}article`;
 const ttl = 24 * 60 * 60 * 1000;
 const attempts = new Map<string, Attempt>();
+onConsentRevoked(permission => { if (!permission.analytics) attempts.clear(); });
 
 export function articleToQuiz(slug: string, mode: Mode | "games") {
+  if (!canTrack()) return;
   const origin: ArticleOrigin = { article_slug: slug, cta_position: "footer", cta_id: crypto.randomUUID() };
   if (!gaEvent("article_to_quiz_click", { ...origin, game_mode: mode })) return;
   try { sessionStorage.setItem(originKey, JSON.stringify({ ...origin, mode, at: Date.now() })); } catch { /* Attribution is optional. */ }
@@ -39,55 +42,65 @@ function persist(key: string, attempt: Attempt) {
 export function attemptAnalytics(mode: Mode, localKey: string) {
   // localKey is never emitted. Do not pass server capability IDs as run_id.
   const key = `${prefix}${mode}:${localKey}`;
-  let attempt = attempts.get(key);
-  if (!attempt) {
-    try {
-      const value: Attempt = JSON.parse(sessionStorage.getItem(key) || "null");
-      if (value && typeof value.runId === "string" && Array.isArray(value.sent) && Array.isArray(value.resolved) &&
-        Array.isArray(value.answered) && Number.isFinite(value.updatedAt) && Date.now() - value.updatedAt >= 0 && Date.now() - value.updatedAt < ttl) attempt = value;
-    } catch { /* Memory-only attempt. */ }
-    attempt ??= { runId: crypto.randomUUID(), sent: [], resolved: [], answered: [], updatedAt: Date.now() };
-    attempts.set(key, attempt);
-    if (attempts.size > 40) attempts.delete(attempts.keys().next().value!);
+  let epoch: number | null = null;
+  function current() {
+    if (!canTrack() || epoch !== null && epoch !== getConsent().epoch) return;
+    epoch ??= getConsent().epoch;
+    let record = attempts.get(key);
+    if (!record) {
+      try {
+        const value: Attempt = JSON.parse(sessionStorage.getItem(key) || "null");
+        if (value && typeof value.runId === "string" && Array.isArray(value.sent) && Array.isArray(value.resolved) &&
+          Array.isArray(value.answered) && Number.isFinite(value.updatedAt) && Date.now() - value.updatedAt >= 0 && Date.now() - value.updatedAt < ttl) record = value;
+      } catch { /* Memory-only attempt. */ }
+      record ??= { runId: crypto.randomUUID(), sent: [], resolved: [], answered: [], updatedAt: Date.now() };
+      attempts.set(key, record);
+      if (attempts.size > 40) attempts.delete(attempts.keys().next().value!);
+    }
+    return record;
   }
-  const record = attempt;
-  const common = () => ({ run_id: record.runId, game_mode: mode, ...record.origin });
-  function once(name: string, params: AnalyticsParameters = {}) {
+  const common = (record: Attempt) => ({ run_id: record.runId, game_mode: mode, ...record.origin });
+  function once(record: Attempt, name: string, params: AnalyticsParameters = {}) {
     if (record.sent.includes(name)) return false;
-    if (!gaEvent(name, { ...common(), ...params })) return false;
+    if (!gaEvent(name, { ...common(record), ...params })) return false;
     record.sent.push(name); persist(key, record); return true;
   }
   function start(params: AnalyticsParameters = {}, resumed = false) {
+    const record = current(); if (!record) return;
     record.origin ??= takeOrigin(mode);
-    if (resumed) { if (gaEvent("daily_resume", { ...common(), ...params })) persist(key, record); }
-    else once(mode === "daily" ? "daily_start" : mode === "this_or_that" ? "comparison_start" : "quiz_start", params);
+    if (resumed) { if (gaEvent("daily_resume", { ...common(record), ...params })) persist(key, record); }
+    else once(record, mode === "daily" ? "daily_start" : mode === "this_or_that" ? "comparison_start" : "quiz_start", params);
   }
   return {
     start,
     comparisonChoice(localRoundKey: string, params: AnalyticsParameters) {
+      const record = current(); if (!record) return;
       if (mode !== "this_or_that" || record.resolved.includes(localRoundKey)) return;
       record.origin ??= takeOrigin(mode);
-      if (!gaEvent("comparison_choice", { ...common(), ...params })) return;
+      if (!gaEvent("comparison_choice", { ...common(record), ...params })) return;
       // Round capabilities are local deduplication inputs, never event values.
       record.resolved.push(localRoundKey); persist(key, record);
-      once("comparison_first_choice", params);
+      once(record, "comparison_first_choice", params);
     },
     answer(number: number, outcome: "correct" | "wrong" | "timeout" | "skipped", params: AnalyticsParameters) {
+      const record = current(); if (!record) return;
       if (record.resolved.includes(number)) return;
       const explicit = outcome === "correct" || outcome === "wrong", count = record.answered.length + Number(explicit);
-      if (!gaEvent("quiz_answer", { ...common(), ...params, question_number: number, outcome,
+      if (!gaEvent("quiz_answer", { ...common(record), ...params, question_number: number, outcome,
         correct: outcome === "correct", answer_count: count, resolved_count: record.resolved.length + 1 })) return;
       record.resolved.push(number); if (explicit) record.answered.push(number); persist(key, record);
-      if (explicit) once("quiz_first_answer", { ...params, question_number: number });
-      if (count >= 3) once("qualified_play", { ...params, answer_count: count, criterion: "three_answers" });
+      if (explicit) once(record, "quiz_first_answer", { ...params, question_number: number });
+      if (count >= 3) once(record, "qualified_play", { ...params, answer_count: count, criterion: "three_answers" });
     },
     end(params: AnalyticsParameters) {
+      const record = current(); if (!record) return;
       // A passive restored receipt cannot invent a newly observed game.
-      if (record.sent.includes("quiz_start")) once("quiz_end", { ...params, answer_count: record.answered.length, resolved_count: record.resolved.length });
+      if (record.sent.includes("quiz_start")) once(record, "quiz_end", { ...params, answer_count: record.answered.length, resolved_count: record.resolved.length });
     },
     submit(params: AnalyticsParameters) {
-      once("daily_submit", params);
-      once("qualified_play", { ...params, answer_count: 1, criterion: "daily_submitted" });
+      const record = current(); if (!record) return;
+      once(record, "daily_submit", params);
+      once(record, "qualified_play", { ...params, answer_count: 1, criterion: "daily_submitted" });
     },
   };
 }

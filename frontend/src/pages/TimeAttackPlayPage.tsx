@@ -6,6 +6,7 @@ import { getPublicUrl } from "../supabase";
 import Seo from "../components/Seo";
 import SiteIcon from "../components/SiteIcon";
 import ThemeSlider from "../components/ThemeSlider";
+import { GamePrivacyControls } from "../privacy/PrivacyControls";
 import { attackTime, isLevel, levelName, isAttackCategory, attackCategoryName, attackImageAlt } from "../timeAttack/api";
 import { readAttackRun } from "../timeAttack/storage";
 import type { AttackRun } from "../timeAttack/storage";
@@ -47,7 +48,7 @@ export default function TimeAttackPlayPage() {
   const feedback = r?.outcome === "correct" ? "Correct! +2 points" : r?.outcome === "wrong" ? "Incorrect. −1 point" : "Skipped. −3 seconds";
 
   return <><Seo title="Play Time Attack | Hard Quiz" description="Race the clock with movie and TV stills, actors or actresses." noindex />
-    <header className="hq-play-header"><Link to="/time-attack" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></Link><div className="hq-play-actions"><ThemeSlider />{game?.status === "active" && <button className="hq-play-exit" disabled={busy} onClick={() => setExit(true)}>End run</button>}</div></header>
+    <header className="hq-play-header"><Link to="/time-attack" className="hq-brand"><span className="hq-brand-mark"><SiteIcon name="cinema" /></span><span className="hq-brand-label">Hard Quiz</span></Link><div className="hq-play-actions"><ThemeSlider /><GamePrivacyControls />{game?.status === "active" && <button className="hq-play-exit" disabled={busy} onClick={() => setExit(true)}>End run</button>}</div></header>
     {loading || authError || !run || !game ? <section className="hq-game-placeholder"><h1>{!loading && !run ? "Choose your Time Attack" : "Getting Time Attack ready"}</h1>
       <p role={view.error || authError ? "alert" : "status"}>{authError ? "Your sign-in status could not be checked." : !run && !loading ? "Start a new run or continue your last one from the Time Attack page." : view.error ?? "Loading your server session…"}</p>
       {authError ? <button className="hq-secondary" onClick={retrySession}>Retry sign-in check</button> : view.error && <button className="hq-secondary" disabled={view.working} onClick={() => view.actions.current?.retry()}>Retry Time Attack</button>}

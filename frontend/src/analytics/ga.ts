@@ -1,7 +1,9 @@
 import { isAutomatedTraffic } from "./trafficBotFilter";
+import { getConsent, isPrivacyDocument, onConsentRevoked } from "../privacy/consent";
 
 export type AnalyticsParameters = Record<string, unknown>;
 type GtagArguments =
+  | [command: "consent", action: "default" | "update", parameters: AnalyticsParameters]
   | [command: "js", date: Date]
   | [command: "set", parameters: AnalyticsParameters]
   | [command: "config", id: string, parameters?: AnalyticsParameters]
@@ -22,17 +24,8 @@ const fixture = GA_ID === "G-QUIZFIXTURE" && import.meta.env?.VITE_ANALYTICS_TES
 const allowedHost = browser && (["hard-quiz.com", "www.hard-quiz.com"].includes(location.hostname) ||
   fixture && ["localhost", "127.0.0.1"].includes(location.hostname));
 const debug = browser && new URLSearchParams(location.search).get("debug_mode") === "1";
-const optOutKey = "hq_analytics_opt_out";
-const optOut = (() => {
-  if (!browser) return true;
-  const control = new URLSearchParams(location.search).get("analytics");
-  try {
-    if (control === "off") localStorage.setItem(optOutKey, "1");
-    if (control === "on") localStorage.removeItem(optOutKey);
-    return control === "off" || localStorage.getItem(optOutKey) === "1";
-  } catch { return control === "off"; }
-})();
 let blocked = true, initialized = false;
+let consentInitialized = false;
 let lastPage: { visit: string; url: string } | null = null;
 
 /** Keep campaign IDs and public filters; never send credentials, free text or URL fragments. */
@@ -59,9 +52,9 @@ function initialReferrer() {
 }
 const referral = initialReferrer();
 let virtualReferrer = referral.page_referrer;
-const canTrack = () => !!GA_ID && !blocked && allowedHost && !optOut && !/^\/admin(?:\/|$)/.test(location.pathname);
+export const canTrack = () => !!GA_ID && !blocked && allowedHost && getConsent().analytics && !isPrivacyDocument() && !/^\/admin(?:\/|$)/.test(location.pathname);
 // First-party counts also exclude identified crawlers and browser automation.
-export const canMeasureVisits = () => !blocked && allowedHost && !optOut &&
+export const canMeasureVisits = () => !blocked && allowedHost && getConsent().measurement && !isPrivacyDocument() &&
   !/^\/admin(?:\/|$)/.test(location.pathname) && !isAutomatedTraffic();
 const pageContext = () => ({
   page_title: document.title,
@@ -70,9 +63,38 @@ const pageContext = () => ({
 });
 
 export function setAnalyticsBlocked(value: boolean) {
+  initializeConsentMode();
   blocked = value;
   if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: !canTrack() });
+  window.gtag?.("consent", "update", { ...deniedConsent, analytics_storage: canTrack() ? "granted" : "denied" });
 }
+
+const deniedConsent = { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
+  analytics_storage: "denied", personalization_storage: "denied", functionality_storage: "denied", security_storage: "granted" };
+export function initializeConsentMode() {
+  if (!browser || consentInitialized) return;
+  consentInitialized = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    // eslint-disable-next-line prefer-rest-params -- Google tag queue protocol.
+    window.dataLayer.push(arguments);
+  };
+  if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: true });
+  window.gtag("consent", "default", deniedConsent);
+}
+function stopAnalytics(permission: { analytics: boolean }) {
+  if (permission.analytics) return;
+  // ga-disable suppresses an already loaded Google tag, including automatic events.
+  if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: true });
+  window.gtag?.("consent", "update", deniedConsent);
+  const loading = document.querySelector<HTMLScriptElement>('script[data-hq-analytics]');
+  if (loading && !window.__gaLoaded) { loading.remove(); window.__gaLoading = false; }
+  if (!window.__gaLoaded) initialized = false;
+  if (!window.__gaLoaded && window.dataLayer) window.dataLayer.splice(0, window.dataLayer.length,
+    ...window.dataLayer.filter(entry => Array.from(entry as IArguments)[0] === "consent"));
+  lastPage = null; virtualReferrer = referral.page_referrer;
+}
+onConsentRevoked(stopAnalytics);
 
 export function loadGA() {
   if (!canTrack() || window.__gaLoaded || window.__gaLoading) return;
@@ -80,17 +102,15 @@ export function loadGA() {
   window.__gaLoading = true;
   if (!initialized) {
     initialized = true;
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag() {
-      // Google's queue uses Arguments objects, not arrays.
-      // eslint-disable-next-line prefer-rest-params -- Google tag queue protocol.
-      window.dataLayer.push(arguments);
-    };
-    window.gtag("js", new Date());
-    window.gtag("config", GA_ID, { ...pageContext(), send_page_view: false });
+    initializeConsentMode();
+    window.gtag?.("set", { ads_data_redaction: true, url_passthrough: false });
+    window.gtag?.("js", new Date());
+    window.gtag?.("config", GA_ID, { ...pageContext(), send_page_view: false, allow_google_signals: false,
+      allow_ad_personalization_signals: false });
   }
   const script = document.createElement("script");
   script.async = true;
+  script.dataset.hqAnalytics = "true";
   script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
   script.onload = () => { window.__gaLoading = false; window.__gaLoaded = true; };
   script.onerror = () => { window.__gaLoading = false; script.remove(); };

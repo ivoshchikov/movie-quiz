@@ -37,7 +37,7 @@ for (const entry of pages) {
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(entry.heading);
     await expect(page.getByRole("heading", { name: "How to play", exact: true })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Quiz categories" }).getByRole("link")).toHaveCount(3);
-    await expect(page.getByRole("button")).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Loading…", exact: true })).toBeDisabled();
     for (const selector of ["title", 'meta[name="description"]', 'link[rel="canonical"]', 'meta[name="robots"]']) await expect(page.locator(selector)).toHaveCount(1);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
     const structured = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/g)].map(match => JSON.parse(match[1]));

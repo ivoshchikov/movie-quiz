@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import { publicContact, publicContactHref, publicDocumentMetadata, publicSiteDetails } from "../publicDocuments";
 import type { PublicDocument } from "../publicDocuments";
+import { getConsent, getServerConsent, subscribeConsent, withdrawAnalytics } from "../privacy/consent";
 import "../public-documents.css";
 
 type Section = { id: string; title: string; content: ReactNode };
@@ -17,19 +18,16 @@ function ProjectContact({ subject = "Hard Quiz enquiry" }: { subject?: string })
 }
 
 function AnalyticsChoices() {
-  const [choice, setChoice] = useState<"off" | "on" | "unknown">("unknown");
-  useEffect(() => {
-    try { setChoice(localStorage.getItem("hq_analytics_opt_out") === "1" ? "off" : "on"); }
-    catch { setChoice("unknown"); }
-  }, []);
+  const consent = useSyncExternalStore(subscribeConsent, getConsent, getServerConsent);
   return <div className="hq-info-choice" aria-label="Analytics choices">
-    <p>Optional analytics currently runs unless you turn it off in this browser. These controls cover Google Analytics and our separate visitor and page-view counters.</p>
-    {choice !== "unknown" && <p className="hq-info-choice-state" role="status">Your saved analytics choice is {choice} in this browser.</p>}
+    <p>Optional analytics is off until you give permission. These controls cover Google Analytics and our separate visitor and page-view counters. Declining does not prevent you from playing.</p>
+    <p className="hq-info-choice-state" role="status">Analytics is off on this policy page.</p>
     <div className="hq-info-actions">
-      <a className="hq-secondary" href="/privacy?analytics=off#analytics-choices">Turn off analytics</a>
-      <a className="hq-text-action" href="/privacy?analytics=on#analytics-choices">Turn on analytics</a>
+      <button className="hq-secondary" onClick={withdrawAnalytics}>Turn off analytics</button>
+      <a className="hq-text-action" href="/?privacy=settings">Privacy settings</a>
     </div>
-    <p className="hq-info-small">The page reloads to apply your choice. It is remembered when browser storage is available. It does not delete earlier measurements or stop requests needed to deliver the site and its games.</p>
+    <p className="hq-info-small">Privacy settings opens the consent controls on the home page. This policy page does not load the CMP or Google Analytics. Turning off analytics applies immediately to this browser and informs other open tabs; it does not erase earlier server measurements.</p>
+    {consent.status === "unavailable" && <p>When privacy controls are unavailable, optional analytics stays off.</p>}
   </div>;
 }
 
@@ -59,7 +57,7 @@ function privacySections(): Section[] {
         <li><strong>Providing the service:</strong> delivering a requested game, managing sign-in, saving account results and responding to service requests. Where the GDPR applies, processing needed to provide the service you request relies on performance of a contract or steps you request before entering one.</li>
         <li><strong>Operating and protecting Hard Quiz:</strong> validating scores, preventing abuse, investigating errors and maintaining reliable services. We rely on legitimate interests in running a fair, secure and usable site, balanced against your rights.</li>
         <li><strong>Public rankings and game statistics:</strong> showing the results and comparison rankings that are part of the service, and understanding question performance. We use the relevant service basis or our legitimate interest in maintaining and improving the games.</li>
-        <li><strong>Optional audience analytics:</strong> understanding visits, referrals and which pages or games people use. Consent is required where applicable law requires it. The current site has the browser opt-out described below; a fuller consent-management setup is being prepared before advertising is enabled.</li>
+        <li><strong>Optional audience analytics:</strong> understanding visits, referrals and which pages or games people use. We request prior consent for these optional measurements. We do not load Google Analytics, create optional measurement identifiers or send our visitor/page-view counts before the corresponding permission. Refusal, an unknown choice or a failed consent service leaves measurement off.</li>
         <li><strong>Legal requests and obligations:</strong> handling applicable privacy rights, legal obligations and disputes, using the legal basis relevant to the request.</li>
       </ul>
       <p>Providing an email address and sign-in data is necessary for an account. Classic, Time Attack and This or That can be played as a guest. Daily Challenge and account-linked records require sign-in.</p>
@@ -77,7 +75,7 @@ function privacySections(): Section[] {
           <tr><th scope="row">Sign-in</th><td>Supabase session and refresh information to keep you signed in.</td><td>Until expiry, sign-out or removal, depending on the session and browser.</td></tr>
           <tr><th scope="row">Game continuity</th><td>Game references, local results, Daily progress and device-local favourites.</td><td>Until the game replaces or clears it, or you clear browser data.</td></tr>
           <tr><th scope="row">Interface choices</th><td>Theme, return navigation and scroll position.</td><td>For the tab session or until browser data is cleared, depending on the setting.</td></tr>
-          <tr><th scope="row">Analytics choice</th><td>Whether you have turned off analytics in this browser.</td><td>Until you change it or clear site storage.</td></tr>
+          <tr><th scope="row">Privacy choices</th><td>Consent records from Google Privacy &amp; messaging, analytics preferences and opt-out instructions. These remember your decision and do not require analytics permission.</td><td>Our separate analytics choice outside Europe lasts 180 days, unless changed or cleared. Google applies the lifetime of its consent records and requests a new choice when needed. A legacy opt-out remains until you change it or clear storage.</td></tr>
           <tr><th scope="row">Audience measurement</th><td>A random first-party visitor identifier, short-lived event deduplication and Google Analytics identifiers or cookies.</td><td>First-party identifiers remain until cleared; session data expires or is replaced. Google applies its cookie and retention settings.</td></tr>
         </tbody>
       </table></div>
@@ -85,6 +83,9 @@ function privacySections(): Section[] {
     </> },
     { id: "analytics-choices", title: "Your analytics choices", content: <>
       <AnalyticsChoices />
+      <p>In the EEA, UK and Switzerland, Google Privacy &amp; messaging presents the applicable purposes and vendor choices through the IAB Transparency and Consent Framework. Our own counters require consent to device storage and content measurement; Google Analytics also requires audience analysis and Google's explicit analytics consent signal. Advertising choices do not override our current decision to keep all advertising off.</p>
+      <p>Outside that European consent flow, we ask separately for site audience counters and Google Analytics. Neither is preselected. An inapplicable regional rule is not treated as permission. We conservatively keep optional analytics off when the browser sends Global Privacy Control. Google provides a Do Not Sell or Share link in supported US states.</p>
+      <p>Use Privacy settings to change or withdraw your choice. Opening it stops optional measurement immediately. If a game is already running, the full controls wait until it ends so a consent window cannot cover the game while its timer runs. We do not replay events from before consent or during refusal.</p>
       <p>This control applies to this browser and device. If you clear site data or use another browser, make the choice again. Essential hosting, security, sign-in and gameplay processing is separate from optional audience measurement.</p>
       <p>For more about Google's processing, see <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use its services</a>. Google also provides an <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Analytics opt-out browser add-on</a>.</p>
     </> },
@@ -92,7 +93,7 @@ function privacySections(): Section[] {
       <ul>
         <li><strong>Cloudflare:</strong> website delivery, caching, network protection and operational diagnostics. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare's Privacy Policy</a>.</li>
         <li><strong>Supabase:</strong> account authentication, database, images and backend game services. Our application database is hosted in the European Union. See <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">Supabase's privacy information</a>.</li>
-        <li><strong>Google:</strong> Google sign-in when you choose it, and Google Analytics for audience measurement. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</li>
+        <li><strong>Google:</strong> Google sign-in when you choose it, Privacy &amp; messaging for consent records and regional privacy choices, and Google Analytics after the relevant permission. The consent service receives technical requests needed to present and remember choices; those are separate from optional analytics. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</li>
         <li><strong>Email services:</strong> delivery and handling of requested sign-in links and messages you send to the site operator.</li>
       </ul>
       <p>We may also disclose information when legally required, to address abuse or security incidents, or to establish, exercise or defend legal claims. External links take you to services with their own privacy practices.</p>
