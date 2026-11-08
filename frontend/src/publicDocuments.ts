@@ -6,7 +6,7 @@ export const publicDocumentPaths = Object.keys(metadata) as PublicDocument[];
 export const publicDocumentMetadata = metadata;
 export const publicSiteDetails = details;
 export const publicContact = details.contactDetailsApproved
-  ? { operatorName: details.operatorName, email: details.contactEmail, country: details.country }
+  ? { projectBrand: details.projectBrand, email: details.contactEmail }
   : null;
 
 export function publicContactHref(subject: string): string | undefined {

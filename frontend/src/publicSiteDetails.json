@@ -1,7 +1,8 @@
 {
-  "operatorName": "",
-  "contactEmail": "",
+  "projectBrand": "Sound Media",
+  "contactEmail": "sound.media.ai@gmail.com",
   "country": "Cyprus",
-  "contactDetailsApproved": false,
+  "contactDetailsApproved": true,
+  "controllerIdentityDisclosed": false,
   "privacyUpdatedOn": "2026-11-08"
 }

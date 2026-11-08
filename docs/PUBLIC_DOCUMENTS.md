@@ -1,12 +1,12 @@
 # Public information pages
 
-Prepared 8 November 2026 for roadmap stage 9. The English `/about`, `/privacy` and `/contact` pages are drafts on `feat/public-documents`; they are not merged or published.
+Implemented 8 November 2026 for roadmap stage 9. The English `/about`, `/privacy` and `/contact` pages are delivered through PR #79; merge and actual production verification are recorded separately in that PR and the project roadmap.
 
 ## Owner details and release guard
 
-The owner explicitly requires approval before any contact email is published. `frontend/src/publicSiteDetails.json` therefore has empty operator/email fields and `contactDetailsApproved: false`. Account or sign-in addresses are not implicitly approved. No placeholder address or mail link is rendered. Fill the exact owner-supplied public identity and email, then set the flag and final policy update date together.
+The owner approved the public email `sound.media.ai@gmail.com` and explicitly selected this wording: “Hard Quiz is a Sound Media project. For general enquiries and privacy requests, contact sound.media.ai@gmail.com.” `frontend/src/publicSiteDetails.json` stores `projectBrand`, the exact email and `contactDetailsApproved: true`. Sound Media is presented as a project brand, without inventing a registered company or publishing a personal identity.
 
-`npm run check:public-contact` intentionally fails while those facts are missing. Real production preparation validates approval, nonempty identity and a valid email without newline injection. The deployment check independently requires the release approval marker. CI may build against the exact isolated fixture origin; fixture artifacts remain forbidden for real deployments.
+`npm run check:public-contact` validates approval of the project wording and email, a nonempty brand and an email without newline injection. Real production preparation and deployment retain those checks. CI may build against the exact isolated fixture origin; fixture artifacts remain forbidden for real deployments. Approval of public wording is distinct from legal identification: `controllerIdentityDisclosed` remains false in configuration and the prepared release manifest. The GDPR controller-identification question stays open; this release does not establish complete legal compliance. The owner's explicit choice supersedes the earlier internal requirement to wait for a personal or registered-company name before releasing these pages.
 
 ## Behaviour
 
@@ -59,4 +59,4 @@ The owner's stage 8 decision is preserved: all existing images stay as they are.
 
 Local checks cover TypeScript, zero-warning ESLint, both fixture build profiles, ten HTTP scenarios per Cloudflare profile, first-response content, sitemap/metadata, publication failure detection and selected Chromium regressions. Fifteen new scenarios cover document access, navigation/focus, analytics choices and 320/390/1440 px in all three themes. The selected existing suites cover sign-in, guides, blog, navigation and analytics. An undersized Privacy link found in the login modal was moved into the existing action area; all 52 login and 15 document scenarios then passed.
 
-Actual commit, draft PR and CI evidence belongs in the PR. Stage 9 is complete only after the owner supplies public contact details, checks pass, the final change is merged through the existing workflow, and the three canonical production addresses are verified without sign-in.
+Actual commit, CI, merge and production evidence belongs in the PR. The approved public-information implementation is delivered when checks pass, the change is merged through the existing workflow, and the three canonical production addresses are verified without sign-in. Keep the separate GDPR identification question, consent-management work and other legal findings open; publication does not resolve them.

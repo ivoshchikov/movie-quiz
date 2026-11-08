@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { mockHumanBrowser, mockQuizApi } from './fixtures';
 
 const metadata = JSON.parse(readFileSync(new URL('../src/publicDocumentMetadata.json', import.meta.url), 'utf8')) as Record<string, { heading: string; title: string; url: string }>;
-const details = JSON.parse(readFileSync(new URL('../src/publicSiteDetails.json', import.meta.url), 'utf8')) as { contactDetailsApproved: boolean };
+const details = JSON.parse(readFileSync(new URL('../src/publicSiteDetails.json', import.meta.url), 'utf8')) as { contactDetailsApproved: boolean; projectBrand: string; contactEmail: string };
 
 for (const [path, data] of Object.entries(metadata)) {
   test(`${path} is public, has metadata and works without starting a game`, async ({ page }) => {
@@ -17,6 +17,12 @@ for (const [path, data] of Object.entries(metadata)) {
     for (const label of ['About','Privacy Policy','Contact','How to play']) await expect(footer.getByRole('link',{name:label,exact:true})).toHaveCount(1);
     expect(calls.filter(call=>/quiz_start|start_daily_session|ta_start|tt_start/.test(call.name))).toEqual([]);
     if (!details.contactDetailsApproved) await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
+    else {
+      const contact = page.locator('.hq-info-contact-address');
+      await expect(contact).toContainText(`Hard Quiz is a ${details.projectBrand} project.`);
+      await expect(contact).toContainText(`For general enquiries and privacy requests, contact ${details.contactEmail}.`);
+      await expect(contact.getByRole('link', {name: details.contactEmail, exact: true})).toHaveAttribute('href', new RegExp('^mailto:sound\\.media\\.ai%40gmail\\.com\\?subject='));
+    }
   });
 }
 

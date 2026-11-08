@@ -7,10 +7,10 @@ const details = JSON.parse(fs.readFileSync('src/publicSiteDetails.json','utf8'))
 const metadata = JSON.parse(fs.readFileSync('src/publicDocumentMetadata.json','utf8'));
 
 test('public contact data cannot be treated as approved when a required field or approval is missing', () => {
-  const fixture = { operatorName: 'Fixture operator', contactEmail: 'contact@example.invalid', contactDetailsApproved: true };
+  const fixture = { projectBrand: 'Fixture project', contactEmail: 'contact@example.invalid', contactDetailsApproved: true, controllerIdentityDisclosed: false };
   assert.equal(contactDetailsApproved(fixture), true);
   for (const input of [
-    { ...fixture, operatorName: '' }, { ...fixture, contactEmail: '' },
+    { ...fixture, projectBrand: '' }, { ...fixture, contactEmail: '' },
     { ...fixture, contactEmail: 'not-an-address' }, { ...fixture, contactEmail: 'contact@example.invalid\r\nBcc:other' },
     { ...fixture, contactDetailsApproved: false },
   ]) assert.throws(() => requireApprovedContact(input), /owner-approved/i);
@@ -32,6 +32,12 @@ test('public documents are readable in the first HTML response with a single can
     assert.ok(release.pages.some(row=>row.path===`/${name}`), name);
     assert.ok(sitemap.includes(`<loc>${page.url}</loc>`), name);
     if (!details.contactDetailsApproved) assert.doesNotMatch(html,/href="mailto:/,name);
+    else {
+      assert.ok(html.includes(`Hard Quiz is a ${details.projectBrand} project.`), name);
+      assert.ok(html.includes(`>${details.contactEmail}</a>`), name);
+      assert.ok(html.includes('For general enquiries and privacy requests, contact '), name);
+      assert.doesNotMatch(html, /The site is operated by Sound Media|Sound Media (Ltd|Limited|LLC)/, name);
+    }
   }
 });
 

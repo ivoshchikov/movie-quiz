@@ -8,13 +8,12 @@ import "../public-documents.css";
 
 type Section = { id: string; title: string; content: ReactNode };
 
-function ContactAddress({ subject = "Hard Quiz enquiry" }: { subject?: string }) {
+function ProjectContact({ subject = "Hard Quiz enquiry" }: { subject?: string }) {
   if (!publicContact) return null;
-  return <address className="hq-info-contact-address">
-    <span>{publicContact.operatorName}</span>
-    <span>{publicContact.country}</span>
-    <a href={publicContactHref(subject)}>{publicContact.email}</a>
-  </address>;
+  return <div className="hq-info-contact-address">
+    <p>Hard Quiz is a {publicContact.projectBrand} project.</p>
+    <p>For general enquiries and privacy requests, contact <a href={publicContactHref(subject)}>{publicContact.email}</a>.</p>
+  </div>;
 }
 
 function AnalyticsChoices() {
@@ -36,10 +35,10 @@ function AnalyticsChoices() {
 
 function privacySections(): Section[] {
   return [
-    { id: "who-is-responsible", title: "Who is responsible", content: <>
+    { id: "about-this-policy", title: "About this policy", content: <>
       <p>This policy explains how Hard Quiz uses personal data when you browse hard-quiz.com, play its games, sign in or contact us. The site is operated from Cyprus.</p>
-      <ContactAddress subject="Hard Quiz privacy request" />
-      <p>You can contact the operator about this policy, your account or a privacy request through our <Link to="/contact">Contact page</Link>.</p>
+      <ProjectContact subject="Hard Quiz privacy request" />
+      <p>Our <Link to="/contact">Contact page</Link> explains what to include when asking about the games, your account or privacy.</p>
     </> },
     { id: "data-we-use", title: "The data we use", content: <>
       <h3>Accounts and sign-in</h3>
@@ -151,7 +150,7 @@ function aboutSections(): Section[] {
     </> },
     { id: "about-the-project", title: "An independent project", content: <>
       <p>Hard Quiz is an independent movie-game and editorial project. It is not affiliated with or endorsed by the performers, studios or streaming services mentioned on the site.</p>
-      {publicContact && <p>The site is operated by {publicContact.operatorName}, based in {publicContact.country}.</p>}
+      <ProjectContact />
       <p>For questions about the games, your account, privacy or an image, visit <Link to="/contact">Contact</Link>. Our <Link to="/privacy">Privacy Policy</Link> explains the data used to run the site.</p>
     </> },
   ];
@@ -185,7 +184,7 @@ export default function PublicDocumentPage({ document }: { document: PublicDocum
     <header className="hq-info-header">
       <p className="hq-eyebrow">Hard Quiz</p><h1>{metadata.heading}</h1><p className="hq-info-intro">{metadata.intro}</p>
       {document === "privacy" && <p className="hq-info-updated">Last updated <time dateTime={publicSiteDetails.privacyUpdatedOn}>{date}</time></p>}
-      {document === "contact" && <ContactAddress />}
+      {document === "contact" && <ProjectContact />}
     </header>
     <div className="hq-info-layout">
       <nav className="hq-info-contents" aria-label="On this page"><h2>On this page</h2><ol>{sections.map(section=><li key={section.id}><a href={`#${section.id}`}>{section.title}</a></li>)}</ol></nav>

@@ -18,8 +18,8 @@
 .hq-info-content ul { padding-left: 22px; list-style: disc; }
 .hq-info-content li + li { margin-top: 12px; }
 .hq-info-contact-address { display: grid; gap: 5px; margin-block: 20px; font-style: normal; font-size: 16px; overflow-wrap: anywhere; }
-.hq-info-contact-address > span:first-child { font-weight: 600; }
-.hq-info-contact-address a { width: fit-content; padding-block: 7px; }
+.hq-info-contact-address > p:first-child { font-weight: 600; }
+.hq-info-contact-address a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
 .hq-info-table-wrap { margin-block: 20px; overflow-x: auto; border: 1px solid var(--hq-border); border-radius: 10px; }
 .hq-info-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px; line-height: 1.6; }
 .hq-info-table th[scope="row"] { min-width: 120px; overflow-wrap: normal; }
