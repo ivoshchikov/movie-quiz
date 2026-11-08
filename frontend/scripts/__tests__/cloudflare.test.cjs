@@ -58,7 +58,26 @@ test('every public URL serves its prerendered content, production canonical and 
     if (production) assert.equal(response.headers.get('strict-transport-security'), 'max-age=63072000', entry.path);
     assert.ok(html.includes(`rel="canonical" href="https://hard-quiz.com${entry.path}"`), entry.path);
     if (manifest.revision) assert.ok(html.includes(`name="hardquiz:revision" content="${manifest.revision}"`));
+    const head = html.split('</head>')[0];
+    const verification = head.match(/<meta\b[^>]*name="google-adsense-account"[^>]*>/g) || [];
+    assert.equal(verification.length, 1, entry.path);
+    assert.match(verification[0], /content="ca-pub-7817531684692124"/, entry.path);
+    assert.doesNotMatch(html, /<script\b[^>]*src=["'][^"']*(?:googlesyndication|doubleclick|adservice\.google)/i, entry.path);
   }
+});
+
+test('AdSense ads.txt is a plain-text root resource for crawlers and browser navigation', async () => {
+  for (const headers of [{}, { 'Sec-Fetch-Mode': 'navigate' }]) {
+    const response = await get('/ads.txt', { headers });
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get('content-type') || '', /^text\/plain\b/);
+    assert.equal(await response.text(), 'google.com, pub-7817531684692124, DIRECT, f08c47fec0942fa0\n');
+    if (production) assert.equal(response.headers.get('strict-transport-security'), 'max-age=63072000');
+  }
+  const head = await get('/ads.txt', { method: 'HEAD' });
+  assert.equal(head.status, 200);
+  assert.match(head.headers.get('content-type') || '', /^text\/plain\b/);
+  assert.equal((await head.arrayBuffer()).byteLength, 0);
 });
 
 test('all legacy HTML URLs redirect permanently and retain query parameters', async () => {
