@@ -1,3 +1,22 @@
+## HOST-08 — Retire Vercel after genuine owner acceptance
+
+8 November 2026. The owner confirmed a fresh production Google login and the
+requested profile/admin/reload checks; backend audit records 14:05:55 UTC. The
+remaining retirement gate is authorized by task 7. Pause only the known Vercel
+project and disable new previews, preserving the project for deliberate recovery.
+Retain existing Standard Protection: current tested URLs return DEPLOYMENT_PAUSED
+and an older immutable deployment requires Vercel authentication. No paid upgrade,
+project deletion, DNS or Supabase change is required.
+
+Disable automatic Vercel Git deployments in the repository and remove its
+deployment_status hook from canonical publication verification. Keep the exact
+Cloudflare app/check name, trusted-main SHA guard and read-only verifier. Keep
+legacy routes because Cloudflare preparation still reads them; removing old
+source functions or dependencies is unnecessary for retiring public hosting.
+Document recovery as an explicit resume/verification step before any DNS change,
+rather than assuming the paused deployment remains a live fallback. Confirm the
+next Cloudflare release/SEO check and no Vercel deployment for that commit.
+
 ## HOST-07 — Verify source identity separately from Cloudflare preparation metadata
 
 8 November 2026. Production acceptance exposed a correct Cloudflare source SHA

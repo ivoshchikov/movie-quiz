@@ -1,7 +1,6 @@
 name: Verify published SEO
 
 on:
-  deployment_status:
   check_run:
     types: [completed]
   workflow_dispatch:
@@ -14,15 +13,12 @@ jobs:
     if: >-
       github.repository == 'ivoshchikov/movie-quiz' &&
       ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-      (github.event.deployment_status.state == 'success' &&
-       github.event.deployment.environment == 'Production' &&
-       github.event.deployment.creator.login == 'vercel[bot]') ||
       (github.event_name == 'check_run' &&
        github.event.check_run.conclusion == 'success' &&
        github.event.check_run.app.slug == 'cloudflare-workers-and-pages' &&
        github.event.check_run.name == 'Workers Builds: hard-quiz'))
     concurrency:
-      group: seo-publication-production-${{ github.event_name }}
+      group: seo-publication-production
       cancel-in-progress: true
     runs-on: ubuntu-latest
     container:
@@ -43,7 +39,7 @@ jobs:
 
       - name: Select the deployed commit already merged into main
         env:
-          DEPLOYMENT_SHA: ${{ github.event.check_run.head_sha || github.event.deployment.sha || github.sha }}
+          DEPLOYMENT_SHA: ${{ github.event.check_run.head_sha || github.sha }}
         run: |
           [[ "$DEPLOYMENT_SHA" =~ ^[0-9a-f]{40}$ ]]
           git -c safe.directory="$GITHUB_WORKSPACE" merge-base --is-ancestor "$DEPLOYMENT_SHA" origin/main

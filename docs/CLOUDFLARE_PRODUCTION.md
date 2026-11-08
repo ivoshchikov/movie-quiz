@@ -1,10 +1,36 @@
 # Hard Quiz production on Cloudflare
 
-Prepared 8 November 2026 (Asia/Nicosia), roadmap task 6. The production artifact
-is separate from the tested staging service. Source, CI and merge evidence are
-recorded in [PR #73](https://github.com/ivoshchikov/movie-quiz/pull/73). A prepared
-artifact or successful build is not proof that the public domain has switched.
-Account-side setup and the actual domain cutover remain pending until verified.
+Updated 8 November 2026 (Asia/Nicosia), roadmap task 7. Cloudflare serves the
+canonical production domain and the owner has confirmed a fresh production
+login, profile/admin access and persistence after reload. Automatic builds and
+the live post-build SEO verifier were accepted in PR #77. Vercel is now paused;
+it is a retained recovery configuration, not an active production fallback.
+The sections below retain the preparation details where still relevant.
+
+## Vercel retirement and current publication path
+
+Git pushes no longer request Vercel deployments: `frontend/vercel.json` sets
+`git.deploymentEnabled: false`. The Vercel project pause blocks the current
+production deployment; its existing Standard Protection covers older/preview
+deployment URLs, and the API accepted disabling new previews. Four tested current
+URLs return 503 DEPLOYMENT_PAUSED and one older URL requires Vercel authentication.
+No project or credentials were deleted and no paid protection was enabled.
+
+Canonical verification is triggered only by the successful trusted
+`Workers Builds: hard-quiz` check or a manual main dispatch. The old Vercel
+deployment-status event and source fallback have been removed. Preserve the
+trusted-main ancestry check. The actual release/automatic-check outcome is
+recorded in the retirement PR and roadmap.
+
+Vercel routes remain as the existing compatibility input for generated
+Cloudflare redirects/headers and for deliberate recovery. They do not establish
+an active Vercel hosting dependency. See the recovery section in
+[the cutover runbook](CLOUDFLARE_DNS_CUTOVER.md) before resuming the archived host.
+
+References checked 8 November 2026:
+- [Disable automatic Git deployments](https://vercel.com/docs/project-configuration/git-configuration)
+- [Pause/resume a project](https://vercel.com/docs/projects/managing-projects)
+- [Standard Deployment Protection](https://vercel.com/docs/deployment-protection)
 
 ## Deployment profiles
 

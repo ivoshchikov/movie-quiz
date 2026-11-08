@@ -1,10 +1,35 @@
 # Hard Quiz DNS cutover and rollback
 
-Updated 8 November 2026 (Asia/Nicosia). **Roadmap task 6 cutover is complete.**
-The apex is attached to production Worker `hard-quiz`; www is proxied and
-redirects to the HTTPS apex. The source revision remains
-`ecd124edabfb955bae4922932a2d51ac54a92fd4`. Vercel is retained as the recovery
-target until task 7. Supabase and paid-plan settings were not changed.
+Updated 8 November 2026 (Asia/Nicosia). **The production cutover and owner login
+are accepted.** The apex is attached to production Worker `hard-quiz`; www is
+proxied and redirects to the HTTPS apex. Vercel has been paused after the owner
+confirmed task 7's fresh login/profile/admin/reload check. It is retained for
+deliberate recovery and must be resumed and tested before a Vercel DNS rollback.
+Supabase and paid-plan settings were not changed. The executed-cutover table
+below records the historical source/state at task 6; later release identifiers
+and final acceptance are recorded in the retirement PR and roadmap.
+
+## Recovery after Vercel retirement
+
+Prefer a known-good Cloudflare Worker version while keeping the active Custom
+Domain and DNS. Do not assume the former Vercel host is still publicly serving.
+If Vercel recovery is explicitly required:
+
+1. Select only project `prj_QcOLD9LBfw6KIiIbjJKERx2G0ZxF` in team
+   `ivans-projects-a806f387`. Its retained pre-retirement production artifact is
+   `dpl_2gueX1g51GEgQZUakvuH7Et5VTMw`, source
+   `758388a8e96d5a7ffe8d3bf9d5372c15248a55de`.
+2. Resume the paused project through Vercel, then verify the intended artifact,
+   real responses and domain associations on its direct production alias before
+   touching the canonical domain. Standard Protection for old/preview URLs stays.
+3. Existing-artifact recovery does not require Git auto-deployment. Re-enable
+   `git.deploymentEnabled` and previews only if intentionally returning to that
+   workflow; review/rebuild/test any new artifact before switching traffic.
+4. Only after Vercel is verified ready, follow the existing narrowly scoped
+   DNS/Custom-Domain/rule restoration steps. Preserve Google TXT, nameservers
+   and DNSSEC. A paused 503 or an auth wall is not a successful rollback target.
+
+No rollback or production DNS restoration was simulated during retirement.
 
 ## Executed cutover — 8 November 2026
 
