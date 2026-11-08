@@ -1,4 +1,5 @@
 import legacyCards from '../.cache/og-legacy.json';
+import { contentSecurityPolicy } from '../security-policy.json';
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
@@ -9,7 +10,7 @@ interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const headers = new Headers({ 'X-Robots-Tag': 'noindex, nofollow' });
+    const headers = new Headers({ 'X-Robots-Tag': 'noindex, nofollow', 'Content-Security-Policy': contentSecurityPolicy });
     if (env.DEPLOYMENT_PROFILE === 'production') headers.set('Strict-Transport-Security', 'max-age=63072000');
     if (!['GET', 'HEAD'].includes(request.method)) {
       return new Response(null, { status: 405, headers: { ...Object.fromEntries(headers), Allow: 'GET, HEAD' } });

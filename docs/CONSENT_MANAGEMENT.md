@@ -19,6 +19,15 @@ the TCF/GPP privacy interfaces. It is not the AdSense advertising SDK. No ad uni
 Auto ads calls, Offerwall, recovery message or error-protection script are added.
 The CMP makes its own technical requests to present and remember privacy choices.
 
+The native CMP's ad-blocking detector can also attempt to load advertising scripts.
+An enforced `script-src-elem` policy allows the application, Google Analytics,
+Privacy & messaging and Google's static resources, while excluding advertising
+CDNs. It applies to both Cloudflare static-asset profiles and Worker error
+responses. This keeps an indirect provider request from loading an ad SDK. The
+existing inline theme/prerender scripts remain allowed; image, authentication,
+game and measurement connections are not changed by this script-only policy.
+Advertising activation needs an explicit review of this policy in its own stage.
+
 ## Permission decisions
 
 For European TCF consent, a loaded Google CMP and a settled `tcloaded` or
