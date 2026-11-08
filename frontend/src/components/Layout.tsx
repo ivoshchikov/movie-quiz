@@ -186,10 +186,9 @@ export default function Layout() {
       <PageErrorBoundary resetKey={loc.pathname}><Outlet context={{ chooseNickname, openLogin: () => setShowLogin(true), setDailyPlaying,
         profileReady, hasNickname: !!nickname, nickname, profileError: account.error, retryProfile: account.retry, confirmNickname } satisfies SiteOutletContext} />
       </PageErrorBoundary>
-      {isGameView && <PrivacyControls playing />}
     </main>
     {!isGameView && <SiteFooter />}
-    {!isGameView && !isPrivacyDocument(pathname) && <PrivacyControls playing={false} />}
+    {!isGameView && !isPrivacyDocument(pathname) && <PrivacyControls />}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
     <NicknameModal key={owner} open={showNickname && !!user && !authLoading && profileReady && !nickname && !isProfileSetup && !isGameView} onClose={() => setShowNickname(false)} destination={safeReturnPath(loc.pathname + loc.search + loc.hash)} onSaved={confirmNickname} />
   </div>;

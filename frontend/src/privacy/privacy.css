@@ -1,7 +1,7 @@
 .hq-privacy-link { font: inherit; color: inherit; min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 .hq-privacy-link:hover { color: var(--hq-text); }
-.hq-playing-privacy { flex: 0 0 auto; color: var(--hq-muted); text-align: center; font-size: 12px; padding: 8px 16px; }
-.hq-playing-privacy p { margin: 0; }
+.hq-game-privacy { flex: 0 0 44px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--hq-control-border); border-radius: 8px; color: var(--hq-muted); background: var(--hq-surface-soft); cursor: pointer; }
+.hq-game-privacy:hover { color: var(--hq-text); }
 .hq-privacy-dialog { position: fixed; inset: 0; z-index: 150; }
 .hq-privacy-backdrop { position: fixed; inset: 0; background: rgb(0 0 0 / .65); }
 .hq-privacy-position { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; padding: 16px; overflow-y: auto; }

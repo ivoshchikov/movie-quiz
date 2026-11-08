@@ -30,13 +30,15 @@ for (const agent of agents.filter(a => a.browser)) test.describe(agent.name, () 
     if (!agent.bot) await expect.poll(() => calls.length).toBe(2);
     await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Blog", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Blog", exact: true })).toBeVisible();
+    // Let the navigation request finish before jumping past its abort timeout.
+    if (!agent.bot) await expect.poll(() => calls.filter(c => c === "site_record_page_view").length).toBe(2);
     await page.clock.fastForward(121000);
     if (agent.bot) {
       expect(calls).toEqual([]);
       expect(await page.evaluate(() => localStorage.getItem("hq_visitor_id"))).toBeNull();
     } else {
       await expect.poll(() => calls.filter(c => c === "site_visit_heartbeat").length).toBeGreaterThan(1);
-      await expect.poll(() => calls.filter(c => c === "site_record_page_view").length).toBe(2);
+      expect(calls.filter(c => c === "site_record_page_view").length).toBe(2);
     }
   });
 });

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 const paths = {
+  shield: <path d="M12 3 4 6v6c0 4 4 7 8 9 4-2 8-5 8-9V6l-8-3Z" />,
   tree: <><path d="m12 2 4 6h-2l5 6h-3l5 6H3l5-6H5l5-6H8l4-6Zm0 18v2" /><path d="m10 12 4 3m-5 1 3 2" /></>,
   pumpkin: <><path d="M12 6c-9-5-13 13-4 14 2 1 3 0 4 0s2 1 4 0c9-1 5-19-4-14Zm0 0c-1-3 1-4 3-4" /><path d="m7 11 2 2H6l1-2Zm10 0 1 2h-3l2-2Zm-9 5 2 1 2-1 2 1 2-1" /></>,
   sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></>,

@@ -3,10 +3,22 @@ import { Dialog } from "@headlessui/react";
 import { allowEuropeanChoiceAgain, dismissPrivacySettings, getConsent, getServerConsent, openPrivacySettings,
   saveOutsideEuropeChoice, subscribeConsent, withdrawAnalytics } from "./consent";
 import type { ConsentState } from "./consent";
+import SiteIcon from "../components/SiteIcon";
 import "./privacy.css";
 
 export function PrivacySettingsButton() {
   return <button type="button" className="hq-privacy-link" onClick={openPrivacySettings}>Privacy settings</button>;
+}
+
+export function GamePrivacyControls() {
+  const consent = useSyncExternalStore(subscribeConsent, getConsent, getServerConsent);
+  return <>
+    <button type="button" className="hq-game-privacy" aria-label="Privacy settings" title="Privacy settings"
+      aria-describedby={consent.deferred ? "hq-game-privacy-status" : undefined} onClick={openPrivacySettings}>
+      <SiteIcon name={consent.deferred ? "check" : "shield"} />
+    </button>
+    {consent.deferred && <p id="hq-game-privacy-status" className="sr-only" role="status">Analytics is off. Privacy choices will open after this game.</p>}
+  </>;
 }
 
 function ChoicePanel({ consent }: { consent: ConsentState }) {
@@ -48,10 +60,7 @@ function ChoicePanel({ consent }: { consent: ConsentState }) {
   </Dialog>;
 }
 
-export default function PrivacyControls({ playing }: { playing: boolean }) {
+export default function PrivacyControls() {
   const consent = useSyncExternalStore(subscribeConsent, getConsent, getServerConsent);
-  return <>
-    {playing && <div className="hq-playing-privacy"><PrivacySettingsButton />{consent.deferred && <p role="status">Analytics is off. Privacy choices will open after this game.</p>}</div>}
-    {!playing && consent.settings && <ChoicePanel consent={consent} />}
-  </>;
+  return consent.settings ? <ChoicePanel consent={consent} /> : null;
 }

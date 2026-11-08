@@ -187,7 +187,9 @@ test("late CMP messages and manual settings wait for the running game without re
   await page.getByRole("button", { name: "Play Movies" }).click();
   await expect(page.getByRole("button", { name: gameAnswers[0], exact: true })).toBeEnabled();
   await page.evaluate(() => (window as unknown as { __consentFixture: { message: () => void } }).__consentFixture.message());
+  await expect(page.getByRole("button", { name: "Privacy settings", exact: true })).toBeInViewport();
   await page.getByRole("button", { name: "Privacy settings", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Analytics is off. Privacy choices will open after this game." })).toBeAttached();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByRole("button", { name: gameAnswers[0], exact: true })).toBeEnabled();
   expect(await page.evaluate(() => (window as unknown as { __consentFixture: { proceeds: boolean[] } }).__consentFixture.proceeds)).toEqual([]);

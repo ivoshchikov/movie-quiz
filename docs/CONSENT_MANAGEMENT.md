@@ -47,7 +47,8 @@ or denied-state cookieless analytics pings are intentionally sent.
 
 ## Withdrawal and failures
 
-Privacy settings is always available, including a small control below games.
+Privacy settings is always available. Each game header has a 44 px control with
+an accessible name, so it neither overlaps image credits nor reduces field height.
 Opening it immediately disables optional measurement, aborts active counter
 requests, drops pending views and clears only optional analytics storage and GA
 cookies. Necessary auth/game data is preserved. Other tabs receive a privacy
