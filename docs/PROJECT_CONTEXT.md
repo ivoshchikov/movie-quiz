@@ -7,9 +7,11 @@ site-counter and GA opt-ins. Unknown, denied, failed and expired choices stay of
 Privacy settings stops measurement synchronously, aborts active counter requests,
 clears optional identifiers and defers its full dialog until an active game ends.
 The privacy-policy document loads neither CMP nor GA. Advertising remains off;
-the standalone consent tag introduces no ad SDK or placement. See
+no ad SDK or placement is intentionally added, and the enforced script policy
+blocks indirect advertising-script loads by providers. See
 [Consent management](CONSENT_MANAGEMENT.md) for the mapping and test boundaries.
-This source change still requires CI, merge and live release verification.
+Source, CI, merge, live publication and regional Google delivery are separate
+verification gates recorded in the owner report.
 
 ## AdSense ownership preparation — 8 November 2026
 
@@ -24,19 +26,10 @@ for any required account changes. Site ownership,
 Google crawl/ads.txt recognition, review and HTTP publication are distinct gates.
 See [AdSense preparation](ADSENSE_PREPARATION.md) for scope and verification.
 
-## Owner acceptance and Vercel retirement — 8 November 2026
+## Retained recovery configuration — 8 November 2026
 
-The owner confirmed the requested fresh Google login, profile/admin access and
-session persistence after reload. Read-only Supabase audit independently records
-the owner login at 14:05:55 UTC, after the domain cutover. No auth/schema or game
-changes were needed.
-
-The Vercel project `movie-quiz` (`prj_QcOLD9LBfw6KIiIbjJKERx2G0ZxF`) is paused
-through the connected API; disabling new preview deployments was also accepted.
-Four tested current production/branch/immutable URLs return 503
-`DEPLOYMENT_PAUSED`; an older deployment redirects to Vercel authentication.
-Existing Standard Protection remains enabled. The project/configuration is
-retained for deliberate recovery, with no paid upgrade or deletion.
+Owner-session acceptance and provider/account observations are maintained in the
+private owner report. The repository keeps the existing recovery configuration.
 
 `frontend/vercel.json` now disables automatic Git deployments for all branches.
 Its existing routes remain as compatibility input for Cloudflare preparation
@@ -72,32 +65,18 @@ Keep the recovery deployment and genuine owner-login gate described below.
 
 ## Cloudflare production acceptance evidence — 8 November 2026
 
-Task 7 remains open only for a genuine owner sign-in and subsequent retirement
-of Vercel. PR #76 passed all seven workflows and automatically published main
+The historical task 7 source release in PR #76 passed all seven workflows and automatically published main
 revision `1b17bb98f92ca676afdbc7b65da18e7de01e0180` through a push-event Workers
 Build. The live production release passed 29 HTTP checks: all 22 public pages,
 release manifest, sitemap, feed, robots and three crawler user-agent probes.
 Metadata/JSON-LD match the source build. Those probes do not prove a real Google
 crawl or AdSense approval.
 
-Persisted invocation records are readable in dataset `cloudflare-workers`.
-Explicitly select that dataset: this account's empty/default dataset query
-returned no records even though the explicit dataset contained the probes.
-Two controlled read-only 404s completed with outcome `ok`; the unique query
-marker was absent from the saved request URL and message. The narrow interval
-13:23:40–13:28:47 UTC contained two expected 404s and zero matching error events.
-This verifies diagnostic delivery, not an error-rate claim for ordinary traffic.
-Managed invocation metadata includes request information; query redaction is
-not a claim that every header or other field is removed. No custom application
-logging or external export destination was added.
-
-One explicit GA4 debug `page_view` reached the existing collector with HTTP 204,
-the existing measurement identity and sanitized production page URL. A separate
-`analytics=off` visit emitted no GA script/collect request. First-party production
-observations continued to arrive; browser tests created no private visitor/game
-records. Collector acceptance does not prove processed GA4 reporting counts;
-the reporting connector is unavailable without an active trial/subscription,
-and no paid plan was purchased.
+Invocation diagnostics use query redaction, without custom application logging or
+an external export destination. Query redaction does not mean that all other
+request metadata is removed. Operational query results, measurement delivery and
+provider-account observations are maintained in the private owner report; they
+are distinct from the source contract and isolated browser tests.
 
 Twelve alternating cold-browser loads compared Cloudflare and Vercel at the
 same `1d92566` source under identical proxy/network/CPU conditions and fixture
@@ -106,14 +85,10 @@ and -56 ms on mobile; CLS matched. This limited lab comparison found no material
 hosting regression. Proxy-dominated absolute timing, fixture data and three
 loads per provider/viewport do not establish field Core Web Vitals or INP.
 
-The production login page and anonymous OAuth start passed: Supabase returned
-302 to Google with its existing callback, using the production profile return
-URL. The browser stopped before provider sign-in. As of 13:30:55 UTC, backend
-audit still showed no new owner login after cutover; the owner's last sign-in
-was 00:04 UTC. This preflight does not replace the real owner session check.
-Keep Vercel and its Git publication path until that check passes, then remove
-the old publication path and unwanted public duplicates before ads. Sanitized
-evidence: [task-7 snapshot](verification/cloudflare-acceptance-2026-11-08.json).
+The anonymous OAuth preflight uses the existing callback and production-profile
+return URL, stopping before provider sign-in. It does not establish owner-session
+acceptance. Operational session checks are recorded privately. Keep a deliberate
+recovery configuration while validating a hosting migration.
 
 ## Cloudflare production diagnostics configuration — 8 November 2026
 
@@ -131,12 +106,9 @@ and all Supabase/authentication/analytics identities. Deployment and live-query
 evidence are recorded in the PR and roadmap; preparing configuration alone does
 not establish historical logs or a completed task 7.
 
-Backend read-only checks show continued receipt of first-party observations.
-The owner remains intentionally excluded. GSC Wizard GA4 reports are unavailable
-because that connector's trial/subscription ended; do not buy a plan or infer
-missing events from that refusal. A new owner login has not yet been verified
-since cutover. Keep the Vercel recovery deployment and do not activate ads until
-task 7's owner login, analytics and performance gates have been resolved.
+Owner acceptance, diagnostic query results and account-dependent reporting
+availability are tracked privately. Keep the retained recovery configuration and
+distinguish deployment, analytics delivery and field performance evidence.
 
 ## Cloudflare production domain cutover — 8 November 2026
 
@@ -144,10 +116,9 @@ Roadmap task 6 is complete. The owner connected Cloudflare and authorized the
 prepared switch. `hard-quiz.com` is now the enabled Custom Domain of production
 Worker `hard-quiz`; www uses the proxied originless A and the enabled native 308
 redirect, preserving path/query and HTTP upgrades. The Worker serves source
-`ecd124edabfb955bae4922932a2d51ac54a92fd4`, version
-`a4cacd63-b07c-4935-8c62-ffe2ad7a98b3` at 100%. Both active TLS coverage and the
-managed DNS binding were inspected. Vercel deployment
-`dpl_C2zwGP984WRysZqqg4syquA2wrKD` and both aliases remain the recovery target.
+`ecd124edabfb955bae4922932a2d51ac54a92fd4`. Runtime/provider resource identifiers
+and account inspection results are kept in the private owner report. Existing
+Vercel recovery configuration is retained.
 
 Seventeen selected HTTP checks from Cloudflare and 14 DNS checks at two resolvers
 passed; TXT/nameservers are unchanged and DNSSEC validates. Public pages retain
@@ -613,7 +584,7 @@ API обычной игры: count_questions, get_game_question и answer_game_q
 Новые серверные проверки: `supabase/tests/question_bank.test.mjs` для миграций/RLS/токенов/Daily/namespace/leases/idempotency и реальной конкуренции PG16; `question_import.test.mjs` для libwebp/content validation, upload/SQL lost response и отсутствия перезаписи. `.github/workflows/question-bank.yml` запускает изолированную БД и Edge unit checks. `frontend/tests/admin-questions.spec.ts` проверяет защищённый доступ, URL/поиск/пагинацию, mobile/dialog, реальное browser WebP processing, batches/overrides, retry, duplicate confirmation и зашифрованное восстановление. Все изменяющие проверки изолированы от production. Итоговый CI и опубликованный выпуск подтверждаются отдельно.
 
 
-UI-13 опубликован через PR #21; merge ceaa206c66a127836695339d533e5babe0f8c2a0. CI: 446 browser tests без повторов, 11 PostgreSQL и 9 Edge checks; lint/types/build и Deno typecheck прошли. Серверная часть установлена, Vercel success; после публикации клиента privacy переключён и подтверждён прямыми API/RLS запросами. 300 исторических вопросов/изображений сохранены; 2 записи Needs review исключены из безопасного игрового пула. Обе новые страницы доступны по прямым URL, noindex/no-store. Создание вопроса проверено на изолированных данных; настоящая сессия Isildur для production-записи в QA не использовалась. Общий план UI-01—UI-13 завершён; SEO-01, GAME-DATA-01/02 и широкий серверный аудит открыты.
+UI-13 опубликован через PR #21; merge ceaa206c66a127836695339d533e5babe0f8c2a0. CI: 446 browser tests без повторов, 11 PostgreSQL и 9 Edge checks; lint/types/build и Deno typecheck прошли. Серверная часть установлена, Vercel success; после публикации клиента privacy переключён и подтверждён прямыми API/RLS запросами. 300 исторических вопросов/изображений сохранены; 2 записи Needs review исключены из безопасного игрового пула. Обе новые страницы доступны по прямым URL, noindex/no-store. Создание вопроса проверено на изолированных данных; QA использовала изолированные данные без production-записи. Общий план UI-01—UI-13 завершён; SEO-01, GAME-DATA-01/02 и широкий серверный аудит открыты.
 
 
 ## Question bank editing and deletion — published 11 October 2026
@@ -724,3 +695,15 @@ Stage 9 prepares English About, Privacy Policy and Contact at `/about`, `/privac
 The owner approved `sound.media.ai@gmail.com` and the exact project-brand wording “Hard Quiz is a Sound Media project. For general enquiries and privacy requests, contact sound.media.ai@gmail.com.” Public configuration uses `projectBrand`, without asserting a registered company or a personal identity. `contactDetailsApproved=true` approves the wording/email; `controllerIdentityDisclosed=false` preserves the open GDPR identification question. The explicit owner decision permits publication with that unresolved question recorded. Real builds retain approved-contact, fixture and revision guards; isolated CI builds cannot be deployed. No production gameplay/data writes or new dependencies were introduced. Audit, limitations and release requirements: [PUBLIC_DOCUMENTS.md](PUBLIC_DOCUMENTS.md). CI, merge and actual publication evidence remain distinct.
 
 Release-catalog correction: document approval/disclosure fields are emitted by the common SEO generator, not only Cloudflare preparation. The expected credential-free catalog and live catalog therefore share the same source metadata. Strict revision/content/provider checks remain intact, with regression coverage for missing or changed document metadata. Release evidence records both the first PR #79 publication and the follow-up verification correction.
+## Advertising script isolation during consent — 8 November 2026
+
+Native Google CMP validation revealed that its ad-blocking detector may request an
+advertising SDK indirectly. Cloudflare responses therefore enforce the shared
+script-source policy in `frontend/security-policy.json`. It permits site scripts,
+the Google Analytics tag, Privacy & messaging and Google's static resources, and
+excludes advertising CDNs. Both static assets and Worker error responses carry
+the policy. Consent and withdrawal are verified with the actual GA destination,
+with all collector requests intercepted. Advertising remains off; actual regional
+Google message delivery is still a separate acceptance gate. The source change
+requires its own CI, merge and publication verification.
+

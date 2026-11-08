@@ -808,3 +808,14 @@ Preserve the existing movies bucket, category namespaces, transactional numberin
 - Preserve existing images and unresolved audit findings under the owner's stage 8 decision. No separate Terms page is introduced for this information-page change; reconsider on relevant feature or requirement changes.
 - Keep draft implementation, CI, merge and actual production verification distinct. Details and audit evidence: [PUBLIC_DOCUMENTS.md](PUBLIC_DOCUMENTS.md).
 - Generate public-document approval/disclosure fields in the common source release catalog. Cloudflare adaptation only adds its provider profile/header fingerprint. Preserve strict source-metadata equality and add rejection tests for missing or changed document fields; do not hide the initial post-publication mismatch by ignoring those fields.
+## ADS-03 — Enforce advertising script exclusion
+
+8 November 2026. Keep the stage 11 advertising-off constraint enforceable even
+when a permitted third-party CMP attempts an indirect SDK load. Use one shared
+`script-src-elem` policy for both Cloudflare asset profiles and Worker responses.
+Allow the existing app, GA and consent-script origins; exclude advertising CDNs.
+Preserve inline prerender/theme scripts, game images, auth and existing connection
+behaviour. Verify a real GA destination, withdrawal and the blocked dependency
+without delivering collector or gameplay writes. Do not interpret the provider's
+detector as permission to enable ads, publish an ad SDK or submit AdSense review.
+

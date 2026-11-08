@@ -5,6 +5,7 @@ const path = require('node:path');
 const { spawn } = require('node:child_process');
 const { setTimeout: delay } = require('node:timers/promises');
 const { checkArtifact } = require('../check-cloudflare-artifact.cjs');
+const { contentSecurityPolicy } = require('../../security-policy.json');
 
 const origin = 'http://127.0.0.1:8787';
 const profile = process.env.CLOUDFLARE_TEST_PROFILE || 'staging';
@@ -52,6 +53,7 @@ test('every public URL serves its prerendered content, production canonical and 
   for (const entry of manifest.pages) {
     const response = await get(entry.path);
     assert.equal(response.status, 200, entry.path);
+    assert.equal(response.headers.get('content-security-policy'), contentSecurityPolicy, entry.path);
     const html = await response.text();
     assert.equal(html, fs.readFileSync(path.join(directory, entry.file), 'utf8'), entry.path);
     assert.equal(response.headers.get('x-robots-tag'), production ? null : 'noindex, nofollow', entry.path);
@@ -117,6 +119,7 @@ test('unknown paths and direct error documents return 404 for crawlers and brows
     for (const headers of [{}, { 'Sec-Fetch-Mode': 'navigate' }]) {
       const response = await get(url, { headers });
       assert.equal(response.status, 404, url);
+      assert.equal(response.headers.get('content-security-policy'), contentSecurityPolicy, url);
       assert.match(response.headers.get('x-robots-tag') || '', /noindex/, url);
       assert.match(response.headers.get('cache-control') || '', /no-store/, url);
       if (production) assert.equal(response.headers.get('strict-transport-security'), 'max-age=63072000', url);

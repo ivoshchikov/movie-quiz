@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { requireApprovedContact } = require('./public-contact.cjs');
+const { contentSecurityPolicy } = require('../security-policy.json');
 
 async function prepare() {
   const profile = process.argv[2] || 'staging';
@@ -46,6 +47,7 @@ async function prepare() {
     '/*', ...(profile === 'staging'
       ? ['  X-Robots-Tag: noindex, nofollow']
       : ['  Strict-Transport-Security: max-age=63072000']),
+    `  Content-Security-Policy: ${contentSecurityPolicy}`,
   ];
   if (profile === 'production') {
     // Defensive exclusion if alternate URLs are ever enabled in the dashboard.
