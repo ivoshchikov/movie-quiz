@@ -1,3 +1,19 @@
+## ADS-01 — Prepare existing AdSense ownership without advertising requests
+
+8 November 2026. The owner authorized stage 10. Reuse the signed-in existing
+publisher `pub-7817531684692124`; publish its exact passive meta tag and direct
+ads.txt seller record through the established main/Cloudflare flow. Preserve
+prerendering and confirm HTTP 200/plain text, all public HTML, and existing
+redirect/security behaviour in both isolated deployment profiles and live.
+
+No ad script or placement is part of this stage. Keep Auto ads off and defer
+CMP/review/advertising activation to their separate stages. Persisted site
+auto-optimization is currently on; the proposed disabling was not saved and
+needs specific owner confirmation. Do not treat an unsaved control or source
+file as proof of a dashboard change, ownership verification or site approval.
+Keep private payment-recipient/address details out of public source/documents.
+Existing image and public-brand/email decisions remain unchanged.
+
 ## HOST-08 — Retire Vercel after genuine owner acceptance
 
 8 November 2026. The owner confirmed a fresh production Google login and the
