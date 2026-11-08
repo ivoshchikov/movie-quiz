@@ -1,10 +1,58 @@
 # Hard Quiz DNS cutover and rollback
 
-Prepared 8 November 2026 (Asia/Nicosia), roadmap task 5; production preparation
-continued in task 6. **DNS preparation is complete; the cutover is pending.** DNS, certificates, rules, domain
-bindings, billing and Supabase were not changed. Production is still on Vercel.
+Updated 8 November 2026 (Asia/Nicosia). **Roadmap task 6 cutover is complete.**
+The apex is attached to production Worker `hard-quiz`; www is proxied and
+redirects to the HTTPS apex. The source revision remains
+`ecd124edabfb955bae4922932a2d51ac54a92fd4`. Vercel is retained as the recovery
+target until task 7. Supabase and paid-plan settings were not changed.
 
-## Verified baseline
+## Executed cutover — 8 November 2026
+
+The owner connected the Cloudflare plugin and explicitly instructed execution.
+Authenticated preflight found no Page Rules, configured Bulk Redirects or Worker
+Routes that conflict with the change. The saved Single Redirect was reused.
+The private pre-cutover export SHA-256 is
+`e5769fab441247ce52536501b20d735f25afc20fddc57eaa332ebcc3ebe90e6f`;
+its verification TXT is intentionally absent from this repository.
+
+| Object | Verified state |
+| --- | --- |
+| Production revision | `ecd124edabfb955bae4922932a2d51ac54a92fd4` |
+| Worker version | `a4cacd63-b07c-4935-8c62-ffe2ad7a98b3`, 100%, production profile |
+| Apex Custom Domain | `445bed337745a1df046c828bf6feb3114dbbeca6`; hard-quiz; production; enabled; attached 12:01:05 UTC |
+| Managed apex DNS | AAAA `100::`, Proxied/Auto; record `1febc8f992cad456cfbad48f02111940`, provider-managed/read-only |
+| www DNS | A `192.0.2.1`, Proxied/Auto; record `cab73eceb320badb49673e87f9b817b1`; changed 12:12:14 UTC |
+| Canonical rule | Enabled; ruleset `47a0c52fc6d84e16a2e38c575266d889`, rule `82e415f53f5f48e2bf000dcc6183c8db`; 308; original path/query retained |
+| TLS | Custom Domain certificate `8e329e98-40bf-4df3-a244-654c2ef640e9` and Universal SSL active; www covered |
+| Recovery deployment | Vercel `dpl_C2zwGP984WRysZqqg4syquA2wrKD`, READY; same revision; both domain associations retained |
+| Preserved records | TXT content/TTL and nameservers unchanged; DNSSEC active and publicly validated |
+| Alternate Worker hosts | workers.dev and preview URLs remain disabled |
+
+API attachment returned 409 while the original externally managed apex A existed.
+After rechecking the exact backed-up A, the assistant deleted only that record
+and immediately attached the Custom Domain. The code included restoration of the
+original A if attachment failed; no recovery was needed. The resulting managed
+AAAA value is Cloudflare's output, not a manually chosen origin. The included
+Custom Domain flow provisioned its certificate automatically; no ACM purchase
+or paid plan was requested.
+
+Acceptance evidence completed at 12:26 UTC: **17 HTTP checks from Cloudflare and
+14 DNS checks across Google and Cloudflare resolvers passed**. Revision,
+production profile without fixtures, public canonicals/indexing, private
+noindex/no-store, true root/blog 404, HSTS, JS/image assets, robots, sitemap and
+RSS were verified. www article redirects finish in one hop; a legacy HTML URL
+finishes in two hops after its existing normalization. Encoded `a%2Bb` is
+preserved. Each selected HTTP response has a Cloudflare marker; retries and
+earlier cached Vercel responses do not establish that every client DNS cache
+has converged.
+
+Chrome rendered the homepage with four categories/difficulties and the article.
+A later browser-service timeout prevented visual www confirmation; HTTP verified
+that redirect and its final page. No synthetic games were started. Real owner
+sign-in, analytics delivery, performance and release-workflow acceptance remain
+task 7 work. [Sanitized evidence](verification/cloudflare-cutover-2026-11-08.json).
+
+## Historical task-5 baseline
 
 The owner's complete zone export, dated `2026-11-07 22:00:36 UTC`, contains three
 editable records. Its SHA-256 is
@@ -64,9 +112,10 @@ task 5. Keep the existing `hard-quiz-staging` Worker separate and noindex.
 Custom Domains are appropriate because the Worker serves the site itself.
 Cloudflare creates the domain's DNS record and certificate. Do not manually
 CNAME the apex to a `workers.dev` URL or invent the managed record's value.
-An existing CNAME on the exact hostname prevents Custom Domain creation; the
-current apex has an A record. Review Cloudflare's proposed replacement of that
-web record during the actual cutover, preserving unrelated records.
+The attachment API rejects an externally managed web record on the exact
+hostname, including the original apex A. The executed sequence above removed
+only that backed-up A immediately before attachment and kept a guarded recovery
+path. Preserve unrelated records during any future change.
 
 | Record / setting | Intended operation at cutover | Restore value / behavior |
 | --- | --- | --- |
@@ -88,10 +137,10 @@ cutover or recovery duration based on TTL alone.
 
 ## Prepared canonical-host and HTTPS redirect
 
-[Rule object](cloudflare-www-redirect-rule.json) is a **disabled draft**. It has
-not been submitted to Cloudflare or validated by its account-side rule parser.
-Its documented syntax is prepared for the zone's Single Redirects phase
-`http_request_dynamic_redirect`; it is one rule, not a replacement ruleset.
+[Rule object](cloudflare-www-redirect-rule.json) remains a **disabled import
+template**. The corresponding live rule was validated, saved and enabled for
+this cutover, as recorded above. It belongs to
+`http_request_dynamic_redirect`; do not overwrite the zone's unrelated rules.
 
 | Dashboard field | Value |
 | --- | --- |
@@ -108,25 +157,23 @@ Its documented syntax is prepared for the zone's Single Redirects phase
 The HTTP condition uses `(not ssl)`. Cloudflare documents `ssl` as the Boolean
 field for an encrypted client connection. The dashboard rejected the previous
 `http.request.scheme` identifier; the corrected filter still requires the
-account-side validation below before activation.
+account-side validation before activation; that validation and activation are now complete.
 
 Task 6 extends the task-5 www draft to also cover HTTP apex in the same rule.
 It matches www on both protocols and apex only on HTTP, so the HTTPS apex target
 does not redirect back to itself. The encoded path and query must be checked
-after deployment; this is a prepared rule, not an account-validated claim. Preserve query string must be
+after deployment; those live checks passed for this cutover. Preserve query string must be
 selected explicitly. Keep `.html` and trailing-slash normalization in the asset
 configuration already tested at task 4.
 
 ## Required preflight immediately before cutover
 
-The cloud dashboard still shows its sign-in error; no usable Cloudflare
-connector was found. Private current zone settings, rules, rule-slot usage and
-edge-certificate status were **not read**. The owner-supplied full export and
-fresh public checks establish the baseline, not an authenticated account audit.
-The following task-6 checks are therefore mandatory before applying the plan:
+This checklist was completed through the owner's connected Cloudflare plugin
+before the executed cutover. Recheck current authenticated account state before
+a future switch; historical public DNS observations alone are insufficient:
 
-1. In the owner's ordinary Cloudflare browser, open **hard-quiz.com → DNS →
-   Records → Export**. Retain a fresh complete export. Compare the three records
+1. Export DNS through the connected API, or **DNS → Records → Export** in the
+   dashboard. Retain the private complete export. Compare the three records
    above and preserve any additions. If anything differs, update the change and
    rollback list first. Do not import the old export wholesale.
 2. In **Workers & Pages**, prepare the production Worker and its Git publication
@@ -190,6 +237,8 @@ do not disable certificate checks to make acceptance pass.
 ## Recovery to the current Vercel site
 
 This is a reviewed procedure, **not an executed production rollback drill**.
+Use the recovery deployment and revision from the executed-cutover section,
+not the older historical task-5 deployment.
 
 1. Stop further cutover changes and check the pinned Vercel build is READY. If
    the project's production alias moved to a different/broken deployment, first
@@ -222,12 +271,11 @@ the baseline again if application or monetization behavior changes later.
 
 ## Status and cost
 
-Task 5's snapshot, live checks, exact intended changes, redirect draft and
-recovery procedure are prepared. The zone and Vercel service are untouched.
-Private account preflight and every actual switch are task 6 work. No additional
-owner upload is required to record this preparation; a fresh account-side check
-is required before executing it. Task 5 cost is $0. The intended Custom Domain,
-native redirect and Free hosting use no paid add-on within the selected limits.
+Task 6's domain switch and targeted acceptance are complete; task 7 is next.
+The two web records, one domain binding and the reviewed rule were changed.
+Vercel remains READY as the fallback. TXT, NS/DNSSEC, Supabase, game behavior,
+analytics identity and ads settings were preserved. No paid add-on or plan was
+activated; Free hosting remains the selected configuration within its limits.
 
 Official sources checked 8 November 2026:
 

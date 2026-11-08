@@ -1,3 +1,30 @@
+## Cloudflare production domain cutover — 8 November 2026
+
+Roadmap task 6 is complete. The owner connected Cloudflare and authorized the
+prepared switch. `hard-quiz.com` is now the enabled Custom Domain of production
+Worker `hard-quiz`; www uses the proxied originless A and the enabled native 308
+redirect, preserving path/query and HTTP upgrades. The Worker serves source
+`ecd124edabfb955bae4922932a2d51ac54a92fd4`, version
+`a4cacd63-b07c-4935-8c62-ffe2ad7a98b3` at 100%. Both active TLS coverage and the
+managed DNS binding were inspected. Vercel deployment
+`dpl_C2zwGP984WRysZqqg4syquA2wrKD` and both aliases remain the recovery target.
+
+Seventeen selected HTTP checks from Cloudflare and 14 DNS checks at two resolvers
+passed; TXT/nameservers are unchanged and DNSSEC validates. Public pages retain
+their canonical/indexing, private/error routes retain exclusions, 404 and HSTS,
+and assets/XML feeds work. Encoded query and legacy normalization checks passed.
+Initial cached Vercel responses were retained as propagation observations rather
+than hidden. Chrome rendered the homepage and article; visual www navigation
+was blocked by a browser-service timeout and was verified over HTTP instead.
+
+No production game attempts, Supabase/auth/schema, tracking identity or paid-plan
+changes were made. Actual owner sign-in, analytics event delivery, performance,
+ongoing publication and retirement of Vercel remain task 7, before ads.
+[Runbook](CLOUDFLARE_DNS_CUTOVER.md) and
+[sanitized evidence](verification/cloudflare-cutover-2026-11-08.json).
+
+Earlier Cloudflare sections below record preparation before this executed switch.
+
 ## Cloudflare manual production build recovery — 8 November 2026
 
 The owner created production Worker `hard-quiz`, selected main, root `/frontend`

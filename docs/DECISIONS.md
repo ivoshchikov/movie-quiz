@@ -1,3 +1,29 @@
+## HOST-05 — Execute the production domain cutover through connected Cloudflare
+
+8 November 2026. After the owner connected the plugin and explicitly authorized
+execution, use authenticated account preflight and preserve a private DNS export.
+Reuse the accepted rule with `not ssl`, 308 and query preservation; enabling a
+rule through PATCH requires retaining its existing action/expression fields.
+Attach only the apex to production Worker `hard-quiz`. The API requires removing
+the exact externally managed apex A first; guard that operation against drift,
+attach immediately and restore the backed-up A if attachment fails.
+
+Accept the apex before changing www to the reviewed proxied originless A. Verify
+the active Custom Domain certificate and existing www coverage, source identity,
+production profile, public/private indexing, assets, redirects and real 404.
+The executed switch passed 17 HTTP checks from Cloudflare and 14 signed DNS
+queries at two resolvers. Keep the source revision, TXT, nameservers, DNSSEC,
+Supabase/authentication, game rules and tracking identity unchanged. Source
+configuration continues to omit domain routes; no paid service was enabled.
+
+Keep Vercel READY and both domain associations until task 7 acceptance; do not
+delete that fallback or activate ads as part of task 6. The browser rendered the
+homepage/article, but a browser-service timeout prevented visual www confirmation;
+HTTP verified www and its final destination. Owner sign-in, analytics, performance
+and the continuing publication flow still require task 7 acceptance.
+The connected API supersedes earlier notes that assistant Cloudflare access was
+unavailable. [Executed runbook](CLOUDFLARE_DNS_CUTOVER.md).
+
 ## HOST-04 — Read source identity from the checkout
 
 8 November 2026. The first manually started production Worker build failed
