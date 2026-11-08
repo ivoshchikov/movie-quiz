@@ -182,12 +182,21 @@ test("a fresh policy document never loads CMP or analytics even with a saved gra
   expect(await page.locator("#hq-google-cmp").count()).toBe(0);
 });
 
-for (const width of [320, 390, 1440]) test(`privacy controls fit and support keyboard access at ${width}px`, async ({ page }) => {
+for (const theme of ["light", "dark", "christmas"]) for (const width of [320, 390, 1440]) test(`privacy controls fit and support keyboard access in ${theme} at ${width}px`, async ({ page }, info) => {
   await fixture(page, { region: "other" }); await page.setViewportSize({ width, height: 840 }); await page.goto("/");
+  await page.evaluate(theme => localStorage.setItem("hard-quiz-theme", theme), theme); await page.reload();
   await expect(page.getByRole("dialog")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const panel = page.getByRole("dialog");
+  const contrast = await panel.locator(".hq-privacy-panel").evaluate(element => {
+    const style = getComputedStyle(element);
+    const luminance = (color: string) => color.match(/[\d.]+/g)!.slice(0,3).map(Number).map(v=>v/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[0.2126,0.7152,0.0722][i],0);
+    const text=luminance(style.color), background=luminance(style.backgroundColor);
+    return (Math.max(text,background)+0.05)/(Math.min(text,background)+0.05);
+  });
+  expect(contrast).toBeGreaterThanOrEqual(4.5);
   for (const button of await panel.getByRole("button").all()) expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await page.screenshot({ path: info.outputPath(`privacy-${theme}-${width}.png`), fullPage: true });
   await page.keyboard.press("Escape"); await expect(page.getByRole("dialog")).toHaveCount(0);
   expect(await gaScripts(page).count()).toBe(0);
 });
