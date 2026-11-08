@@ -23,7 +23,9 @@ export default defineConfig({
   use: {
     baseURL: origin,
     serviceWorkers: 'block',
-    launchOptions: process.env.HTTPS_PROXY ? { proxy: { server: process.env.HTTPS_PROXY } } : {},
+    launchOptions: process.env.HTTPS_PROXY ? {
+      proxy: { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' },
+    } : {},
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
