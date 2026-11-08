@@ -4,6 +4,10 @@ Prepared 8 November 2026 (Asia/Nicosia) on `feat/cloudflare-staging`, based on
 `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`. This document describes roadmap task 3.
 No custom domain, DNS change, paid plan or production cutover is included.
 
+Production/task-6 setup now has a separate configuration and instructions in
+[CLOUDFLARE_PRODUCTION.md](CLOUDFLARE_PRODUCTION.md). The status below records the
+staging milestone; current source/merge evidence is tracked in PR #73.
+
 ## Deployment status
 
 - Configuration and local validation are prepared in this branch.

@@ -6,6 +6,7 @@
   "compatibility_flags": ["assets_navigation_has_no_effect"],
   "workers_dev": true,
   "preview_urls": true,
+  "vars": { "DEPLOYMENT_PROFILE": "staging" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

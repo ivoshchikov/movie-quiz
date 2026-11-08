@@ -47,6 +47,18 @@ jobs:
       - name: Check Cloudflare HTTP routing and legacy social cards
         run: npm run test:cloudflare
 
+      - name: Build the isolated production profile
+        env:
+          VITE_SUPABASE_URL: https://quiz-fixture.supabase.co
+          VITE_SUPABASE_ANON_KEY: local-test-placeholder
+          VITE_SUPABASE_BUCKET: movies
+          VITE_GA_ID: G-QUIZFIXTURE
+          VITE_SITE_URL: https://hard-quiz.com
+        run: npm run build:cloudflare:production
+
+      - name: Check production indexing, security headers and deployment guards
+        run: npm run test:cloudflare:production
+
       - name: Test publication failure detection
         run: npm run test:publication
 

@@ -2,6 +2,10 @@ import { defineConfig } from '@playwright/test';
 
 const baseURL = process.env.QUIZ_ACCEPTANCE_URL ?? 'https://hard-quiz-staging.i-voschikov.workers.dev';
 const origin = new URL(baseURL).origin;
+const profile = process.env.QUIZ_ACCEPTANCE_PROFILE ?? 'staging';
+if (!['staging', 'production'].includes(profile) || (profile === 'production' && origin !== 'http://localhost:8787')) {
+  throw new Error('Production-profile acceptance is isolated to the local preview.');
+}
 if (!['https://hard-quiz-staging.i-voschikov.workers.dev', 'http://localhost:8787'].includes(origin)) {
   throw new Error('Acceptance may only target the staging Worker or its local preview.');
 }

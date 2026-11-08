@@ -9,7 +9,7 @@
     "postbuild": "npm run gen:seo:dist && node scripts/generate-og.cjs",
     "build:cloudflare": "npm run build && node scripts/prepare-cloudflare.cjs && tsc --noEmit -p tsconfig.worker.json",
     "preview:cloudflare": "wrangler dev --port 8787",
-    "deploy:cloudflare": "wrangler deploy",
+    "deploy:cloudflare": "node scripts/check-cloudflare-artifact.cjs staging && wrangler deploy",
     "test:cloudflare": "node --test scripts/__tests__/cloudflare.test.cjs",
     "gen:seo": "node scripts/generate-seo.cjs public",
     "gen:seo:dist": "node scripts/generate-seo.cjs dist",
@@ -24,7 +24,11 @@
     "test:e2e": "playwright test",
     "validate:question-bundle": "node scripts/validate-question-bundle.cjs",
     "test:question-bundle": "node --test scripts/__tests__/question-bundle.test.cjs",
-    "test:acceptance": "playwright test -c playwright.acceptance.config.ts"
+    "test:acceptance": "playwright test -c playwright.acceptance.config.ts",
+    "build:cloudflare:production": "npm run build && node scripts/prepare-cloudflare.cjs production && tsc --noEmit -p tsconfig.worker.json",
+    "preview:cloudflare:production": "wrangler dev --config wrangler.production.json --port 8787",
+    "deploy:cloudflare:production": "node scripts/check-cloudflare-artifact.cjs production && wrangler deploy --config wrangler.production.json",
+    "test:cloudflare:production": "CLOUDFLARE_TEST_PROFILE=production node --test scripts/__tests__/cloudflare.test.cjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",

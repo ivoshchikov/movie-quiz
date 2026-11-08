@@ -1,3 +1,23 @@
+## Cloudflare production preparation — 8 November 2026
+
+Roadmap task 6 is in progress. A separate `hard-quiz` production Worker config
+uses `dist-production`; staging remains globally noindex on its own Worker.
+Public production pages allow indexing, private/game/error exclusions remain,
+and static plus Worker-generated responses preserve the current HSTS. Alternate
+workers.dev/version URLs are disabled with a Host-specific noindex fallback.
+The deploy commands reject wrong-profile, fixture, changed-header and
+unidentified artifacts. No domain routes are declared, so the initial deploy
+does not change DNS; the Custom Domain is attached after account preflight.
+
+Production copies the existing public Supabase configuration and GA4 identity.
+Supabase, game rules, authentication callback, Daily timezone and ads are unchanged.
+The native redirect draft now covers HTTP apex as well as www, preserving path
+and query with 308. Source/CI/merge evidence belongs in PR #73; owner Cloudflare
+setup, private certificates/rules/routes inspection and the actual cutover are
+still required. Vercel remains the public host until that switch is observed.
+[Production setup](CLOUDFLARE_PRODUCTION.md) and
+[DNS/recovery runbook](CLOUDFLARE_DNS_CUTOVER.md) distinguish those steps.
+
 ## Cloudflare DNS preparation — 8 November 2026
 
 Roadmap task 5 preparation is complete. The owner's three-record zone export was

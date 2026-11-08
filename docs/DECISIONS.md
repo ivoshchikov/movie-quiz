@@ -1,3 +1,28 @@
+## HOST-03 — Separate production Cloudflare artifact and explicit cutover
+
+8 November 2026. The owner authorized roadmap task 6 and the production switch.
+Use a separate `hard-quiz` Worker, production Wrangler config and `dist-production`
+output. Keep `hard-quiz-staging` and its global noindex. Public production HTML
+must be indexable; private/game/error routes retain noindex/no-store. Disable
+workers.dev/version routes and add a host-scoped fallback. Preserve existing
+HSTS on assets and Worker-generated responses. Guard deployments against fixture
+builds, wrong profiles, changed headers and missing source identity.
+
+Keep domain routes absent in the source configuration so creating the production
+service cannot replace live DNS. Attach the Custom Domain through the reviewed
+account-side cutover after successful builds and private certificate/rule/route
+preflight. Extend the single native canonical redirect to HTTP apex as well as
+www; retain 308, path/query and the HTTPS apex loop exclusion. Keep Vercel READY
+and domain associations for recovery until task 7.
+
+Use the existing production Supabase public build values and GA4 identity, with
+no new backend, schema, account or paid service. Publish from main through the
+existing GitHub integration after CI. The owner needs one-time setup in the
+ordinary Cloudflare browser because no usable assistant Cloudflare access is
+available. Mark task 6 in progress until the actual public domain is independently
+verified; source/CI/merge records alone do not complete it. Setup and dependencies:
+[CLOUDFLARE_PRODUCTION.md](CLOUDFLARE_PRODUCTION.md).
+
 ## HOST-02 — Cloudflare DNS cutover preparation
 
 8 November 2026. Task 5 records the owner's full export and fresh public DNS,

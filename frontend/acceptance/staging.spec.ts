@@ -322,7 +322,10 @@ test.describe('public HTML before hydration', () => {
     for (const entry of release.pages) {
       const response = await page.goto(entry.path);
       expect(response?.status(), entry.path).toBe(200);
-      expect(response?.headers()['x-robots-tag'], entry.path).toContain('noindex');
+      if (process.env.QUIZ_ACCEPTANCE_PROFILE === 'production') {
+        expect(response?.headers()['x-robots-tag'], entry.path).toBeUndefined();
+        expect(response?.headers()['strict-transport-security'], entry.path).toBe('max-age=63072000');
+      } else expect(response?.headers()['x-robots-tag'], entry.path).toContain('noindex');
       await expect(page.locator('h1')).toHaveCount(1);
       await expect(page.locator('title')).toHaveCount(1);
       await expect(page.locator('meta[name="description"]')).toHaveCount(1);

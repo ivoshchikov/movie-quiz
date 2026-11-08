@@ -1,7 +1,7 @@
 # Hard Quiz DNS cutover and rollback
 
-Prepared 8 November 2026 (Asia/Nicosia), roadmap task 5. **Preparation is complete;
-the production cutover has not happened.** DNS, certificates, rules, domain
+Prepared 8 November 2026 (Asia/Nicosia), roadmap task 5; production preparation
+continued in task 6. **DNS preparation is complete; the cutover is pending.** DNS, certificates, rules, domain
 bindings, billing and Supabase were not changed. Production is still on Vercel.
 
 ## Verified baseline
@@ -53,6 +53,10 @@ distinguish the archive, live DNS, HTTP, Vercel metadata and access limits.
 
 ## Task 6: intended changes
 
+The separate production configuration, build/deploy commands, artifact guard and
+owner setup are prepared in [CLOUDFLARE_PRODUCTION.md](CLOUDFLARE_PRODUCTION.md).
+The source config has no domain routes; first deployment does not replace DNS.
+
 Use a **production Worker with Static Assets**, proposed name `hard-quiz`, with
 an exact Custom Domain `hard-quiz.com`. This production Worker is not created by
 task 5. Keep the existing `hard-quiz-staging` Worker separate and noindex.
@@ -79,11 +83,10 @@ record brings requests to Cloudflare, where the redirect must terminate them.
 It must never depend on a request succeeding at that address. An apex Custom
 Domain does not automatically handle www.
 
-The known TTL is already 300 seconds; no preliminary TTL edit is needed in task
-5. DNS/client caches can retain data beyond that interval. Do not promise a fixed
+The known TTL is already 300 seconds; no preliminary TTL edit is needed. DNS/client caches can retain data beyond that interval. Do not promise a fixed
 cutover or recovery duration based on TTL alone.
 
-## Prepared www redirect
+## Prepared canonical-host and HTTPS redirect
 
 [Rule object](cloudflare-www-redirect-rule.json) is a **disabled draft**. It has
 not been submitted to Cloudflare or validated by its account-side rule parser.
@@ -92,9 +95,9 @@ Its documented syntax is prepared for the zone's Single Redirects phase
 
 | Dashboard field | Value |
 | --- | --- |
-| Name | `Hard Quiz: www to apex` |
+| Name | `Hard Quiz: canonical host and HTTPS` |
 | Match | Custom filter expression |
-| Filter | `(http.host eq "www.hard-quiz.com")` |
+| Filter | `(http.host eq "www.hard-quiz.com") or ((http.host eq "hard-quiz.com") and (http.request.scheme eq "http"))` |
 | Action | Dynamic URL redirect |
 | Target expression | `concat("https://hard-quiz.com", http.request.uri.path)` |
 | Status | `308` |
@@ -102,8 +105,10 @@ Its documented syntax is prepared for the zone's Single Redirects phase
 | Order | Before conflicting broader host redirects; preserve unrelated rules |
 | Activation | At task 6, after account review, before the www proxy change |
 
-The hostname-only filter covers HTTP and HTTPS and excludes apex requests, so
-it does not redirect the target back to itself. Preserve query string must be
+Task 6 extends the task-5 www draft to also cover HTTP apex in the same rule.
+It matches www on both protocols and apex only on HTTP, so the HTTPS apex target
+does not redirect back to itself. The encoded path and query must be checked
+after deployment; this is a prepared rule, not an account-validated claim. Preserve query string must be
 selected explicitly. Keep `.html` and trailing-slash normalization in the asset
 configuration already tested at task 4.
 
@@ -124,8 +129,9 @@ The following task-6 checks are therefore mandatory before applying the plan:
    matching routes. Resolve any route that would intercept the intended app.
 3. Prepare and test the production artifact: public production pages must allow
    indexing, private/error pages must retain their exclusions, and alternate
-   `workers.dev`/preview URLs must not become indexable copies. The current
-   staging artifact has global noindex and is not the production artifact.
+   `workers.dev`/preview URLs must not become indexable copies. The staging
+   artifact has global noindex; the separate production artifact is prepared and
+   locally tested, but its actual service/domain binding must still be checked.
 4. In **SSL/TLS → Edge Certificates**, inspect certificate coverage and status.
    The www redirect needs an **Active** certificate covering `www.hard-quiz.com`,
    usually the zone's Universal SSL certificate. Before the apex change, require
@@ -133,7 +139,8 @@ The following task-6 checks are therefore mandatory before applying the plan:
    Custom Domain provisions its certificate; inspect that binding/certificate
    after attachment, before proceeding to www. Use the included certificate
    facilities; do not buy Advanced Certificate Manager for this plan. Inspect
-   the existing HTTPS/HSTS settings and arrange HTTP→HTTPS behavior for apex.
+   the existing HTTPS/HSTS settings. The prepared native rule explicitly upgrades
+   HTTP apex as well as redirecting www; avoid conflicting HTTPS/host rules.
    Workers Custom Domains do not need a separate Vercel origin TLS connection.
 5. In **Rules → Redirect Rules**, inspect Single/Bulk Redirects and relevant
    legacy Page Rules. Check the free rule slot and conflicts. Add this single
