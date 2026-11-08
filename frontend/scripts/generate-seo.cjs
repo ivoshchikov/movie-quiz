@@ -12,6 +12,8 @@ const DEST_DIR = path.join(ROOT, DEST);
 const CACHE_DIR = path.join(ROOT, ".cache");
 const BUNDLE = path.join(CACHE_DIR, "posts.cjs");
 const publicDocumentMetadata = JSON.parse(fs.readFileSync(path.join(ROOT, "src/publicDocumentMetadata.json"), "utf8"));
+const publicSiteDetails = JSON.parse(fs.readFileSync(path.join(ROOT, "src/publicSiteDetails.json"), "utf8"));
+const { contactDetailsApproved } = require("./public-contact.cjs");
 const SRC_POSTS = path.resolve(ROOT, "src/blog/index.ts"); // ← ТУТ НОВЫЙ ПУТЬ
 const PRESENTATION_BUNDLE = path.join(CACHE_DIR, "blog-presentation.cjs");
 
@@ -247,6 +249,8 @@ ${urls}
     }
     fs.writeFileSync(path.join(DEST_DIR, "seo-release.json"), JSON.stringify({
       schemaVersion: 1, revision, canonicalOrigin: SITE_URL, pages: publicationPages,
+      publicDocuments: { contactDetailsApproved: contactDetailsApproved(publicSiteDetails),
+        controllerIdentityDisclosed: publicSiteDetails.controllerIdentityDisclosed === true },
     }, null, 2) + "\n");
 
   }

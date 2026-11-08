@@ -18,6 +18,7 @@ test('public contact data cannot be treated as approved when a required field or
 
 test('public documents are readable in the first HTML response with a single canonical, metadata and footer', () => {
   const release = JSON.parse(fs.readFileSync('dist/seo-release.json','utf8'));
+  assert.deepEqual(release.publicDocuments, { contactDetailsApproved: contactDetailsApproved(details), controllerIdentityDisclosed: details.controllerIdentityDisclosed === true });
   const sitemap = fs.readFileSync('dist/sitemap.xml','utf8');
   for (const [name, page] of Object.entries(metadata)) {
     const html = fs.readFileSync(path.join('dist',`${name}.html`),'utf8');

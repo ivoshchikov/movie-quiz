@@ -41,7 +41,8 @@ test("explicit release overrides stay strict and full provider hashes support so
 });
 
 const revision = "1".repeat(40), canonicalOrigin = "https://hard-quiz.com";
-const manifest = { schemaVersion: 1, revision, canonicalOrigin, pages: [
+const manifest = { schemaVersion: 1, revision, canonicalOrigin,
+  publicDocuments: { contactDetailsApproved: true, controllerIdentityDisclosed: false }, pages: [
   { path: "/", file: "index.html", kind: "page" },
   { path: "/blog", file: "blog.html", kind: "collection" },
   { path: "/blog/test-film", file: "blog/test-film.html", kind: "article", slug: "test-film", publishedOn: "2026-10-22", modifiedOn: null },
@@ -171,6 +172,8 @@ const failures = [
   ["Cloudflare fixture release", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: { ...productionMetadata, usesFixtureData: true } }) } : result, "configuration_or_release"],
   ["malformed Cloudflare metadata", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: { profile: "production", usesFixtureData: false } }) } : result, "configuration_or_release"],
   ["altered release catalog at the same revision", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: productionMetadata, pages: manifest.pages.slice(0, 2) }) } : result, "configuration_or_release"],
+  ["missing public document metadata", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, publicDocuments: undefined, cloudflare: productionMetadata }) } : result, "configuration_or_release"],
+  ["altered public document metadata", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, publicDocuments: { ...manifest.publicDocuments, controllerIdentityDisclosed: true }, cloudflare: productionMetadata }) } : result, "configuration_or_release"],
   ["truncated article and X-Robots-Tag noindex", (route, result) => route === "/blog/test-film" ? { ...result, body: result.body.replace("A complete researched article.", "Truncated."), headers: { "X-Robots-Tag": "googlebot: noindex" } } : result, "indexability"],
   ["duplicate canonical", (route, result) => route === "/blog/test-film" ? { ...result, body: result.body.replace("</head>", '<link rel="canonical" href="https://hard-quiz.com/blog/test-film"></head>') } : result, "metadata"],
   ["missing RSS item", (route, result) => route === "/feed.xml" ? { ...result, body: '<rss version="2.0"><channel></channel></rss>' } : result, "rss"],
