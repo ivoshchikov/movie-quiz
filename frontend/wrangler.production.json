@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "hard-quiz",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-04",
+  "compatibility_flags": ["assets_navigation_has_no_effect"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "vars": { "DEPLOYMENT_PROFILE": "production" },
+  "assets": {
+    "directory": "./dist-production",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "none",
+    "run_worker_first": ["/api/*", "/404", "/404/", "/404.html", "/blog/_not-found", "/blog/_not-found/", "/blog/_not-found.html"]
+  },
+  "observability": { "enabled": false }
+}

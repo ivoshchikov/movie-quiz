@@ -1,3 +1,62 @@
+## HOST-03 — Separate production Cloudflare artifact and explicit cutover
+
+8 November 2026. The owner authorized roadmap task 6 and the production switch.
+Use a separate `hard-quiz` Worker, production Wrangler config and `dist-production`
+output. Keep `hard-quiz-staging` and its global noindex. Public production HTML
+must be indexable; private/game/error routes retain noindex/no-store. Disable
+workers.dev/version routes and add a host-scoped fallback. Preserve existing
+HSTS on assets and Worker-generated responses. Guard deployments against fixture
+builds, wrong profiles, changed headers and missing source identity.
+
+Keep domain routes absent in the source configuration so creating the production
+service cannot replace live DNS. Attach the Custom Domain through the reviewed
+account-side cutover after successful builds and private certificate/rule/route
+preflight. Extend the single native canonical redirect to HTTP apex as well as
+www; retain 308, path/query and the HTTPS apex loop exclusion. Keep Vercel READY
+and domain associations for recovery until task 7.
+
+Use the existing production Supabase public build values and GA4 identity, with
+no new backend, schema, account or paid service. Publish from main through the
+existing GitHub integration after CI. The owner needs one-time setup in the
+ordinary Cloudflare browser because no usable assistant Cloudflare access is
+available. Mark task 6 in progress until the actual public domain is independently
+verified; source/CI/merge records alone do not complete it. Setup and dependencies:
+[CLOUDFLARE_PRODUCTION.md](CLOUDFLARE_PRODUCTION.md).
+
+## HOST-02 — Cloudflare DNS cutover preparation
+
+8 November 2026. Task 5 records the owner's full export and fresh public DNS,
+DNSSEC, HTTP and Vercel baseline without changing service settings. Task 6 will
+attach the apex to a production Worker through Custom Domains and replace the
+www CNAME with a proxied originless A plus the prepared native 308 redirect,
+preserving path/query and the existing TXT, nameservers and DNSSEC. Do not point
+DNS manually at workers.dev, import the archive wholesale, or attach the current
+globally-noindex staging artifact to production.
+
+Keep the current Vercel production/domain associations through task 7 acceptance.
+Recovery detaches the apex binding and restores the original A/CNAME; retain the
+www rule until its placeholder is gone and propagation is checked. Private
+Cloudflare rule/route/certificate inspection remains a required task-6 preflight
+because the cloud login is unavailable. This is a prepared rollback procedure,
+not a production rollback drill. Details:
+[CLOUDFLARE_DNS_CUTOVER.md](CLOUDFLARE_DNS_CUTOVER.md).
+
+## HOST-01 — Cloudflare staging before monetization
+
+Task 4 update, 8 November 2026: hosted frontend acceptance uses isolated API
+fixtures plus a network guard; it must not create synthetic attempts in the
+production Supabase project. Automated game/mobile/static-HTML checks passed.
+The owner confirmed actual Google and email login returns on the controlled
+staging host. All seven CI workflows passed at the code revision; task 4 is complete. Keep the production Site URL and existing
+Google/Supabase callback; use only the exact temporary frontend redirect URLs
+needed for the check, then remove them when staging is retired. Lab performance
+is compared with Vercel and must not be presented as field Core Web Vitals.
+Results and verification limits: [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
+
+8 November 2026 (Asia/Nicosia). The owner chose Cloudflare and authorized roadmap task 3. Prepare a separate `hard-quiz-staging` Worker with Static Assets from `feat/cloudflare-staging`; retain Vite/prerendering and Supabase. Generate remaining social cards at build time using the existing renderer, with lightweight compatibility handlers for published OG links. Keep normal assets outside Worker execution. Explicit fallback handling preserves the distinct root/blog 404 responses. Staging is globally noindex; production needs a separate reviewed configuration at task 6.
+
+No DNS change, paid upgrade, production merge or ad activation is part of this preparation. Cloudflare's `_redirects` does not support domain-level redirects, so the www → apex 308 Redirect Rule is a prerequisite to the later cutover. The owner completed the GitHub connection and branch selection; a branch push produced a successful Cloudflare deployment, verified release identity, noindex response and a working homepage with loaded quiz options. Routine publications use automatic Workers Builds; task 4 acceptance is complete as recorded above. Instructions and evidence: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
+
 ## ANSWER-01 — Result photo metadata
 
 7 November 2026. The owner requested removing the post-session image list because attribution titles and source links identify the correct answers. Classic, Time Attack and Daily remove that list. A versioned migration denies their `question_image_credits` requests before looking up a session, including completed and guest sessions. Admin provenance and credits for public comparison portraits remain accessible through their existing checks. This or That shares portraits with the question bank and displays names, so matching those public portraits remains a separate limitation.

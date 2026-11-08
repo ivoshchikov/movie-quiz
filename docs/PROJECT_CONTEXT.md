@@ -1,3 +1,71 @@
+## Cloudflare production preparation — 8 November 2026
+
+Roadmap task 6 is in progress. A separate `hard-quiz` production Worker config
+uses `dist-production`; staging remains globally noindex on its own Worker.
+Public production pages allow indexing, private/game/error exclusions remain,
+and static plus Worker-generated responses preserve the current HSTS. Alternate
+workers.dev/version URLs are disabled with a Host-specific noindex fallback.
+The deploy commands reject wrong-profile, fixture, changed-header and
+unidentified artifacts. No domain routes are declared, so the initial deploy
+does not change DNS; the Custom Domain is attached after account preflight.
+
+Production copies the existing public Supabase configuration and GA4 identity.
+Supabase, game rules, authentication callback, Daily timezone and ads are unchanged.
+The native redirect draft now covers HTTP apex as well as www, preserving path
+and query with 308. Source/CI/merge evidence belongs in PR #73; owner Cloudflare
+setup, private certificates/rules/routes inspection and the actual cutover are
+still required. Vercel remains the public host until that switch is observed.
+[Production setup](CLOUDFLARE_PRODUCTION.md) and
+[DNS/recovery runbook](CLOUDFLARE_DNS_CUTOVER.md) distinguish those steps.
+
+## Cloudflare DNS preparation — 8 November 2026
+
+Roadmap task 5 preparation is complete. The owner's three-record zone export was
+matched against 28 live queries from Google and Cloudflare DoH; root DNSSEC and
+the www CNAME validate and the parent DS matches RDAP. Production remains on
+Vercel at `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`; the READY production
+deployment and original A/CNAME are pinned for recovery. Twelve HTTP checks
+confirm production, www/query-preserving 308, HTTPS upgrades, real 404 and the
+separate noindex staging deployment.
+
+The prepared task-6 plan uses a production Worker Custom Domain for the apex,
+plus a proxied originless www record and a native 308 Single Redirect. The rule
+JSON is a disabled draft, not deployed. Rollback restores only the changed web
+records/binding/rule; it does not replace the zone or alter NS/DNSSEC. No live
+settings were changed. The cloud dashboard still has a sign-in error, so private
+rules/routes/certificate/quota checks are explicit task-6 gates, not completed
+account checks. The original export is retained privately; live observations
+cannot enumerate unknown newly added hostnames. Runbook and evidence:
+[CLOUDFLARE_DNS_CUTOVER.md](CLOUDFLARE_DNS_CUTOVER.md). Next is task 6; its
+production artifact must remove staging-only noindex before domain attachment.
+
+## Cloudflare staging acceptance — 8 November 2026
+
+Roadmap task 4 is complete. Automated frontend checks on the hosted Worker passed:
+34 desktop/mobile functional cases and two JavaScript-disabled checks covering
+all 22 public documents. Games use intercepted, in-memory API responses; a
+deny-by-default context guard prevents synthetic API writes. Classic's reload
+termination, Daily save/retry, Time Attack resume/deadline, This or That's ten
+pairs, result privacy, rankings, profile and non-admin guards were checked.
+Mobile screenshots were inspected. Eight local workerd groups, full lint,
+application TypeScript and two existing Daily fixture regressions passed.
+
+The owner confirmed real Google and email sign-in on the controlled staging
+host on 8 November. The supplied Magic Link screenshot supports email receipt;
+the assistant did not collect/open sign-in links. The exact dashboard allowlist
+was not independently inspected. All seven CI workflows passed at code revision
+`e078cbdf637e28dc0bbaf41c0d1ba1ac6ee4c81d`, including both full Node 22 browser
+runs. A documentation-only follow-up records these results. Performance limits
+and verification scope: [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
+Task 5 preparation is subsequently recorded above. Production remains
+on Vercel and the staging PR remains a draft; DNS and ads have not switched.
+
+## Cloudflare staging published — 8 November 2026
+
+Roadmap task 3 is complete in `feat/cloudflare-staging`, based on main `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`. Workers with Static Assets preserve prerendered HTML, 33 legacy HTML redirects, private-route headers and true root/blog 404s. Five social cards are generated during the existing postbuild; eight current WebP covers stay intact. Legacy OG endpoints serve prebuilt images. Known assets bypass the small Worker; only legacy API and error/missing paths need it.
+
+This is a staging-only configuration, with noindex on all responses and no custom domain. Production remains on Vercel; DNS, Supabase and monetization settings are unchanged. The owner connected GitHub and selected the staging branch. A subsequent branch push automatically deployed to https://hard-quiz-staging.i-voschikov.workers.dev/. Workers Builds succeeded; the public release identity matched the pushed commit and Chrome loaded category/difficulty controls without starting a game. All seven implementation CI workflows passed on Node 22. The current verification revision is recorded in PR #73 and the roadmap. Hosted game/authentication/mobile acceptance was subsequently completed at task 4, recorded above. Setup, checks and the www redirect dependency before cutover: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
+
 ## Result photo privacy — 7 November 2026
 
 Classic, Time Attack and Daily results display scores/outcomes with replay controls. They omit the former image-credit gallery. Migration `20261107202508_result_image_answer_privacy.sql` rejects guessing-mode credit requests for old clients as well, regardless of session ownership or completion. `GameImageCredits` accepts only public comparison portraits. Admin image sources and licence records are retained. Current credited images have public This or That counterparts, where names and attribution are already displayed. This shared-image mode permits cross-mode visual matching. Delivery evidence is recorded in the implementation PR.

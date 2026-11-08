@@ -52,7 +52,7 @@ for (const [index, article] of articles.entries()) {
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
     const image = await page.locator('meta[property="og:image"]').getAttribute("content");
     expect(new URL(image!).origin).toBe("https://hard-quiz.com");
-    expect(new URL(image!).searchParams.get("title")).toBe(article.title);
+    expect(new URL(image!).pathname).toBe(`/og/posts/${article.slug}.png`);
     await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute("content", image!);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
     const json = await structuredArticle(page);
@@ -167,7 +167,7 @@ test("a configured origin agrees across generated article metadata, RSS and site
       const html = readFileSync(path.join(temp, "dist/blog/" + article.slug + ".html"), "utf8");
       expect(html).toContain('rel="canonical" href="' + origin + '/blog/' + article.slug + '"');
       expect(html).toContain('property="og:url" content="' + origin + '/blog/' + article.slug + '"');
-      expect(html).toContain('property="og:image" content="' + origin + '/api/og/post?');
+      expect(html).toContain('property="og:image" content="' + origin + '/og/posts/' + article.slug + '.png"');
       const structured = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1])).find(item => item["@type"] === "BlogPosting");
       expect(structured.publisher.url).toBe(origin);
       expect(structured.url).toBe(origin + "/blog/" + article.slug);

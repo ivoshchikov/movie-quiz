@@ -92,10 +92,9 @@ export function validateBlogPosts(posts: BlogPost[]): void {
 /** Shared by the browser and the generated first HTTP response. */
 export function articleMetadata(post: BlogPost) {
   const origin = new URL(import.meta.env.VITE_SITE_URL || metadata.url).origin;
-  const params = new URLSearchParams({ title: post.title, date: post.date });
   return {
     title: `${post.seoTitle || post.title} | Hard Quiz`, description: post.excerpt,
-    url: `${origin}/blog/${post.slug}`, image: post.socialImagePath ? `${origin}${post.socialImagePath}` : `${origin}/api/og/post?${params}`,
+    url: `${origin}/blog/${post.slug}`, image: `${origin}${post.socialImagePath || `/og/posts/${post.slug}.png`}`,
   };
 }
 

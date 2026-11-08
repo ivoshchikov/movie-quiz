@@ -100,7 +100,9 @@ export async function mockQuizApi(page: Page) {
 }
 
 export async function mockSignedIn(page: Page, owner = 'fixture-user') {
-  const supabaseUrl = 'https://quiz-fixture.supabase.co';
+  // Hosted acceptance uses the compiled project's storage key; all API traffic
+  // is still intercepted by fixtures and the acceptance network guard.
+  const supabaseUrl = process.env.QUIZ_TEST_SUPABASE_URL ?? 'https://quiz-fixture.supabase.co';
   const storageKey = `sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`;
   const session = {
     access_token: `e30.${Buffer.from(JSON.stringify({ sub: owner, role: 'authenticated', exp: 4102444800 })).toString('base64url')}.fixture`,

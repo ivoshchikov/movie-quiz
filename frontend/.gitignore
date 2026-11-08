@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-production
 dist-ssr
 *.local
 
@@ -30,3 +31,4 @@ dist-ssr
 /playwright/.cache/
 .cache
 seo-reports/
+.wrangler/

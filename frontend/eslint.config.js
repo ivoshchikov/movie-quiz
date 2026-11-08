@@ -6,10 +6,10 @@ import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'exports/**', '.cache/**', 'playwright-report/**', 'test-results/**', 'blob-report/**'],
+    ignores: ['dist/**', 'dist-production/**', 'exports/**', '.cache/**', '.wrangler/**', 'playwright-report/**', 'test-results/**', 'blob-report/**'],
   },
   {
-    files: ['scripts/verify-publication.cjs', 'scripts/__tests__/publication-check.test.cjs', 'scripts/report-growth.cjs', 'scripts/__tests__/growth-report.test.cjs', 'scripts/bundle-runtime.cjs', 'scripts/validate-question-bundle.cjs', 'scripts/__tests__/question-bundle.test.cjs'],
+    files: ['scripts/verify-publication.cjs', 'scripts/__tests__/publication-check.test.cjs', 'scripts/report-growth.cjs', 'scripts/__tests__/growth-report.test.cjs', 'scripts/bundle-runtime.cjs', 'scripts/validate-question-bundle.cjs', 'scripts/__tests__/question-bundle.test.cjs', 'scripts/generate-og.cjs', 'scripts/prepare-cloudflare.cjs', 'scripts/check-cloudflare-artifact.cjs', 'scripts/__tests__/cloudflare.test.cjs'],
     languageOptions: { ecmaVersion: 2022, sourceType: 'commonjs', globals: { ...globals.node, ...globals.browser } },
     rules: { ...js.configs.recommended.rules, 'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }] },
   },
