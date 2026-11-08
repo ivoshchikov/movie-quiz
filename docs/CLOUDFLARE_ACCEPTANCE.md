@@ -1,8 +1,9 @@
 # Cloudflare staging acceptance
 
-Checked 8 November 2026 (Asia/Nicosia). Roadmap task 4 is **in progress**:
-the automated frontend checks passed; a real Google/email sign-in round trip
-still needs the owner. No production cutover is authorized by this document.
+Checked 8 November 2026 (Asia/Nicosia). Roadmap task 4 is **complete**: the automated frontend checks and all seven
+Node 22 CI workflows passed at `e078cbdf637e28dc0bbaf41c0d1ba1ac6ee4c81d`.
+The owner confirmed real Google and email sign-in on staging. Production cutover
+is a later task.
 
 ## Scope and isolation
 
@@ -30,12 +31,12 @@ still needs the owner. No production cutover is authorized by this document.
 | --- | --- | --- |
 | Home and discovery | Home, Movies, Actors, Actresses, TV Series, rules and blog load; visiting them does not start a game | Catalog/API responses are fixtures in interactive tests |
 | Classic | Answer/retry, one accepted answer, timer/life expiry, explicit exit, reload and server result pass | Reload deliberately ends Classic under the existing rules; it must not resume it |
-| Daily | Guest cannot see/start a question; a signed-in fixture starts explicitly; failed save, retry and reload preserve one result | Real account callback remains open; America/Chicago rules are unchanged |
+| Daily | Guest cannot see/start a question; a signed-in fixture starts explicitly; failed save, retry and reload preserve one result | Real account round trip is owner-confirmed; America/Chicago rules are unchanged |
 | Time Attack | Correct answer, failed action/retry, skip, one-run restoration, image failure, deadline and result pass | Server behavior is simulated using the existing RPC contracts |
 | This or That | Failed choice/reload/retry saves once; automatic progression completes exactly ten pairs | Votes and personal preferences exist only in memory |
 | Result privacy | Classic/Time Attack results omit answer-image credits and credited-image galleries | This or That retains its public portrait credits |
 | Rankings/profile/admin | Query-selected category/difficulty, responsive category select, ranking and profile render; non-admin cannot enter question administration | A fake signed-in account is used; no real profile is edited |
-| Login | Email success/rate limit, correct staging return URL, OAuth cancellation and recovery pass | Does not prove email delivery, Google consent or the Supabase redirect allowlist |
+| Login | Email success/rate limit, correct staging return URL, OAuth cancellation and recovery pass | Real Google/email round trips are owner-confirmed; the exact redirect allowlist was not independently inspected |
 | React navigation | Article open, reload, Back/Forward, game result navigation and query filters pass | www redirect belongs to the custom-domain cutover |
 | Mobile | 390×844 game/start/result screens, 320×568 and 844×390 public screens show no horizontal overflow; screenshots inspected | Chromium emulation, not a physical iOS/Android device |
 | HTML without JavaScript | All 22 published pages return readable English HTML, one H1/title/description/canonical, OG metadata, valid JSON-LD and the expected release marker | Staging intentionally carries HTTP noindex |
@@ -47,7 +48,10 @@ The hosted functional suite passed **34/34** desktop/mobile cases, plus **2/2**
 JavaScript-disabled public-HTML cases. Two focused mobile game cases also passed
 after adding separate game/result screenshots. Full ESLint, application TypeScript,
 eight Cloudflare integration groups and two existing Daily fixture regression
-tests passed locally. Tests use the existing lockfile and Playwright installation.
+tests passed locally. Tests use the existing lockfile and Playwright installation. Both full
+Node 22 browser runs passed all 737 tests each at the tested code revision; the other five CI
+workflows also succeeded. A subsequent documentation-only commit records the
+owner confirmation and completed roadmap status.
 
 One plain Python HTTP client received Cloudflare 403 / error 1010 on the staging
 manifest while the unchanged standard Chromium test client loaded it successfully.
@@ -86,46 +90,23 @@ targets. Recheck the actual custom domain from an ordinary network at cutover.
 contain all 18 page loads. Three performance test executions passed, each with
 the same no-real-API/no-analytics guard.
 
-## Remaining owner check
+## Owner sign-in verification
 
-The connector has no Auth redirect-configuration getter and the Supabase dashboard
-opened at its ordinary sign-in screen. The current allowlist was therefore **not
-inspected**, and a real account round trip is **not yet verified**. Do not mark
-task 4 complete solely because the login form and fixture session work.
+On 8 November 2026 the owner confirmed that the requested Google and email
+sign-in checks work on the staging site. The supplied Magic Link screenshot
+also confirms receipt of the sign-in email. The authentication link and tokens
+were not collected or opened by the assistant. This is owner-confirmed external
+verification, separate from the automated fixture tests.
 
-1. Open the existing Supabase project's **Authentication → URL Configuration**.
-   Keep **Site URL** at `https://hard-quiz.com`. Keep existing redirect entries.
-2. Inspect **Redirect URLs**. If absent, add only these controlled staging URLs:
+The exact Supabase redirect allowlist was not independently read: the connector
+has no getter and the dashboard requires sign-in. Do not present that configuration
+as inspected. The owner's functional confirmation resolves the round-trip check.
+No additional owner evidence is needed for task 4. Remove temporary staging
+redirect entries when staging is retired, while keeping production's Site URL
+and the existing Google/Supabase callback.
 
-   ```text
-   https://hard-quiz-staging.i-voschikov.workers.dev/
-   https://hard-quiz-staging.i-voschikov.workers.dev/profile
-   https://hard-quiz-staging.i-voschikov.workers.dev/daily
-   ```
-
-   Save. Do not allow arbitrary `workers.dev` subdomains. Google provider
-   credentials and its existing Supabase callback should not be changed for a
-   frontend hostname change. Remove temporary entries when staging is retired.
-3. In a private browser window, open the staging homepage, choose **Log in** and
-   **Continue with Google**, then use the existing account. Confirm the return
-   stays on this exact staging hostname, the account menu/profile appears and
-   a profile reload retains the session. Log out.
-4. On staging `/login`, enter the existing account's email and choose
-   **Send sign-in link**. Open the received link in that browser. Confirm the same
-   staging host and authenticated profile after reload. Do not share the email's
-   sign-in link, URL fragment, code or token.
-5. Open staging `/daily`: **Start Daily** should be available after login, with no
-   question displayed before starting. **Do not click Start Daily**: this is the
-   real production database and would consume today's attempt. Log out when done.
-6. Report whether Google and email each succeeded and which hostname they
-   returned to. If something fails, report the ordinary error message and host,
-   excluding sign-in secrets. If an email returns to production despite the
-   allowlist, inspect the existing email template's RedirectTo/SiteURL behavior.
-
-These checks create ordinary owner authentication sessions, not synthetic game
-data. They do not require Cloudflare dashboard access or another manual deploy.
-After both paths pass, record the result, close task 4 and begin the DNS/rollback
-preparation of task 5. DNS and the production noindex change remain later tasks.
+Task 5 prepares the existing DNS zone, www redirect and rollback. Production
+cutover, paid services and ads remain later steps.
 
 ## Reproduce
 
@@ -134,6 +115,7 @@ From `frontend/`, after `npm ci` and the normal Playwright Chromium installation
 ```sh
 npm run test:acceptance
 QUIZ_PERFORMANCE=1 npm run test:acceptance
+VITE_SUPABASE_URL=https://quiz-fixture.supabase.co VITE_SUPABASE_ANON_KEY=local-test-placeholder npm run build:cloudflare
 npm run test:cloudflare
 npm run lint
 npm run typecheck

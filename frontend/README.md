@@ -21,7 +21,7 @@ are in [Cloudflare deployment](../docs/CLOUDFLARE_DEPLOYMENT.md).
 with intercepted game/auth APIs and a context-level guard against real writes.
 `QUIZ_PERFORMANCE=1 npm run test:acceptance` compares cold frontend loads with
 Vercel using the same isolated API responses. Run these commands sequentially.
-Scope, results, limitations and the owner's remaining real-login check are in
+Scope, results, limitations and the owner-confirmed real-login check are in
 [Cloudflare acceptance](../docs/CLOUDFLARE_ACCEPTANCE.md).
 
 ## Original Vite template notes

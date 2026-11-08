@@ -21,15 +21,15 @@ No custom domain, DNS change, paid plan or production cutover is included.
   canonical origin, and the HTTP noindex header is present. The homepage was also
   opened in Chrome: categories and difficulty settings loaded and the play button
   became available without starting a game. Roadmap task 3 is complete; full
-  acceptance of gameplay, authentication and mobile performance remains task 4.
+  acceptance of gameplay, authentication and mobile performance was subsequently completed at task 4; see the acceptance report.
 - The branch is not merged. Production continues to use Vercel.
 - Supabase, game rules, RPC contracts and Daily's America/Chicago date are unchanged.
 
 ## Runtime and routing
 
 Task 4 acceptance is documented in [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
-Automated hosted checks passed; the owner's real Google/email round trip remains
-required before task 4 can close. `npm run test:acceptance` uses fixtures and a
+Automated hosted checks and all seven CI workflows passed. The owner confirmed
+real Google/email sign-in on staging; task 4 is complete. `npm run test:acceptance` uses fixtures and a
 context-level network guard. It does not exercise production game writes.
 
 `frontend/wrangler.jsonc` defines `hard-quiz-staging`, a Worker with Static Assets.

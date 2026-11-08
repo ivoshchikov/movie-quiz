@@ -1,6 +1,6 @@
 ## Cloudflare staging acceptance — 8 November 2026
 
-Roadmap task 4 has passed its automated frontend checks on the hosted Worker:
+Roadmap task 4 is complete. Automated frontend checks on the hosted Worker passed:
 34 desktop/mobile functional cases and two JavaScript-disabled checks covering
 all 22 public documents. Games use intercepted, in-memory API responses; a
 deny-by-default context guard prevents synthetic API writes. Classic's reload
@@ -9,18 +9,21 @@ pairs, result privacy, rankings, profile and non-admin guards were checked.
 Mobile screenshots were inspected. Eight local workerd groups, full lint,
 application TypeScript and two existing Daily fixture regressions passed.
 
-The real Supabase redirect allowlist and Google/email account round trips remain
-unverified: no getter is exposed and the dashboard requires sign-in. Task 4 stays
-open until the owner completes the controlled staging login check, without
-starting a real game. Performance measurements, limits and exact owner steps:
-[CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md). Production, DNS and ads remain
-unchanged; the staging PR is still a draft.
+The owner confirmed real Google and email sign-in on the controlled staging
+host on 8 November. The supplied Magic Link screenshot supports email receipt;
+the assistant did not collect/open sign-in links. The exact dashboard allowlist
+was not independently inspected. All seven CI workflows passed at code revision
+`e078cbdf637e28dc0bbaf41c0d1ba1ac6ee4c81d`, including both full Node 22 browser
+runs. A documentation-only follow-up records these results. Performance limits
+and verification scope: [CLOUDFLARE_ACCEPTANCE.md](CLOUDFLARE_ACCEPTANCE.md).
+Next is task 5, existing DNS/redirect/rollback preparation. Production remains
+on Vercel and the staging PR remains a draft; DNS and ads have not switched.
 
 ## Cloudflare staging published — 8 November 2026
 
 Roadmap task 3 is complete in `feat/cloudflare-staging`, based on main `88a840ca5ae703f99f3b9a5090bd0658428bfe4a`. Workers with Static Assets preserve prerendered HTML, 33 legacy HTML redirects, private-route headers and true root/blog 404s. Five social cards are generated during the existing postbuild; eight current WebP covers stay intact. Legacy OG endpoints serve prebuilt images. Known assets bypass the small Worker; only legacy API and error/missing paths need it.
 
-This is a staging-only configuration, with noindex on all responses and no custom domain. Production remains on Vercel; DNS, Supabase and monetization settings are unchanged. The owner connected GitHub and selected the staging branch. A subsequent branch push automatically deployed to https://hard-quiz-staging.i-voschikov.workers.dev/. Workers Builds succeeded; the public release identity matched the pushed commit and Chrome loaded category/difficulty controls without starting a game. All seven implementation CI workflows passed on Node 22. The current verification revision is recorded in PR #73 and the roadmap. Full hosted game/authentication/mobile acceptance remains task 4. Setup, checks and the www redirect dependency before cutover: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
+This is a staging-only configuration, with noindex on all responses and no custom domain. Production remains on Vercel; DNS, Supabase and monetization settings are unchanged. The owner connected GitHub and selected the staging branch. A subsequent branch push automatically deployed to https://hard-quiz-staging.i-voschikov.workers.dev/. Workers Builds succeeded; the public release identity matched the pushed commit and Chrome loaded category/difficulty controls without starting a game. All seven implementation CI workflows passed on Node 22. The current verification revision is recorded in PR #73 and the roadmap. Hosted game/authentication/mobile acceptance was subsequently completed at task 4, recorded above. Setup, checks and the www redirect dependency before cutover: [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md).
 
 ## Result photo privacy — 7 November 2026
 
