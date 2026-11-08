@@ -7,11 +7,11 @@ prerendering and confirm HTTP 200/plain text, all public HTML, and existing
 redirect/security behaviour in both isolated deployment profiles and live.
 
 No ad script or placement is part of this stage. Keep Auto ads off and defer
-CMP/review/advertising activation to their separate stages. Persisted site
-auto-optimization is currently on; the proposed disabling was not saved and
-needs specific owner confirmation. Do not treat an unsaved control or source
-file as proof of a dashboard change, ownership verification or site approval.
-Keep private payment-recipient/address details out of public source/documents.
+CMP/review/advertising activation to their separate stages. Record operational
+account observations privately and obtain specific owner authorization for
+required changes. Do not treat an unsaved control or source file as proof of
+a dashboard change, ownership verification or site approval. Keep private
+payment, recipient, address and verification details out of public source/docs.
 Existing image and public-brand/email decisions remain unchanged.
 
 ## HOST-08 — Retire Vercel after genuine owner acceptance
