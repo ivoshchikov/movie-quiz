@@ -1,3 +1,15 @@
+## HOST-04 — Read source identity from the checkout
+
+8 November 2026. The first manually started production Worker build failed
+inside the SEO generator because automatic revision metadata was not a full
+40-character SHA. The exact environment value is absent from the supplied log.
+Use `git rev-parse --verify HEAD^{commit}` as the normal source of build identity;
+retain strict explicit overrides and full provider-metadata fallback for source
+archives. Fail rather than invent an identity when incomplete metadata has no
+resolvable checkout. Keep the production deployment guard and all indexing,
+hosting, Supabase and game contracts. Deliver the focused fix through PR/CI and
+verify the connected Cloudflare build before moving to domain attachment.
+
 ## HOST-03 — Separate production Cloudflare artifact and explicit cutover
 
 8 November 2026. The owner authorized roadmap task 6 and the production switch.

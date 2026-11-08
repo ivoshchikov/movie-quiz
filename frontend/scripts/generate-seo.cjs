@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const esbuild = require("esbuild");
+const { resolveBuildRevision } = require("./build-revision.cjs");
 require("dotenv").config();
 
 const ROOT = process.cwd();
@@ -116,8 +117,7 @@ ${urls}
 
   // Serve page metadata in the first HTTP response, before React.
   if (DEST === "dist") {
-    const revision = process.env.SEO_BUILD_REVISION || process.env.WORKERS_CI_COMMIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA || process.env.VITE_VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || null;
-    if (revision && !/^[a-f0-9]{40}$/.test(revision)) throw new Error("SEO build revision must be a full Git SHA");
+    const revision = resolveBuildRevision();
     // Start from an application shell, including when the generator is run twice.
     const template = fs.readFileSync(path.join(DEST_DIR, "index.html"), "utf8")
       .replace(/<div id="root">[\s\S]*<\/div>\s*(?=<script|<\/body>)/, '<div id="root"></div>\n    ')
