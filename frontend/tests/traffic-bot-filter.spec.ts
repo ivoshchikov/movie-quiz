@@ -1,11 +1,13 @@
 import { readFileSync } from "node:fs";
 import { test, expect, type Page } from "@playwright/test";
 import { mockHumanBrowser, mockQuizApi, mockSignedIn } from "./fixtures";
+import { mockConsent } from "./privacy-fixtures";
 
 const agents = JSON.parse(readFileSync(new URL("../../supabase/tests/fixtures/traffic_user_agents.json", import.meta.url), "utf8")) as
   { name: string; ua: string; bot: boolean; browser?: boolean }[];
 
 async function telemetry(page: Page) {
+  await mockConsent(page, { granted: true });
   await mockQuizApi(page);
   const calls: string[] = [];
   for (const name of ["site_visit_heartbeat", "site_record_page_view"]) {
@@ -50,11 +52,12 @@ test("WebDriver with an ordinary UA does not collect, including after reload", a
   expect(await page.evaluate(() => localStorage.getItem("hq_visitor_id"))).toBeNull();
 });
 
-test("owner cleanup still runs in an automated browser without collecting views", async ({ page }) => {
+test("owner exclusion persists without sending telemetry or cleanup requests", async ({ page }) => {
   const calls = await telemetry(page);
   await mockSignedIn(page, "112743d7-f683-4bbb-8117-068e89a00f22");
   await page.addInitScript(() => localStorage.setItem("hq_visitor_id", "77777777-7777-4777-8777-777777777777"));
   await page.goto("/");
-  await expect.poll(() => calls).toEqual(["site_visit_heartbeat"]);
+  await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
+  expect(calls).toEqual([]);
   expect(await page.evaluate(() => localStorage.getItem("hq_visitor_owner_browser"))).toBe("1");
 });

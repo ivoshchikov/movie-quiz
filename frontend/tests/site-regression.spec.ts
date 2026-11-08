@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { mockQuizApi, mockSignedIn } from './fixtures';
 import { dailyFixture } from './daily-fixtures';
+import { mockConsent } from './privacy-fixtures';
 
 test('analytics keeps Google Arguments commands and records quiz events once', async ({ page }) => {
+  await mockConsent(page, { granted: true });
   await mockQuizApi(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Play Movies' }).click();

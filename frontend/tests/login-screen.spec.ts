@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { mockQuizApi, mockSignedIn } from "./fixtures";
 import { dailyFixture } from "./daily-fixtures";
+import { mockConsent } from "./privacy-fixtures";
 
 const metadata = JSON.parse(readFileSync(path.resolve("src/loginMetadata.json"), "utf8")) as { title: string; description: string; url: string };
 const address = "film.fan@example.test";
@@ -258,6 +259,7 @@ test("a direct destination wins over another attempt's stored fallback", async (
 });
 
 test("return destinations keep filters and remove authentication parameters", async ({ page }) => {
+  await mockConsent(page, { granted: true });
   const destination = "/leaderboard?category=2&difficulty=3&provider_token=fixture-token&provider_refresh_token=fixture-refresh&access_token=fixture-access&refresh_token=fixture-refresh&code=fixture-code&error_description=fixture-error&redirect=%2Fdaily#details";
   await ready(page, `/login?redirect=${encodeURIComponent(destination)}`);
   await expect.poll(() => new URL(page.url()).searchParams.get("redirect")).toBe("/leaderboard?category=2&difficulty=3#details");
@@ -272,6 +274,7 @@ test("return destinations keep filters and remove authentication parameters", as
 });
 
 test("analytics excludes callback credentials and fragments from every pageview", async ({ page }) => {
+  await mockConsent(page, { granted: true });
   await mockQuizApi(page);
   await page.goto("/leaderboard?category=2&difficulty=3&code=fixture-code&provider_token=fixture-provider#access_token=fixture-access&refresh_token=fixture-refresh&error_description=fixture-private");
   await expect(page.getByRole("heading", { name: "Rankings", exact: true })).toBeVisible();

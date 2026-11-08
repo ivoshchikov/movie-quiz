@@ -8,7 +8,7 @@ import { pickFixture } from "./this-that-fixture";
 const slider = (p: Page) => p.getByRole("slider", { name: "Color theme" });
 const moving = (p: Page) => p.locator(".hq-winter-snow, .hq-winter-flight");
 async function preference(p: Page, theme = "christmas") {
-  await p.addInitScript(t => localStorage.setItem("hard-quiz-theme", t), theme);
+  await p.addInitScript(t => { if (window.top === window.self) localStorage.setItem("hard-quiz-theme", t); }, theme);
   await p.emulateMedia({ reducedMotion: "no-preference" });
 }
 async function prepare(p: Page) {
