@@ -97,13 +97,18 @@ Its documented syntax is prepared for the zone's Single Redirects phase
 | --- | --- |
 | Name | `Hard Quiz: canonical host and HTTPS` |
 | Match | Custom filter expression |
-| Filter | `(http.host eq "www.hard-quiz.com") or ((http.host eq "hard-quiz.com") and (http.request.scheme eq "http"))` |
+| Filter | `(http.host eq "www.hard-quiz.com") or ((http.host eq "hard-quiz.com") and (not ssl))` |
 | Action | Dynamic URL redirect |
 | Target expression | `concat("https://hard-quiz.com", http.request.uri.path)` |
 | Status | `308` |
 | Preserve query string | Enabled |
 | Order | Before conflicting broader host redirects; preserve unrelated rules |
 | Activation | At task 6, after account review, before the www proxy change |
+
+The HTTP condition uses `(not ssl)`. Cloudflare documents `ssl` as the Boolean
+field for an encrypted client connection. The dashboard rejected the previous
+`http.request.scheme` identifier; the corrected filter still requires the
+account-side validation below before activation.
 
 Task 6 extends the task-5 www draft to also cover HTTP apex in the same rule.
 It matches www on both protocols and apex only on HTTP, so the HTTPS apex target
@@ -232,3 +237,5 @@ Official sources checked 8 November 2026:
 - [Dynamic redirect retaining the URI path](https://developers.cloudflare.com/rules/url-forwarding/examples/perform-mobile-redirects/)
 - [DNS TTL and cache behavior](https://developers.cloudflare.com/dns/manage-dns-records/reference/ttl/)
 - [Cloudflare DNSSEC](https://developers.cloudflare.com/dns/dnssec/)
+
+- [Client encryption Boolean field (`ssl`)](https://developers.cloudflare.com/ruleset-engine/rules-language/fields/reference/ssl/)
