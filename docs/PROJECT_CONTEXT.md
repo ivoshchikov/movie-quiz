@@ -1,3 +1,26 @@
+## Cloudflare production diagnostics acceptance — 8 November 2026
+
+Task 7 is in progress. PR #75 was merged after all seven checks passed; a
+push-event Workers Build automatically published main revision
+`1d92566de8410e7926cb194dbcb7457473fe2c24`. The production manifest, homepage,
+article, sitemap and feed were read back from Cloudflare. No manual Deploy was
+needed. This validates the connected main publication path independently of
+source configuration alone.
+
+Production configuration now enables persisted invocation logs at full sampling
+and traces at 10%, with query strings redacted from request URLs. It keeps the
+Free plan, existing Worker bindings, routing, runtime compatibility, app source
+and all Supabase/authentication/analytics identities. Deployment and live-query
+evidence are recorded in the PR and roadmap; preparing configuration alone does
+not establish historical logs or a completed task 7.
+
+Backend read-only checks show continued receipt of first-party observations.
+The owner remains intentionally excluded. GSC Wizard GA4 reports are unavailable
+because that connector's trial/subscription ended; do not buy a plan or infer
+missing events from that refusal. A new owner login has not yet been verified
+since cutover. Keep the Vercel recovery deployment and do not activate ads until
+task 7's owner login, analytics and performance gates have been resolved.
+
 ## Cloudflare production domain cutover — 8 November 2026
 
 Roadmap task 6 is complete. The owner connected Cloudflare and authorized the

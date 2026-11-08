@@ -58,9 +58,10 @@ itself certify their future advertising compliance.
 
 ## One-time production Worker setup
 
-Use the owner's ordinary browser where Cloudflare login works. No usable
-assistant Cloudflare connector/credential is available in this session. Do not
-paste passwords or deployment tokens into chat.
+The owner connected the Cloudflare plugin and the production Worker is already
+configured. Use that connection for routine account checks and the automatic
+main build for releases. The original setup steps below are retained for
+recreation; no passwords or deployment tokens need to be pasted into chat.
 
 1. Wait for PR #73 to be merged and the verified revision to exist on `main`.
 2. Open **Workers & Pages → Create application → Connect GitHub**, reuse the
@@ -170,7 +171,7 @@ apex/www HTTP and HTTPS, encoded query retention, 404s, HSTS, public SEO, DNSSEC
 unchanged verification TXT, resource loading and production analytics settings.
 The owner checks a real production login after the switch; staging Google/email
 login has already been confirmed and needs no new proof for task 4. Track this
-as **task 6 in progress** until the real domain passes acceptance. Task 7 handles
+as **task 7 in progress** until the actual owner's production login passes. Task 7 handles
 the final production acceptance and removal of the old publication path.
 
 Official references checked 8 November 2026:
@@ -180,3 +181,35 @@ Official references checked 8 November 2026:
 - [Version URLs](https://developers.cloudflare.com/workers/versions-and-deployments/version-urls/)
 - [Workers Builds settings and injected source revision](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
 - [Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+
+## Task 7: production diagnostics
+
+`wrangler.production.json` enables persisted invocation logs at 100%, traces at
+10% and `redact_query_string`. Query parameters are removed before URL logging;
+no new logging of headers, credentials or application payloads is added. Static
+assets continue to bypass the user Worker except for the reviewed API/error
+routes. Build/deployment guards, production canonical and HSTS stay unchanged.
+
+After a successful main build, use the connected Cloudflare Observability API to
+discover dataset keys/service values, query a narrow post-deployment window and
+inspect request outcomes/errors. A normal read-only missing-page request can
+verify invocation visibility without creating a game, account or analytics
+observation. Empty historical results from the old disabled configuration do
+not establish that no errors occurred. Sampling, free limits and retention also
+limit later coverage; never report a guaranteed zero error rate from absent data.
+
+No paid service or export destination is configured. Workers Free currently
+includes 200,000 log events/day with three-day retention. Starting December 1,
+2026, the announced Free shared allowance is 0.5 GB/day with seven-day retention;
+ingestion stops at the daily cap, with no paid overage. Verify current terms
+before changing plan or observability volume.
+
+Sources checked 8 November 2026:
+- [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/)
+- [Workers traces](https://developers.cloudflare.com/workers/observability/traces/)
+- [Cloudflare Observability pricing](https://developers.cloudflare.com/observability/pricing/)
+
+PR #75's push-event build already verified publication of revision
+`1d92566de8410e7926cb194dbcb7457473fe2c24`. Record the diagnostics release and
+remaining task-7 gates separately in its PR/roadmap. Keep Vercel available until
+actual owner login, analytics delivery and performance acceptance are complete.

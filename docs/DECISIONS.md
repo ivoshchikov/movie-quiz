@@ -1,3 +1,25 @@
+## HOST-06 — Persist production diagnostics without query-string disclosure
+
+8 November 2026. Task 7 needs inspectable production failures; the previous
+configuration disabled persisted Worker diagnostics. Enable invocation logs
+with sampling 1 and traces with sampling 0.1 in the production config. Set
+`redact_query_string: true` so callback/test/query parameters are not persisted
+as request URLs. Keep static-asset routing and the existing runtime/bindings;
+do not introduce logging into game code or capture client credentials.
+
+Use the included Workers Free allowances and no external log destination or
+paid upgrade. The current Workers Logs allowance is 200,000 events/day with
+three-day retention. Cloudflare's announced December 1, 2026 model keeps a hard
+Free ingestion limit of 0.5 GB/day with seven-day retention and no paid overage.
+Exhaustion means missing telemetry, not a promise of complete event capture.
+
+Verify the source change with the existing production build, ten workerd groups
+and Wrangler dry-run. Deliver through PR/CI/main and confirm both the new public
+release and readable post-deployment logs. Keep task 7 open until actual owner
+sign-in, analytics delivery and performance are accepted; do not retire Vercel
+based only on the main-trigger build. Pricing and diagnostics setup:
+[CLOUDFLARE_PRODUCTION.md](CLOUDFLARE_PRODUCTION.md).
+
 ## HOST-05 — Execute the production domain cutover through connected Cloudflare
 
 8 November 2026. After the owner connected the plugin and explicitly authorized
