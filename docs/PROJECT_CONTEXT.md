@@ -1,3 +1,24 @@
+## Cloudflare publication verifier compatibility — 8 November 2026
+
+Task 7 found a post-build verification defect: the live Cloudflare manifest
+contains preparation metadata absent from the generic source build. The exact
+JSON comparison rejected the correct `1b17bb9` release before checking any page
+(run 42484771017), despite the independent 29 HTTP checks passing.
+
+The verifier now compares source identity/catalog exactly and separately checks
+the Cloudflare extension: production profile, no fixture data and a valid
+header fingerprint. A prepared expected build also requires the same fingerprint.
+It continues to reject stale revisions, altered catalogs, staging and fixture
+releases, and only records publication after the complete HTML/XML/image checks.
+Deployment artifact guards remain unchanged. Regression coverage uses the real
+HTTP verifier against isolated fixtures, including preservation of prior evidence
+on failures. Live post-merge results are recorded in PR #77 and the roadmap.
+
+Vercel and Cloudflare post-build events previously shared one cancelling
+concurrency group: Vercel's later event cancelled the Cloudflare verification.
+Group by event type so both can finish independently during the transition.
+Keep the recovery deployment and genuine owner-login gate described below.
+
 ## Cloudflare production acceptance evidence — 8 November 2026
 
 Task 7 remains open only for a genuine owner sign-in and subsequent retirement

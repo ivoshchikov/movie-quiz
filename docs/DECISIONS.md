@@ -1,3 +1,21 @@
+## HOST-07 — Verify source identity separately from Cloudflare preparation metadata
+
+8 November 2026. Production acceptance exposed a correct Cloudflare source SHA
+being rejected by the publication checker: its manifest includes the provider's
+preparation extension, while the CI expected build is generic. Compare source
+identity/catalog exactly and validate the optional Cloudflare extension rather
+than dropping release identity or copying live metadata into the expected build.
+Require production, no deployed fixtures and a valid header fingerprint; compare
+that fingerprint as well when the expected artifact was prepared for Cloudflare.
+Keep deploy guards, content/metadata/XML/image checks and evidence-write gating.
+
+Separate the temporary Vercel deployment_status and Cloudflare check_run
+concurrency groups. A later Vercel event must not cancel the Cloudflare verifier.
+Validate isolated positive/negative HTTP fixtures and then the real automatic
+post-merge workflow. An independent manual HTTP pass or unit tests alone do not
+establish that the automated publication gate passed. Keep task 7 open for the
+real owner sign-in and subsequent Vercel retirement.
+
 ## HOST-06 — Persist production diagnostics without query-string disclosure
 
 8 November 2026. Task 7 needs inspectable production failures; the previous

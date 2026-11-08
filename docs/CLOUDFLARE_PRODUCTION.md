@@ -184,6 +184,15 @@ Official references checked 8 November 2026:
 
 ## Task 7: production diagnostics
 
+The post-build publication verifier accepts the reviewed production Cloudflare
+manifest extension independently of the exact source/catalog comparison. It
+rejects staging or fixture releases and compares the header fingerprint when
+the expected build has one. The deployment artifact guard remains unchanged.
+Vercel and Cloudflare event types use separate concurrency groups during the
+transition so a Vercel completion cannot cancel the Cloudflare verification.
+Check the actual successful `Verify published SEO` run after merge as well as
+the Workers Build: a correct public SHA alone does not establish workflow success.
+
 `wrangler.production.json` enables persisted invocation logs at 100%, traces at
 10% and `redact_query_string`. Query parameters are removed before URL logging.
 Managed invocation records still include request metadata; this setting does

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-08T13:31:00Z",
+  "checkedAt": "2026-11-08T13:43:21.728Z",
   "status": "in_progress_owner_sign_in_required",
   "repository": "ivoshchikov/movie-quiz",
   "verifiedSourceRevision": "1b17bb98f92ca676afdbc7b65da18e7de01e0180",
@@ -51,7 +51,14 @@
     },
     "customDomainEnabled": true,
     "workersDevEnabled": false,
-    "manualDeploy": false
+    "manualDeploy": false,
+    "automatedSeoVerification": {
+      "observedFailureRun": 42484771017,
+      "observedSourceRevision": "1b17bb98f92ca676afdbc7b65da18e7de01e0180",
+      "issue": "Generic and Cloudflare-prepared manifests differed only in provider preparation metadata; source SHA matched.",
+      "fix": "Keep exact source/catalog comparison and separately validate production/no-fixtures/header-fingerprint metadata. Separate Cloudflare and Vercel event concurrency groups.",
+      "status": "Prepared in PR 77; live post-merge result belongs in PR and roadmap."
+    }
   },
   "http": {
     "checks": 29,

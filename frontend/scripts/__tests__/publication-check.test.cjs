@@ -46,6 +46,7 @@ const manifest = { schemaVersion: 1, revision, canonicalOrigin, pages: [
   { path: "/blog", file: "blog.html", kind: "collection" },
   { path: "/blog/test-film", file: "blog/test-film.html", kind: "article", slug: "test-film", publishedOn: "2026-10-22", modifiedOn: null },
 ] };
+const productionMetadata = { profile: "production", usesFixtureData: false, headersSha256: "a".repeat(64) };
 function document(route, kind) {
   const url = canonicalOrigin + route, title = route === "/" ? "Movie Quiz" : kind === "article" ? "A film guide" : "Blog";
   const article = { "@context": "https://schema.org", "@type": "BlogPosting", url, datePublished: "2026-10-22", mainEntityOfPage: { "@id": url } };
@@ -112,6 +113,29 @@ test("valid live release verifies publication and records it without inferring G
     assert.deepEqual(JSON.parse(fs.readFileSync(options.registryPath)), report.registry);
   });
 });
+for (const prepared of [false, true]) test(`Cloudflare production metadata verifies against the ${prepared ? "prepared fixture" : "generic source"} build`, async () => {
+  await fixture((route, result) => route === "/seo-release.json"
+    ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: productionMetadata }) } : result, async options => {
+    if (prepared) fs.writeFileSync(path.join(options.directory, "seo-release.json"), JSON.stringify({ ...manifest,
+      cloudflare: { ...productionMetadata, usesFixtureData: true } }));
+    const report = await runChecks({ ...options, recordRegistry: true });
+    assert.equal(report.status, "passed", JSON.stringify(report.errors));
+    assert.equal(report.pages.length, 3);
+    assert.equal(report.registry.pages[2].publication.status, "verified");
+    assert.equal(report.registry.pages[2].google.status, "not_indexed");
+  });
+});
+test("a prepared production build still requires the same published header fingerprint", async () => {
+  await fixture((route, result) => route === "/seo-release.json"
+    ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: { ...productionMetadata, headersSha256: "b".repeat(64) } }) } : result, async options => {
+    fs.writeFileSync(path.join(options.directory, "seo-release.json"), JSON.stringify({ ...manifest, cloudflare: { ...productionMetadata, usesFixtureData: true } }));
+    const before = fs.readFileSync(options.registryPath, "utf8");
+    const report = await runChecks({ ...options, recordRegistry: true });
+    assert.equal(report.status, "failed");
+    assert.equal(report.pages.length, 0);
+    assert.equal(fs.readFileSync(options.registryPath, "utf8"), before);
+  });
+});
 test("local build check does not claim a verified production publication", async () => {
   await fixture(null, async options => {
     const report = await runChecks({ directory: options.directory, registryPath: options.registryPath });
@@ -143,6 +167,10 @@ test("an excessive image catalog stops before image reads and preserves previous
 });
 const failures = [
   ["stale deployment manifest", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, revision: "2".repeat(40) }) } : result, "configuration_or_release"],
+  ["Cloudflare staging release", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: { ...productionMetadata, profile: "staging" } }) } : result, "configuration_or_release"],
+  ["Cloudflare fixture release", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: { ...productionMetadata, usesFixtureData: true } }) } : result, "configuration_or_release"],
+  ["malformed Cloudflare metadata", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: { profile: "production", usesFixtureData: false } }) } : result, "configuration_or_release"],
+  ["altered release catalog at the same revision", (route, result) => route === "/seo-release.json" ? { ...result, body: JSON.stringify({ ...manifest, cloudflare: productionMetadata, pages: manifest.pages.slice(0, 2) }) } : result, "configuration_or_release"],
   ["truncated article and X-Robots-Tag noindex", (route, result) => route === "/blog/test-film" ? { ...result, body: result.body.replace("A complete researched article.", "Truncated."), headers: { "X-Robots-Tag": "googlebot: noindex" } } : result, "indexability"],
   ["duplicate canonical", (route, result) => route === "/blog/test-film" ? { ...result, body: result.body.replace("</head>", '<link rel="canonical" href="https://hard-quiz.com/blog/test-film"></head>') } : result, "metadata"],
   ["missing RSS item", (route, result) => route === "/feed.xml" ? { ...result, body: '<rss version="2.0"><channel></channel></rss>' } : result, "rss"],
