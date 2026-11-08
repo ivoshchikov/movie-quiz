@@ -197,6 +197,17 @@
       "dest": "/login.html"
     },
     {
+      "src": "^/(about|privacy|contact)\\.html$",
+      "status": 301,
+      "headers": {
+        "Location": "/$1"
+      }
+    },
+    {
+      "src": "^/(about|privacy|contact)/?$",
+      "dest": "/$1.html"
+    },
+    {
       "src": "^/how-to-play\\.html$",
       "status": 301,
       "headers": {

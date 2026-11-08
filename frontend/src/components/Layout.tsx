@@ -11,6 +11,7 @@ import SiteIcon from "./SiteIcon";
 import ThemeSlider from "./ThemeSlider";
 import ChristmasDecorations from "./ChristmasDecorations";
 import SiteNavigation from "./SiteNavigation";
+import SiteFooter from "./SiteFooter";
 import PageErrorBoundary from "./PageErrorBoundary";
 import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga";
 import { useSiteVisits } from "../analytics/useSiteVisits";
@@ -175,7 +176,7 @@ export default function Layout() {
         profileReady, hasNickname: !!nickname, nickname, profileError: account.error, retryProfile: account.retry, confirmNickname } satisfies SiteOutletContext} />
       </PageErrorBoundary>
     </main>
-    {!isGameView && <footer className="hq-footer"><div className="hq-shell hq-footer-inner"><span>© {new Date().getFullYear()} Hard Quiz</span><Link to="/how-to-play" className="hq-text-action">How to play <SiteIcon name="arrow" /></Link></div></footer>}
+    {!isGameView && <SiteFooter />}
     <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
     <NicknameModal key={owner} open={showNickname && !!user && !authLoading && profileReady && !nickname && !isProfileSetup && !isGameView} onClose={() => setShowNickname(false)} destination={safeReturnPath(loc.pathname + loc.search + loc.hash)} onSaved={confirmNickname} />
   </div>;

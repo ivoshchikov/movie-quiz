@@ -1,0 +1,26 @@
+{
+  "about": {
+    "title": "About Hard Quiz — Movie Games & Guides",
+    "description": "Discover Hard Quiz, an independent site for movie and actor quizzes, Daily Challenge, Time Attack, This or That and researched movie guides.",
+    "heading": "About Hard Quiz",
+    "intro": "Movie knowledge, familiar faces and a reason to play one more round.",
+    "url": "https://hard-quiz.com/about",
+    "jsonLd": { "@context": "https://schema.org", "@type": "AboutPage", "name": "About Hard Quiz", "url": "https://hard-quiz.com/about", "isPartOf": { "@type": "WebSite", "name": "Hard Quiz", "url": "https://hard-quiz.com/" } }
+  },
+  "privacy": {
+    "title": "Privacy Policy | Hard Quiz",
+    "description": "How Hard Quiz uses account, game and analytics data, browser storage and service providers, with analytics choices and information about your privacy rights.",
+    "heading": "Privacy Policy",
+    "intro": "How data is used to run the games, save results and understand visits — and the choices you have.",
+    "url": "https://hard-quiz.com/privacy",
+    "jsonLd": { "@context": "https://schema.org", "@type": "WebPage", "name": "Hard Quiz Privacy Policy", "url": "https://hard-quiz.com/privacy", "isPartOf": { "@type": "WebSite", "name": "Hard Quiz", "url": "https://hard-quiz.com/" } }
+  },
+  "contact": {
+    "title": "Contact Hard Quiz",
+    "description": "Contact Hard Quiz about game or account help, privacy requests, editorial corrections and image or rights enquiries.",
+    "heading": "Contact Hard Quiz",
+    "intro": "Get in touch about the games, your account, a correction or a privacy or image-rights question.",
+    "url": "https://hard-quiz.com/contact",
+    "jsonLd": { "@context": "https://schema.org", "@type": "ContactPage", "name": "Contact Hard Quiz", "url": "https://hard-quiz.com/contact", "isPartOf": { "@type": "WebSite", "name": "Hard Quiz", "url": "https://hard-quiz.com/" } }
+  }
+}

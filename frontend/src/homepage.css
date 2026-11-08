@@ -92,7 +92,10 @@
 .hq-text-action:hover { color: var(--hq-purple); }
 .hq-text-action .hq-icon { width: 16px; height: 16px; }
 .hq-footer { border-top: 1px solid var(--hq-border); }
-.hq-footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; color: var(--hq-muted); font-size: 11px; }
+.hq-footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 12px; color: var(--hq-muted); font-size: 12px; }
+.hq-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
+.hq-footer-links a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 4px; }
+.hq-footer-links a:hover, .hq-footer-links a[aria-current="page"] { color: var(--hq-text); text-decoration: underline; }
 .hq-status { color: var(--hq-muted); font-size: 14px; margin-bottom: 20px; }
 .hq-status-error { color: var(--hq-error); border-left: 2px solid var(--hq-error); padding-left: 12px; }
 .hq-status-success { color: var(--hq-success); }
