@@ -109,6 +109,20 @@ Later pushes to the connected `main` branch automatically build and publish the
 production Worker. The owner does not need to press Deploy for each release.
 Keep the existing GitHub checks as the release gate before merging to main.
 
+## Manual build revision failure
+
+The owner's first production setup reached postbuild, then stopped with
+`SEO build revision must be a full Git SHA`. That log does not disclose the
+invalid metadata value. Source identity is now resolved from the actual checked-out
+Git commit before automatic provider hints. Explicit `SEO_BUILD_REVISION` must
+still be a full SHA; archive builds may use a complete provider SHA. Do not set
+a permanent hard-coded commit ID in dashboard variables, pad a shortened hash or
+disable the production guard. A normal source publication supplies the fix to
+the connected main branch. Verify the new build, then continue account preflight;
+retrying an old build can still use its old source revision.
+The Git read trusts only the detected checkout path for that command, so shared
+container ownership does not require a global Git configuration change.
+
 ## Before attaching the domain
 
 Follow [the DNS cutover runbook](CLOUDFLARE_DNS_CUTOVER.md) in order. Retain a

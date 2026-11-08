@@ -7,6 +7,38 @@ const http = require("node:http");
 const { execFileSync } = require("node:child_process");
 const { createHash } = require("node:crypto");
 const { runChecks, synchronizeRegistry } = require("../verify-publication.cjs");
+const { resolveBuildRevision } = require("../build-revision.cjs");
+
+test("checkout identity survives abbreviated, missing, placeholder and stale provider metadata", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "hardquiz-revision-"));
+  try {
+    execFileSync("git", ["init", "-q", "-b", "main", directory]);
+    const git = args => execFileSync("git", ["-C", directory, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    git(["-c", "user.name=Hard Quiz test", "-c", "user.email=fixture@example.test", "-c", "commit.gpgsign=false", "commit", "--allow-empty", "-qm", "Revision fixture"]);
+    const head = git(["rev-parse", "HEAD"]);
+    for (const value of [head.slice(0, 7), "HEAD", "manual-build", "", "a".repeat(40)]) {
+      assert.equal(resolveBuildRevision({ env: { WORKERS_CI_COMMIT_SHA: value }, cwd: directory }), head);
+    }
+    assert.equal(resolveBuildRevision({ env: {}, cwd: directory }), head);
+    const frontend = path.join(directory, "frontend");
+    fs.mkdirSync(frontend);
+    assert.equal(resolveBuildRevision({ env: { WORKERS_CI_COMMIT_SHA: "manual-build" }, cwd: frontend }), head);
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); }
+});
+
+test("explicit release overrides stay strict and full provider hashes support source archives", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "hardquiz-source-archive-"));
+  try {
+    const complete = "b".repeat(40);
+    assert.equal(resolveBuildRevision({ env: { SEO_BUILD_REVISION: complete, WORKERS_CI_COMMIT_SHA: "manual-build" }, cwd: directory }), complete);
+    assert.throws(() => resolveBuildRevision({ env: { SEO_BUILD_REVISION: "main" }, cwd: directory }), /SEO_BUILD_REVISION must be a full Git SHA/);
+    for (const key of ["WORKERS_CI_COMMIT_SHA", "VERCEL_GIT_COMMIT_SHA", "VITE_VERCEL_GIT_COMMIT_SHA", "GITHUB_SHA"]) {
+      assert.equal(resolveBuildRevision({ env: { [key]: complete }, cwd: directory }), complete);
+    }
+    assert.equal(resolveBuildRevision({ env: {}, cwd: directory }), null);
+    assert.throws(() => resolveBuildRevision({ env: { WORKERS_CI_COMMIT_SHA: "manual-build" }, cwd: directory }), /No full Git SHA/);
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); }
+});
 
 const revision = "1".repeat(40), canonicalOrigin = "https://hard-quiz.com";
 const manifest = { schemaVersion: 1, revision, canonicalOrigin, pages: [
@@ -142,6 +174,22 @@ test("repeating the real SEO generator preserves HTML and a single release marke
   for (const row of release.pages) {
     const html = fs.readFileSync(path.join("dist", row.file), "utf8");
     assert.equal((html.match(/name="hardquiz:revision"/g) || []).length, release.revision ? 1 : 0);
+  }
+});
+
+test("the real SEO generator records the checkout for a manual build with incomplete metadata", { skip: !fs.existsSync("dist/seo-release.json") }, () => {
+  const checkout = path.resolve(__dirname, "../../..");
+  const head = execFileSync("git", ["-c", `safe.directory=${checkout}`, "rev-parse", "--verify", "HEAD^{commit}"], { encoding: "utf8" }).trim();
+  execFileSync(process.execPath, ["scripts/generate-seo.cjs", "dist"], { stdio: "pipe", env: {
+    ...process.env, SEO_BUILD_REVISION: "", WORKERS_CI_COMMIT_SHA: "manual-build",
+    VERCEL_GIT_COMMIT_SHA: "", VITE_VERCEL_GIT_COMMIT_SHA: "", GITHUB_SHA: "",
+  } });
+  const release = JSON.parse(fs.readFileSync("dist/seo-release.json", "utf8"));
+  assert.equal(release.revision, head);
+  for (const row of release.pages) {
+    const html = fs.readFileSync(path.join("dist", row.file), "utf8");
+    assert.equal((html.match(/name="hardquiz:revision"/g) || []).length, 1);
+    assert.ok(html.includes(`name="hardquiz:revision" content="${head}"`), row.path);
   }
 });
 

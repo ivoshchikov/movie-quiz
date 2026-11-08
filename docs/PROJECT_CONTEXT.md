@@ -1,3 +1,21 @@
+## Cloudflare manual production build recovery — 8 November 2026
+
+The owner created production Worker `hard-quiz`, selected main, root `/frontend`
+and the intended production commands/variables. Its first manual build stopped
+at `SEO build revision must be a full Git SHA` before deployment. The supplied
+log establishes invalid revision metadata, not its exact value. The public
+site still serves the verified Vercel release; the domain has not switched.
+
+A focused follow-up resolves the full source revision from the checked-out Git
+commit before automatic provider metadata. Explicit `SEO_BUILD_REVISION` stays
+strict; source archives can use a complete provider SHA. No remote branch lookup,
+short-hash padding or weakened deployment guard is introduced. Git reads trust
+only the detected checkout path for that command, preserving shared-container
+compatibility without global Git configuration changes. Regression tests
+exercise real temporary repositories, archive behavior and the actual SEO
+prerenderer. Publication/remote-build evidence is recorded in the fix PR and the
+roadmap; preparation alone does not establish a successful Cloudflare deploy.
+
 ## Cloudflare production preparation — 8 November 2026
 
 Roadmap task 6 is in progress. A separate `hard-quiz` production Worker config
