@@ -15,7 +15,7 @@ export function useSiteVisits(blocked: boolean, owner: string) {
       return () => controller.abort();
     }
     if (blocked || isOwnerBrowser() || !canMeasureVisits()) return;
-    const unsubscribe = onConsentRevoked(() => { lastSent = 0; controller.abort(); });
+    const unsubscribe = onConsentRevoked(permission => { if (!permission.measurement) { lastSent = 0; controller.abort(); } });
     let busy = false;
     const heartbeat = async () => {
       if (busy || controller.signal.aborted || isOwnerBrowser() || !canMeasureVisits() ||

@@ -1,4 +1,5 @@
 /** Fail-closed bridge to Google Privacy & messaging. No consent is inferred from geography. */
+import { clearDeniedStorage } from "./optionalStorage";
 type TcfData = {
   cmpId?: number; cmpStatus?: string; gdprApplies?: boolean; eventStatus?: string;
   publisher?: { consents?: Record<string, boolean> }; tcString?: string;
@@ -26,7 +27,8 @@ export type ConsentState = {
 const initial: ConsentState = { status: "loading", region: "unknown", measurement: false, analytics: false, epoch: 0, settings: false, deferred: false };
 let state = initial;
 const listeners = new Set<() => void>();
-const revokers = new Set<() => void>();
+type Permission = Pick<ConsentState, "measurement" | "analytics">;
+const revokers = new Set<(permission: Permission) => void>();
 const preferenceKey = "hq_privacy_v1";
 const optOutKey = "hq_analytics_opt_out";
 const broadcastKey = "hq_privacy_reset";
@@ -41,7 +43,7 @@ let documentChoice: { measurement: boolean; analytics: boolean } | null = null;
 export const getConsent = () => state;
 export const getServerConsent = () => initial;
 export function subscribeConsent(callback: () => void) { listeners.add(callback); return () => { listeners.delete(callback); }; }
-export function onConsentRevoked(callback: () => void) { revokers.add(callback); return () => { revokers.delete(callback); }; }
+export function onConsentRevoked(callback: (permission: Permission) => void) { revokers.add(callback); return () => { revokers.delete(callback); }; }
 export function isPrivacyDocument(path = typeof location === "undefined" ? "" : location.pathname) { return /^\/privacy(?:\/|$|\.html$)/.test(path); }
 export function consentHostAllowed() {
   if (typeof location === "undefined") return false;
@@ -60,7 +62,10 @@ function publish(patch: Partial<ConsentState>) {
   const changed = state.measurement !== next.measurement || state.analytics !== next.analytics;
   if (changed) next.epoch++;
   // Synchronous: stop active transports before React effects or CMP updates run.
-  if (state.measurement && !next.measurement || state.analytics && !next.analytics) for (const callback of revokers) callback();
+  if (state.measurement && !next.measurement || state.analytics && !next.analytics) for (const callback of revokers) callback(next);
+  // Reconcile identifiers from older clients even if this document never granted
+  // permission. A partial denial must preserve storage for the permitted purpose.
+  if (next.status !== "loading" || memoryOptOut) clearDeniedStorage(next);
   if (Object.keys(next).every(key => next[key as keyof ConsentState] === state[key as keyof ConsentState])) return;
   state = next;
   for (const callback of listeners) callback();
@@ -88,7 +93,9 @@ function evaluateChoice() {
     const measurement = purposes?.[1] === true && purposes?.[8] === true;
     // 0=unknown, 2=denied, 3=not applicable and 4=not configured NEVER grant analytics.
     const analytics = measurement && purposes?.[9] === true && google?.analyticsStoragePurposeConsentStatus === 1;
-    publish({ status: "ready", region: "europe", measurement, analytics });
+    const awaitingMode = measurement && purposes?.[9] === true && !modeReady;
+    publish({ status: awaitingMode ? "loading" : "ready", region: "europe", measurement, analytics });
+    if (awaitingMode) return;
   } else {
     // Google has confirmed the regional decision. Outside Europe, request our own
     // separate opt-in for measurement; an inapplicable TCF/Consent Mode is not an opt-in.
@@ -170,7 +177,7 @@ export function withdrawAnalytics() {
   } catch { /* Denial still applies in this document. */ }
   publish({ measurement: false, analytics: false });
   // Also clear optional identifiers left by an older client that had no consent bridge.
-  for (const callback of revokers) callback();
+  for (const callback of revokers) callback({ measurement: false, analytics: false });
 }
 export function openPrivacySettings() {
   withdrawAnalytics();

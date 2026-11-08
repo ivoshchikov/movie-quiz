@@ -1,6 +1,5 @@
 import { isAutomatedTraffic } from "./trafficBotFilter";
 import { getConsent, isPrivacyDocument, onConsentRevoked } from "../privacy/consent";
-import { clearVisitorIdentity } from "./visitorIdentity";
 
 export type AnalyticsParameters = Record<string, unknown>;
 type GtagArguments =
@@ -83,7 +82,8 @@ export function initializeConsentMode() {
   if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: true });
   window.gtag("consent", "default", deniedConsent);
 }
-function stopAnalytics() {
+function stopAnalytics(permission: { analytics: boolean }) {
+  if (permission.analytics) return;
   // ga-disable suppresses an already loaded Google tag, including automatic events.
   if (GA_ID) Object.assign(window, { [`ga-disable-${GA_ID}`]: true });
   window.gtag?.("consent", "update", deniedConsent);
@@ -93,15 +93,6 @@ function stopAnalytics() {
   if (!window.__gaLoaded && window.dataLayer) window.dataLayer.splice(0, window.dataLayer.length,
     ...window.dataLayer.filter(entry => Array.from(entry as IArguments)[0] === "consent"));
   lastPage = null; virtualReferrer = referral.page_referrer;
-  clearVisitorIdentity();
-  try { for (const key of Object.keys(sessionStorage)) if (key.startsWith("hq:analytics:v2:")) sessionStorage.removeItem(key); } catch { /* Analytics storage only. */ }
-  for (const cookie of document.cookie.split(";")) {
-    const name = cookie.split("=")[0].trim();
-    if (!/^_ga(?:_|$)|^_gid$|^_gat(?:_|$)/.test(name)) continue;
-    for (const domain of ["", location.hostname, "." + location.hostname, ".hard-quiz.com"]) {
-      document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax${domain ? `; domain=${domain}` : ""}`;
-    }
-  }
 }
 onConsentRevoked(stopAnalytics);
 

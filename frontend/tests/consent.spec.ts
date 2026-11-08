@@ -68,6 +68,28 @@ test("partial purposes allow content counters while Google Analytics and ads sta
   expect(await page.locator('script[src*="adsbygoogle"], ins.adsbygoogle').count()).toBe(0);
 });
 
+test("a partial refusal clears legacy GA storage and preserves the permitted counter identity", async ({ page }) => {
+  await fixture(page);
+  const id="88888888-8888-4888-8888-888888888888";
+  await page.addInitScript(id => { localStorage.setItem("hq_visitor_id",id); sessionStorage.setItem("hq:analytics:v2:legacy", "old"); document.cookie="_ga=legacy; path=/"; },id);
+  await page.goto("/"); await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
+  await emit(page,{1:true,8:true,9:false},2);
+  expect(await page.evaluate(()=>localStorage.getItem("hq_visitor_id"))).toBe(id);
+  expect(await page.evaluate(()=>sessionStorage.getItem("hq:analytics:v2:legacy"))).toBeNull();
+  expect(await page.evaluate(()=>document.cookie)).not.toContain("_ga=");
+  await emit(page,{},2);
+  expect(await optionalKeys(page)).toEqual([]);
+});
+
+test("a first explicit refusal clears identifiers left by the pre-consent client", async ({ page }) => {
+  await fixture(page);
+  await page.addInitScript(() => { localStorage.setItem("hq_visitor_id","88888888-8888-4888-8888-888888888888"); sessionStorage.setItem("hq:analytics:v2:legacy","old"); document.cookie="_ga=legacy; path=/"; });
+  await page.goto("/"); await expect(page.getByRole("button", { name: "Play Movies" })).toBeEnabled();
+  await emit(page,{},2);
+  expect(await optionalKeys(page)).toEqual([]);
+  expect(await page.evaluate(()=>document.cookie)).not.toContain("_ga=");
+});
+
 test("withdrawal synchronously stops in-flight counters, deletes only optional storage, and does not replay old views", async ({ page }) => {
   const sent = await fixture(page, { granted: true });
   let release = () => {}; const held = new Promise<void>(resolve => { release = resolve; });

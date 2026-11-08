@@ -38,7 +38,8 @@ export function useSitePageViews(blocked: boolean, owner: string, pathname: stri
   useEffect(() => {
     if (blocked || owner === SITE_OWNER || isOwnerBrowser()) return;
     const lifecycle = new AbortController();
-    const unsubscribe = onConsentRevoked(() => {
+    const unsubscribe = onConsentRevoked(permission => {
+      if (permission.measurement) return;
       lifecycle.abort(); pending.current.clear(); activation.current = { path: activation.current.path };
     });
     let busy = false;

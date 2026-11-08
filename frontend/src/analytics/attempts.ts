@@ -12,7 +12,7 @@ const prefix = "hq:analytics:v2:";
 const originKey = `${prefix}article`;
 const ttl = 24 * 60 * 60 * 1000;
 const attempts = new Map<string, Attempt>();
-onConsentRevoked(() => attempts.clear());
+onConsentRevoked(permission => { if (!permission.analytics) attempts.clear(); });
 
 export function articleToQuiz(slug: string, mode: Mode | "games") {
   if (!canTrack()) return;
