@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
-const { contactDetailsApproved, requireApprovedContact } = require('./public-contact.cjs');
+const { requireApprovedContact } = require('./public-contact.cjs');
 
 async function prepare() {
   const profile = process.argv[2] || 'staging';
@@ -75,8 +75,6 @@ async function prepare() {
   const headers = headerLines.join('\n') + '\n';
   fs.writeFileSync(path.join(dist, '_headers'), headers);
   fs.writeFileSync(path.join(dist, '.assetsignore'), '**/*.map\n');
-  release.publicDocuments = { contactDetailsApproved: contactDetailsApproved(contactDetails),
-    controllerIdentityDisclosed: contactDetails.controllerIdentityDisclosed === true };
   release.cloudflare = { profile, usesFixtureData: fixture || publicEnv.VITE_ANALYTICS_TEST_MODE === 'true',
     headersSha256: createHash('sha256').update(headers).digest('hex') };
   fs.writeFileSync(releasePath, JSON.stringify(release, null, 2) + '\n');
