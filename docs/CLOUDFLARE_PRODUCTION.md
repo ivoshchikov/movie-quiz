@@ -120,6 +120,8 @@ a permanent hard-coded commit ID in dashboard variables, pad a shortened hash or
 disable the production guard. A normal source publication supplies the fix to
 the connected main branch. Verify the new build, then continue account preflight;
 retrying an old build can still use its old source revision.
+The Git read trusts only the detected checkout path for that command, so shared
+container ownership does not require a global Git configuration change.
 
 ## Before attaching the domain
 

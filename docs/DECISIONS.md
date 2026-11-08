@@ -6,7 +6,9 @@ inside the SEO generator because automatic revision metadata was not a full
 Use `git rev-parse --verify HEAD^{commit}` as the normal source of build identity;
 retain strict explicit overrides and full provider-metadata fallback for source
 archives. Fail rather than invent an identity when incomplete metadata has no
-resolvable checkout. Keep the production deployment guard and all indexing,
+resolvable checkout. Trust only the detected checkout path for each Git read to
+support shared CI containers without changing global Git config. Keep the
+production deployment guard and all indexing,
 hosting, Supabase and game contracts. Deliver the focused fix through PR/CI and
 verify the connected Cloudflare build before moving to domain attachment.
 

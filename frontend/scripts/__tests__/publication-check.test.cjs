@@ -20,6 +20,9 @@ test("checkout identity survives abbreviated, missing, placeholder and stale pro
       assert.equal(resolveBuildRevision({ env: { WORKERS_CI_COMMIT_SHA: value }, cwd: directory }), head);
     }
     assert.equal(resolveBuildRevision({ env: {}, cwd: directory }), head);
+    const frontend = path.join(directory, "frontend");
+    fs.mkdirSync(frontend);
+    assert.equal(resolveBuildRevision({ env: { WORKERS_CI_COMMIT_SHA: "manual-build" }, cwd: frontend }), head);
   } finally { fs.rmSync(directory, { recursive: true, force: true }); }
 });
 
@@ -175,7 +178,8 @@ test("repeating the real SEO generator preserves HTML and a single release marke
 });
 
 test("the real SEO generator records the checkout for a manual build with incomplete metadata", { skip: !fs.existsSync("dist/seo-release.json") }, () => {
-  const head = execFileSync("git", ["rev-parse", "--verify", "HEAD^{commit}"], { encoding: "utf8" }).trim();
+  const checkout = path.resolve(__dirname, "../../..");
+  const head = execFileSync("git", ["-c", `safe.directory=${checkout}`, "rev-parse", "--verify", "HEAD^{commit}"], { encoding: "utf8" }).trim();
   execFileSync(process.execPath, ["scripts/generate-seo.cjs", "dist"], { stdio: "pipe", env: {
     ...process.env, SEO_BUILD_REVISION: "", WORKERS_CI_COMMIT_SHA: "manual-build",
     VERCEL_GIT_COMMIT_SHA: "", VITE_VERCEL_GIT_COMMIT_SHA: "", GITHUB_SHA: "",

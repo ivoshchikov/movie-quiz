@@ -1,7 +1,19 @@
 const { execFileSync } = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const fullSha = /^[a-f0-9]{40}$/;
 const metadataNames = ['WORKERS_CI_COMMIT_SHA', 'VERCEL_GIT_COMMIT_SHA', 'VITE_VERCEL_GIT_COMMIT_SHA', 'GITHUB_SHA'];
+
+function checkoutRoot(cwd) {
+  let directory = fs.realpathSync(cwd);
+  while (!fs.existsSync(path.join(directory, '.git'))) {
+    const parent = path.dirname(directory);
+    if (parent === directory) return null;
+    directory = parent;
+  }
+  return directory;
+}
 
 function resolveBuildRevision({ env = process.env, cwd = process.cwd() } = {}) {
   const explicit = env.SEO_BUILD_REVISION?.trim();
@@ -14,10 +26,13 @@ function resolveBuildRevision({ env = process.env, cwd = process.cwd() } = {}) {
   // checked-out commit itself; never resolve a moving remote branch or invent
   // an identity by padding a shortened hash.
   try {
-    const revision = execFileSync('git', ['rev-parse', '--verify', 'HEAD^{commit}'], {
+    const root = checkoutRoot(cwd);
+    // CI containers can run as a different UID from checkout. Trust only this
+    // detected checkout for this read; do not edit global config or use '*'.
+    const revision = root && execFileSync('git', ['-c', `safe.directory=${root}`, 'rev-parse', '--verify', 'HEAD^{commit}'], {
       cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 3000,
     }).trim();
-    if (fullSha.test(revision)) return revision;
+    if (revision && fullSha.test(revision)) return revision;
   } catch { /* Source archives may legitimately omit Git metadata. */ }
 
   const metadata = metadataNames.map(name => env[name]?.trim()).filter(Boolean);
