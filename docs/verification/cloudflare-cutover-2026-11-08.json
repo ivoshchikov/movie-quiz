@@ -1,0 +1,611 @@
+{
+  "schemaVersion": 1,
+  "completedAt": "2026-11-08T12:26:36.153345+00:00",
+  "status": "passed",
+  "sourceRevision": "ecd124edabfb955bae4922932a2d51ac54a92fd4",
+  "worker": {
+    "name": "hard-quiz",
+    "deploymentId": "91c6e42e-3485-4303-98f5-c7c12b4dd6d3",
+    "versionId": "a4cacd63-b07c-4935-8c62-ffe2ad7a98b3",
+    "percentage": 100,
+    "profile": "production",
+    "workersDevEnabled": false,
+    "previewsEnabled": false
+  },
+  "domain": {
+    "id": "445bed337745a1df046c828bf6feb3114dbbeca6",
+    "zone_id": "b78f9f6672da3d4a2d101acee582ea4a",
+    "zone_name": "hard-quiz.com",
+    "hostname": "hard-quiz.com",
+    "service": "hard-quiz",
+    "environment": "production",
+    "cert_id": "8e329e98-40bf-4df3-a244-654c2ef640e9",
+    "previews_enabled": false,
+    "enabled": true
+  },
+  "dns": [
+    {
+      "id": "cab73eceb320badb49673e87f9b817b1",
+      "name": "www.hard-quiz.com",
+      "type": "A",
+      "content": "192.0.2.1",
+      "proxied": true,
+      "ttl": 1,
+      "meta": {}
+    },
+    {
+      "id": "a655a707b665a99fe2f3bed77ac23da4",
+      "name": "hard-quiz.com",
+      "type": "TXT",
+      "content": "[verification value intentionally omitted]",
+      "proxied": false,
+      "ttl": 3600,
+      "meta": {}
+    },
+    {
+      "id": "1febc8f992cad456cfbad48f02111940",
+      "name": "hard-quiz.com",
+      "type": "AAAA",
+      "content": "100::",
+      "proxied": true,
+      "ttl": 1,
+      "meta": {
+        "origin_worker_id": "445bed337745a1df046c828bf6feb3114dbbeca6",
+        "read_only": true
+      }
+    }
+  ],
+  "redirect": {
+    "description": "",
+    "id": "47a0c52fc6d84e16a2e38c575266d889",
+    "kind": "zone",
+    "last_updated": "2026-11-08T11:59:40.756494Z",
+    "name": "default",
+    "phase": "http_request_dynamic_redirect",
+    "rules": [
+      {
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "preserve_query_string": true,
+            "status_code": 308,
+            "target_url": {
+              "expression": "concat(\"https://hard-quiz.com\", http.request.uri.path)"
+            }
+          }
+        },
+        "description": "Hard Quiz: canonical host and HTTPS",
+        "enabled": true,
+        "expression": "(http.host eq \"www.hard-quiz.com\") or ((http.host eq \"hard-quiz.com\") and (not ssl))",
+        "id": "82e415f53f5f48e2bf000dcc6183c8db",
+        "last_updated": "2026-11-08T11:59:40.756494Z",
+        "ref": "82e415f53f5f48e2bf000dcc6183c8db",
+        "version": "2"
+      }
+    ],
+    "version": "2"
+  },
+  "certificates": [
+    {
+      "id": "8e329e98-40bf-4df3-a244-654c2ef640e9",
+      "type": "advanced",
+      "status": "active",
+      "hosts": [
+        "hard-quiz.com",
+        "*.hard-quiz.com"
+      ]
+    },
+    {
+      "id": "244c459d-8cde-4653-aa6e-0576f288aae7",
+      "type": "universal",
+      "status": "active",
+      "hosts": [
+        "hard-quiz.com",
+        "*.hard-quiz.com"
+      ]
+    },
+    {
+      "id": "9fc8f242-1295-49c6-9e86-d413cbacaf06",
+      "type": "universal",
+      "status": "backup_issued",
+      "hosts": [
+        "hard-quiz.com",
+        "*.hard-quiz.com"
+      ]
+    }
+  ],
+  "dnssec": {
+    "status": "active",
+    "algorithm": "13",
+    "digest_algorithm": "SHA256"
+  },
+  "preflight": {
+    "pageRules": 0,
+    "bulkRedirectRulesets": 0,
+    "workerRoutes": 0,
+    "unrelatedRecordsChanged": false
+  },
+  "http": [
+    {
+      "key": "home",
+      "url": "https://hard-quiz.com/?migration_check=1794139980161202725",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 12373,
+      "sha256": "bacdd3d987948e76d47e87aa04294f75fc6a7df76b5d50f2bdb94f316d1edc3c",
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747d57ccbfdada-ORD"
+      },
+      "title": "Movie & Actor Quiz Games — Play Free | Hard Quiz",
+      "canonical": [
+        "https://hard-quiz.com/"
+      ]
+    },
+    {
+      "key": "article",
+      "url": "https://hard-quiz.com/blog/sci-fi-mystery-movies?migration_check=1794139965481578489",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 39899,
+      "sha256": "a51eb19ab8ec7d6dba0270e53d80b288d1efe9683780eb6d6d40a07c23570c02",
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747cff188fdada-ORD"
+      },
+      "title": "10 Sci-Fi Mystery Movies: A Spoiler-Free Watchlist | Hard Quiz",
+      "canonical": [
+        "https://hard-quiz.com/blog/sci-fi-mystery-movies"
+      ]
+    },
+    {
+      "key": "manifest",
+      "url": "https://hard-quiz.com/seo-release.json?migration_check=1794139989688012922",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 4126,
+      "sha256": "727e92c3b64c3fe372b6ec4ccde01ce838ffa9437e302104458a385a9c318c00",
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747d995e9cdada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    },
+    {
+      "key": "robots",
+      "url": "https://hard-quiz.com/robots.txt?migration_check=1794139999876394379",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 67,
+      "sha256": "d24e53fa07bfe0c16c1be52d2bb0f9145bf9a31794af3ceba0306a286cee4bf0",
+      "headers": {
+        "content-type": "text/plain",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747dd62aa9dada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    },
+    {
+      "key": "sitemap",
+      "url": "https://hard-quiz.com/sitemap.xml?migration_check=1794139989688482974",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 1882,
+      "sha256": "a71c9261cdf3445d433bed15dc4cf89066fca7e8bbbc278ee1f56220c17ea758",
+      "headers": {
+        "content-type": "application/xml",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747d995e99dada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    },
+    {
+      "key": "feed",
+      "url": "https://hard-quiz.com/feed.xml?migration_check=1794139989688821470",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 6976,
+      "sha256": "a7cf449b730aa9761abc972e5bfa6de65f7b1e61a28bbce89caa00c95a6eb5b3",
+      "headers": {
+        "content-type": "application/xml",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747d995ea3dada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    },
+    {
+      "key": "play",
+      "url": "https://hard-quiz.com/play?migration_check=1794139999876686531",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 3576,
+      "sha256": "771d9cc30e600cb2938d99201432c0311794a368212dc5ee1d71cfbced602408",
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "no-store",
+        "strict-transport-security": "max-age=63072000",
+        "x-robots-tag": "noindex, nofollow",
+        "cf-ray": "a5747dd62aabdada-ORD"
+      },
+      "title": "Play | Hard Quiz",
+      "canonical": [
+        "https://hard-quiz.com/play"
+      ]
+    },
+    {
+      "key": "missing",
+      "url": "https://hard-quiz.com/migration-check-missing-page?migration_check=1794140705875530987",
+      "status": 404,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 4345,
+      "sha256": "dc171d5b06e8da438cce28c5e36d73d4b285d7410262970debbc89c97b142441",
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "no-store",
+        "strict-transport-security": "max-age=63072000",
+        "x-robots-tag": "noindex, nofollow",
+        "cf-ray": "a5748f0f3a63bda8-ORD"
+      }
+    },
+    {
+      "key": "blog_missing",
+      "url": "https://hard-quiz.com/blog/migration-check-missing-article?migration_check=1794139970481464409",
+      "status": 404,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 4395,
+      "sha256": "6beb7c56614bb0b5a680a2417a5a9edb374e0036cc56200a6e5e3803d38bfaa5",
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "no-store",
+        "strict-transport-security": "max-age=63072000",
+        "x-robots-tag": "noindex, nofollow",
+        "cf-ray": "a5747d1ab879dada-ORD"
+      },
+      "title": "Article not found | Hard Quiz",
+      "canonical": []
+    },
+    {
+      "key": "http_apex",
+      "url": "http://hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb&migration_check=1794139970518183888",
+      "status": 308,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 169,
+      "sha256": "c230f673289b2f53f31d1a678e11b9167b824aa5b6ed2195fdaecb63260dad63",
+      "headers": {
+        "content-type": "text/html; charset=UTF-8",
+        "location": "https://hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb&migration_check=1794139970518183888",
+        "cf-ray": "a5747d1fa8b3e13f-ORD"
+      },
+      "title": "308 Permanent Redirect",
+      "canonical": []
+    },
+    {
+      "key": "www_home",
+      "url": "https://www.hard-quiz.com/?migration_check=1794139974852834897",
+      "status": 308,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 169,
+      "sha256": "c230f673289b2f53f31d1a678e11b9167b824aa5b6ed2195fdaecb63260dad63",
+      "headers": {
+        "content-type": "text/html; charset=UTF-8",
+        "location": "https://hard-quiz.com/?migration_check=1794139974852834897",
+        "cf-ray": "a5747d367b5ee13f-ORD"
+      },
+      "title": "308 Permanent Redirect",
+      "canonical": []
+    },
+    {
+      "key": "www_article",
+      "url": "https://www.hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb&migration_check=1794139974853533610",
+      "status": 308,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 169,
+      "sha256": "c230f673289b2f53f31d1a678e11b9167b824aa5b6ed2195fdaecb63260dad63",
+      "headers": {
+        "content-type": "text/html; charset=UTF-8",
+        "location": "https://hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb&migration_check=1794139974853533610",
+        "cf-ray": "a5747d367b63e13f-ORD"
+      },
+      "title": "308 Permanent Redirect",
+      "canonical": []
+    },
+    {
+      "key": "http_www",
+      "url": "http://www.hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb&migration_check=1794139974869518206",
+      "status": 308,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 169,
+      "sha256": "c230f673289b2f53f31d1a678e11b9167b824aa5b6ed2195fdaecb63260dad63",
+      "headers": {
+        "content-type": "text/html; charset=UTF-8",
+        "location": "https://hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb&migration_check=1794139974869518206",
+        "cf-ray": "a5747d379df2bda8-ORD"
+      },
+      "title": "308 Permanent Redirect",
+      "canonical": []
+    },
+    {
+      "key": "www_legacy",
+      "url": "https://www.hard-quiz.com/movie-quiz.html?category=1&x=a%2Bb&migration_check=1794139974870585785",
+      "status": 308,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 169,
+      "sha256": "c230f673289b2f53f31d1a678e11b9167b824aa5b6ed2195fdaecb63260dad63",
+      "headers": {
+        "content-type": "text/html; charset=UTF-8",
+        "location": "https://hard-quiz.com/movie-quiz.html?category=1&x=a%2Bb&migration_check=1794139974870585785",
+        "cf-ray": "a5747d367b66e13f-ORD"
+      },
+      "title": "308 Permanent Redirect",
+      "canonical": []
+    },
+    {
+      "key": "legacy",
+      "url": "https://hard-quiz.com/movie-quiz.html?category=1&x=a%2Bb&migration_check=1794139995113302577",
+      "status": 301,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "location": "/movie-quiz?category=1&x=a%2Bb&migration_check=1794139995113302577",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747db6f9d1dada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    },
+    {
+      "key": "app_asset",
+      "url": "https://hard-quiz.com/assets/index-Ch1XO7SG.js?migration_check=1794140004880976333",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 578664,
+      "sha256": "8694cf752087133f641dbc6867cd8258da4417a3bc6370b7b1305eb9d2c4e104",
+      "headers": {
+        "content-type": "text/javascript",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747df9aca6dada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    },
+    {
+      "key": "article_image",
+      "url": "https://hard-quiz.com/blog-assets/sci-fi-mystery-movies-social.webp?migration_check=1794140010625427775",
+      "status": 200,
+      "curl_exit": 0,
+      "error": "",
+      "bytes": 23750,
+      "sha256": "4c93c2cd05c2fc17c7609a89c4f498850630473e62d765a93b06b8cfb4a8d0cb",
+      "headers": {
+        "content-type": "image/webp",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "strict-transport-security": "max-age=63072000",
+        "cf-ray": "a5747e150d68dada-ORD"
+      },
+      "title": "",
+      "canonical": []
+    }
+  ],
+  "dnsQueries": [
+    {
+      "provider": "google",
+      "name": "hard-quiz.com",
+      "type": "A",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3,
+      "answers": [
+        "104.21.62.247",
+        "172.67.141.56"
+      ]
+    },
+    {
+      "provider": "google",
+      "name": "www.hard-quiz.com",
+      "type": "A",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3,
+      "answers": [
+        "172.67.141.56",
+        "104.21.62.247"
+      ]
+    },
+    {
+      "provider": "google",
+      "name": "www.hard-quiz.com",
+      "type": "CNAME",
+      "status": 0,
+      "ad": true,
+      "answer_count": 0,
+      "answers": []
+    },
+    {
+      "provider": "google",
+      "name": "hard-quiz.com",
+      "type": "NS",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3,
+      "answers": [
+        "nina.ns.cloudflare.com.",
+        "lou.ns.cloudflare.com."
+      ]
+    },
+    {
+      "provider": "google",
+      "name": "hard-quiz.com",
+      "type": "TXT",
+      "status": 0,
+      "ad": true,
+      "answer_count": 2,
+      "expected_txt_present": true
+    },
+    {
+      "provider": "google",
+      "name": "hard-quiz.com",
+      "type": "DS",
+      "status": 0,
+      "ad": true,
+      "answer_count": 2
+    },
+    {
+      "provider": "google",
+      "name": "hard-quiz.com",
+      "type": "DNSKEY",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3
+    },
+    {
+      "provider": "cloudflare",
+      "name": "hard-quiz.com",
+      "type": "A",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3,
+      "answers": [
+        "104.21.62.247",
+        "172.67.141.56"
+      ]
+    },
+    {
+      "provider": "cloudflare",
+      "name": "www.hard-quiz.com",
+      "type": "A",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3,
+      "answers": [
+        "104.21.62.247",
+        "172.67.141.56"
+      ]
+    },
+    {
+      "provider": "cloudflare",
+      "name": "www.hard-quiz.com",
+      "type": "CNAME",
+      "status": 0,
+      "ad": true,
+      "answer_count": 0,
+      "answers": []
+    },
+    {
+      "provider": "cloudflare",
+      "name": "hard-quiz.com",
+      "type": "NS",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3,
+      "answers": [
+        "lou.ns.cloudflare.com.",
+        "nina.ns.cloudflare.com."
+      ]
+    },
+    {
+      "provider": "cloudflare",
+      "name": "hard-quiz.com",
+      "type": "TXT",
+      "status": 0,
+      "ad": true,
+      "answer_count": 2,
+      "expected_txt_present": true
+    },
+    {
+      "provider": "cloudflare",
+      "name": "hard-quiz.com",
+      "type": "DS",
+      "status": 0,
+      "ad": true,
+      "answer_count": 2
+    },
+    {
+      "provider": "cloudflare",
+      "name": "hard-quiz.com",
+      "type": "DNSKEY",
+      "status": 0,
+      "ad": true,
+      "answer_count": 3
+    }
+  ],
+  "unchangedRecords": {
+    "txt_unchanged": true,
+    "txt_records_before": 1,
+    "txt_records_after": 1,
+    "nameservers_unchanged": true,
+    "before_export_sha256": "e5769fab441247ce52536501b20d735f25afc20fddc57eaa332ebcc3ebe90e6f",
+    "after_export_sha256": "adde7f0fce69e1b72663789a6d263abe1b5c6b515555ba6082e4edcc2b53ec70"
+  },
+  "redirectChains": [
+    {
+      "key": "www_article",
+      "curl_exit": 0,
+      "result": "200 1 https://hard-quiz.com/blog/sci-fi-mystery-movies?utm_source=cutover&x=a%2Bb",
+      "error": ""
+    },
+    {
+      "key": "www_legacy",
+      "curl_exit": 0,
+      "result": "200 2 https://hard-quiz.com/movie-quiz?category=1&x=a%2Bb",
+      "error": ""
+    }
+  ],
+  "browser": {
+    "home": "Rendered with all four categories and difficulty choices loaded",
+    "article": "Rendered expected sci-fi mystery article and images",
+    "www_navigation": "Browser service call timed out; HTTP redirect and final destination were verified separately",
+    "game_attempts_created": false,
+    "real_owner_login_retested": false,
+    "analytics_event_delivery_retested": false
+  },
+  "verificationScope": "Each of the 17 checks was validated from Cloudflare within the post-cutover observation window. Previously cached Vercel responses were retained in the initial report; the final missing-page sample was refreshed separately. This does not assert that every client DNS cache has converged.",
+  "fallback": {
+    "provider": "Vercel",
+    "deploymentId": "dpl_C2zwGP984WRysZqqg4syquA2wrKD",
+    "state": "READY",
+    "revision": "ecd124edabfb955bae4922932a2d51ac54a92fd4",
+    "domainAssociationsRetained": true,
+    "rollbackDrillExecuted": false
+  },
+  "costs": {
+    "paidPlanActivated": false,
+    "paidAddonPurchased": false
+  },
+  "notes": [
+    "The enabled rule was updated with its full existing action/expression after a minimal enabled-only PATCH was rejected with HTTP 400; the rejected request changed no configuration.",
+    "Attach Worker Domain returned HTTP 409 while the external apex A existed. The exact backed-up A was deleted, then attachment succeeded immediately; the recovery branch was not needed.",
+    "The Custom Domain automatically provisioned its active certificate. Its API type is advanced; no Advanced Certificate Manager purchase or subscription was requested.",
+    "No production game attempts or database/schema/authentication changes were made. Task 7 must still verify owner sign-in, analytics, performance and the ongoing publication workflow."
+  ]
+}
