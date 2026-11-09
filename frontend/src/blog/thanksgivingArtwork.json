@@ -1,0 +1,51 @@
+{
+  "planes-trains-and-automobiles": {
+    "src": "/blog-assets/thanksgiving-planes-trains-and-automobiles-poster.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Promotional store poster for Planes, Trains and Automobiles, showing Steve Martin and John Candy standing with luggage.",
+    "storeUrl": "https://itunes.apple.com/us/movie/planes-trains-and-automobiles/id314510037?uo=4"
+  },
+  "home-for-the-holidays": {
+    "src": "/blog-assets/thanksgiving-home-for-the-holidays-poster.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Promotional store poster for Home For The Holidays, showing Holly Hunter in a red coat looking upward.",
+    "storeUrl": "https://itunes.apple.com/us/movie/home-for-the-holidays/id353038591?uo=4"
+  },
+  "pieces-of-april": {
+    "src": "/blog-assets/thanksgiving-pieces-of-april-poster.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Promotional store poster for Pieces of April, showing Katie Holmes with red hair against a collage of photographs.",
+    "storeUrl": "https://itunes.apple.com/us/movie/pieces-of-april/id250858007?uo=4"
+  },
+  "krisha": {
+    "src": "/blog-assets/thanksgiving-krisha-poster.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Promotional store poster for Krisha, showing a red profile portrait of Krisha Fairchild.",
+    "storeUrl": "https://itunes.apple.com/us/movie/krisha/id1097633131?uo=4"
+  },
+  "the-humans": {
+    "src": "/blog-assets/thanksgiving-the-humans-poster.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Promotional store poster for The Humans, showing the ensemble seated around a dim dinner table.",
+    "storeUrl": "https://itunes.apple.com/us/movie/the-humans/id1606899780?uo=4"
+  },
+  "whats-cooking": {
+    "src": "/blog-assets/thanksgiving-whats-cooking-poster.webp",
+    "width": 384,
+    "height": 576,
+    "alt": "Promotional store poster for What's Cooking?, showing a collage of the ensemble above the film title.",
+    "storeUrl": "https://itunes.apple.com/us/movie/whats-cooking/id292807296?uo=4"
+  },
+  "addams-family-values": {
+    "src": "/blog-assets/thanksgiving-addams-family-values-poster.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Promotional store poster for Addams Family Values, showing the Addams family against a purple backdrop.",
+    "storeUrl": "https://itunes.apple.com/us/movie/addams-family-values/id329165439?uo=4"
+  }
+}
