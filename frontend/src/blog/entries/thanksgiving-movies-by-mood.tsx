@@ -54,7 +54,7 @@ function renderFilmEntry(film: typeof films[number]) {
   return <section className="hq-watchlist-entry" aria-labelledby={film.id}>
     <h3 id={film.id} tabIndex={-1}>{film.title} ({film.year})</h3>
     <p className="hq-watchlist-facts"><strong>{film.mood}</strong> · Directed by {film.director} · {film.runtime} · US rating: {film.rating}</p>
-    <div className="hq-thanksgiving-film">
+    <div className="hq-film-layout">
       <figure className="hq-store-poster">
         <a href={image.storeUrl} aria-label={`View ${film.title} in the US Apple TV Store`}>
           <ArticleImage src={image.src} width={image.width} height={image.height} sizes="(max-width: 600px) 180px, 190px" alt={image.alt} />
@@ -64,7 +64,7 @@ function renderFilmEntry(film: typeof films[number]) {
           <img src="/blog-assets/itunes-store-get-badge.svg" width={140} height={41} alt="Get it on iTunes" loading="lazy" decoding="async" />
         </a>
       </figure>
-      <div>
+      <div className="hq-film-copy">
         <p>{film.premise}</p>
         <p>{film.reason}</p>
         <p><strong>Tone note:</strong> {film.caution}</p>

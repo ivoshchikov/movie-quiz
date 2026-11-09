@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
-import filmPoster from "../components/filmPoster";
+import filmContent from "../components/filmContent";
 
 const cover = "/blog-assets/sci-fi-mystery-movies-cover.webp";
 const catalog = (slug: string) => `https://www.justwatch.com/us/movie/${slug}`;
@@ -150,9 +150,10 @@ const post: BlogPost = {
     {films.map((film, index) => <section className="hq-watchlist-entry" key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{index + 1}. {film.title} ({film.year})</h2>
       <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · Directed by {film.director} · {film.runtime} · <a href={film.url}>{film.viewing}</a></p>
-      {filmPoster(`sci-fi-mystery-${film.id}`)}
-      <p>{film.premise}</p>
-      <p>{film.reason}</p>
+      {filmContent(`sci-fi-mystery-${film.id}`, <>
+        <p>{film.premise}</p>
+        <p>{film.reason}</p>
+      </>)}
     </section>)}
 
     <section className="hq-article-faq" aria-labelledby="before-you-watch">
