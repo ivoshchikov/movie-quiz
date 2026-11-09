@@ -119,3 +119,32 @@ Sources checked 8 November 2026:
 - [Google CMP and TCF](https://support.google.com/adsense/answer/12226986?hl=en)
 - [Privacy-policy URL requirements](https://support.google.com/adsense/answer/10961370?hl=en-GB)
 - [US state messages and GPP](https://support.google.com/adsense/answer/10961479?hl=en)
+
+## Prepared paused AdSense check — publication pending
+
+The separate Worker path `/api/privacy/adsense-check` is prepared for an
+owner-approved integration test. It is not a change to the normal CMP loader
+and does not establish that European message delivery has been repaired.
+No runtime publication of this diagnostic has been approved yet.
+
+This document does not load the React application, auth, games, first-party
+counters or GA. Google resources start only after its explicit Start button.
+Before inserting the publisher's official `adsbygoogle.js` tag, it sets the
+documented `pauseAdRequests=1`; the page never resets it, creates ad slots,
+or pushes an ad request. The existing standalone privacy tag is included
+for comparison with the current integration. Only readiness/native status,
+message-gate counts and sanitized CSP origins/directives can be copied.
+
+Its separate response has no-store/noindex headers and a restrictive CSP:
+static AdSense/CMP scripts are allowed, while fetch/beacon, remote frames,
+remote images, workers and form submissions are blocked. These restrictions
+may also prevent native consent UI from rendering. An absent window here
+must not be treated as proof that unrestricted AdSense integration fails.
+Pausing ad requests still loads Google scripts; it is not equivalent to
+blocking the SDK, and publication requires the owner's separate approval.
+The normal site's `security-policy.json` and static headers remain unchanged.
+
+Official references checked 9 November 2026:
+
+- [European message deployment troubleshooting](https://support.google.com/adsense/answer/14660912?hl=en)
+- [Pausing AdSense requests](https://support.google.com/adsense/answer/7670312?hl=en)
