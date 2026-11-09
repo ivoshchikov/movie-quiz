@@ -17,7 +17,8 @@ import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga"
 import { useSiteVisits } from "../analytics/useSiteVisits";
 import { useSitePageViews } from "../analytics/useSitePageViews";
 import PrivacyControls from "../privacy/PrivacyControls";
-import { getConsent, getServerConsent, initializeConsent, isPrivacyDocument, setConsentGameActive, subscribeConsent } from "../privacy/consent";
+import PrivacyDiagnostics from "../privacy/PrivacyDiagnostics";
+import { getConsent, getServerConsent, initializeConsent, isPrivacyDiagnostics, isPrivacyDocument, setConsentGameActive, subscribeConsent } from "../privacy/consent";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
@@ -40,6 +41,7 @@ export default function Layout() {
   const navigate = useNavigate();
   const loc = useLocation();
   const pathname = loc.pathname.replace(/\/+$/, "") || "/";
+  const privacyDiagnostics = isPrivacyDiagnostics(pathname, loc.search);
   const [showLogin, setShowLogin] = useState(false);
   const [showNickname, setShowNickname] = useState(false);
   const [nicknameNotice, setNicknameNotice] = useState<{ owner: string; nickname: string; alreadyChosen: boolean } | null>(null);
@@ -126,7 +128,7 @@ export default function Layout() {
   const isBlogIndex = pathname === "/blog";
   const isBlogArticle = pathname.startsWith("/blog/") && !isBlogIndex;
   const search = publicSearch(loc.search);
-  const analyticsBlocked = authLoading || isAdministration || isPrivacyDocument(pathname) || owner === '112743d7-f683-4bbb-8117-068e89a00f22';
+  const analyticsBlocked = privacyDiagnostics || authLoading || isAdministration || isPrivacyDocument(pathname) || owner === '112743d7-f683-4bbb-8117-068e89a00f22';
   // Disable the tag for the owner on every route, including automatic history measurement.
   useLayoutEffect(() => { setAnalyticsBlocked(analyticsBlocked); if(!analyticsBlocked) loadGA(); }, [analyticsBlocked, consent.epoch]);
   useEffect(() => { if(!analyticsBlocked) pageview(`${pathname}${search || ""}`, loc.key); }, [pathname, search, loc.key, analyticsBlocked, consent.epoch]);
@@ -181,6 +183,7 @@ export default function Layout() {
     </header>}
     <ChristmasDecorations compact={isGameView} />
     <main id="main-content" tabIndex={-1} className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
+      {privacyDiagnostics && <PrivacyDiagnostics />}
       {pathname !== "/login" && !showLogin && (callbackError || authError && !["/profile", "/setup-profile"].includes(pathname)) && <div className="hq-auth-banner" role="alert"><p>{callbackError || authError}</p><button className="hq-inline-action" onClick={() => { if (authError) retrySession(); else { clearCallbackError(); setShowLogin(true); } }}>{authError ? "Retry sign-in check" : "Try signing in again"}</button></div>}
       {!isGameView && nicknameNotice?.owner === owner && <div className="hq-auth-banner hq-nickname-notice"><p role="status">{nicknameNotice.alreadyChosen ? <>This account already has the nickname <strong>{nicknameNotice.nickname}</strong>. You can continue with it.</> : <>Your nickname is saved: <strong>{nicknameNotice.nickname}</strong>.</>}</p><button className="hq-inline-action" onClick={() => setNicknameNotice(null)}>Dismiss</button></div>}
       <PageErrorBoundary resetKey={loc.pathname}><Outlet context={{ chooseNickname, openLogin: () => setShowLogin(true), setDailyPlaying,

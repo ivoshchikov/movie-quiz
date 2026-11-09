@@ -94,6 +94,24 @@ verification must separately record the actual CMP's UI/API and network results,
 the deployed revision and the absence of advertising requests. Do not claim site
 review approval or legal compliance from the presence of a CMP alone.
 
+## Browser diagnostics
+
+The explicit home URL `/?privacy=diagnostics` exposes a 20-second, local-only
+diagnostic panel. It samples the existing bridge without adding provider API
+calls: tag load state, callback readiness, allowlisted native TCF fields, bridge
+state and the first failure category. CSP script violations retain origins only.
+Copying is an explicit user action; the application does not upload the report.
+TC strings, purpose maps, storage values, identifiers and URL parameters are
+excluded. The diagnostic mode blocks GA and first-party counters even when a
+previous valid consent grants them, without replacing that stored choice.
+
+The native Google message remains allowed to render. The separate non-European
+site choice is not opened automatically over the report; the normal Privacy
+settings action still works. The policy document never becomes a diagnostic
+page and retains its CMP/GA exclusion. Normal page/game behaviour and the
+advertising script policy are unchanged. A diagnostic result is evidence of
+the browser state, not a claim that regional delivery has been repaired.
+
 Sources checked 8 November 2026:
 
 - [Privacy & messaging JavaScript API](https://developers.google.com/funding-choices/fc-api-docs)

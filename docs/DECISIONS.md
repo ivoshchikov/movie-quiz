@@ -819,3 +819,15 @@ behaviour. Verify a real GA destination, withdrawal and the blocked dependency
 without delivering collector or gameplay writes. Do not interpret the provider's
 detector as permission to enable ads, publish an ad SDK or submit AdSense review.
 
+## ADS-04 — Local browser diagnostics for consent delivery
+
+9 November 2026. Provide the explicit home-only `privacy=diagnostics` mode to
+distinguish missing/failed tags, unavailable callbacks, unknown regional data
+and an unsettled native TCF flow. Sample existing state; do not add provider
+API probes or infer location from the browser or debug parameters. Keep optional
+measurement blocked in this mode, including for previously consented browsers,
+without rewriting that consent. Copy only an allowlisted local report on a
+user action. Exclude TC strings, identifiers, storage, private URL parameters
+and full CSP URLs. Preserve normal routes, policy exclusions, game behaviour,
+the ad-script policy and the requirement to verify real regional delivery.
+
