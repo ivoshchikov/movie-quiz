@@ -1,3 +1,17 @@
+## Paused AdSense check — publication authorized
+
+A separate, noindex/no-store Worker document at `/api/privacy/adsense-check`
+is prepared for an explicit AdSense/CMP integration check. It loads no site
+application or analytics. Its Start button sets `pauseAdRequests=1` before
+loading Google's static SDK and CMP scripts; no slots or ad push/resume calls
+are added. A separate restrictive CSP blocks other network channels. The
+ordinary site's loader and ad-script policy are unchanged. These restrictions
+may also block Google UI, so the check is not proof of normal EU delivery.
+On 9 November the owner authorized an isolated live load of the two static
+AdSense SDK files and publication of this separate document after checks.
+Source, successful CI, Cloudflare publication and regional delivery remain
+distinct verification steps. Ad serving is not authorized by this check.
+
 ## Privacy browser diagnostics — 9 November 2026
 
 The explicit home URL `/?privacy=diagnostics` provides a local 20-second report

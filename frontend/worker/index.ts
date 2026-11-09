@@ -1,12 +1,13 @@
 import legacyCards from '../.cache/og-legacy.json';
 import { contentSecurityPolicy } from '../security-policy.json';
+import { privacySdkCheck } from './privacy-sdk-check';
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
   DEPLOYMENT_PROFILE?: string;
 }
 
-// Existing files bypass this Worker. It handles legacy OG URLs and real 404s only.
+// Existing files bypass this Worker. Diagnostic HTML is a separate exact API path.
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -15,6 +16,7 @@ export default {
     if (!['GET', 'HEAD'].includes(request.method)) {
       return new Response(null, { status: 405, headers: { ...Object.fromEntries(headers), Allow: 'GET, HEAD' } });
     }
+    if (url.pathname === '/api/privacy/adsense-check') return privacySdkCheck(request, headers);
     const isPost = url.pathname === '/api/og/post';
     const isDaily = url.pathname === '/api/og/daily';
     if (isPost || isDaily) {

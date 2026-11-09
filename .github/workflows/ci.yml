@@ -44,6 +44,9 @@ jobs:
           VITE_SUPABASE_ANON_KEY: local-test-placeholder
         run: npm run build:cloudflare
 
+      - name: Check isolated paused AdSense diagnostic
+        run: npm run test:privacy-sdk-check
+
       - name: Check Cloudflare HTTP routing and legacy social cards
         run: npm run test:cloudflare
 

@@ -11,6 +11,7 @@
     "preview:cloudflare": "wrangler dev --port 8787",
     "deploy:cloudflare": "node scripts/check-cloudflare-artifact.cjs staging && wrangler deploy",
     "test:cloudflare": "node --test scripts/__tests__/cloudflare.test.cjs",
+    "test:privacy-sdk-check": "node --test scripts/__tests__/privacy-sdk-check.test.cjs",
     "gen:seo": "node scripts/generate-seo.cjs public",
     "gen:seo:dist": "node scripts/generate-seo.cjs dist",
     "seo:check": "node scripts/verify-publication.cjs",

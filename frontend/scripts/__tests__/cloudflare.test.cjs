@@ -82,6 +82,25 @@ test('AdSense ads.txt is a plain-text root resource for crawlers and browser nav
   assert.equal((await head.arrayBuffer()).byteLength, 0);
 });
 
+test('the isolated consent check has its own restrictive policy without changing the site policy', async () => {
+  const response = await get('/api/privacy/adsense-check?private_query=not-reflected');
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get('x-robots-tag'), /noindex/);
+  assert.equal(response.headers.get('cache-control'), 'no-store');
+  assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
+  const policy = response.headers.get('content-security-policy');
+  assert.match(policy, /connect-src 'none'/);
+  assert.match(policy, /frame-src 'self'/);
+  const html = await response.text();
+  assert.ok(html.includes('<title>Hard Quiz — consent integration check</title>'));
+  assert.doesNotMatch(html, /not-reflected|<script[^>]*src=|assets\/index-|supabase/);
+  assert.equal((await get('/api/privacy/adsense-check', { method: 'HEAD' })).status, 200);
+  assert.equal((await get('/api/privacy/adsense-check', { method: 'POST' })).status, 405);
+  assert.equal((await get('/api/privacy/adsense-check/')).status, 404);
+  assert.equal((await get('/')).headers.get('content-security-policy'), contentSecurityPolicy);
+  if (production) assert.equal(response.headers.get('strict-transport-security'), 'max-age=63072000');
+});
+
 test('all legacy HTML URLs redirect permanently and retain query parameters', async () => {
   const files = fs.readdirSync(directory, { recursive: true }).filter(file => file.endsWith('.html') && !['404.html', 'blog/_not-found.html'].includes(file));
   for (const file of files) {
