@@ -1,0 +1,2 @@
+# Preserve Apple's supplied promotional badge byte-for-byte.
+itunes-store-get-badge.svg -whitespace

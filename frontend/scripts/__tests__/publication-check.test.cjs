@@ -156,7 +156,7 @@ test("a preview URL cannot be recorded as production verification", async () => 
 test("an excessive image catalog stops before image reads and preserves previous publication evidence", async () => {
   await fixture(null, async options => {
     const file = path.join(options.directory, "blog/test-film.html");
-    const images = Array.from({ length: 220 }, (_, index) => `<img src="/budget-${index}.svg" width="10" height="10" alt="Budget fixture">`).join("");
+    const images = Array.from({ length: 247 }, (_, index) => `<img src="/budget-${index}.svg" width="10" height="10" alt="Budget fixture">`).join("");
     fs.writeFileSync(file, fs.readFileSync(file, "utf8").replace("</main>", images + "</main>"));
     const before = fs.readFileSync(options.registryPath, "utf8");
     const report = await runChecks({ ...options, recordRegistry: true });

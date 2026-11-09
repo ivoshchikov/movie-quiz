@@ -68,6 +68,17 @@
 .hq-article-prose .hq-film-still { width: 100%; margin-inline: auto; }
 .hq-article-prose .hq-watchlist-facts { color: var(--hq-muted); font-size: 14px; line-height: 1.8; }
 .hq-article-prose .hq-watchlist-facts strong { color: var(--hq-reading-text); }
+.hq-thanksgiving-film { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; align-items: start; }
+.hq-article-prose .hq-store-poster { width: 190px; margin: 0; }
+.hq-store-poster > a:first-child { display: block; }
+.hq-store-poster figcaption { font-size: 12px; line-height: 1.5; margin-top: 10px; }
+.hq-store-badge { display: inline-flex; padding: 8px; margin-top: 6px; }
+.hq-store-badge img { display: block; width: 139.86px; height: 41px; border-radius: 0; }
+.hq-thanksgiving-film > div > p:first-child { margin-top: 0; }
+@media (max-width: 600px) {
+  .hq-thanksgiving-film { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .hq-article-prose .hq-store-poster { width: 180px; margin-inline: auto; }
+}
 .hq-article-faq { padding-top: 2px; border-top: 1px solid var(--hq-border); }
 .hq-article-faq > div { margin-block: 22px; }
 .hq-frame-pair { display: grid; grid-template-columns: 2.39fr 1.7778fr; gap: 14px; }
