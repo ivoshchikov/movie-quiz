@@ -3,18 +3,19 @@ import ArticleImage from "../components/ArticleImage";
 import FrameComparison from "../components/FrameComparison";
 import OpticsIllustration from "../components/OpticsIllustration";
 
-const CDN = "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239";
-const staging = CDN + "/composition-staging.webp";
-const negative = CDN + "/composition-negative.webp";
+const staging = "/blog-assets/original/scope-composition-station-illustration.webp";
+const negative = "/blog-assets/original/scope-negative-space-illustration.webp";
 
 const post: BlogPost = {
   slug: "why-2-39-1-feels-more-cinematic",
   title: "Why 2.39:1 Feels More Cinematic",
   excerpt: "See how 2.39:1 changes composition, what a 16:9 crop removes, and why a wide frame and anamorphic lens characteristics are different things.",
-  date: "2025-08-15", modified: "2026-10-09",
+  date: "2025-08-15", modified: "2026-11-09",
   tags: ["Explainers & Trivia", "Aspect Ratio"],
-  coverUrl: CDN + "/flat-vs-scope.webp",
-  gallery: [staging, negative],
+  coverUrl: "https://hard-quiz.com/blog-assets/original/scope-guide-cover.webp",
+  listingCoverUrl: "https://hard-quiz.com/blog-assets/original/scope-guide-cover-640.webp",
+  socialImagePath: "/blog-assets/original/scope-guide-social.webp",
+  gallery: [staging, negative].map(src => `https://hard-quiz.com${src}`),
   contents: [
     { id: "compare-frames", label: "Compare 2.39:1 and 16:9" },
     { id: "what-scope-means", label: "What Scope means" },
@@ -46,7 +47,7 @@ const post: BlogPost = {
     <p>More horizontal space can hold a conversation, movement and the surrounding setting in one shot. A director can place people at opposite edges or let action unfold across the frame. Whether that works depends on the staging; simply adding width does not make a scene clearer.</p>
     <h3>Let the surroundings matter</h3>
     <p>Space around a character can suggest distance, isolation or scale. A wide composition gives you room to build those relationships, while also asking viewers to choose where to look.</p>
-    <figure><ArticleImage src={negative} alt="A wide view of a crowded highway with distant landscape visible around the people" width={3420} height={1342} /><figcaption>Look at the people in relation to the surrounding road and landscape. Negative space and scale come from the composition, not the aspect ratio alone.</figcaption></figure>
+    <figure><ArticleImage src={negative} alt="Original Hard Quiz illustration of one figure on a cliff beside a large open sea" width={1200} height={675} /><figcaption>Original Hard Quiz illustration, not a film still. The small figure and open sea demonstrate negative space and scale; the aspect ratio alone does not create that relationship.</figcaption></figure>
 
     <h2 id="anamorphic" tabIndex={-1}>The lens is a separate choice</h2>
     <p>An anamorphic lens compresses the image horizontally during capture; it is expanded again for viewing. Some anamorphic designs produce vertically oval out-of-focus highlights and horizontal streak flares. Their strength and appearance vary with the optics, lighting and focus.</p>

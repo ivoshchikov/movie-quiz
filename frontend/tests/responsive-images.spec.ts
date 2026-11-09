@@ -5,7 +5,7 @@ test.use({ deviceScaleFactor: 2 });
 
 for (const width of [320, 390, 768, 1440]) {
   for (const month of ["august", "september"]) {
-    test(`${month} posters load a small real image at ${width}px and 2x density`, async ({ page }) => {
+    test(`${month} original illustrations load a small image at ${width}px and 2x density`, async ({ page }) => {
       const calls = await mockQuizApi(page);
       await page.setViewportSize({ width, height: 844 });
       const oversized: string[] = [];
@@ -17,13 +17,13 @@ for (const width of [320, 390, 768, 1440]) {
       await poster.scrollIntoViewIfNeeded();
       await expect.poll(() => poster.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
       const src = await poster.evaluate(image => (image as HTMLImageElement).currentSrc);
-      expect(new URL(src).pathname).toMatch(/\/blog-assets\/responsive\/.+-320\.webp$/);
+      expect(new URL(src).pathname).toMatch(/\/blog-assets\/original\/.+-illustration-320\.webp$/);
       const response = await page.request.get(src);
       expect(response.ok()).toBe(true);
       expect(response.headers()["content-type"]).toContain("image/webp");
       expect((await response.body()).length).toBeLessThan(50_000);
       await expect(poster).toHaveAttribute("loading", "lazy");
-      await expect(poster).toHaveAttribute("alt", /theatrical poster/);
+      await expect(poster).toHaveAttribute("alt", /Original Hard Quiz illustration/);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       expect(oversized).toEqual([]);
       expect(calls).toEqual([]);
@@ -56,7 +56,7 @@ for (const width of [390, 1440]) {
     await image.scrollIntoViewIfNeeded();
     await expect.poll(() => image.evaluate(node => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
     const src = await image.evaluate(node => (node as HTMLImageElement).currentSrc);
-    expect(new URL(src).pathname).toMatch(/the-conjuring-last-rites-(640|960)\.webp$/);
+    expect(new URL(src).pathname).toMatch(/archive-september-2025-cover-(640|800)\.webp$/);
     const box = await card.locator(".hq-blog-cover").boundingBox();
     expect(box!.width / box!.height).toBeCloseTo(16 / 9, 1);
     expect(await image.evaluate(node => getComputedStyle(node).objectFit)).toBe("cover");

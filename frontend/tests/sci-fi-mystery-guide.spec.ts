@@ -43,11 +43,11 @@ for (const width of [320, 1440]) {
         ratio: element.clientWidth / element.clientHeight,
         originalRatio: Number(element.getAttribute("width")) / Number(element.getAttribute("height")),
       }));
-      expect(display.src).toMatch(width === 320 ? /-still-480\.webp$/ : /-still-800\.webp$/);
+      expect(display.src).toMatch(width === 320 ? /-illustration-480\.webp$/ : /-illustration-800\.webp$/);
       expect(display.fit).toBe("contain");
       expect(display.ratio).toBeCloseTo(display.originalRatio, 1);
     }
-    await page.locator(".hq-film-still").first().screenshot({ path: testInfo.outputPath(`mystery-still-${width}.png`) });
+    await page.locator(".hq-film-still").first().screenshot({ path: testInfo.outputPath(`mystery-illustration-${width}.png`) });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const contents = page.getByRole("navigation", { name: "Article contents" });
     await contents.locator("summary").click();

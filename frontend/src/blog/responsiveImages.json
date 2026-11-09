@@ -1,100 +1,4 @@
 {
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/bad-guys-2.webp": {
-    "src": "/blog-assets/responsive/august-2025-bad-guys-2-640.webp",
-    "width": 640,
-    "height": 1018,
-    "srcSet": "/blog-assets/responsive/august-2025-bad-guys-2-160.webp 160w, /blog-assets/responsive/august-2025-bad-guys-2-320.webp 320w, /blog-assets/responsive/august-2025-bad-guys-2-640.webp 640w, /blog-assets/responsive/august-2025-bad-guys-2-960.webp 960w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/naked-gun-2025.webp": {
-    "src": "/blog-assets/responsive/august-2025-naked-gun-2025-640.webp",
-    "width": 640,
-    "height": 956,
-    "srcSet": "/blog-assets/responsive/august-2025-naked-gun-2025-160.webp 160w, /blog-assets/responsive/august-2025-naked-gun-2025-320.webp 320w, /blog-assets/responsive/august-2025-naked-gun-2025-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/freaky-friday-2.webp": {
-    "src": "/blog-assets/responsive/august-2025-freaky-friday-2-640.webp",
-    "width": 640,
-    "height": 802,
-    "srcSet": "/blog-assets/responsive/august-2025-freaky-friday-2-160.webp 160w, /blog-assets/responsive/august-2025-freaky-friday-2-320.webp 320w, /blog-assets/responsive/august-2025-freaky-friday-2-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/weapons-2025.webp": {
-    "src": "/blog-assets/responsive/august-2025-weapons-2025-640.webp",
-    "width": 640,
-    "height": 942,
-    "srcSet": "/blog-assets/responsive/august-2025-weapons-2025-160.webp 160w, /blog-assets/responsive/august-2025-weapons-2025-320.webp 320w, /blog-assets/responsive/august-2025-weapons-2025-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/nobody-2.webp": {
-    "src": "/blog-assets/responsive/august-2025-nobody-2-640.webp",
-    "width": 640,
-    "height": 1017,
-    "srcSet": "/blog-assets/responsive/august-2025-nobody-2-160.webp 160w, /blog-assets/responsive/august-2025-nobody-2-320.webp 320w, /blog-assets/responsive/august-2025-nobody-2-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/honey-dont.webp": {
-    "src": "/blog-assets/responsive/august-2025-honey-dont-640.webp",
-    "width": 640,
-    "height": 949,
-    "srcSet": "/blog-assets/responsive/august-2025-honey-dont-160.webp 160w, /blog-assets/responsive/august-2025-honey-dont-320.webp 320w, /blog-assets/responsive/august-2025-honey-dont-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/ne-zha-2.webp": {
-    "src": "/blog-assets/responsive/august-2025-ne-zha-2-640.webp",
-    "width": 640,
-    "height": 906,
-    "srcSet": "/blog-assets/responsive/august-2025-ne-zha-2-160.webp 160w, /blog-assets/responsive/august-2025-ne-zha-2-320.webp 320w, /blog-assets/responsive/august-2025-ne-zha-2-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-conjuring-last-rites.webp": {
-    "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp",
-    "width": 640,
-    "height": 803,
-    "srcSet": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-160.webp 160w, /blog-assets/responsive/september-2025-the-conjuring-last-rites-320.webp 320w, /blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp 640w, /blog-assets/responsive/september-2025-the-conjuring-last-rites-960.webp 960w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/demon-slayer-infinity-castle.webp": {
-    "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp",
-    "width": 640,
-    "height": 903,
-    "srcSet": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-160.webp 160w, /blog-assets/responsive/september-2025-demon-slayer-infinity-castle-320.webp 320w, /blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/downton-abbey-the-grand-finale.webp": {
-    "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp",
-    "width": 640,
-    "height": 950,
-    "srcSet": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-160.webp 160w, /blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-320.webp 320w, /blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/spinal-tap-ii.webp": {
-    "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-640.webp",
-    "width": 640,
-    "height": 960,
-    "srcSet": "/blog-assets/responsive/september-2025-spinal-tap-ii-160.webp 160w, /blog-assets/responsive/september-2025-spinal-tap-ii-320.webp 320w, /blog-assets/responsive/september-2025-spinal-tap-ii-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-long-walk.webp": {
-    "src": "/blog-assets/responsive/september-2025-the-long-walk-640.webp",
-    "width": 640,
-    "height": 950,
-    "srcSet": "/blog-assets/responsive/september-2025-the-long-walk-160.webp 160w, /blog-assets/responsive/september-2025-the-long-walk-320.webp 320w, /blog-assets/responsive/september-2025-the-long-walk-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/a-big-bold-beautiful-journey.webp": {
-    "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp",
-    "width": 640,
-    "height": 950,
-    "srcSet": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-160.webp 160w, /blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-320.webp 320w, /blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/him-2025.webp": {
-    "src": "/blog-assets/responsive/september-2025-him-2025-640.webp",
-    "width": 640,
-    "height": 1019,
-    "srcSet": "/blog-assets/responsive/september-2025-him-2025-160.webp 160w, /blog-assets/responsive/september-2025-him-2025-320.webp 320w, /blog-assets/responsive/september-2025-him-2025-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-strangers-chapter-2.webp": {
-    "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp",
-    "width": 640,
-    "height": 803,
-    "srcSet": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-160.webp 160w, /blog-assets/responsive/september-2025-the-strangers-chapter-2-320.webp 320w, /blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp 640w"
-  },
-  "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/gabbys-dollhouse-the-movie.webp": {
-    "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp",
-    "width": 640,
-    "height": 1014,
-    "srcSet": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-160.webp 160w, /blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-320.webp 320w, /blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp 640w"
-  },
   "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/movies/general/g_00001.webp": {
     "src": "/blog-assets/responsive/classic-preview-640.webp",
     "width": 640,
@@ -106,66 +10,6 @@
     "srcSet": "/blog-assets/movies-like-knives-out-480.webp 480w, /blog-assets/movies-like-knives-out-800.webp 800w, /blog-assets/movies-like-knives-out-cover.webp 1200w",
     "width": 1200,
     "height": 675
-  },
-  "/blog-assets/knives-out-glass-onion-still.webp": {
-    "src": "/blog-assets/knives-out-glass-onion-still.webp",
-    "srcSet": "/blog-assets/knives-out-glass-onion-still-480.webp 480w, /blog-assets/knives-out-glass-onion-still-800.webp 800w, /blog-assets/knives-out-glass-onion-still.webp 1200w",
-    "width": 1200,
-    "height": 636
-  },
-  "/blog-assets/knives-out-wake-up-dead-man-still.webp": {
-    "src": "/blog-assets/knives-out-wake-up-dead-man-still.webp",
-    "srcSet": "/blog-assets/knives-out-wake-up-dead-man-still-480.webp 480w, /blog-assets/knives-out-wake-up-dead-man-still-800.webp 800w, /blog-assets/knives-out-wake-up-dead-man-still.webp 1200w",
-    "width": 1200,
-    "height": 634
-  },
-  "/blog-assets/knives-out-clue-still.webp": {
-    "src": "/blog-assets/knives-out-clue-still.webp",
-    "srcSet": "/blog-assets/knives-out-clue-still-480.webp 480w, /blog-assets/knives-out-clue-still-800.webp 800w, /blog-assets/knives-out-clue-still.webp 1200w",
-    "width": 1200,
-    "height": 662
-  },
-  "/blog-assets/knives-out-see-how-they-run-still.webp": {
-    "src": "/blog-assets/knives-out-see-how-they-run-still.webp",
-    "srcSet": "/blog-assets/knives-out-see-how-they-run-still-480.webp 480w, /blog-assets/knives-out-see-how-they-run-still-800.webp 800w, /blog-assets/knives-out-see-how-they-run-still.webp 1200w",
-    "width": 1200,
-    "height": 636
-  },
-  "/blog-assets/knives-out-the-last-of-sheila-still.webp": {
-    "src": "/blog-assets/knives-out-the-last-of-sheila-still.webp",
-    "srcSet": "/blog-assets/knives-out-the-last-of-sheila-still-480.webp 480w, /blog-assets/knives-out-the-last-of-sheila-still-800.webp 800w, /blog-assets/knives-out-the-last-of-sheila-still.webp 1200w",
-    "width": 1200,
-    "height": 637
-  },
-  "/blog-assets/knives-out-gosford-park-still.webp": {
-    "src": "/blog-assets/knives-out-gosford-park-still.webp",
-    "srcSet": "/blog-assets/knives-out-gosford-park-still-480.webp 480w, /blog-assets/knives-out-gosford-park-still-800.webp 800w, /blog-assets/knives-out-gosford-park-still.webp 1200w",
-    "width": 1200,
-    "height": 505
-  },
-  "/blog-assets/knives-out-murder-on-the-orient-express-still.webp": {
-    "src": "/blog-assets/knives-out-murder-on-the-orient-express-still.webp",
-    "srcSet": "/blog-assets/knives-out-murder-on-the-orient-express-still-480.webp 480w, /blog-assets/knives-out-murder-on-the-orient-express-still-800.webp 800w, /blog-assets/knives-out-murder-on-the-orient-express-still.webp 1200w",
-    "width": 1200,
-    "height": 690
-  },
-  "/blog-assets/knives-out-death-on-the-nile-still.webp": {
-    "src": "/blog-assets/knives-out-death-on-the-nile-still.webp",
-    "srcSet": "/blog-assets/knives-out-death-on-the-nile-still-480.webp 480w, /blog-assets/knives-out-death-on-the-nile-still-800.webp 800w, /blog-assets/knives-out-death-on-the-nile-still.webp 1200w",
-    "width": 1200,
-    "height": 646
-  },
-  "/blog-assets/knives-out-sleuth-still.webp": {
-    "src": "/blog-assets/knives-out-sleuth-still.webp",
-    "srcSet": "/blog-assets/knives-out-sleuth-still-480.webp 480w, /blog-assets/knives-out-sleuth-still-800.webp 800w, /blog-assets/knives-out-sleuth-still.webp 1200w",
-    "width": 1200,
-    "height": 665
-  },
-  "/blog-assets/knives-out-deathtrap-still.webp": {
-    "src": "/blog-assets/knives-out-deathtrap-still.webp",
-    "srcSet": "/blog-assets/knives-out-deathtrap-still-480.webp 480w, /blog-assets/knives-out-deathtrap-still-800.webp 800w, /blog-assets/knives-out-deathtrap-still.webp 1200w",
-    "width": 1200,
-    "height": 669
   },
   "/blog-assets/completed-miniseries-to-watch-cover.webp": {
     "src": "/blog-assets/completed-miniseries-to-watch-cover.webp",
@@ -179,66 +23,6 @@
     "width": 640,
     "height": 360
   },
-  "/blog-assets/miniseries-unorthodox-still.webp": {
-    "src": "/blog-assets/miniseries-unorthodox-still.webp",
-    "srcSet": "/blog-assets/miniseries-unorthodox-still-480.webp 480w, /blog-assets/miniseries-unorthodox-still-800.webp 800w, /blog-assets/miniseries-unorthodox-still.webp 1200w",
-    "width": 1200,
-    "height": 645
-  },
-  "/blog-assets/miniseries-when-they-see-us-still.webp": {
-    "src": "/blog-assets/miniseries-when-they-see-us-still.webp",
-    "srcSet": "/blog-assets/miniseries-when-they-see-us-still-480.webp 480w, /blog-assets/miniseries-when-they-see-us-still-800.webp 800w, /blog-assets/miniseries-when-they-see-us-still.webp 1200w",
-    "width": 1200,
-    "height": 594
-  },
-  "/blog-assets/miniseries-chernobyl-still.webp": {
-    "src": "/blog-assets/miniseries-chernobyl-still.webp",
-    "srcSet": "/blog-assets/miniseries-chernobyl-still-480.webp 480w, /blog-assets/miniseries-chernobyl-still-800.webp 800w, /blog-assets/miniseries-chernobyl-still.webp 1200w",
-    "width": 1200,
-    "height": 592
-  },
-  "/blog-assets/miniseries-normal-people-still.webp": {
-    "src": "/blog-assets/miniseries-normal-people-still.webp",
-    "srcSet": "/blog-assets/miniseries-normal-people-still-480.webp 480w, /blog-assets/miniseries-normal-people-still-800.webp 800w, /blog-assets/miniseries-normal-people-still.webp 1200w",
-    "width": 1200,
-    "height": 657
-  },
-  "/blog-assets/miniseries-five-days-at-memorial-still.webp": {
-    "src": "/blog-assets/miniseries-five-days-at-memorial-still.webp",
-    "srcSet": "/blog-assets/miniseries-five-days-at-memorial-still-480.webp 480w, /blog-assets/miniseries-five-days-at-memorial-still-800.webp 800w, /blog-assets/miniseries-five-days-at-memorial-still.webp 1200w",
-    "width": 1200,
-    "height": 496
-  },
-  "/blog-assets/miniseries-the-queens-gambit-still.webp": {
-    "src": "/blog-assets/miniseries-the-queens-gambit-still.webp",
-    "srcSet": "/blog-assets/miniseries-the-queens-gambit-still-480.webp 480w, /blog-assets/miniseries-the-queens-gambit-still-800.webp 800w, /blog-assets/miniseries-the-queens-gambit-still.webp 1200w",
-    "width": 1200,
-    "height": 664
-  },
-  "/blog-assets/miniseries-one-day-still.webp": {
-    "src": "/blog-assets/miniseries-one-day-still.webp",
-    "srcSet": "/blog-assets/miniseries-one-day-still-480.webp 480w, /blog-assets/miniseries-one-day-still-800.webp 800w, /blog-assets/miniseries-one-day-still.webp 1200w",
-    "width": 1200,
-    "height": 504
-  },
-  "/blog-assets/miniseries-godless-still.webp": {
-    "src": "/blog-assets/miniseries-godless-still.webp",
-    "srcSet": "/blog-assets/miniseries-godless-still-480.webp 480w, /blog-assets/miniseries-godless-still-800.webp 800w, /blog-assets/miniseries-godless-still.webp 1200w",
-    "width": 1200,
-    "height": 492
-  },
-  "/blog-assets/miniseries-station-eleven-still.webp": {
-    "src": "/blog-assets/miniseries-station-eleven-still.webp",
-    "srcSet": "/blog-assets/miniseries-station-eleven-still-480.webp 480w, /blog-assets/miniseries-station-eleven-still-800.webp 800w, /blog-assets/miniseries-station-eleven-still.webp 1200w",
-    "width": 1200,
-    "height": 589
-  },
-  "/blog-assets/miniseries-maid-still.webp": {
-    "src": "/blog-assets/miniseries-maid-still.webp",
-    "srcSet": "/blog-assets/miniseries-maid-still-480.webp 480w, /blog-assets/miniseries-maid-still-800.webp 800w, /blog-assets/miniseries-maid-still.webp 1200w",
-    "width": 1200,
-    "height": 594
-  },
   "/blog-assets/best-sci-fi-movies-2026-cover.webp": {
     "src": "/blog-assets/best-sci-fi-movies-2026-cover.webp",
     "srcSet": "/blog-assets/best-sci-fi-movies-2026-480.webp 480w, /blog-assets/best-sci-fi-movies-2026-800.webp 800w, /blog-assets/best-sci-fi-movies-2026-cover.webp 1200w",
@@ -251,48 +35,6 @@
     "width": 640,
     "height": 360
   },
-  "/blog-assets/sci-fi-2026-project-hail-mary-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-project-hail-mary-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-project-hail-mary-still-480.webp 480w, /blog-assets/sci-fi-2026-project-hail-mary-still-800.webp 800w, /blog-assets/sci-fi-2026-project-hail-mary-still.webp 1200w",
-    "width": 1200,
-    "height": 668
-  },
-  "/blog-assets/sci-fi-2026-disclosure-day-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-disclosure-day-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-disclosure-day-still-480.webp 480w, /blog-assets/sci-fi-2026-disclosure-day-still-800.webp 800w, /blog-assets/sci-fi-2026-disclosure-day-still.webp 1200w",
-    "width": 1200,
-    "height": 494
-  },
-  "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-480.webp 480w, /blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-800.webp 800w, /blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp 1200w",
-    "width": 1200,
-    "height": 496
-  },
-  "/blog-assets/sci-fi-2026-hoppers-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-hoppers-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-hoppers-still-480.webp 480w, /blog-assets/sci-fi-2026-hoppers-still-800.webp 800w, /blog-assets/sci-fi-2026-hoppers-still.webp 1200w",
-    "width": 1200,
-    "height": 636
-  },
-  "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still-480.webp 480w, /blog-assets/sci-fi-2026-the-end-of-oak-street-still-800.webp 800w, /blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp 1200w",
-    "width": 1200,
-    "height": 495
-  },
-  "/blog-assets/sci-fi-2026-redux-redux-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-redux-redux-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-redux-redux-still-480.webp 480w, /blog-assets/sci-fi-2026-redux-redux-still-800.webp 800w, /blog-assets/sci-fi-2026-redux-redux-still.webp 1200w",
-    "width": 1200,
-    "height": 494
-  },
-  "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp": {
-    "src": "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp",
-    "srcSet": "/blog-assets/sci-fi-2026-rose-of-nevada-still-480.webp 480w, /blog-assets/sci-fi-2026-rose-of-nevada-still-800.webp 800w, /blog-assets/sci-fi-2026-rose-of-nevada-still.webp 1200w",
-    "width": 1200,
-    "height": 881
-  },
   "/blog-assets/sci-fi-mystery-movies-cover.webp": {
     "src": "/blog-assets/sci-fi-mystery-movies-cover.webp",
     "srcSet": "/blog-assets/sci-fi-mystery-movies-480.webp 480w, /blog-assets/sci-fi-mystery-movies-800.webp 800w, /blog-assets/sci-fi-mystery-movies-cover.webp 1200w",
@@ -304,66 +46,6 @@
     "srcSet": "/blog-assets/sci-fi-mystery-movies-480.webp 480w, /blog-assets/sci-fi-mystery-movies-640.webp 640w, /blog-assets/sci-fi-mystery-movies-800.webp 800w",
     "width": 640,
     "height": 360
-  },
-  "/blog-assets/sci-fi-mystery-arrival-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-arrival-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-arrival-still-480.webp 480w, /blog-assets/sci-fi-mystery-arrival-still-800.webp 800w, /blog-assets/sci-fi-mystery-arrival-still.webp 1200w",
-    "width": 1200,
-    "height": 495
-  },
-  "/blog-assets/sci-fi-mystery-moon-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-moon-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-moon-still-480.webp 480w, /blog-assets/sci-fi-mystery-moon-still-800.webp 800w, /blog-assets/sci-fi-mystery-moon-still.webp 1200w",
-    "width": 1200,
-    "height": 495
-  },
-  "/blog-assets/sci-fi-mystery-coherence-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-coherence-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-coherence-still-480.webp 480w, /blog-assets/sci-fi-mystery-coherence-still-800.webp 800w, /blog-assets/sci-fi-mystery-coherence-still.webp 1200w",
-    "width": 1200,
-    "height": 507
-  },
-  "/blog-assets/sci-fi-mystery-source-code-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-source-code-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-source-code-still-480.webp 480w, /blog-assets/sci-fi-mystery-source-code-still-800.webp 800w, /blog-assets/sci-fi-mystery-source-code-still.webp 1200w",
-    "width": 1200,
-    "height": 671
-  },
-  "/blog-assets/sci-fi-mystery-ex-machina-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-ex-machina-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-ex-machina-still-480.webp 480w, /blog-assets/sci-fi-mystery-ex-machina-still-800.webp 800w, /blog-assets/sci-fi-mystery-ex-machina-still.webp 1200w",
-    "width": 1200,
-    "height": 500
-  },
-  "/blog-assets/sci-fi-mystery-dark-city-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-dark-city-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-dark-city-still-480.webp 480w, /blog-assets/sci-fi-mystery-dark-city-still-800.webp 800w, /blog-assets/sci-fi-mystery-dark-city-still.webp 1200w",
-    "width": 1200,
-    "height": 669
-  },
-  "/blog-assets/sci-fi-mystery-minority-report-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-minority-report-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-minority-report-still-480.webp 480w, /blog-assets/sci-fi-mystery-minority-report-still-800.webp 800w, /blog-assets/sci-fi-mystery-minority-report-still.webp 1200w",
-    "width": 1200,
-    "height": 670
-  },
-  "/blog-assets/sci-fi-mystery-gattaca-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-gattaca-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-gattaca-still-480.webp 480w, /blog-assets/sci-fi-mystery-gattaca-still-800.webp 800w, /blog-assets/sci-fi-mystery-gattaca-still.webp 1200w",
-    "width": 1200,
-    "height": 669
-  },
-  "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-480.webp 480w, /blog-assets/sci-fi-mystery-the-thirteenth-floor-still-800.webp 800w, /blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp 1200w",
-    "width": 1200,
-    "height": 498
-  },
-  "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp": {
-    "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp",
-    "srcSet": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-480.webp 480w, /blog-assets/sci-fi-mystery-the-vast-of-night-still-800.webp 800w, /blog-assets/sci-fi-mystery-the-vast-of-night-still.webp 1200w",
-    "width": 1200,
-    "height": 494
   },
   "/blog-assets/thanksgiving-movies-by-mood-cover.webp": {
     "src": "/blog-assets/thanksgiving-movies-by-mood-cover.webp",
@@ -418,5 +100,935 @@
     "srcSet": "/blog-assets/thanksgiving-movies-by-mood-480.webp 480w, /blog-assets/thanksgiving-movies-by-mood-640.webp 640w, /blog-assets/thanksgiving-movies-by-mood-800.webp 800w",
     "width": 640,
     "height": 360
+  },
+  "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-arrival-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-arrival-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-arrival-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-moon-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-moon-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-moon-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-moon-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-moon-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-coherence-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-coherence-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-coherence-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-source-code-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-source-code-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-source-code-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-ex-machina-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-dark-city-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-dark-city-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-dark-city-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-minority-report-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-minority-report-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-minority-report-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-gattaca-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-gattaca-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-gattaca-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-project-hail-mary-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-disclosure-day-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-hoppers-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-hoppers-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-hoppers-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-redux-redux-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-redux-redux-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-redux-redux-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-unorthodox-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-unorthodox-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-unorthodox-illustration-480.webp 480w, /blog-assets/original/miniseries-unorthodox-illustration-800.webp 800w, /blog-assets/original/miniseries-unorthodox-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-when-they-see-us-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-when-they-see-us-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-when-they-see-us-illustration-480.webp 480w, /blog-assets/original/miniseries-when-they-see-us-illustration-800.webp 800w, /blog-assets/original/miniseries-when-they-see-us-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-chernobyl-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-chernobyl-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-chernobyl-illustration-480.webp 480w, /blog-assets/original/miniseries-chernobyl-illustration-800.webp 800w, /blog-assets/original/miniseries-chernobyl-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-normal-people-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-normal-people-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-normal-people-illustration-480.webp 480w, /blog-assets/original/miniseries-normal-people-illustration-800.webp 800w, /blog-assets/original/miniseries-normal-people-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-five-days-at-memorial-illustration-480.webp 480w, /blog-assets/original/miniseries-five-days-at-memorial-illustration-800.webp 800w, /blog-assets/original/miniseries-five-days-at-memorial-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-the-queens-gambit-illustration-480.webp 480w, /blog-assets/original/miniseries-the-queens-gambit-illustration-800.webp 800w, /blog-assets/original/miniseries-the-queens-gambit-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-one-day-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-one-day-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-one-day-illustration-480.webp 480w, /blog-assets/original/miniseries-one-day-illustration-800.webp 800w, /blog-assets/original/miniseries-one-day-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-godless-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-godless-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-godless-illustration-480.webp 480w, /blog-assets/original/miniseries-godless-illustration-800.webp 800w, /blog-assets/original/miniseries-godless-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-station-eleven-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-station-eleven-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-station-eleven-illustration-480.webp 480w, /blog-assets/original/miniseries-station-eleven-illustration-800.webp 800w, /blog-assets/original/miniseries-station-eleven-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/miniseries-maid-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-maid-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-maid-illustration-480.webp 480w, /blog-assets/original/miniseries-maid-illustration-800.webp 800w, /blog-assets/original/miniseries-maid-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-glass-onion-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-glass-onion-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-glass-onion-illustration-480.webp 480w, /blog-assets/original/knives-out-glass-onion-illustration-800.webp 800w, /blog-assets/original/knives-out-glass-onion-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-wake-up-dead-man-illustration-480.webp 480w, /blog-assets/original/knives-out-wake-up-dead-man-illustration-800.webp 800w, /blog-assets/original/knives-out-wake-up-dead-man-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-clue-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-clue-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-clue-illustration-480.webp 480w, /blog-assets/original/knives-out-clue-illustration-800.webp 800w, /blog-assets/original/knives-out-clue-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-see-how-they-run-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-see-how-they-run-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-see-how-they-run-illustration-480.webp 480w, /blog-assets/original/knives-out-see-how-they-run-illustration-800.webp 800w, /blog-assets/original/knives-out-see-how-they-run-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-the-last-of-sheila-illustration-480.webp 480w, /blog-assets/original/knives-out-the-last-of-sheila-illustration-800.webp 800w, /blog-assets/original/knives-out-the-last-of-sheila-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-gosford-park-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-gosford-park-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-gosford-park-illustration-480.webp 480w, /blog-assets/original/knives-out-gosford-park-illustration-800.webp 800w, /blog-assets/original/knives-out-gosford-park-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-480.webp 480w, /blog-assets/original/knives-out-murder-on-the-orient-express-illustration-800.webp 800w, /blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-death-on-the-nile-illustration-480.webp 480w, /blog-assets/original/knives-out-death-on-the-nile-illustration-800.webp 800w, /blog-assets/original/knives-out-death-on-the-nile-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-sleuth-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-sleuth-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-sleuth-illustration-480.webp 480w, /blog-assets/original/knives-out-sleuth-illustration-800.webp 800w, /blog-assets/original/knives-out-sleuth-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/knives-out-deathtrap-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-deathtrap-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-deathtrap-illustration-480.webp 480w, /blog-assets/original/knives-out-deathtrap-illustration-800.webp 800w, /blog-assets/original/knives-out-deathtrap-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-480.webp 480w, /blog-assets/original/november-2026-the-cat-in-the-hat-illustration-800.webp 800w, /blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-480.webp 480w, /blog-assets/original/november-2026-godzilla-minus-zero-illustration-800.webp 800w, /blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-wild-horse-nine-illustration-480.webp 480w, /blog-assets/original/november-2026-wild-horse-nine-illustration-800.webp 800w, /blog-assets/original/november-2026-wild-horse-nine-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-ebenezer-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-ebenezer-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-ebenezer-illustration-480.webp 480w, /blog-assets/original/november-2026-ebenezer-illustration-800.webp 800w, /blog-assets/original/november-2026-ebenezer-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-480.webp 480w, /blog-assets/original/november-2026-how-to-rob-a-bank-illustration-800.webp 800w, /blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-paper-tiger-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-paper-tiger-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-paper-tiger-illustration-480.webp 480w, /blog-assets/original/november-2026-paper-tiger-illustration-800.webp 800w, /blog-assets/original/november-2026-paper-tiger-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-480.webp 480w, /blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-800.webp 800w, /blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-i-play-rocky-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-i-play-rocky-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-i-play-rocky-illustration-480.webp 480w, /blog-assets/original/november-2026-i-play-rocky-illustration-800.webp 800w, /blog-assets/original/november-2026-i-play-rocky-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-hexed-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-hexed-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-hexed-illustration-480.webp 480w, /blog-assets/original/november-2026-hexed-illustration-800.webp 800w, /blog-assets/original/november-2026-hexed-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/november-2026-focker-in-law-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-focker-in-law-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-focker-in-law-illustration-480.webp 480w, /blog-assets/original/november-2026-focker-in-law-illustration-800.webp 800w, /blog-assets/original/november-2026-focker-in-law-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/whalefall-coast-illustration.webp": {
+    "src": "/blog-assets/original/whalefall-coast-illustration.webp",
+    "srcSet": "/blog-assets/original/whalefall-coast-illustration-480.webp 480w, /blog-assets/original/whalefall-coast-illustration-800.webp 800w, /blog-assets/original/whalefall-coast-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-resident-evil-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-resident-evil-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-resident-evil-illustration-480.webp 480w, /blog-assets/original/horror-2026-resident-evil-illustration-800.webp 800w, /blog-assets/original/horror-2026-resident-evil-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-obsession-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-obsession-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-obsession-illustration-480.webp 480w, /blog-assets/original/horror-2026-obsession-illustration-800.webp 800w, /blog-assets/original/horror-2026-obsession-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-hokum-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-hokum-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-hokum-illustration-480.webp 480w, /blog-assets/original/horror-2026-hokum-illustration-800.webp 800w, /blog-assets/original/horror-2026-hokum-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-send-help-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-send-help-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-send-help-illustration-480.webp 480w, /blog-assets/original/horror-2026-send-help-illustration-800.webp 800w, /blog-assets/original/horror-2026-send-help-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-backrooms-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-backrooms-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-backrooms-illustration-480.webp 480w, /blog-assets/original/horror-2026-backrooms-illustration-800.webp 800w, /blog-assets/original/horror-2026-backrooms-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-the-bone-temple-illustration-480.webp 480w, /blog-assets/original/horror-2026-the-bone-temple-illustration-800.webp 800w, /blog-assets/original/horror-2026-the-bone-temple-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/horror-2026-primate-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-primate-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-primate-illustration-480.webp 480w, /blog-assets/original/horror-2026-primate-illustration-800.webp 800w, /blog-assets/original/horror-2026-primate-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-160.webp 160w, /blog-assets/original/september-2025-the-conjuring-last-rites-illustration-320.webp 320w, /blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-160.webp 160w, /blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-320.webp 320w, /blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-160.webp 160w, /blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-320.webp 320w, /blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-spinal-tap-ii-illustration-160.webp 160w, /blog-assets/original/september-2025-spinal-tap-ii-illustration-320.webp 320w, /blog-assets/original/september-2025-spinal-tap-ii-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-the-long-walk-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-the-long-walk-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-the-long-walk-illustration-160.webp 160w, /blog-assets/original/september-2025-the-long-walk-illustration-320.webp 320w, /blog-assets/original/september-2025-the-long-walk-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-160.webp 160w, /blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-320.webp 320w, /blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-him-2025-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-him-2025-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-him-2025-illustration-160.webp 160w, /blog-assets/original/september-2025-him-2025-illustration-320.webp 320w, /blog-assets/original/september-2025-him-2025-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-160.webp 160w, /blog-assets/original/september-2025-the-strangers-chapter-2-illustration-320.webp 320w, /blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-160.webp 160w, /blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-320.webp 320w, /blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-bad-guys-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-bad-guys-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-bad-guys-2-illustration-160.webp 160w, /blog-assets/original/august-2025-bad-guys-2-illustration-320.webp 320w, /blog-assets/original/august-2025-bad-guys-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-naked-gun-2025-illustration-160.webp 160w, /blog-assets/original/august-2025-naked-gun-2025-illustration-320.webp 320w, /blog-assets/original/august-2025-naked-gun-2025-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-freaky-friday-2-illustration-160.webp 160w, /blog-assets/original/august-2025-freaky-friday-2-illustration-320.webp 320w, /blog-assets/original/august-2025-freaky-friday-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-weapons-2025-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-weapons-2025-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-weapons-2025-illustration-160.webp 160w, /blog-assets/original/august-2025-weapons-2025-illustration-320.webp 320w, /blog-assets/original/august-2025-weapons-2025-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-nobody-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-nobody-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-nobody-2-illustration-160.webp 160w, /blog-assets/original/august-2025-nobody-2-illustration-320.webp 320w, /blog-assets/original/august-2025-nobody-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-honey-dont-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-honey-dont-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-honey-dont-illustration-160.webp 160w, /blog-assets/original/august-2025-honey-dont-illustration-320.webp 320w, /blog-assets/original/august-2025-honey-dont-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/august-2025-ne-zha-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-ne-zha-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-ne-zha-2-illustration-160.webp 160w, /blog-assets/original/august-2025-ne-zha-2-illustration-320.webp 320w, /blog-assets/original/august-2025-ne-zha-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "/blog-assets/original/scope-composition-station-illustration.webp": {
+    "src": "/blog-assets/original/scope-composition-station-illustration.webp",
+    "srcSet": "/blog-assets/original/scope-composition-station-illustration-960.webp 960w, /blog-assets/original/scope-composition-station-illustration-1440.webp 1440w, /blog-assets/original/scope-composition-station-illustration.webp 2390w",
+    "width": 2390,
+    "height": 1000
+  },
+  "/blog-assets/original/scope-negative-space-illustration.webp": {
+    "src": "/blog-assets/original/scope-negative-space-illustration.webp",
+    "srcSet": "/blog-assets/original/scope-negative-space-illustration-480.webp 480w, /blog-assets/original/scope-negative-space-illustration-800.webp 800w, /blog-assets/original/scope-negative-space-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "/blog-assets/original/archive-august-2025-cover.webp": {
+    "src": "/blog-assets/original/archive-august-2025-cover.webp",
+    "srcSet": "/blog-assets/original/archive-august-2025-cover-480.webp 480w, /blog-assets/original/archive-august-2025-cover-640.webp 640w, /blog-assets/original/archive-august-2025-cover-800.webp 800w, /blog-assets/original/archive-august-2025-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/archive-august-2025-cover-640.webp": {
+    "src": "/blog-assets/original/archive-august-2025-cover-640.webp",
+    "srcSet": "/blog-assets/original/archive-august-2025-cover-480.webp 480w, /blog-assets/original/archive-august-2025-cover-640.webp 640w, /blog-assets/original/archive-august-2025-cover-800.webp 800w",
+    "width": 640,
+    "height": 360
+  },
+  "/blog-assets/original/archive-september-2025-cover.webp": {
+    "src": "/blog-assets/original/archive-september-2025-cover.webp",
+    "srcSet": "/blog-assets/original/archive-september-2025-cover-480.webp 480w, /blog-assets/original/archive-september-2025-cover-640.webp 640w, /blog-assets/original/archive-september-2025-cover-800.webp 800w, /blog-assets/original/archive-september-2025-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/archive-september-2025-cover-640.webp": {
+    "src": "/blog-assets/original/archive-september-2025-cover-640.webp",
+    "srcSet": "/blog-assets/original/archive-september-2025-cover-480.webp 480w, /blog-assets/original/archive-september-2025-cover-640.webp 640w, /blog-assets/original/archive-september-2025-cover-800.webp 800w",
+    "width": 640,
+    "height": 360
+  },
+  "/blog-assets/original/scope-guide-cover.webp": {
+    "src": "/blog-assets/original/scope-guide-cover.webp",
+    "srcSet": "/blog-assets/original/scope-guide-cover-480.webp 480w, /blog-assets/original/scope-guide-cover-640.webp 640w, /blog-assets/original/scope-guide-cover-800.webp 800w, /blog-assets/original/scope-guide-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/scope-guide-cover-640.webp": {
+    "src": "/blog-assets/original/scope-guide-cover-640.webp",
+    "srcSet": "/blog-assets/original/scope-guide-cover-480.webp 480w, /blog-assets/original/scope-guide-cover-640.webp 640w, /blog-assets/original/scope-guide-cover-800.webp 800w",
+    "width": 640,
+    "height": 360
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-arrival-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-arrival-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-arrival-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-arrival-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-moon-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-moon-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-moon-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-moon-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-moon-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-coherence-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-coherence-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-coherence-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-coherence-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-source-code-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-source-code-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-source-code-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-source-code-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-ex-machina-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-dark-city-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-dark-city-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-dark-city-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-minority-report-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-minority-report-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-minority-report-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-gattaca-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-gattaca-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-gattaca-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-480.webp 480w, /blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-800.webp 800w, /blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-project-hail-mary-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-disclosure-day-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-hoppers-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-hoppers-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-hoppers-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-hoppers-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-redux-redux-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-redux-redux-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-redux-redux-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp": {
+    "src": "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp",
+    "srcSet": "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-480.webp 480w, /blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-800.webp 800w, /blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-unorthodox-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-unorthodox-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-unorthodox-illustration-480.webp 480w, /blog-assets/original/miniseries-unorthodox-illustration-800.webp 800w, /blog-assets/original/miniseries-unorthodox-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-when-they-see-us-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-when-they-see-us-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-when-they-see-us-illustration-480.webp 480w, /blog-assets/original/miniseries-when-they-see-us-illustration-800.webp 800w, /blog-assets/original/miniseries-when-they-see-us-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-chernobyl-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-chernobyl-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-chernobyl-illustration-480.webp 480w, /blog-assets/original/miniseries-chernobyl-illustration-800.webp 800w, /blog-assets/original/miniseries-chernobyl-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-normal-people-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-normal-people-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-normal-people-illustration-480.webp 480w, /blog-assets/original/miniseries-normal-people-illustration-800.webp 800w, /blog-assets/original/miniseries-normal-people-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-five-days-at-memorial-illustration-480.webp 480w, /blog-assets/original/miniseries-five-days-at-memorial-illustration-800.webp 800w, /blog-assets/original/miniseries-five-days-at-memorial-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-the-queens-gambit-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-the-queens-gambit-illustration-480.webp 480w, /blog-assets/original/miniseries-the-queens-gambit-illustration-800.webp 800w, /blog-assets/original/miniseries-the-queens-gambit-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-one-day-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-one-day-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-one-day-illustration-480.webp 480w, /blog-assets/original/miniseries-one-day-illustration-800.webp 800w, /blog-assets/original/miniseries-one-day-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-godless-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-godless-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-godless-illustration-480.webp 480w, /blog-assets/original/miniseries-godless-illustration-800.webp 800w, /blog-assets/original/miniseries-godless-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-station-eleven-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-station-eleven-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-station-eleven-illustration-480.webp 480w, /blog-assets/original/miniseries-station-eleven-illustration-800.webp 800w, /blog-assets/original/miniseries-station-eleven-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/miniseries-maid-illustration.webp": {
+    "src": "/blog-assets/original/miniseries-maid-illustration.webp",
+    "srcSet": "/blog-assets/original/miniseries-maid-illustration-480.webp 480w, /blog-assets/original/miniseries-maid-illustration-800.webp 800w, /blog-assets/original/miniseries-maid-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-glass-onion-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-glass-onion-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-glass-onion-illustration-480.webp 480w, /blog-assets/original/knives-out-glass-onion-illustration-800.webp 800w, /blog-assets/original/knives-out-glass-onion-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-wake-up-dead-man-illustration-480.webp 480w, /blog-assets/original/knives-out-wake-up-dead-man-illustration-800.webp 800w, /blog-assets/original/knives-out-wake-up-dead-man-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-clue-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-clue-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-clue-illustration-480.webp 480w, /blog-assets/original/knives-out-clue-illustration-800.webp 800w, /blog-assets/original/knives-out-clue-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-see-how-they-run-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-see-how-they-run-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-see-how-they-run-illustration-480.webp 480w, /blog-assets/original/knives-out-see-how-they-run-illustration-800.webp 800w, /blog-assets/original/knives-out-see-how-they-run-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-the-last-of-sheila-illustration-480.webp 480w, /blog-assets/original/knives-out-the-last-of-sheila-illustration-800.webp 800w, /blog-assets/original/knives-out-the-last-of-sheila-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-gosford-park-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-gosford-park-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-gosford-park-illustration-480.webp 480w, /blog-assets/original/knives-out-gosford-park-illustration-800.webp 800w, /blog-assets/original/knives-out-gosford-park-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-480.webp 480w, /blog-assets/original/knives-out-murder-on-the-orient-express-illustration-800.webp 800w, /blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-death-on-the-nile-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-death-on-the-nile-illustration-480.webp 480w, /blog-assets/original/knives-out-death-on-the-nile-illustration-800.webp 800w, /blog-assets/original/knives-out-death-on-the-nile-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-sleuth-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-sleuth-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-sleuth-illustration-480.webp 480w, /blog-assets/original/knives-out-sleuth-illustration-800.webp 800w, /blog-assets/original/knives-out-sleuth-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/knives-out-deathtrap-illustration.webp": {
+    "src": "/blog-assets/original/knives-out-deathtrap-illustration.webp",
+    "srcSet": "/blog-assets/original/knives-out-deathtrap-illustration-480.webp 480w, /blog-assets/original/knives-out-deathtrap-illustration-800.webp 800w, /blog-assets/original/knives-out-deathtrap-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-480.webp 480w, /blog-assets/original/november-2026-the-cat-in-the-hat-illustration-800.webp 800w, /blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-480.webp 480w, /blog-assets/original/november-2026-godzilla-minus-zero-illustration-800.webp 800w, /blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-wild-horse-nine-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-wild-horse-nine-illustration-480.webp 480w, /blog-assets/original/november-2026-wild-horse-nine-illustration-800.webp 800w, /blog-assets/original/november-2026-wild-horse-nine-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-ebenezer-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-ebenezer-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-ebenezer-illustration-480.webp 480w, /blog-assets/original/november-2026-ebenezer-illustration-800.webp 800w, /blog-assets/original/november-2026-ebenezer-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-480.webp 480w, /blog-assets/original/november-2026-how-to-rob-a-bank-illustration-800.webp 800w, /blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-paper-tiger-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-paper-tiger-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-paper-tiger-illustration-480.webp 480w, /blog-assets/original/november-2026-paper-tiger-illustration-800.webp 800w, /blog-assets/original/november-2026-paper-tiger-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-480.webp 480w, /blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-800.webp 800w, /blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-i-play-rocky-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-i-play-rocky-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-i-play-rocky-illustration-480.webp 480w, /blog-assets/original/november-2026-i-play-rocky-illustration-800.webp 800w, /blog-assets/original/november-2026-i-play-rocky-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-hexed-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-hexed-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-hexed-illustration-480.webp 480w, /blog-assets/original/november-2026-hexed-illustration-800.webp 800w, /blog-assets/original/november-2026-hexed-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/november-2026-focker-in-law-illustration.webp": {
+    "src": "/blog-assets/original/november-2026-focker-in-law-illustration.webp",
+    "srcSet": "/blog-assets/original/november-2026-focker-in-law-illustration-480.webp 480w, /blog-assets/original/november-2026-focker-in-law-illustration-800.webp 800w, /blog-assets/original/november-2026-focker-in-law-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/whalefall-coast-illustration.webp": {
+    "src": "/blog-assets/original/whalefall-coast-illustration.webp",
+    "srcSet": "/blog-assets/original/whalefall-coast-illustration-480.webp 480w, /blog-assets/original/whalefall-coast-illustration-800.webp 800w, /blog-assets/original/whalefall-coast-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-resident-evil-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-resident-evil-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-resident-evil-illustration-480.webp 480w, /blog-assets/original/horror-2026-resident-evil-illustration-800.webp 800w, /blog-assets/original/horror-2026-resident-evil-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-obsession-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-obsession-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-obsession-illustration-480.webp 480w, /blog-assets/original/horror-2026-obsession-illustration-800.webp 800w, /blog-assets/original/horror-2026-obsession-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-hokum-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-hokum-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-hokum-illustration-480.webp 480w, /blog-assets/original/horror-2026-hokum-illustration-800.webp 800w, /blog-assets/original/horror-2026-hokum-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-send-help-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-send-help-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-send-help-illustration-480.webp 480w, /blog-assets/original/horror-2026-send-help-illustration-800.webp 800w, /blog-assets/original/horror-2026-send-help-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-backrooms-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-backrooms-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-backrooms-illustration-480.webp 480w, /blog-assets/original/horror-2026-backrooms-illustration-800.webp 800w, /blog-assets/original/horror-2026-backrooms-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-the-bone-temple-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-the-bone-temple-illustration-480.webp 480w, /blog-assets/original/horror-2026-the-bone-temple-illustration-800.webp 800w, /blog-assets/original/horror-2026-the-bone-temple-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/horror-2026-primate-illustration.webp": {
+    "src": "/blog-assets/original/horror-2026-primate-illustration.webp",
+    "srcSet": "/blog-assets/original/horror-2026-primate-illustration-480.webp 480w, /blog-assets/original/horror-2026-primate-illustration-800.webp 800w, /blog-assets/original/horror-2026-primate-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-160.webp 160w, /blog-assets/original/september-2025-the-conjuring-last-rites-illustration-320.webp 320w, /blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-160.webp 160w, /blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-320.webp 320w, /blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-160.webp 160w, /blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-320.webp 320w, /blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-spinal-tap-ii-illustration-160.webp 160w, /blog-assets/original/september-2025-spinal-tap-ii-illustration-320.webp 320w, /blog-assets/original/september-2025-spinal-tap-ii-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-the-long-walk-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-the-long-walk-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-the-long-walk-illustration-160.webp 160w, /blog-assets/original/september-2025-the-long-walk-illustration-320.webp 320w, /blog-assets/original/september-2025-the-long-walk-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-160.webp 160w, /blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-320.webp 320w, /blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-him-2025-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-him-2025-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-him-2025-illustration-160.webp 160w, /blog-assets/original/september-2025-him-2025-illustration-320.webp 320w, /blog-assets/original/september-2025-him-2025-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-160.webp 160w, /blog-assets/original/september-2025-the-strangers-chapter-2-illustration-320.webp 320w, /blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp": {
+    "src": "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp",
+    "srcSet": "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-160.webp 160w, /blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-320.webp 320w, /blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-bad-guys-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-bad-guys-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-bad-guys-2-illustration-160.webp 160w, /blog-assets/original/august-2025-bad-guys-2-illustration-320.webp 320w, /blog-assets/original/august-2025-bad-guys-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-naked-gun-2025-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-naked-gun-2025-illustration-160.webp 160w, /blog-assets/original/august-2025-naked-gun-2025-illustration-320.webp 320w, /blog-assets/original/august-2025-naked-gun-2025-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-freaky-friday-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-freaky-friday-2-illustration-160.webp 160w, /blog-assets/original/august-2025-freaky-friday-2-illustration-320.webp 320w, /blog-assets/original/august-2025-freaky-friday-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-weapons-2025-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-weapons-2025-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-weapons-2025-illustration-160.webp 160w, /blog-assets/original/august-2025-weapons-2025-illustration-320.webp 320w, /blog-assets/original/august-2025-weapons-2025-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-nobody-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-nobody-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-nobody-2-illustration-160.webp 160w, /blog-assets/original/august-2025-nobody-2-illustration-320.webp 320w, /blog-assets/original/august-2025-nobody-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-honey-dont-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-honey-dont-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-honey-dont-illustration-160.webp 160w, /blog-assets/original/august-2025-honey-dont-illustration-320.webp 320w, /blog-assets/original/august-2025-honey-dont-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/august-2025-ne-zha-2-illustration.webp": {
+    "src": "/blog-assets/original/august-2025-ne-zha-2-illustration.webp",
+    "srcSet": "/blog-assets/original/august-2025-ne-zha-2-illustration-160.webp 160w, /blog-assets/original/august-2025-ne-zha-2-illustration-320.webp 320w, /blog-assets/original/august-2025-ne-zha-2-illustration.webp 600w",
+    "width": 600,
+    "height": 900
+  },
+  "https://hard-quiz.com/blog-assets/original/scope-composition-station-illustration.webp": {
+    "src": "/blog-assets/original/scope-composition-station-illustration.webp",
+    "srcSet": "/blog-assets/original/scope-composition-station-illustration-960.webp 960w, /blog-assets/original/scope-composition-station-illustration-1440.webp 1440w, /blog-assets/original/scope-composition-station-illustration.webp 2390w",
+    "width": 2390,
+    "height": 1000
+  },
+  "https://hard-quiz.com/blog-assets/original/scope-negative-space-illustration.webp": {
+    "src": "/blog-assets/original/scope-negative-space-illustration.webp",
+    "srcSet": "/blog-assets/original/scope-negative-space-illustration-480.webp 480w, /blog-assets/original/scope-negative-space-illustration-800.webp 800w, /blog-assets/original/scope-negative-space-illustration.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/archive-august-2025-cover.webp": {
+    "src": "/blog-assets/original/archive-august-2025-cover.webp",
+    "srcSet": "/blog-assets/original/archive-august-2025-cover-480.webp 480w, /blog-assets/original/archive-august-2025-cover-640.webp 640w, /blog-assets/original/archive-august-2025-cover-800.webp 800w, /blog-assets/original/archive-august-2025-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/archive-september-2025-cover.webp": {
+    "src": "/blog-assets/original/archive-september-2025-cover.webp",
+    "srcSet": "/blog-assets/original/archive-september-2025-cover-480.webp 480w, /blog-assets/original/archive-september-2025-cover-640.webp 640w, /blog-assets/original/archive-september-2025-cover-800.webp 800w, /blog-assets/original/archive-september-2025-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/original/scope-guide-cover.webp": {
+    "src": "/blog-assets/original/scope-guide-cover.webp",
+    "srcSet": "/blog-assets/original/scope-guide-cover-480.webp 480w, /blog-assets/original/scope-guide-cover-640.webp 640w, /blog-assets/original/scope-guide-cover-800.webp 800w, /blog-assets/original/scope-guide-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
   }
 }

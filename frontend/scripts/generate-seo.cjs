@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const esbuild = require("esbuild");
 const { resolveBuildRevision } = require("./build-revision.cjs");
+const { createBlogImageRightsCheck } = require("./blog-image-rights.cjs");
 require("dotenv").config();
 
 const ROOT = process.cwd();
@@ -54,6 +55,10 @@ const ensureDir =
   });
   const { validateBlogPosts, sortBlogPosts, blogCollectionJsonLd, articleMetadata, articleJsonLd } = require(PRESENTATION_BUNDLE);
   validateBlogPosts(posts);
+  const imageRights = createBlogImageRightsCheck({
+    root: path.dirname(ROOT), publicDir: path.join(ROOT, "public"),
+    ledger: JSON.parse(fs.readFileSync(path.join(ROOT, "../docs/blog/image-rights-ledger.json"), "utf8")),
+  });
   const featured = JSON.parse(fs.readFileSync(path.join(ROOT, "src/featuredPostMetadata.json"), "utf8"));
   if (!posts.some(post => post.slug === featured.slug && post.title === featured.title)) throw new Error("Homepage featured article metadata is out of date");
   const sorted = sortBlogPosts(posts);
@@ -206,6 +211,7 @@ ${urls}
       const route = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(`/blog/${post.slug}`));
       if (!route || route.status || !route.dest?.endsWith("$1.html")) throw new Error(`Missing article HTML route for ${post.slug} in vercel.json`);
       const body = renderBlogArticle(post.slug);
+      imageRights.checkArticle(post, body);
       for (const item of post.contents ?? []) {
         if (body.split(`id="${item.id}"`).length !== 2) throw new Error(`Missing or duplicate section ${item.id} in ${post.slug}`);
       }

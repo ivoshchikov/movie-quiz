@@ -2,9 +2,10 @@ import type { ReactNode } from "react";
 import type { BlogPost } from "../types";
 import MovieBlock from "../components/MovieBlock";
 import { formatBlogDate, validBlogDate } from "../presentation";
+import { originalArtwork } from "../originalArtwork";
 
 export type NewReleaseFilm = {
-  id: string; title: string; posterUrl: string; releaseDate: string; releaseNote?: string;
+  id: string; title: string; illustrationId: string; releaseDate: string; releaseNote?: string;
   genre: string; director: string; cast: string[]; castLabel?: string; body: ReactNode;
 };
 
@@ -21,7 +22,7 @@ export function buildNewReleasesPost({ films, faq, monthLabel, intro, ...post }:
   }
   return {
     ...post,
-    gallery: post.gallery ?? films.map(film => film.posterUrl),
+    gallery: post.gallery ?? films.map(film => `https://hard-quiz.com${originalArtwork(film.illustrationId).src}`),
     contents: [{ id: "release-dates", label: "Release dates at a glance" }, ...films.map(film => ({ id: film.id, label: film.title })), { id: "faq", label: "Questions about this lineup" }, { id: "sources", label: "Sources" }],
     content: () => <>
       <p>{intro}</p>
@@ -33,7 +34,7 @@ export function buildNewReleasesPost({ films, faq, monthLabel, intro, ...post }:
           <tbody>{films.map(film => <tr key={film.id}><th scope="row"><a href={`#${film.id}`}>{film.title}</a></th><td><time dateTime={film.releaseDate}>{formatBlogDate(film.releaseDate)}</time>{film.releaseNote && <span className="hq-release-note">{film.releaseNote}</span>}</td><td>{film.genre}</td></tr>)}</tbody>
         </table>
       </section>
-      {films.map(film => <MovieBlock key={film.id} {...film} alt={`${film.title} theatrical poster`}>{film.body}</MovieBlock>)}
+      {films.map(film => <MovieBlock key={film.id} {...film}>{film.body}</MovieBlock>)}
       <section className="hq-article-faq" aria-labelledby="faq">
         <h2 id="faq" tabIndex={-1}>Questions about this lineup</h2>
         {faq.map(item => <div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}
