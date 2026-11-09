@@ -132,11 +132,12 @@ test("covers use all declared assets, reserved space and lazy decoding", async (
   expect(box!.width / box!.height).toBeCloseTo(16 / 9, 1);
 });
 
-test("one failed cover falls back to an existing gallery image", async ({ page }) => {
+test("a failed cover keeps the text card and does not reuse conditional store artwork", async ({ page }) => {
   await mockQuizApi(page);
   await page.route("**/original/archive-september-2025-cover*.webp", route => route.abort());
   await page.goto("/blog");
-  await expect(cards(page).filter({ hasText: september }).locator("img")).toHaveAttribute("src", /september-2025-the-conjuring-last-rites-illustration\.webp$/);
+  await expect(cards(page).filter({ hasText: september }).locator("img")).toHaveCount(0);
+  await expect(cards(page).filter({ hasText: september }).locator(".hq-blog-cover-fallback")).toBeVisible();
   await cards(page).filter({ hasText: september }).locator(".hq-blog-excerpt").click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(september);
 });

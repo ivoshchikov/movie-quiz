@@ -200,10 +200,10 @@ test("a failed image reserves its space, stops requests and resets on article na
 
 test("failed comparison images preserve both ratios and still explain the example", async ({ page }) => {
   await mockQuizApi(page);
-  await page.route("**/scope-composition-station-illustration*.webp", route => route.abort());
+  await page.route("**/tears-of-steel-conversation*.webp", route => route.abort());
   await page.goto(url(2));
   await expect(page.locator(".hq-frame-pair .hq-article-image-fallback")).toHaveCount(2);
-  await expect(page.locator(".hq-frame-comparison figcaption")).toContainText("same scene");
+  await expect(page.locator(".hq-frame-comparison figcaption")).toContainText("The source frame is 2.40:1");
   const boxes = await page.locator(".hq-frame-pair .hq-article-image").all();
   expect((await boxes[0].boundingBox())!.width / (await boxes[0].boundingBox())!.height).toBeCloseTo(2.39, 2);
 });

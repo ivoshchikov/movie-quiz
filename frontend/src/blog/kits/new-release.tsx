@@ -2,10 +2,9 @@ import type { ReactNode } from "react";
 import type { BlogPost } from "../types";
 import MovieBlock from "../components/MovieBlock";
 import { formatBlogDate, validBlogDate } from "../presentation";
-import { originalArtwork } from "../originalArtwork";
 
 export type NewReleaseFilm = {
-  id: string; title: string; illustrationId: string; releaseDate: string; releaseNote?: string;
+  id: string; title: string; posterId: string; releaseDate: string; releaseNote?: string;
   genre: string; director: string; cast: string[]; castLabel?: string; body: ReactNode;
 };
 
@@ -22,7 +21,7 @@ export function buildNewReleasesPost({ films, faq, monthLabel, intro, ...post }:
   }
   return {
     ...post,
-    gallery: post.gallery ?? films.map(film => `https://hard-quiz.com${originalArtwork(film.illustrationId).src}`),
+    gallery: post.gallery ?? [],
     contents: [{ id: "release-dates", label: "Release dates at a glance" }, ...films.map(film => ({ id: film.id, label: film.title })), { id: "faq", label: "Questions about this lineup" }, { id: "sources", label: "Sources" }],
     content: () => <>
       <p>{intro}</p>

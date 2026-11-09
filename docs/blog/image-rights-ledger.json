@@ -3,1101 +3,6 @@
   "reviewedOn": "2026-11-09",
   "scope": "Editorial blog media; this checks registered provenance and file identity, not legal clearance or advertising approval.",
   "assets": {
-    "/blog-assets/original/sci-fi-mystery-arrival-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "ee78d22f7f9c901fb8a6062c65c037c21e350739a314e1c552009c463617addf"
-    },
-    "/blog-assets/original/sci-fi-mystery-arrival-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "9ebbf20b9e19330af6b0e34f24a905b9d560a10faba9e3e0cd4460c2bcf68577"
-    },
-    "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1e3ed75a2532a654d3e13e5f1a25741747a89aeaa243627cdede8bd28226caf7"
-    },
-    "/blog-assets/original/sci-fi-mystery-moon-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "809bc46228fc4ae5fed525c0a358f3d9b21ea0faec20b74b41b6c2bb06a721d0"
-    },
-    "/blog-assets/original/sci-fi-mystery-moon-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "7e86e22919eb2e8ba3779e3d541337cfda66bf29f8735c4d2d819eb5b11ae250"
-    },
-    "/blog-assets/original/sci-fi-mystery-moon-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "69c738bb24f982f55faee7a24d592c09a9ee977bb7df5bf64c494a1b32f8adc6"
-    },
-    "/blog-assets/original/sci-fi-mystery-coherence-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c84de5569972c47c23bc9becdf5b7b5a80c2a3164378f095db99245ebddeb40b"
-    },
-    "/blog-assets/original/sci-fi-mystery-coherence-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "05b618cb52af38f6d9379f905e432ddfa9f8d8529ad5b06892e53ba59d51031d"
-    },
-    "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "722bcc80487db79d78f7c8cf2dd7e44f516c8f07aa1c805c323b537a2054a833"
-    },
-    "/blog-assets/original/sci-fi-mystery-source-code-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "da046801d0276d9efd85ae8e301211f45bfad42fb8c771360d4c1d1327341775"
-    },
-    "/blog-assets/original/sci-fi-mystery-source-code-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "af47cc2702fd3a957c8579c0fb372f0ed4a6c6dd7bf5a7a97c15996022a4ea24"
-    },
-    "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e9fbddf8cf0b3e44ea1c4ae01b28b920e3f1107df67164e8e71a90442cd46f29"
-    },
-    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "13d965ef345517cfc6962f9a0b2eb85ea2a6d8e4f00aa2db966e547608448b22"
-    },
-    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0bf74c74fcb0e834a416e66473972aa65e6a813c247ac10208978e6e4f3f462f"
-    },
-    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "677a46ddcf5b09c0987102144c96092bb21b9c3aa2095bf96be9ede49c861bce"
-    },
-    "/blog-assets/original/sci-fi-mystery-dark-city-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c42d18e4440f55be21a6e5c65bfcf63e0f6d345c660d1c0ccc636d31fbc639dd"
-    },
-    "/blog-assets/original/sci-fi-mystery-dark-city-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c7a7091b21b7de946c9bef32de69a75d4a3ef019e4cd69352e9fd8e0977b9358"
-    },
-    "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "99a7ae0181c720701dcb60c70be270b752fb95205a474fe1ae231998a4ede761"
-    },
-    "/blog-assets/original/sci-fi-mystery-minority-report-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "30a2c91926534ebe3436e21afe63879fc523dbd475817e89bc11fa0a9c85d17a"
-    },
-    "/blog-assets/original/sci-fi-mystery-minority-report-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a161eaa91052e1d1965a6232902710c03cb70808c3dbdd9a45febe58717711c4"
-    },
-    "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "b4cc47d37f7dc5f45a0cc8e1e92e53e5986ae1bd7eef7a7806bcd1ecb6ea7f06"
-    },
-    "/blog-assets/original/sci-fi-mystery-gattaca-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "24d33d2702463ecae11f7a0fd46cc04b364953012bd3f70f14e2b3a79abdcb56"
-    },
-    "/blog-assets/original/sci-fi-mystery-gattaca-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2d096c52b264308c49ac108651da040f1543c0883712ab3212c5cf83bb4e9168"
-    },
-    "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "bd8c54cb41fc3e39eba52379a9ec8578d213afde57676f13014ad9533cfd1929"
-    },
-    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2b546872e706469662b70b1e7069dcf0453de7e3a0fc95ef538094751cd656ec"
-    },
-    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "eee0312d086b16b4957f2c7b01317c3da58204e7103d75ea1643caf210434008"
-    },
-    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "bcae588c364fbb844b54ab6870069fc4ccb1a8050b9be127baa30f4e70f0ee36"
-    },
-    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "68f270e367c12747d5287216971cc9d7af22a67c3b932dffe282713576d21bb3"
-    },
-    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a17a9ec5ffaf5acaad325abf458d0162a76e427ee6201747fe71b07e6cf0bd55"
-    },
-    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "dcaa36edabeba064ee0457fecacc847d7f715f1492aa948e40ab13a44fc5f616"
-    },
-    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "86808d30ca4d3afd1a4fffe7783c362375460be3c7224a4f6205473b9b3b860d"
-    },
-    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "3a58ad8693ce540ebc7e898a58815464dcfb16e4b3c6e46ae15bcf2208a21b75"
-    },
-    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2309ed48b27682fabb866a34027af752ae8a27745b39a4ee88bac070415c5ab6"
-    },
-    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d34ebd7779aab9e0e317631c73766440606aec094d31578c95a1e1cd51da14e4"
-    },
-    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "33a0e226332a6b1bb7a8560040331479e6d661f756485c68a2c44f58dbcf9c87"
-    },
-    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0e7ef6a3db6bc3f57044848d40bcde7c46196cc48238d2d0d8e1a9a90da828d6"
-    },
-    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "64b2873465cb531cdf66e8f9bcb858f00cbd263f97e1d83553f48a6dbc88a1ae"
-    },
-    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "03b2c63de3c22c488fa7217e3382ea0f4ea23189e1a048235efa93d0fc70c89c"
-    },
-    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "8e0ffd9e3d799404ff85d969297bbb0b592a33fe14ab0aa004c3c9ef49504be4"
-    },
-    "/blog-assets/original/sci-fi-2026-hoppers-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fd913dac506066ca4e7f2e703a3e90bc71ab63e1457b2366b244d22eb9a8d2f9"
-    },
-    "/blog-assets/original/sci-fi-2026-hoppers-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "6ebcb21ff63b9aa7ef1f0c80d84b0e9dbbf7cb17147d54f85d0b0e7271121f1c"
-    },
-    "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "23d3c021e4040b85fc02b7036b41babc1e9a630ec6fa2d2328234c8c4b4377b0"
-    },
-    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "653d0b7a2e166546079f94ae3a6859ab984e4a758a3b80ebfab8e5c422492dae"
-    },
-    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c760b48901ecb2a62d07b2b8a2415c06f166b3a51e7bc926b45b59fd763655d9"
-    },
-    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "83b2e889120fc2d6f5f42744649f08c1a2ada1b0960aafbbca5399ad3103c7eb"
-    },
-    "/blog-assets/original/sci-fi-2026-redux-redux-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "083816b0a57f33fd7364b455321791c420c3f440c449704ddcdcb101f8b328c2"
-    },
-    "/blog-assets/original/sci-fi-2026-redux-redux-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "46121fb578013c4f16a13e3db299c288ae0f4209df77c252c2c959162d213a1e"
-    },
-    "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "5876a93d812a5c494326c11524e5fbce69756b460ed76d38bdcadb1f5aee5122"
-    },
-    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fb795642014d8a019928445f66935b9212e8579eeebce838f265e2e4635b43ab"
-    },
-    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c7f9a750fd411fce1f4aa7d6d3fd078c3268847e73e39252ea649ee2e237baae"
-    },
-    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "352c80ea500854b85c6166cebb269fe909033941b6bb1cfeebfb265b8e6de12e"
-    },
-    "/blog-assets/original/miniseries-unorthodox-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "4b743c22baf3e60defd9c3697699aa7201e6d351cb070c4c99632913c84d52f8"
-    },
-    "/blog-assets/original/miniseries-unorthodox-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a50250dcf256ee8ee60c4a594044c6e48fb16c2580a91d28fede5746efb3afb7"
-    },
-    "/blog-assets/original/miniseries-unorthodox-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "763d4f7be6c34801599f6ced8aea0aa23bc457d3d767afee61b71fd9a4a175f9"
-    },
-    "/blog-assets/original/miniseries-when-they-see-us-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "ae540c316d32266dfa0ce90cee53944c27c7566c94abe40d0371249cfe62b156"
-    },
-    "/blog-assets/original/miniseries-when-they-see-us-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "ba69b442166a5e528c011f55e945748685acdbb7f1c31ebb1c5107b69d15c263"
-    },
-    "/blog-assets/original/miniseries-when-they-see-us-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "da4577816a5fa1f5438b1c422e559c1b3ae2ffdc2fa97c33970b5019a95657f1"
-    },
-    "/blog-assets/original/miniseries-chernobyl-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "6fa4bbd8807b105e28c8a07ca4a9fbd3d22099fe29f1f41df57d50ef4c8ab50f"
-    },
-    "/blog-assets/original/miniseries-chernobyl-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "011b5f123bf0f3c026b701868da49bd59dcbbc62ebb35f303c151d5c067c8d98"
-    },
-    "/blog-assets/original/miniseries-chernobyl-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "473ab7121bbc0aec3ff8813e509817dcc6705dc0cc66932c8eb5273c067b8825"
-    },
-    "/blog-assets/original/miniseries-normal-people-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "7c0af1a44e8f0f230c67db36d4d4deba50ff5b6af588f4e1d3c7ef9d491cd274"
-    },
-    "/blog-assets/original/miniseries-normal-people-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "4521a9be075b00bb9e45144c343594d5b30e85d02ff65bda16018f98fa464df5"
-    },
-    "/blog-assets/original/miniseries-normal-people-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "9df0e337ebf233a6bfa4711b17ae2c37b8b3a80c32e43e6707f91f8a55b4d903"
-    },
-    "/blog-assets/original/miniseries-five-days-at-memorial-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1689099057d6b7756dff1066db5dfa3b52a90539a5c3fbcfd9f83d3028fbbc63"
-    },
-    "/blog-assets/original/miniseries-five-days-at-memorial-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "b16f7fd51d52d75bf51c0db1a5687605767c37b8b4a7b23f5198a349460ca9c5"
-    },
-    "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2b6f90ba21e9748c5c224225d59f9a1dee680c1ae6309decd69958749bb47cf4"
-    },
-    "/blog-assets/original/miniseries-the-queens-gambit-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "eab002c3f784cd1f0d3cdf2967eeb6df4a994fe615f75d2a0e826f33cd609d54"
-    },
-    "/blog-assets/original/miniseries-the-queens-gambit-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "383164c388ac9e3c1727a979a61fccce885fdc29026a5257046f69eef5db8397"
-    },
-    "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "7619600d69109540f373feb604fb6e72e96362281192cbb87dd88f2b45988e3f"
-    },
-    "/blog-assets/original/miniseries-one-day-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c44d23bb3338bd332d3bb4a95f6a5d33366661cac7741c3830aa6e4f042924fc"
-    },
-    "/blog-assets/original/miniseries-one-day-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "eef0308ce76fce689aced5e4e7b76c1f45d29b4cd711761e52f87711879a7c59"
-    },
-    "/blog-assets/original/miniseries-one-day-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fa94e2b2050159f7543d85807c2104bf44004ce9b411520511acb36bb9d3061d"
-    },
-    "/blog-assets/original/miniseries-godless-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "13711ac557ec23defc1dc9158465b271416276790d15a428ce65f317a2b587fa"
-    },
-    "/blog-assets/original/miniseries-godless-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0a5d31eaa2b694931fa8b21c53a831932041b9473482226e5ee96c81eafe0501"
-    },
-    "/blog-assets/original/miniseries-godless-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d536cb0c37e0a0ac55dfd02abda0f5a7b0d2d6c736e1a7528333dae57e795e4c"
-    },
-    "/blog-assets/original/miniseries-station-eleven-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "56c6acaa7110fd5aa7154859ef715a6cb835bacc1c945bf6767fdaba63f82ff1"
-    },
-    "/blog-assets/original/miniseries-station-eleven-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "50178cb3b8d579913fd3764d92a82d9c5dbd03f45b5d969d30db22bff643fa57"
-    },
-    "/blog-assets/original/miniseries-station-eleven-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d6797a4e1947b1b29265ef6dd7b633e230a1351410decae005ff929efcb3c99b"
-    },
-    "/blog-assets/original/miniseries-maid-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "01049921522b7ccc1409dac5f9c13e5c1101e81aeb9868a80cfca81351b0dc24"
-    },
-    "/blog-assets/original/miniseries-maid-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e73d189458237f5bed359636b386a2198de52edfec06d57630a352d38a78febb"
-    },
-    "/blog-assets/original/miniseries-maid-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "59df1e9b2c0341a0218fe67a92c108075f5d68a461a056655982c361019fcf1a"
-    },
-    "/blog-assets/original/knives-out-glass-onion-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "78caea4949f907259f1deec2695c2b1837c60c7f94caf8af36061218e2282df1"
-    },
-    "/blog-assets/original/knives-out-glass-onion-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "ba88b40188af38efabd95915c375ee20a6c1ed547d7aad09f6ba0656dc955c74"
-    },
-    "/blog-assets/original/knives-out-glass-onion-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "8868a0c053ecf2a49f6f834d11eef845f5bb1a3d2f3c7060d7ecd8f07a0ec6ff"
-    },
-    "/blog-assets/original/knives-out-wake-up-dead-man-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "912650a66c051e7eb2c0205f49e76f1e99d1eb34f5dd13ba9650918d2d726e5c"
-    },
-    "/blog-assets/original/knives-out-wake-up-dead-man-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "231c3008abdf3f14824712556f2c328771080fa5044d3cc2eaf9e94e70bbe899"
-    },
-    "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "8730bb83b3c0990067cef3c130ecda622aeb3a186f266250d38e60d37ce54f49"
-    },
-    "/blog-assets/original/knives-out-clue-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "f68d872e45920a9c2e477fdfb5795dc0b25f6f707cf56e7264b20d66589641c7"
-    },
-    "/blog-assets/original/knives-out-clue-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "25ee7b7fca9ab3349eb206efdb7df0094e132d27f990fd13a05757ef507e460b"
-    },
-    "/blog-assets/original/knives-out-clue-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "bd830719daa9d335b1af02f64a9cebb4f4fcff788a14817e1f117a219f941a85"
-    },
-    "/blog-assets/original/knives-out-see-how-they-run-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "435dc72d2155e174eaebe9f143cc26a10b99bea60c14a6909397920e5596680b"
-    },
-    "/blog-assets/original/knives-out-see-how-they-run-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d934a1a7cf6fb0894c1a76e13398a0e27eacfc3ac4deff6ab021cc6fec1519c9"
-    },
-    "/blog-assets/original/knives-out-see-how-they-run-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "8d5c199896571546db16278519dde3c9b29cf761855a1844646aa4c2f9761cc9"
-    },
-    "/blog-assets/original/knives-out-the-last-of-sheila-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "3ff72e92532d4e0527a787f3a78d41286019f4bc889c0096b302cfab4057681a"
-    },
-    "/blog-assets/original/knives-out-the-last-of-sheila-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "765ce60e75be7dff2d44f0024660894985d6b1ee680227c3be8f2c8a7d23f370"
-    },
-    "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "355785cdb44b5cee9add2b82ca32f7671ec7c5a21586d534d8357247dd45601e"
-    },
-    "/blog-assets/original/knives-out-gosford-park-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "90753a5155016041ef535cba9710922f59e470a129ff2b4b76431ab00ea424c1"
-    },
-    "/blog-assets/original/knives-out-gosford-park-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "194d1026d96722b35e3ee874ebf02c9e351c0f9f5dc123c55af04960a08a62c1"
-    },
-    "/blog-assets/original/knives-out-gosford-park-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "435796eacdc6f229b5011d074f21264b864e1d99b045eb8a35e27459ddf4d42a"
-    },
-    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "24e4b690dc147a983538bc893d5b6654d312cc47ad3836a527a81a1f74dc3101"
-    },
-    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "aacf1103a0943bbfc81d81d7508331d8a299c33b17dc2fa1489a3ee4b8ffed45"
-    },
-    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "9d11531f059aa40029ea9387198681dd2d1e41ec4d153d493b09e69d6b740f37"
-    },
-    "/blog-assets/original/knives-out-death-on-the-nile-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "867488c884573a4857f1bb7acf73f54a2dcca869fa7120804b8ffc6484d14b9b"
-    },
-    "/blog-assets/original/knives-out-death-on-the-nile-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "5a18d7cc54f2aae013b8083191d355160162259af3ab89e5ef44b72f16cebb49"
-    },
-    "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c33abfdcbdb9e32c1f7135016bf1c3cfa3c60177fb6f5292b62ed54a6ee3ee24"
-    },
-    "/blog-assets/original/knives-out-sleuth-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "415cf55a7d30e643624a524253411134c3127a3f43109bcb2cdf80029a35bbd5"
-    },
-    "/blog-assets/original/knives-out-sleuth-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1a44513d7d736ad8443f5eeaf19af6b21ecdfc8a95fcda1e9f963a4af2a60829"
-    },
-    "/blog-assets/original/knives-out-sleuth-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "3b4ce437ce0bd6e94aac2c828b0085b7f05141a08010cef99a36272ca3561dd6"
-    },
-    "/blog-assets/original/knives-out-deathtrap-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "7e6e8806a3d32fbb9031447164709e146e906d32ad44509e148752decc53a20e"
-    },
-    "/blog-assets/original/knives-out-deathtrap-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "cd3946c509c6bc472a9b364966a3c78d3998d9654235546074e07b0984269e0b"
-    },
-    "/blog-assets/original/knives-out-deathtrap-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "f0138be5c07eb5afd4f256de1fc5fc3f072a885bc3b4f201b122e0badb4538cd"
-    },
-    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0c1d68bc1419d95c40fe58698989b4fee0275c1730a529b459ce959b07075504"
-    },
-    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e7460c77ac80f46d6d665fd92f0c5be680a951b62b09b3fa4e3d3c43b5556d68"
-    },
-    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0264d69b3a9464c94f94d4e2f5d2398688764c12f92a5cd6921905473bb3ede0"
-    },
-    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "319c7dbc079b493effc1fc3f126686fad1955e3d186ec7df8c69eb569c67b07e"
-    },
-    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "f55141e344004802ea3bd532cb5afc7a8d98c3d54193dccea943f9e96803d4db"
-    },
-    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0543d1007f2b9cc77b816c449c8276b7c47428038378b251235a2f75e7836f66"
-    },
-    "/blog-assets/original/november-2026-wild-horse-nine-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a7fb2f68d3c8d1fe0613dd87f0ec2f995178f0d8e4db5628d36d29675915bf12"
-    },
-    "/blog-assets/original/november-2026-wild-horse-nine-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "04ec52e9b38baf6a03772169711abf0c4243fe63f2c4764672155aa6e4a6e362"
-    },
-    "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "3f27c2817dfd72edc5e1d85d7ff4a9be81b49847a0bc7ed4d2779b99559bc4a8"
-    },
-    "/blog-assets/original/november-2026-ebenezer-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e2885a95eb8da77b3446ddd9dd33d6d23b5159041577363dc125d6b8a9b7d6df"
-    },
-    "/blog-assets/original/november-2026-ebenezer-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "50ebbfbc6956e0a89a74de9d97868b6d90a83e5bfe7362bcfeb70e0310c438f9"
-    },
-    "/blog-assets/original/november-2026-ebenezer-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "b4d9d837b6c6e6ed63c5a6880006b073eada5e567a6f5d2c2c4f6f24ecdffb43"
-    },
-    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "bbee6d559397484e0ba114f303b08f525fbb3978351dfcc82df15acc9fb21f40"
-    },
-    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e1c1937e2c01e744f028e7f952cc6c536c86634f41066a96813b597fc2e789f6"
-    },
-    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "ce691671e465bad10e99f979719cc2a1c0c57681c862ab19d55d54499279ab51"
-    },
-    "/blog-assets/original/november-2026-paper-tiger-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "15dbbbfb93fbc0bd69e4ef2c30d22ba421079f8fc1b1733dc5128ee488ffd7f8"
-    },
-    "/blog-assets/original/november-2026-paper-tiger-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1ec56fbca5731cc597b693528768b11604421713719cacf9ceb9a69a44fd93e4"
-    },
-    "/blog-assets/original/november-2026-paper-tiger-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1960958dbb69bffff58fa66b49a1ff524824d2526d8519139d5b56232feffce6"
-    },
-    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "77f52bf05cf42da4176a480b7806883997273f879b4ffcd5a09e83e2dfa9da23"
-    },
-    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "24174eaa158ce04b4c4818c2c2e556cc34d83ca290c4abeab364ab249fc68fea"
-    },
-    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c1f958d2a0d2560827fd396073ed56b2ed4dcf63525795cf48daedb5220ffdf5"
-    },
-    "/blog-assets/original/november-2026-i-play-rocky-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "807aea40f4336bc937fc11af17bf76544801ff08f665be65436f99d0aec4044f"
-    },
-    "/blog-assets/original/november-2026-i-play-rocky-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "6c25012f22e2729924bad7b996eedd67af221e2cf3bc2b23e09e3f9acb2a054c"
-    },
-    "/blog-assets/original/november-2026-i-play-rocky-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "74f86c1d3c954c2f50419fd2d9ff5eb073e5fac54104a17b55da430f5c636bbb"
-    },
-    "/blog-assets/original/november-2026-hexed-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fc1a693c0aaf3397d425e1e66cb250496ffb8e31a8738c9c7e8df1a81f02608e"
-    },
-    "/blog-assets/original/november-2026-hexed-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2fbca235fa81fa183077a0151af7bdd4720957d565aa388b2fe161f1da580657"
-    },
-    "/blog-assets/original/november-2026-hexed-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "ee5362cf3f2d3a01de24b8904112549059ffc7cb0d017ec8ab75f49f7f348e7d"
-    },
-    "/blog-assets/original/november-2026-focker-in-law-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "54c18fbb758189b4c72d2d679aad9e77a0d51e34041b3b828b489785eb9bf79c"
-    },
-    "/blog-assets/original/november-2026-focker-in-law-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "f9acd8b636001ae1b1f183c25a23bc257b132c11011089965fb1e2a5fdb38e14"
-    },
-    "/blog-assets/original/november-2026-focker-in-law-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e283469d2dd7c81744acfe153427735f4ceb66dd392ee7ba8224af564e61bf71"
-    },
-    "/blog-assets/original/whalefall-coast-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "285d5c0e71d08d831393050f418c3b5b20a5c5cf4d37797786ab15f9c573eea0"
-    },
-    "/blog-assets/original/whalefall-coast-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d300ef8d7df684a5cc608786ed55b103106b46672abb7048b901a68c733dab6b"
-    },
-    "/blog-assets/original/whalefall-coast-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c602a10b505fe73e9a6d6418da5d17c70b86bf78b446889f231c564e92ca80f9"
-    },
-    "/blog-assets/original/horror-2026-resident-evil-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "71bb36bb0b6bf96ab2e756eeb2aaf17c76586c9d1058fc060428aff22d80d221"
-    },
-    "/blog-assets/original/horror-2026-resident-evil-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2eadb41e6a5cb12ccd7f583a3ad9f40df694d1b333083caedc4fbb73566acdae"
-    },
-    "/blog-assets/original/horror-2026-resident-evil-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "feb0da05ad1471b246cf493531c586e4d24f790fa7c3583d32707ae4d74f1c79"
-    },
-    "/blog-assets/original/horror-2026-obsession-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "b3d84c10fe02fb0a3700ffa01503b61beeba96552eba5c1fa6609ce41dab8ad0"
-    },
-    "/blog-assets/original/horror-2026-obsession-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "786bf4da45e40593f9a608729d693ffaa417c61f6312127eb0f8ae8b29cc96fe"
-    },
-    "/blog-assets/original/horror-2026-obsession-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a1d231daca69a28a5814204bd052f14973b34e962f032978f38370967a9dcf6b"
-    },
-    "/blog-assets/original/horror-2026-hokum-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a9c78ee950ce02848a7311bbdbe661a38a02403bcf7bf244e48fd55bf4d7c1b6"
-    },
-    "/blog-assets/original/horror-2026-hokum-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c42adce6b037345adab9b4fb6069a35531c860f93b72c357005b6246029b5366"
-    },
-    "/blog-assets/original/horror-2026-hokum-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fd2e15c211452042ec307fdf16a13e71cfcc8f81c17db88d7de8cadb8f0a2450"
-    },
-    "/blog-assets/original/horror-2026-send-help-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0eda65b72b08c9beadcc76c91bb3938e1ffaad44f74d39447fcde2f0abf39099"
-    },
-    "/blog-assets/original/horror-2026-send-help-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "005c4fb94f39fe42fd115fe8a8bab434a4f9bcb004cf8681ca8e10b4cbc0061d"
-    },
-    "/blog-assets/original/horror-2026-send-help-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "84e37d691d279281daf5edd36e9f65ed2e4bb098ea8ced183573d087142c7099"
-    },
-    "/blog-assets/original/horror-2026-backrooms-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d8c5c573fac2c679149d8e79a3174a35bc0ddc92566cc3fa70a7f5cad1351b1e"
-    },
-    "/blog-assets/original/horror-2026-backrooms-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "eb13acfe9eea6882540aef88ab2b90603cd426dc349d4ab65f621b621548e80a"
-    },
-    "/blog-assets/original/horror-2026-backrooms-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fb8d80d8a0e86cf619ae8f7b3dbc9c11ab437cba7bc0a91458e9257e4a10e75b"
-    },
-    "/blog-assets/original/horror-2026-the-bone-temple-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2bf852ef0525935ba45c8c45f67f77a7d1f6785108b5c5969b247204d7fcc5fe"
-    },
-    "/blog-assets/original/horror-2026-the-bone-temple-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "885dea710a09c786672e95fac24a3f51bbebfcdaa5d4d1fd759683aaf5b68c6a"
-    },
-    "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a6873bd50e0f947d79a6c98bf7e1a014ff49ae79c8b5350b2685852bed82090b"
-    },
-    "/blog-assets/original/horror-2026-primate-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2f768012f013a9c90c0e81e5f91e2e0cdc622632c409afe13c9cca16d9c9cdcf"
-    },
-    "/blog-assets/original/horror-2026-primate-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "bdbfc5f8da98352b8524a44d3ba6de8a0d02dcca66f8f7a7e2c0ab055af0bc19"
-    },
-    "/blog-assets/original/horror-2026-primate-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "0903e421f1bf337e7d07f8b42dbd6894125ca102eff648d0a51e258bbc6d1aab"
-    },
-    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a322385ef08d6b53d95fcb2e343b5a2252154a74962352c5bdfd611e30cf3a21"
-    },
-    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "776a003b106ca4e60eeca7bff3c50009f4c9e33e6d38dbde0d9596aba1b7b3d8"
-    },
-    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "024e4146de3e882c22de38cbd847c527840c4fc46cbb4a164f0a7d8da6f5006e"
-    },
-    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "4742071a9bde2afb31e43e88360372badd45808a073e39d8b58d49abb604403c"
-    },
-    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "b3620ee07d593f159fe3f1d94bc68364d1017edcaf0a2d793529d27de6bb333c"
-    },
-    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e6a7e5d67f9d81cf530c20a02f3680a3b6d0083bf06f048f3d8558961450a64a"
-    },
-    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e3a55d9be80af9e4f81ec854beb59d2b96ed862e1ba756036a4728f1ca8215aa"
-    },
-    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "caba18129ca4d7d4a24756f108ccbd196662ce6b5f585dcc9750d4a55fc540de"
-    },
-    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a9b252d1dbbdad1b172ba11d61b9d1fa5c492898bd0ff6ad068dd1922e37b81f"
-    },
-    "/blog-assets/original/september-2025-spinal-tap-ii-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "f6de66f18be3e8a635f6b7d69250b7fbd00810b4477750623e180f9e8dec80ff"
-    },
-    "/blog-assets/original/september-2025-spinal-tap-ii-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "5b69b0f578d58ac95849b2eab7c32956ca5ec4c4c5ee0c4c687dea61fb451d3b"
-    },
-    "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "f0307f41370ac55cd3ba594e85a0acd37f91d391862359cb009526438c0ced74"
-    },
-    "/blog-assets/original/september-2025-the-long-walk-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "4235d2438d4e03b3b8fa765b2687979b1c4922ca04b9422b3898e7cac1b06842"
-    },
-    "/blog-assets/original/september-2025-the-long-walk-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "70d08df1216389a218c62ac8e10b0363658056b596bff510751232955e7c7e59"
-    },
-    "/blog-assets/original/september-2025-the-long-walk-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "5e30febefae9530d9fbda53b348a71c7fdf13ec0efdcace4ce85e5c533d9dd32"
-    },
-    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "dda3f3311cb4159e27454836a5f0d9b62c3be4b161b84a58ad8a32b7d0157fa4"
-    },
-    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d52c4ef841475fc43bb2e496ac82991f3da3c7e5a861a5fb30b93035e60e7a35"
-    },
-    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "cc5242dd7b2b353909ec25ae20c275ed2ed63ab255c1a7234208fc72a1f50f23"
-    },
-    "/blog-assets/original/september-2025-him-2025-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c72753809ae825de0fc1e06271a9983c92da539b4160ef6c477732b258d8cab3"
-    },
-    "/blog-assets/original/september-2025-him-2025-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "3524b77a53dcdbf54c0bbc777c294ccee31f4cf059aefc1e087b06035f8d0422"
-    },
-    "/blog-assets/original/september-2025-him-2025-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fd02261e0e18749292e6994fa3add52712c1d6f5462dfb4c04b37a17b5b252e0"
-    },
-    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "dd6aa3299060511fa74845f703163cf9b43969dd7415859d7de22a8473077b43"
-    },
-    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "b2ce22cf5abe8d4294acdcf8335de06f50817ba097378c9cd52954a7c849e0fe"
-    },
-    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "27c25464f350b038f4dceeb7c939d65e917c2a3136423deb15542a47d5e955ec"
-    },
-    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1524f2e3192883944a719d6f6e461c867efb40f6ba55c35a3f819930cf8c9717"
-    },
-    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "8c7b4b0aaa0afadbe4d9bd211fa589cb0ab29337b43b760f51d3aacae754cdcf"
-    },
-    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "dcd14031fff1c9448559126a6ebf804240da42462aeb70d68fe1e4dc1f736797"
-    },
-    "/blog-assets/original/august-2025-bad-guys-2-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "996122865cddb4a593684b1ae902f7ff245092264dfbb40693978e9bee58f2e4"
-    },
-    "/blog-assets/original/august-2025-bad-guys-2-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "cdc61ee0187c8c339cae64f488c43330472dd6da65d696107447865d7cf3820b"
-    },
-    "/blog-assets/original/august-2025-bad-guys-2-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "6fb476c07bb77e7efacca9e3bb40fb187e49a62c56ba65c8b12c79927cfcc273"
-    },
-    "/blog-assets/original/august-2025-naked-gun-2025-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "58d42434102b9a92618274da92d0c48f07df279d802a19e6da042e007fec1321"
-    },
-    "/blog-assets/original/august-2025-naked-gun-2025-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "4c4348d4a5b159f0c64aa7bc792a8881d8b9afc0b579c912df94a8dc685b9d5b"
-    },
-    "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "8a0e3aaea7964d4fda46bb9300d5d8741d48a326612d9388cf16a7432059540d"
-    },
-    "/blog-assets/original/august-2025-freaky-friday-2-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "41ca8acc6fd9c90bfc0324571813d44d708fc85491dec6b727a87445ad51aa84"
-    },
-    "/blog-assets/original/august-2025-freaky-friday-2-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "d7572bfcd0497b383f33941e44d6f5142e061c0b6255ae78d303030a6ebf3a42"
-    },
-    "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "21629198c2d4859b2186b85004e9d8e197463d08c923493d2d2b792853683bd4"
-    },
-    "/blog-assets/original/august-2025-weapons-2025-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "7763620064af185c9d53ace3dc195e847721d0b6b3f95720071b7c9303e83fff"
-    },
-    "/blog-assets/original/august-2025-weapons-2025-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "3cd5f5429f9a40ae5afe6777dd194dc5c9de2fbf674265b1f62b077db750f4cb"
-    },
-    "/blog-assets/original/august-2025-weapons-2025-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "bcde0b64d32b9324f8d6becc059c78d7b2bc62d0b7b10d16de3f79c14aad9459"
-    },
-    "/blog-assets/original/august-2025-nobody-2-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c9b9203b7d92b5e5b37684ee4734b323ab057d354eca9866644b7f93b837aff6"
-    },
-    "/blog-assets/original/august-2025-nobody-2-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "7dae77c013728ca3f106f2af79c6525724ec7a1d2ece971c93628af67576917f"
-    },
-    "/blog-assets/original/august-2025-nobody-2-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "df8c656afdcee2ee1f69db2a5844eb5549b6ff40207ea50e68998e303b9a562d"
-    },
-    "/blog-assets/original/august-2025-honey-dont-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "822a38927cf689a1f00b593339abd16a758c59cbeb572f73cb25ed3f61f935b2"
-    },
-    "/blog-assets/original/august-2025-honey-dont-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "834b132eb78c261f16e18b3f10106b2d14efd3d2c64de0188f688f90dcdb6a8f"
-    },
-    "/blog-assets/original/august-2025-honey-dont-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "1168be06bd70363151b19a25912fe2c1cb52bf28cd5026d3ea725f1ea8289d3a"
-    },
-    "/blog-assets/original/august-2025-ne-zha-2-illustration-160.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "33b216e2ea60b17fad9d8a472baf05f3884ca94a509187f8322889d2f9b355f3"
-    },
-    "/blog-assets/original/august-2025-ne-zha-2-illustration-320.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "2b467e19d38d16402dc7ea6260cb1f4a6ce129463673b21a3556bcf02473b054"
-    },
-    "/blog-assets/original/august-2025-ne-zha-2-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "e4218a21f2257a5d700202898b2410386beb07f8a9a0edd9deeeb911f421dce7"
-    },
-    "/blog-assets/original/scope-composition-station-illustration-960.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "69c64d4b7aa76b820c47daad4b1e2825f120f35a8cbe68457763b6ab58be9dad"
-    },
-    "/blog-assets/original/scope-composition-station-illustration-1440.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "c2737ec65544b77b2cc6240e8f0cd419efe1fa88c693d6c560f9de465d232a86"
-    },
-    "/blog-assets/original/scope-composition-station-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "a98dc0f2cea908cceb0e0d1ea36f3660ecdc10c2ff2ff743ec9eb18da1150f92"
-    },
-    "/blog-assets/original/scope-negative-space-illustration-480.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "908ae3094d24029ebbebf6ceda122709caeadfe06950e10b30f88c7b3ae48505"
-    },
-    "/blog-assets/original/scope-negative-space-illustration-800.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "fe9eb362ac99cd8c6c44bcaf81904b3fd9dcabbfee375be63d2475441d82a471"
-    },
-    "/blog-assets/original/scope-negative-space-illustration.webp": {
-      "basis": "original_code_artwork",
-      "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
-      "sha256": "6e0f2f27254ae26e185e770ad09b851167a6da659c317dd84c3932d86df1d8fe"
-    },
     "/blog-assets/original/archive-august-2025-cover-480.webp": {
       "basis": "original_code_artwork",
       "sourceCode": "docs/blog/artwork/editorial-illustrations.py",
@@ -1487,9 +392,1031 @@
     },
     "/blog-assets/itunes-store-get-badge.svg": {
       "basis": "apple_store_badge",
-      "article": "thanksgiving-movies-by-mood",
       "sourceUrl": "https://www.apple.com/105/media/us/ipoditunes/itunes/2018/3a5387c5_1ebd_4993_9633_ff7264dc27bf/itunes-store-badges/us_uk.zip",
-      "sha256": "1509ad061e178ab3acb8095ef5488cdc02f8a3b8c196b6e44b661051ae8bbd4f"
+      "sha256": "1509ad061e178ab3acb8095ef5488cdc02f8a3b8c196b6e44b661051ae8bbd4f",
+      "articles": [
+        "august-2025-new-movies-guide",
+        "best-horror-movies-2026",
+        "best-sci-fi-movies-2026",
+        "movies-like-knives-out",
+        "sci-fi-mystery-movies",
+        "september-2025-new-movies-guide",
+        "thanksgiving-movies-by-mood"
+      ]
+    },
+    "/blog-assets/posters/sci-fi-mystery-arrival-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/arrival/id1166395905?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "6de874e740559594deb82c5650bff58cc9ec457d8e63dc113dc47f3e3b1b5c6d"
+    },
+    "/blog-assets/posters/sci-fi-mystery-arrival-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/arrival/id1166395905?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "6e01dbec2d3b4f918e0900e5e977ef812c8f5c87648315f0c667b9067c5b9f87"
+    },
+    "/blog-assets/posters/sci-fi-mystery-arrival-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/arrival/id1166395905?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "e2bd7302429c90368e37581d082a0f27ac34faede52a1fde5e4ea147b972c83c"
+    },
+    "/blog-assets/posters/sci-fi-mystery-moon-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/moon/id331842140?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "3d96d9a51204115395063a057d61e94563b2984b4ead80cf67256fe51a366d2d"
+    },
+    "/blog-assets/posters/sci-fi-mystery-moon-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/moon/id331842140?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "781ffc55f1cea9c2299ab8ea979c961cf2f1960d16cf443f1fe4fe8d5ad976e9"
+    },
+    "/blog-assets/posters/sci-fi-mystery-moon-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/moon/id331842140?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "548ca83cb47f98421f4c838bc97fab189cb3288048a2c6366db99d2ba5636e5a"
+    },
+    "/blog-assets/posters/sci-fi-mystery-coherence-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/coherence/id892520844?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "d2462f834b539a8a8562fb344803baba2d0887aaff99a8cd197ac152d4ac1286"
+    },
+    "/blog-assets/posters/sci-fi-mystery-coherence-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/coherence/id892520844?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "02061c884e72f5ee97956872cff1cb57c5609833613d4ba3f3d8dfb6e6bef606"
+    },
+    "/blog-assets/posters/sci-fi-mystery-coherence-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/coherence/id892520844?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "a8ebd353f628a71a7dcbef05827863e35ef467435599f83468d2d7b8db5da9e7"
+    },
+    "/blog-assets/posters/sci-fi-mystery-source-code-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/source-code/id1090244446?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "0a3a852857f81969594209c33c24d68c9061c122d131b8b8a6c6f868b52f9a19"
+    },
+    "/blog-assets/posters/sci-fi-mystery-source-code-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/source-code/id1090244446?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "78b0a1b44810e9e3322d0df9c6df5ae94677f7dd4376b9e764af27eb60724975"
+    },
+    "/blog-assets/posters/sci-fi-mystery-source-code-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/source-code/id1090244446?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "a9e1ae5cccb039f72d9101054eb208869c0be77c15acecae902869fbb399e246"
+    },
+    "/blog-assets/posters/sci-fi-mystery-ex-machina-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/ex-machina/id983488795?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "df5212bb9be78be338d65f9d69f50823db6bf3403f89cb22b0056770759836f5"
+    },
+    "/blog-assets/posters/sci-fi-mystery-ex-machina-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/ex-machina/id983488795?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "f40fed8a3a4b5cef90cf48193c685ab808a1f8f0cc2142d6fc5c57d5a169bd58"
+    },
+    "/blog-assets/posters/sci-fi-mystery-ex-machina-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/ex-machina/id983488795?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "8f19733cb921d34c1f9ecca699bb6dc4d42b38ee1def5b7f3a945b8c0b5f816e"
+    },
+    "/blog-assets/posters/sci-fi-mystery-dark-city-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/dark-city-directors-cut/id1030118145?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "4d7dae8d17b3339ce61a2e47ac33407eb060f471a3577b6576d22bf35dee3d1c"
+    },
+    "/blog-assets/posters/sci-fi-mystery-dark-city-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/dark-city-directors-cut/id1030118145?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "034645c89facdb3d5b45e0785d4e18c47d65e5f58f9375e84853712ad9e374c3"
+    },
+    "/blog-assets/posters/sci-fi-mystery-dark-city-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/dark-city-directors-cut/id1030118145?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "da74693450808a0f8041063f3f6c868c15d6eec129eff630c6444d09eae782be"
+    },
+    "/blog-assets/posters/sci-fi-mystery-minority-report-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/minority-report/id573718569?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "3e8270711f8c4e5e8c93557b98cdcbcda8e4c3e36046a7a10740137681f80788"
+    },
+    "/blog-assets/posters/sci-fi-mystery-minority-report-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/minority-report/id573718569?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "97c1a27aba14a8274d1d1138da40843355fa8c5db7beb10a5e993a209e5bc226"
+    },
+    "/blog-assets/posters/sci-fi-mystery-minority-report-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/minority-report/id573718569?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "a1ca04adca2a69d763b4f3ee0140f59aa9496729038ef40f69c6c5ad3696ea19"
+    },
+    "/blog-assets/posters/sci-fi-mystery-gattaca-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/gattaca/id542688199?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "530e558bc8287237039ccae815404e42f272bcaac329215cc5ec477f84801f18"
+    },
+    "/blog-assets/posters/sci-fi-mystery-gattaca-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/gattaca/id542688199?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "8acbb308973b3e60c85e0ca240ac2af633bc305d9be826722bc63992be6e87ce"
+    },
+    "/blog-assets/posters/sci-fi-mystery-gattaca-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/gattaca/id542688199?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "92b80cecece7f5312facbfdb09040af390816740268104b51a65c4fb207a21a4"
+    },
+    "/blog-assets/posters/sci-fi-mystery-the-thirteenth-floor-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-thirteenth-floor/id284571749?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "7c3eda76425dfae04393e658b21d793625dbc6925569c15ff9c8c2033ec907b4"
+    },
+    "/blog-assets/posters/sci-fi-mystery-the-thirteenth-floor-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-thirteenth-floor/id284571749?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "3fc54169d76bdbcb9156bb405433a08fbba8c40cdb5414d8580336bdbce2ee72"
+    },
+    "/blog-assets/posters/sci-fi-mystery-the-thirteenth-floor-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-thirteenth-floor/id284571749?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "14b76427cf9ccee038a6ae427ce5d7366bc32ea7705e12eadf7a8a06ec593c3c"
+    },
+    "/blog-assets/posters/sci-fi-mystery-the-vast-of-night-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/vast-of-night/id6827408315?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "eb2284ac970419cb89ef53252c4e3eb931091efae2987a0c3c27d01f347eea18"
+    },
+    "/blog-assets/posters/sci-fi-mystery-the-vast-of-night-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/vast-of-night/id6827408315?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "929659278e8b9fafe04fb84a921963146a83908fda6ba4b2d6ea59ec870abf24"
+    },
+    "/blog-assets/posters/sci-fi-mystery-the-vast-of-night-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "sci-fi-mystery-movies",
+      "storeUrl": "https://itunes.apple.com/us/movie/vast-of-night/id6827408315?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "55bdc4a8351a74019332edf6f31f872a7bcccf3dbdd007450e9493d353263daf"
+    },
+    "/blog-assets/posters/sci-fi-2026-project-hail-mary-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/project-hail-mary/id1880810604?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "3a1f04ed142649bfd4ab6d702b7fb4ccfc97a73f18b9ebe9aa84b15d9f909b96"
+    },
+    "/blog-assets/posters/sci-fi-2026-project-hail-mary-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/project-hail-mary/id1880810604?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "56f4aacd727c30049ddc5ba38b671870747631cff3096222b5926b93c006f1af"
+    },
+    "/blog-assets/posters/sci-fi-2026-project-hail-mary-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/project-hail-mary/id1880810604?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "5139c167fbfbf4aded593098adfc3bf93195ed93474c5783824f615f1f6481ff"
+    },
+    "/blog-assets/posters/sci-fi-2026-disclosure-day-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/disclosure-day/id1896844187?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "8dcc593baac9d2cde4bc515287795d630bc1567ff6e36812dbf2db15d1c0e8cc"
+    },
+    "/blog-assets/posters/sci-fi-2026-disclosure-day-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/disclosure-day/id1896844187?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "faba86a926ac231929808b2c9bcca8067b5d4de8ca6424140b10210fc87cae5f"
+    },
+    "/blog-assets/posters/sci-fi-2026-disclosure-day-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/disclosure-day/id1896844187?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "21a4470a559e5df70803c29e293e3993b3a64e5a206509646d279d4ea10a9d88"
+    },
+    "/blog-assets/posters/sci-fi-2026-good-luck-have-fun-dont-die-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/good-luck-have-fun-dont-die/id1880070134?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "2bb8c77a9edc8458caf3c73bd9a75d7dc5a44efd6a3099a47c4aeb497f589ac4"
+    },
+    "/blog-assets/posters/sci-fi-2026-good-luck-have-fun-dont-die-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/good-luck-have-fun-dont-die/id1880070134?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "e30c4c149165e1fa3929362474f19b79471a10de621990f924611c4228be42a6"
+    },
+    "/blog-assets/posters/sci-fi-2026-good-luck-have-fun-dont-die-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/good-luck-have-fun-dont-die/id1880070134?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "c86ef11f979a2fefb6f825588a8c51b8a3eb10561fd563391dd55c83392dab2a"
+    },
+    "/blog-assets/posters/sci-fi-2026-hoppers-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/hoppers/id1889443764?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "d4deab2d20800bc0f2fa8540b568ff0898f13d1753236ad47679e4b39b6776fe"
+    },
+    "/blog-assets/posters/sci-fi-2026-hoppers-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/hoppers/id1889443764?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "84c4d8e20c03996b6f509bd63da0d2046b026aeeb9625d0c8f7062e492c33a6d"
+    },
+    "/blog-assets/posters/sci-fi-2026-hoppers-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/hoppers/id1889443764?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "45a29c3508d216aa43498ea3a1eac850f00d246b0627f932206ba53be6464ad5"
+    },
+    "/blog-assets/posters/sci-fi-2026-the-end-of-oak-street-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-end-of-oak-street/id6788867495?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "7264dd877df7325a5153ee2a227d0d90c72c918dbdf4ec47887d89c1ce346d15"
+    },
+    "/blog-assets/posters/sci-fi-2026-the-end-of-oak-street-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-end-of-oak-street/id6788867495?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "93c00d724e070daf248a92ef7bb894fae089bb3712a6df32f17fff33561d924f"
+    },
+    "/blog-assets/posters/sci-fi-2026-the-end-of-oak-street-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-end-of-oak-street/id6788867495?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "cae97c7e4553c7d65e07263720f08806275d60c676a340c14fbc5cc377fc7355"
+    },
+    "/blog-assets/posters/sci-fi-2026-redux-redux-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/redux-redux/id1875111283?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "53d162625ba253b25bf7b77a201c750587b525a42e6619a734b8849d1436dd56"
+    },
+    "/blog-assets/posters/sci-fi-2026-redux-redux-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/redux-redux/id1875111283?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "06083b424790a29752a6ab74ee648bf94cfb429efef2d62e7b076e0253d73c23"
+    },
+    "/blog-assets/posters/sci-fi-2026-redux-redux-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/redux-redux/id1875111283?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "88613a336772c98db882952654aabff9d6bf8b161ad1ee1b6b433d3adb0fd0ab"
+    },
+    "/blog-assets/posters/sci-fi-2026-rose-of-nevada-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/rose-of-nevada/id6779736841?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "6fbe916c4a795b7df4a87a0eb1d7c258e0391693009fd776f57c063149f2fbb2"
+    },
+    "/blog-assets/posters/sci-fi-2026-rose-of-nevada-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/rose-of-nevada/id6779736841?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "9dca3fd7f48520d8048741d24640ac4d0418e1cb7095132dc4b41ec2484bb2f2"
+    },
+    "/blog-assets/posters/sci-fi-2026-rose-of-nevada-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-sci-fi-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/rose-of-nevada/id6779736841?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "a64dd40b7a9dc692e37673fa6079048822f6cb2fa0c1c9b7337b7d5a47456a50"
+    },
+    "/blog-assets/posters/knives-out-clue-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/clue/id210489705?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "99a87eea531d9aef956f81b71ea5f342aa769379ae37e592647a0b22fc06182d"
+    },
+    "/blog-assets/posters/knives-out-clue-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/clue/id210489705?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "715e4770cc5ff81c5be4be8bd968da87d87bd2a7a1066d0017b95374d09b572e"
+    },
+    "/blog-assets/posters/knives-out-clue-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/clue/id210489705?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "a102b2f1eedfbd8c43646c1b38a654aaa8129f6c268522fc2ef56be6fda46fc6"
+    },
+    "/blog-assets/posters/knives-out-see-how-they-run-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/see-how-they-run-2022/id1646766139?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "50cb47e1f93d2c9b77b7d3f73c57fcfb8ab0bd1c18554e3da2a84b785f9c00c6"
+    },
+    "/blog-assets/posters/knives-out-see-how-they-run-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/see-how-they-run-2022/id1646766139?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "4a808b0acb82b86bc0761da4f9789c543734bee21591f24b91bc0356d602ee67"
+    },
+    "/blog-assets/posters/knives-out-see-how-they-run-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/see-how-they-run-2022/id1646766139?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "eeefea8aea0ef1b246021c2a61ff7a3e607dd5c1dcb81407ac211cf048dcdd01"
+    },
+    "/blog-assets/posters/knives-out-the-last-of-sheila-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-last-of-sheila/id296481094?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "ba6dd5b803b9309d5cb6731463fec30bc45b46970307bdbcb83ea416b74c5d08"
+    },
+    "/blog-assets/posters/knives-out-the-last-of-sheila-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-last-of-sheila/id296481094?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "2df2ff751a2536cb896609fbd464896068157ea5d6ec2aced0e4970141d0eeb1"
+    },
+    "/blog-assets/posters/knives-out-the-last-of-sheila-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-last-of-sheila/id296481094?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "21f50c1e4f5462440f96ae82e046a9090a64da3db6bf036bab93cf5e7c2da917"
+    },
+    "/blog-assets/posters/knives-out-gosford-park-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/gosford-park/id284989889?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "7584e6b6840c50485e2442bfb0c8abf1cfc4a1b689eb3bbe94cfe1df1c129eb5"
+    },
+    "/blog-assets/posters/knives-out-gosford-park-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/gosford-park/id284989889?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "45424048ee8213bdc7736ce65db7969e687a799c1396fab3f607c8cf69793101"
+    },
+    "/blog-assets/posters/knives-out-gosford-park-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/gosford-park/id284989889?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "c4a439060552f64bd304ed9c942491e76511a99370d07fcee9114f31a52fa044"
+    },
+    "/blog-assets/posters/knives-out-murder-on-the-orient-express-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/murder-on-the-orient-express/id1298073618?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "f5bf4661cea1284c877cfb70c4f7e25eabbf3ad231b65a1ed683143d53b941c1"
+    },
+    "/blog-assets/posters/knives-out-murder-on-the-orient-express-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/murder-on-the-orient-express/id1298073618?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "81bb471cc4557be8fe7da9d6a72b049f2910809b19f470d83cc0a4d923707639"
+    },
+    "/blog-assets/posters/knives-out-murder-on-the-orient-express-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/murder-on-the-orient-express/id1298073618?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "d2f10e3fabcba98e4015db1c34f952332b4fea6c8875570cd4a0c49afb7d17c1"
+    },
+    "/blog-assets/posters/knives-out-death-on-the-nile-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/death-on-the-nile/id1630036448?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "f0b0d0ee0b04bfd23c0a5d462f6b4ef28dab8462c1f8ab6db9f89fdad6d0e045"
+    },
+    "/blog-assets/posters/knives-out-death-on-the-nile-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/death-on-the-nile/id1630036448?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "052e6be1e289d63b9b43f30b394c028f2083d3fc9ca20f7ea6be3ce769021331"
+    },
+    "/blog-assets/posters/knives-out-death-on-the-nile-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/death-on-the-nile/id1630036448?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "61d19efdab83bc2aa831130ad7c0d290e114fb4f8f6cab816721b5b6261f898f"
+    },
+    "/blog-assets/posters/knives-out-deathtrap-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/deathtrap/id313972532?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "70ecbb465e680c9337703f3182fdd1c05ee003943284c46127282662fb764762"
+    },
+    "/blog-assets/posters/knives-out-deathtrap-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/deathtrap/id313972532?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "30de7e7fb8f47b5eab4d5d33132aaf57b9d538f50d5cdaf20043872c04cf9c6e"
+    },
+    "/blog-assets/posters/knives-out-deathtrap-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "movies-like-knives-out",
+      "storeUrl": "https://itunes.apple.com/us/movie/deathtrap/id313972532?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "8e25cd01f7e987bc9e4331ebc3570ad263b9bf586f092daccb5c97f714ee5880"
+    },
+    "/blog-assets/posters/horror-2026-resident-evil-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/resident-evil-2026/id6807575287?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "33dbda3551d78621c79c9489104c3389adaa1c8799c3f08f6443c9b4a595e063"
+    },
+    "/blog-assets/posters/horror-2026-resident-evil-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/resident-evil-2026/id6807575287?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "fbe0f819ec0737eb0bd60b032b78dcf614a2dc6831420403d9b58834a8a54a5f"
+    },
+    "/blog-assets/posters/horror-2026-resident-evil-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/resident-evil-2026/id6807575287?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "84f49722092692b02660b6bb1690b40d17e6f1615e6cccd30dc594c952128820"
+    },
+    "/blog-assets/posters/horror-2026-obsession-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/obsession-2026/id1895945921?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "9518fccf602fd048865d3cc20b9b755e55dd7ceadbc23a5ea9511742c3d7c3a6"
+    },
+    "/blog-assets/posters/horror-2026-obsession-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/obsession-2026/id1895945921?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "4eb33495c10efdc9df2b1fc0ff825fe973cf1b7c333fa9fa06f887d4adffedfd"
+    },
+    "/blog-assets/posters/horror-2026-obsession-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/obsession-2026/id1895945921?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "5ca1661744e497f1ec2a218783e5f2b72f532e94073e33bc212e01ec8d00160a"
+    },
+    "/blog-assets/posters/horror-2026-hokum-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/hokum/id1892515758?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "82f977ba82c8863102dca4b711f3932501bc3a1aefb3fa9766ed246328e0e9d3"
+    },
+    "/blog-assets/posters/horror-2026-hokum-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/hokum/id1892515758?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "63a1c048f41e32aca8746c58f9b9ab50bb84cea911a01f1f55f58f484fdfe95b"
+    },
+    "/blog-assets/posters/horror-2026-hokum-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/hokum/id1892515758?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "5ddbeab746ff4545b06254a435e5e21821d60ea234d91aab4299dcfbb95ca07d"
+    },
+    "/blog-assets/posters/horror-2026-send-help-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/send-help/id1877120652?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "de2acae11dfddac0bfd1b48c926a4f76d6a41b0d5c0e61ea1d82ef83affe1eec"
+    },
+    "/blog-assets/posters/horror-2026-send-help-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/send-help/id1877120652?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "010d0b8c186bc7d33a8b0ff3f6a3ddae5d2b2e8e256db82b764a29bb8f8fc5e7"
+    },
+    "/blog-assets/posters/horror-2026-send-help-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/send-help/id1877120652?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "04b683d269f6ba0aaeaadca537befb25ee77e20f1d252367e2bef82ddb8ef147"
+    },
+    "/blog-assets/posters/horror-2026-backrooms-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/backrooms/id1896873728?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "fa556e6889eb64545d545c4974d6ff236327ef5bb59cf6deb08aa3bbad92fd89"
+    },
+    "/blog-assets/posters/horror-2026-backrooms-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/backrooms/id1896873728?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "156074d9ad3493c86cb0ff6dee2fb5e132581b2fb917c620a1d5ad3da39f2f63"
+    },
+    "/blog-assets/posters/horror-2026-backrooms-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/backrooms/id1896873728?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "dfcd2c3d9ed21fa15cc38d1ea2d198ef6ea220c68499a2a1e05bcc18d3ce3414"
+    },
+    "/blog-assets/posters/horror-2026-the-bone-temple-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/28-years-later-the-bone-temple/id1863800937?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "0f355677f80d55981fccc9c32a4c21de420a5defad34337ad9c8f883e4559576"
+    },
+    "/blog-assets/posters/horror-2026-the-bone-temple-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/28-years-later-the-bone-temple/id1863800937?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "72ca7b38ba31b41ff8d5ec2852b71ce2ae7229553c875426a389fe2263d0b65c"
+    },
+    "/blog-assets/posters/horror-2026-the-bone-temple-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/28-years-later-the-bone-temple/id1863800937?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "aa82427b295bc2645f388be876348271a025523556f64ba0837b1559ec104b8e"
+    },
+    "/blog-assets/posters/horror-2026-primate-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/primate/id1858833065?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "54347e795069a27b547ee6061fe195e104825c6fb48fa28088faaf8ced51a506"
+    },
+    "/blog-assets/posters/horror-2026-primate-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/primate/id1858833065?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "8e88def5db51edfa4e8f574ab4bc9402c09a0a08dc402aa3a8328aea9a5a77e2"
+    },
+    "/blog-assets/posters/horror-2026-primate-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "best-horror-movies-2026",
+      "storeUrl": "https://itunes.apple.com/us/movie/primate/id1858833065?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "9fe05d118ded7afba49568b922192f30e0304c820dba65b4a2bb7d3701b39440"
+    },
+    "/blog-assets/posters/september-2025-the-conjuring-last-rites-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-conjuring-last-rites/id1830438012?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "2ca385e41fd23a694be6da575fd2e8364c617227f0fb96e53db580ebcf64ef57"
+    },
+    "/blog-assets/posters/september-2025-the-conjuring-last-rites-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-conjuring-last-rites/id1830438012?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "90279b98cae888ff689edc6984724f561d5f19dd25cfab83f3557646f622f559"
+    },
+    "/blog-assets/posters/september-2025-the-conjuring-last-rites-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-conjuring-last-rites/id1830438012?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "72a61c838df98a9d6a103d458cf2ed071b56ad6744cd5b905a0645edc3d252c3"
+    },
+    "/blog-assets/posters/september-2025-downton-abbey-the-grand-finale-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/downton-abbey-the-grand-finale/id1835768910?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "09eca09a7c97c2518d626b7b5be2e460e9a13b3bdb8de0af2ac7f5f2ab976706"
+    },
+    "/blog-assets/posters/september-2025-downton-abbey-the-grand-finale-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/downton-abbey-the-grand-finale/id1835768910?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "9713a3e1fb093e92b040b3d494a1ffd0fe8397f040e4bc692fa9fd3bc9e72b23"
+    },
+    "/blog-assets/posters/september-2025-downton-abbey-the-grand-finale-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/downton-abbey-the-grand-finale/id1835768910?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "02ea293e97f2419998c85e519e89f66840dadb022611dac22d82d0a444451601"
+    },
+    "/blog-assets/posters/september-2025-spinal-tap-ii-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/spinal-tap-ii-the-end-continues/id6784416386?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "26c08cf1c72ba5320d499f5a890e36f4b0c05fb0e84508ddce1e61af0610eebf"
+    },
+    "/blog-assets/posters/september-2025-spinal-tap-ii-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/spinal-tap-ii-the-end-continues/id6784416386?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "1d9a29ccf2bd24c7b877c1455727b7f42cd7c36fc166ca3dffaf45d9e975ebae"
+    },
+    "/blog-assets/posters/september-2025-spinal-tap-ii-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/spinal-tap-ii-the-end-continues/id6784416386?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "20b8e7c5fec7b013eabaf649bf9c831a07dd62f88839b2a08076c980b7a42d05"
+    },
+    "/blog-assets/posters/september-2025-the-long-walk-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-long-walk/id1838516835?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "e4c530c609253b4ceea7855bcfea3c2c4ffd6005f9c8eb897a3b46fdab91909e"
+    },
+    "/blog-assets/posters/september-2025-the-long-walk-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-long-walk/id1838516835?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "9d4e42339e510fffe26449f13edc33cfad118c17c94b9008307737edff45898b"
+    },
+    "/blog-assets/posters/september-2025-the-long-walk-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-long-walk/id1838516835?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "b2629060cb92fabd4c0a16f282ec492ab5a0616b642169e0fd37a7897e946c1a"
+    },
+    "/blog-assets/posters/september-2025-a-big-bold-beautiful-journey-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/a-big-bold-beautiful-journey/id1837842289?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "90275a985d8f592aaef74eaec11a7cb30baf3bc3cfe93848c14e74741235c54e"
+    },
+    "/blog-assets/posters/september-2025-a-big-bold-beautiful-journey-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/a-big-bold-beautiful-journey/id1837842289?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "1fdc8fe52446753ccc607cb865bad44b239c38b26d8d4300d04102f58c44a41d"
+    },
+    "/blog-assets/posters/september-2025-a-big-bold-beautiful-journey-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/a-big-bold-beautiful-journey/id1837842289?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "a7391de21dbbd46db7174b51cce0de7c88286284914339d0de5214e23cd3cf3b"
+    },
+    "/blog-assets/posters/september-2025-him-2025-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/him/id1837959514?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "07c52fb5b8f9ec2f1088505f8ee4a7128b3daf724e9e53e168a46e4f5e9210a9"
+    },
+    "/blog-assets/posters/september-2025-him-2025-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/him/id1837959514?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "74ab42f37747591638410ba493ab2c8227ce7b5a46c50b9cf4505e3ecf2c5d5e"
+    },
+    "/blog-assets/posters/september-2025-him-2025-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/him/id1837959514?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "b9c07e4c86db8ef41ba74e688634dc6daa17ba496eb329079520b9de3c08f863"
+    },
+    "/blog-assets/posters/september-2025-the-strangers-chapter-2-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-strangers-chapter-2/id1840758768?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "5e291ea7802936294abe3dc3a4b7ee9d6f3ebd4e800b98a526944a9f2d61266a"
+    },
+    "/blog-assets/posters/september-2025-the-strangers-chapter-2-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-strangers-chapter-2/id1840758768?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "744613fc4b6a5ce44be1707d0dc11fd30a023008c5272149466a090797a4796f"
+    },
+    "/blog-assets/posters/september-2025-the-strangers-chapter-2-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-strangers-chapter-2/id1840758768?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "35a526ee34e441c9436c45f39ee2d9c03e45942867095fcd1ad51ed7c8329012"
+    },
+    "/blog-assets/posters/september-2025-gabbys-dollhouse-the-movie-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/gabbys-dollhouse-the-movie/id1839109614?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "5c4e951c8b1df98fc7696c577b95bfe0ac39b3904108659d9598309682b55881"
+    },
+    "/blog-assets/posters/september-2025-gabbys-dollhouse-the-movie-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/gabbys-dollhouse-the-movie/id1839109614?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "361dfcfd6c92d1dd92e01be9564525bd697a45764f77f8c4ccdfe651a3dd81df"
+    },
+    "/blog-assets/posters/september-2025-gabbys-dollhouse-the-movie-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "september-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/gabbys-dollhouse-the-movie/id1839109614?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "fffbbca86f463e07af1d080b24aee806b9d7f22b58fcb9b6226333a300e70b0d"
+    },
+    "/blog-assets/posters/august-2025-bad-guys-2-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-bad-guys-2/id1827318553?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "15b393aac7e034104a4d5fca19e7ccf9da2a2079f8dd60e652fac987060326cb"
+    },
+    "/blog-assets/posters/august-2025-bad-guys-2-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-bad-guys-2/id1827318553?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "4cf3963dab43e688db0c78261942097f54f3c00cd59195333c2b7832647db69c"
+    },
+    "/blog-assets/posters/august-2025-bad-guys-2-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-bad-guys-2/id1827318553?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "7ea3a63328ec8ca65dfe6a35aad6746cdd9b6903ad55913c50f3fa929e128451"
+    },
+    "/blog-assets/posters/august-2025-naked-gun-2025-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-naked-gun-2025/id1828420344?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "0495e67ace2f2f96f0142ac47ad16c1b2408598be6a766d2bb54a1e77a6cc794"
+    },
+    "/blog-assets/posters/august-2025-naked-gun-2025-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-naked-gun-2025/id1828420344?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "831025f79567dc1577868449e0dc7d61ffb828d8e6616387e9bdee3bd0318511"
+    },
+    "/blog-assets/posters/august-2025-naked-gun-2025-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/the-naked-gun-2025/id1828420344?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "96982a96f9216cae54bec1b67c9277b696bfb047d9e49d29a09cfe7d1cc3b065"
+    },
+    "/blog-assets/posters/august-2025-freaky-friday-2-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/freakier-friday/id1837821710?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "ca5983ca48e4e4e597d31bec88384cdb65e93363ccdbb9270e7f8b9ddde9fbd2"
+    },
+    "/blog-assets/posters/august-2025-freaky-friday-2-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/freakier-friday/id1837821710?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "de4d7c8f312d2990a1b92c14bb7cc27f5797fca3772598dbe4910a84a0a551ef"
+    },
+    "/blog-assets/posters/august-2025-freaky-friday-2-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/freakier-friday/id1837821710?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "0b026c88f099c2f382eee8a114eaa8886e9b4c6af5cd4e3326b5f3e0b0c5be94"
+    },
+    "/blog-assets/posters/august-2025-weapons-2025-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/weapons/id1830433930?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "37690906b52247df1878fda975e701b10a47e1fbfeda0fd7c56f03bc48b48388"
+    },
+    "/blog-assets/posters/august-2025-weapons-2025-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/weapons/id1830433930?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "442c26e15a2a4d097349cf3ab404b001fc5dec12ae2548de151c54cc3f4d663c"
+    },
+    "/blog-assets/posters/august-2025-weapons-2025-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/weapons/id1830433930?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "8ca5e26bac1165761e9282da2c1d44f653cf36333f001fd00eab4a09bbb25e02"
+    },
+    "/blog-assets/posters/august-2025-nobody-2-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/nobody-2/id1830519545?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "d58527fd37bb803432a94268698a96a3c2a9ea84429aec8cb42ae015502c5227"
+    },
+    "/blog-assets/posters/august-2025-nobody-2-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/nobody-2/id1830519545?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "c138fb71363fdb2e63ea797341d5df271662ae12f075e29101dca4a58b20c850"
+    },
+    "/blog-assets/posters/august-2025-nobody-2-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/nobody-2/id1830519545?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "2149e4a42b0c54db75a7eb2c19c7bcade03407b279b5ae6b95f4f78ae02db5ff"
+    },
+    "/blog-assets/posters/august-2025-honey-dont-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/honey-dont/id1832028837?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "f5317ce6679b7c54aa3c775bd1f7093d207825c324c802fc3d931e74e382afd3"
+    },
+    "/blog-assets/posters/august-2025-honey-dont-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/honey-dont/id1832028837?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "ecb8b414db7f327dd458f40c77d5d1f85f93cfa18f3854480a7a11ecf20cb13a"
+    },
+    "/blog-assets/posters/august-2025-honey-dont-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/honey-dont/id1832028837?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "2ce7f52a349a7f78bd44d8b88e21f32932375ec7454a49d79842a0e70b060cb8"
+    },
+    "/blog-assets/posters/august-2025-ne-zha-2-poster-160.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/ne-zha-ii/id1833287869?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "9bafcf0fc7343ffb8e76cf858442b39cc22c0d10f64ff89d92a4fd46724069f0"
+    },
+    "/blog-assets/posters/august-2025-ne-zha-2-poster-320.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/ne-zha-ii/id1833287869?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "fec914d47da7c4b266575593e8f781d56d38556706510d4aae692566a75c661d"
+    },
+    "/blog-assets/posters/august-2025-ne-zha-2-poster.webp": {
+      "basis": "conditional_apple_promotion",
+      "article": "august-2025-new-movies-guide",
+      "storeUrl": "https://itunes.apple.com/us/movie/ne-zha-ii/id1833287869?uo=4",
+      "terms": "https://performance-partners.apple.com/search-api",
+      "sha256": "33596a797c1fbe5f4791466a663129359da16e07e33ee3c20edd338f2ffa4ff9"
+    },
+    "/blog-assets/frames/tears-of-steel-conversation-480.webp": {
+      "basis": "cc_by_3_0",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "creator": "Blender Foundation / Project Mango",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_08_4a.jpg",
+      "sha256": "17d019a41a8505f67fa24b04878b8c1d29dbd2a2a2cae251edc9867763720980"
+    },
+    "/blog-assets/frames/tears-of-steel-conversation-960.webp": {
+      "basis": "cc_by_3_0",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "creator": "Blender Foundation / Project Mango",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_08_4a.jpg",
+      "sha256": "d4a44f886ca5860d1ddc6313542c1e145915c325cdd55e7c1b8b8f936a658231"
+    },
+    "/blog-assets/frames/tears-of-steel-conversation.webp": {
+      "basis": "cc_by_3_0",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "creator": "Blender Foundation / Project Mango",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_08_4a.jpg",
+      "sha256": "e7010af63b14130953aacd37df8012922ed6b5b53728e30a645bdf034e832717"
+    },
+    "/blog-assets/frames/tears-of-steel-launch-480.webp": {
+      "basis": "cc_by_3_0",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "creator": "Blender Foundation / Project Mango",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_00_1c.jpg",
+      "sha256": "cff0e1469b3d6b1c4f49485992ca268d70af9ca4ab3b247335dad9788d8d4caf"
+    },
+    "/blog-assets/frames/tears-of-steel-launch-960.webp": {
+      "basis": "cc_by_3_0",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "creator": "Blender Foundation / Project Mango",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_00_1c.jpg",
+      "sha256": "66266d29a7ee14e80119d359ce8bf24faaaa6322ee58f8b3e99fe245e4f2bda1"
+    },
+    "/blog-assets/frames/tears-of-steel-launch.webp": {
+      "basis": "cc_by_3_0",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "creator": "Blender Foundation / Project Mango",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_00_1c.jpg",
+      "sha256": "c11138c289dbb1ed6ed1413ea40580f8129eecaaa52aa14599302942d9279b68"
     }
   },
   "retiredPublicFiles": [
@@ -1570,6 +1497,225 @@
     "/blog-assets/november-2026-sunrise-on-the-reaping-poster.webp",
     "/blog-assets/november-2026-the-cat-in-the-hat-still.webp",
     "/blog-assets/november-2026-wild-horse-nine-still.webp",
+    "/blog-assets/original/august-2025-bad-guys-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-bad-guys-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-bad-guys-2-illustration.webp",
+    "/blog-assets/original/august-2025-freaky-friday-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-freaky-friday-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp",
+    "/blog-assets/original/august-2025-honey-dont-illustration-160.webp",
+    "/blog-assets/original/august-2025-honey-dont-illustration-320.webp",
+    "/blog-assets/original/august-2025-honey-dont-illustration.webp",
+    "/blog-assets/original/august-2025-naked-gun-2025-illustration-160.webp",
+    "/blog-assets/original/august-2025-naked-gun-2025-illustration-320.webp",
+    "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp",
+    "/blog-assets/original/august-2025-ne-zha-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-ne-zha-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-ne-zha-2-illustration.webp",
+    "/blog-assets/original/august-2025-nobody-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-nobody-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-nobody-2-illustration.webp",
+    "/blog-assets/original/august-2025-weapons-2025-illustration-160.webp",
+    "/blog-assets/original/august-2025-weapons-2025-illustration-320.webp",
+    "/blog-assets/original/august-2025-weapons-2025-illustration.webp",
+    "/blog-assets/original/horror-2026-backrooms-illustration-480.webp",
+    "/blog-assets/original/horror-2026-backrooms-illustration-800.webp",
+    "/blog-assets/original/horror-2026-backrooms-illustration.webp",
+    "/blog-assets/original/horror-2026-hokum-illustration-480.webp",
+    "/blog-assets/original/horror-2026-hokum-illustration-800.webp",
+    "/blog-assets/original/horror-2026-hokum-illustration.webp",
+    "/blog-assets/original/horror-2026-obsession-illustration-480.webp",
+    "/blog-assets/original/horror-2026-obsession-illustration-800.webp",
+    "/blog-assets/original/horror-2026-obsession-illustration.webp",
+    "/blog-assets/original/horror-2026-primate-illustration-480.webp",
+    "/blog-assets/original/horror-2026-primate-illustration-800.webp",
+    "/blog-assets/original/horror-2026-primate-illustration.webp",
+    "/blog-assets/original/horror-2026-resident-evil-illustration-480.webp",
+    "/blog-assets/original/horror-2026-resident-evil-illustration-800.webp",
+    "/blog-assets/original/horror-2026-resident-evil-illustration.webp",
+    "/blog-assets/original/horror-2026-send-help-illustration-480.webp",
+    "/blog-assets/original/horror-2026-send-help-illustration-800.webp",
+    "/blog-assets/original/horror-2026-send-help-illustration.webp",
+    "/blog-assets/original/horror-2026-the-bone-temple-illustration-480.webp",
+    "/blog-assets/original/horror-2026-the-bone-temple-illustration-800.webp",
+    "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp",
+    "/blog-assets/original/knives-out-clue-illustration-480.webp",
+    "/blog-assets/original/knives-out-clue-illustration-800.webp",
+    "/blog-assets/original/knives-out-clue-illustration.webp",
+    "/blog-assets/original/knives-out-death-on-the-nile-illustration-480.webp",
+    "/blog-assets/original/knives-out-death-on-the-nile-illustration-800.webp",
+    "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp",
+    "/blog-assets/original/knives-out-deathtrap-illustration-480.webp",
+    "/blog-assets/original/knives-out-deathtrap-illustration-800.webp",
+    "/blog-assets/original/knives-out-deathtrap-illustration.webp",
+    "/blog-assets/original/knives-out-glass-onion-illustration-480.webp",
+    "/blog-assets/original/knives-out-glass-onion-illustration-800.webp",
+    "/blog-assets/original/knives-out-glass-onion-illustration.webp",
+    "/blog-assets/original/knives-out-gosford-park-illustration-480.webp",
+    "/blog-assets/original/knives-out-gosford-park-illustration-800.webp",
+    "/blog-assets/original/knives-out-gosford-park-illustration.webp",
+    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-480.webp",
+    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-800.webp",
+    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp",
+    "/blog-assets/original/knives-out-see-how-they-run-illustration-480.webp",
+    "/blog-assets/original/knives-out-see-how-they-run-illustration-800.webp",
+    "/blog-assets/original/knives-out-see-how-they-run-illustration.webp",
+    "/blog-assets/original/knives-out-sleuth-illustration-480.webp",
+    "/blog-assets/original/knives-out-sleuth-illustration-800.webp",
+    "/blog-assets/original/knives-out-sleuth-illustration.webp",
+    "/blog-assets/original/knives-out-the-last-of-sheila-illustration-480.webp",
+    "/blog-assets/original/knives-out-the-last-of-sheila-illustration-800.webp",
+    "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp",
+    "/blog-assets/original/knives-out-wake-up-dead-man-illustration-480.webp",
+    "/blog-assets/original/knives-out-wake-up-dead-man-illustration-800.webp",
+    "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp",
+    "/blog-assets/original/miniseries-chernobyl-illustration-480.webp",
+    "/blog-assets/original/miniseries-chernobyl-illustration-800.webp",
+    "/blog-assets/original/miniseries-chernobyl-illustration.webp",
+    "/blog-assets/original/miniseries-five-days-at-memorial-illustration-480.webp",
+    "/blog-assets/original/miniseries-five-days-at-memorial-illustration-800.webp",
+    "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp",
+    "/blog-assets/original/miniseries-godless-illustration-480.webp",
+    "/blog-assets/original/miniseries-godless-illustration-800.webp",
+    "/blog-assets/original/miniseries-godless-illustration.webp",
+    "/blog-assets/original/miniseries-maid-illustration-480.webp",
+    "/blog-assets/original/miniseries-maid-illustration-800.webp",
+    "/blog-assets/original/miniseries-maid-illustration.webp",
+    "/blog-assets/original/miniseries-normal-people-illustration-480.webp",
+    "/blog-assets/original/miniseries-normal-people-illustration-800.webp",
+    "/blog-assets/original/miniseries-normal-people-illustration.webp",
+    "/blog-assets/original/miniseries-one-day-illustration-480.webp",
+    "/blog-assets/original/miniseries-one-day-illustration-800.webp",
+    "/blog-assets/original/miniseries-one-day-illustration.webp",
+    "/blog-assets/original/miniseries-station-eleven-illustration-480.webp",
+    "/blog-assets/original/miniseries-station-eleven-illustration-800.webp",
+    "/blog-assets/original/miniseries-station-eleven-illustration.webp",
+    "/blog-assets/original/miniseries-the-queens-gambit-illustration-480.webp",
+    "/blog-assets/original/miniseries-the-queens-gambit-illustration-800.webp",
+    "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp",
+    "/blog-assets/original/miniseries-unorthodox-illustration-480.webp",
+    "/blog-assets/original/miniseries-unorthodox-illustration-800.webp",
+    "/blog-assets/original/miniseries-unorthodox-illustration.webp",
+    "/blog-assets/original/miniseries-when-they-see-us-illustration-480.webp",
+    "/blog-assets/original/miniseries-when-they-see-us-illustration-800.webp",
+    "/blog-assets/original/miniseries-when-they-see-us-illustration.webp",
+    "/blog-assets/original/november-2026-ebenezer-illustration-480.webp",
+    "/blog-assets/original/november-2026-ebenezer-illustration-800.webp",
+    "/blog-assets/original/november-2026-ebenezer-illustration.webp",
+    "/blog-assets/original/november-2026-focker-in-law-illustration-480.webp",
+    "/blog-assets/original/november-2026-focker-in-law-illustration-800.webp",
+    "/blog-assets/original/november-2026-focker-in-law-illustration.webp",
+    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-480.webp",
+    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-800.webp",
+    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp",
+    "/blog-assets/original/november-2026-hexed-illustration-480.webp",
+    "/blog-assets/original/november-2026-hexed-illustration-800.webp",
+    "/blog-assets/original/november-2026-hexed-illustration.webp",
+    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-480.webp",
+    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-800.webp",
+    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp",
+    "/blog-assets/original/november-2026-i-play-rocky-illustration-480.webp",
+    "/blog-assets/original/november-2026-i-play-rocky-illustration-800.webp",
+    "/blog-assets/original/november-2026-i-play-rocky-illustration.webp",
+    "/blog-assets/original/november-2026-paper-tiger-illustration-480.webp",
+    "/blog-assets/original/november-2026-paper-tiger-illustration-800.webp",
+    "/blog-assets/original/november-2026-paper-tiger-illustration.webp",
+    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-480.webp",
+    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-800.webp",
+    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp",
+    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-480.webp",
+    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-800.webp",
+    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp",
+    "/blog-assets/original/november-2026-wild-horse-nine-illustration-480.webp",
+    "/blog-assets/original/november-2026-wild-horse-nine-illustration-800.webp",
+    "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-hoppers-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-hoppers-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-redux-redux-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-redux-redux-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-arrival-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-arrival-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-coherence-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-coherence-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-dark-city-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-dark-city-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-gattaca-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-gattaca-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-minority-report-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-minority-report-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-moon-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-moon-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-moon-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-source-code-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-source-code-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp",
+    "/blog-assets/original/scope-composition-station-illustration-1440.webp",
+    "/blog-assets/original/scope-composition-station-illustration-960.webp",
+    "/blog-assets/original/scope-composition-station-illustration.webp",
+    "/blog-assets/original/scope-negative-space-illustration-480.webp",
+    "/blog-assets/original/scope-negative-space-illustration-800.webp",
+    "/blog-assets/original/scope-negative-space-illustration.webp",
+    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-160.webp",
+    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-320.webp",
+    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp",
+    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-160.webp",
+    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-320.webp",
+    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp",
+    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-160.webp",
+    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-320.webp",
+    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp",
+    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-160.webp",
+    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-320.webp",
+    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp",
+    "/blog-assets/original/september-2025-him-2025-illustration-160.webp",
+    "/blog-assets/original/september-2025-him-2025-illustration-320.webp",
+    "/blog-assets/original/september-2025-him-2025-illustration.webp",
+    "/blog-assets/original/september-2025-spinal-tap-ii-illustration-160.webp",
+    "/blog-assets/original/september-2025-spinal-tap-ii-illustration-320.webp",
+    "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp",
+    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-160.webp",
+    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-320.webp",
+    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp",
+    "/blog-assets/original/september-2025-the-long-walk-illustration-160.webp",
+    "/blog-assets/original/september-2025-the-long-walk-illustration-320.webp",
+    "/blog-assets/original/september-2025-the-long-walk-illustration.webp",
+    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-160.webp",
+    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-320.webp",
+    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp",
+    "/blog-assets/original/whalefall-coast-illustration-480.webp",
+    "/blog-assets/original/whalefall-coast-illustration-800.webp",
+    "/blog-assets/original/whalefall-coast-illustration.webp",
     "/blog-assets/responsive/august-2025-bad-guys-2-160.webp",
     "/blog-assets/responsive/august-2025-bad-guys-2-320.webp",
     "/blog-assets/responsive/august-2025-bad-guys-2-640.webp",

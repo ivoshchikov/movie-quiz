@@ -109,7 +109,7 @@ test('admin history and answer search retain their typed fields and image URLs',
   await expect(page.getByRole('heading', { name: 'Search Film' })).toBeVisible();
 });
 
-test('article illustrations remain available without gallery data and reset on navigation', async ({ page }) => {
+test('inline store posters remain available without gallery data and reset on navigation', async ({ page }) => {
   await mockQuizApi(page);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -120,14 +120,14 @@ test('article illustrations remain available without gallery data and reset on n
     for (const post of posts) post.gallery = [];
   });
   await page.getByRole('link', { name: 'August 2025 Movie Releases: 7 Picks (US)', exact: true }).click();
-  await expect(page.locator('.hq-movie-poster img')).toHaveCount(7);
-  const poster = page.locator('.hq-movie-poster img').first();
-  await expect(poster).toHaveAttribute('src', /\/original\/august-2025-bad-guys-2-illustration(?:-\d+)?\.webp$/);
-  await expect(poster).toHaveAttribute('alt', /^Original Hard Quiz illustration for The Bad Guys 2:/);
+  await expect(page.locator('.hq-movie-poster .hq-article-image img')).toHaveCount(7);
+  const poster = page.locator('.hq-movie-poster .hq-article-image img').first();
+  await expect(poster).toHaveAttribute('src', /\/posters\/august-2025-bad-guys-2-poster(?:-\d+)?\.webp$/);
+  await expect(poster).toHaveAttribute('alt', /^Poster for The Bad Guys 2 /);
   await page.getByRole('link', { name: /September 2025 Movie Releases: 9 Picks/ }).click();
-  await expect(page.locator('.hq-movie-poster img')).toHaveCount(9);
-  await expect(poster).toHaveAttribute('src', /\/original\/september-2025-the-conjuring-last-rites-illustration(?:-\d+)?\.webp$/);
-  await expect(poster).toHaveAttribute('alt', /^Original Hard Quiz illustration for The Conjuring: Last Rites:/);
+  await expect(page.locator('.hq-movie-poster .hq-article-image img')).toHaveCount(8);
+  await expect(poster).toHaveAttribute('src', /\/posters\/september-2025-the-conjuring-last-rites-poster(?:-\d+)?\.webp$/);
+  await expect(poster).toHaveAttribute('alt', /^Poster for The Conjuring: Last Rites /);
   expect(errors).toEqual([]);
 });
 

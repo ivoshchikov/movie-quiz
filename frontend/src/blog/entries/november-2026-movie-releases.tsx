@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
-import editorialIllustration from "../components/editorialIllustration";
+import filmPoster from "../components/filmPoster";
 import { formatBlogDate } from "../presentation";
 
 const coverPath = "/blog-assets/november-2026-movie-releases-cover.webp";
@@ -214,7 +214,7 @@ const post: BlogPost = {
         <div><dt>Director</dt><dd>{film.director}</dd></div>
         <div><dt>{film.castLabel || "Starring"}</dt><dd>{film.cast}</dd></div>
       </dl>
-      {editorialIllustration(`november-2026-${film.id}`, true)}
+      {filmPoster(`november-2026-${film.id}`)}
       {film.body}
       <p className="hq-watchlist-facts"><a href={film.source}>{film.sourceLabel}: film details</a></p>
     </section>)}

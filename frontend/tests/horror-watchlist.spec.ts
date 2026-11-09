@@ -29,7 +29,7 @@ test("the new watchlist serves its complete text, own share image and canonical 
   await expect.poll(() => cover.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBe(1200);
   await expect(cover).toHaveAttribute("loading", "eager");
   await expect(page.locator(".hq-film-still")).toHaveCount(7);
-  for (const still of await page.locator(".hq-film-still img").all()) {
+  for (const still of await page.locator(".hq-film-still .hq-article-image img").all()) {
     await expect(still).toHaveAttribute("loading", "lazy");
     await expect(still).toHaveAttribute("alt", /\S/);
     await expect(still).toHaveAttribute("width", /^[1-9]\d+$/);
@@ -77,7 +77,7 @@ for (const width of [1440, 390, 320]) test(`watchlist links, image and compariso
     expect(box!.width).toBeGreaterThanOrEqual(44);
     expect(box!.height).toBeGreaterThanOrEqual(44);
   }
-  for (const still of await page.locator(".hq-film-still img").all()) {
+  for (const still of await page.locator(".hq-film-still .hq-article-image img").all()) {
     await still.scrollIntoViewIfNeeded();
     await expect.poll(() => still.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
     const size = await still.evaluate(element => {

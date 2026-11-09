@@ -39,10 +39,10 @@ for (const width of [320, 1440]) {
 
     const stills = page.locator(".hq-film-still");
     await expect(stills).toHaveCount(choices.length);
-    const variant = width === 320 ? /-illustration-480\.webp$/ : /-illustration-800\.webp$/;
+    const variant = /-poster-320\.webp$/;
     for (const [name] of choices) {
       const still = page.getByRole("region", { name, exact: true }).locator(".hq-film-still");
-      const image = still.getByRole("img");
+      const image = still.locator(".hq-article-image img");
       await expect(image).toHaveAttribute("alt", /\S/);
       await expect(image).toHaveAttribute("loading", "lazy");
       await expect(still.locator("figcaption")).toHaveText(/\S/);
@@ -58,7 +58,7 @@ for (const width of [320, 1440]) {
       expect(display.fit).toBe("contain");
       expect(display.ratio).toBeCloseTo(display.originalRatio, 1);
     }
-    await stills.first().screenshot({ path: testInfo.outputPath(`sci-fi-illustration-${width}.png`) });
+    await stills.first().screenshot({ path: testInfo.outputPath(`sci-fi-poster-${width}.png`) });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
     const contents = page.getByRole("navigation", { name: "Article contents" });

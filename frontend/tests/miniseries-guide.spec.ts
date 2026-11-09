@@ -50,31 +50,9 @@ for (const width of [320, 390, 768, 1440]) test(`miniseries comparison, cover an
   const image = await cover.evaluate(el => ({ src: (el as HTMLImageElement).currentSrc, ratio: el.getBoundingClientRect().width / el.getBoundingClientRect().height }));
   expect(image.src).toMatch(new RegExp(`-${width < 620 ? 480 : 800}\\.webp$`));
   expect(image.ratio).toBeCloseTo(16 / 9, 2);
-  const stills = page.locator(".hq-film-still img");
-  await expect(stills).toHaveCount(10);
-  expect(requested.some(path => path.includes("miniseries-maid-illustration"))).toBe(false);
-  for (const still of await stills.all()) {
-    await expect(still).toHaveAttribute("loading", "lazy");
-    await expect(still).toHaveAttribute("alt", /\S/);
-    const before = await still.locator("..").boundingBox();
-    await still.scrollIntoViewIfNeeded();
-    await expect.poll(() => still.evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-    const loaded = await still.evaluate(el => {
-      const img = el as HTMLImageElement;
-      const box = img.getBoundingClientRect();
-      return { src: img.currentSrc, height: box.height, expectedHeight: box.width * Number(img.getAttribute("height")) / Number(img.getAttribute("width")), fit: getComputedStyle(img).objectFit };
-    });
-    expect(loaded.src).toMatch(new RegExp(`-illustration-${width < 620 ? 480 : 800}\\.webp$`));
-    expect(loaded.fit).toBe("contain");
-    expect(Math.abs(loaded.height - loaded.expectedHeight)).toBeLessThanOrEqual(1);
-    const after = await still.locator("..").boundingBox();
-    expect(Math.abs(after!.height - before!.height)).toBeLessThanOrEqual(1);
-  }
-  const firstFigure = page.locator(".hq-film-still").first();
-  await firstFigure.scrollIntoViewIfNeeded();
-  await firstFigure.locator("img").evaluate(el => (el as HTMLImageElement).decode());
-  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-  await firstFigure.screenshot({ path: testInfo.outputPath(`miniseries-illustration-${width}.png`) });
+  await expect(page.locator(".hq-film-still")).toHaveCount(0);
+  expect(requested.some(path => /miniseries-.+-illustration/.test(path))).toBe(false);
+  await expect(page.locator(".hq-watchlist-entry")).toHaveCount(10);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const viewingCells = page.locator(".hq-release-index tbody td:last-child");
   await expect(viewingCells).toHaveCount(10);

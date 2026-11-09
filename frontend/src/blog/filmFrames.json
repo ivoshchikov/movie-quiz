@@ -1,0 +1,22 @@
+{
+  "tears-of-steel-conversation": {
+    "title": "Tears of Steel (2012)",
+    "creator": "Blender Foundation / Project Mango",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_08_4a.jpg",
+    "alt": "A grey-haired man beside a graffiti-covered machine in Tears of Steel (2012)",
+    "src": "/blog-assets/frames/tears-of-steel-conversation.webp",
+    "width": 1440,
+    "height": 600
+  },
+  "tears-of-steel-launch": {
+    "title": "Tears of Steel (2012)",
+    "creator": "Blender Foundation / Project Mango",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_00_1c.jpg",
+    "alt": "A rocket rises above a city and tall industrial structures in Tears of Steel (2012)",
+    "src": "/blog-assets/frames/tears-of-steel-launch.webp",
+    "width": 1440,
+    "height": 600
+  }
+}

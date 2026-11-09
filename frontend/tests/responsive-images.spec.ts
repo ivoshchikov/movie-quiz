@@ -5,7 +5,7 @@ test.use({ deviceScaleFactor: 2 });
 
 for (const width of [320, 390, 768, 1440]) {
   for (const month of ["august", "september"]) {
-    test(`${month} original illustrations load a small image at ${width}px and 2x density`, async ({ page }) => {
+    test(`${month} store posters load a small image at ${width}px and 2x density`, async ({ page }) => {
       const calls = await mockQuizApi(page);
       await page.setViewportSize({ width, height: 844 });
       const oversized: string[] = [];
@@ -13,17 +13,17 @@ for (const width of [320, 390, 768, 1440]) {
         if (request.url().includes("/storage/v1/object/public/blog/new_releases/")) oversized.push(request.url());
       });
       await page.goto(`/blog/${month}-2025-new-movies-guide`);
-      const poster = page.locator(".hq-movie-poster img").first();
+      const poster = page.locator(".hq-movie-poster .hq-article-image img").first();
       await poster.scrollIntoViewIfNeeded();
       await expect.poll(() => poster.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
       const src = await poster.evaluate(image => (image as HTMLImageElement).currentSrc);
-      expect(new URL(src).pathname).toMatch(/\/blog-assets\/original\/.+-illustration-320\.webp$/);
+      expect(new URL(src).pathname).toMatch(/\/blog-assets\/posters\/.+-poster-320\.webp$/);
       const response = await page.request.get(src);
       expect(response.ok()).toBe(true);
       expect(response.headers()["content-type"]).toContain("image/webp");
       expect((await response.body()).length).toBeLessThan(50_000);
       await expect(poster).toHaveAttribute("loading", "lazy");
-      await expect(poster).toHaveAttribute("alt", /Original Hard Quiz illustration/);
+      await expect(poster).toHaveAttribute("alt", /^Poster for /);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       expect(oversized).toEqual([]);
       expect(calls).toEqual([]);

@@ -2,9 +2,10 @@ import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import FrameComparison from "../components/FrameComparison";
 import OpticsIllustration from "../components/OpticsIllustration";
+import FilmFrameCredit from "../components/FilmFrameCredit";
+import frames from "../filmFrames.json";
 
-const staging = "/blog-assets/original/scope-composition-station-illustration.webp";
-const negative = "/blog-assets/original/scope-negative-space-illustration.webp";
+const negative = frames["tears-of-steel-launch"];
 
 const post: BlogPost = {
   slug: "why-2-39-1-feels-more-cinematic",
@@ -15,7 +16,7 @@ const post: BlogPost = {
   coverUrl: "https://hard-quiz.com/blog-assets/original/scope-guide-cover.webp",
   listingCoverUrl: "https://hard-quiz.com/blog-assets/original/scope-guide-cover-640.webp",
   socialImagePath: "/blog-assets/original/scope-guide-social.webp",
-  gallery: [staging, negative].map(src => `https://hard-quiz.com${src}`),
+  gallery: [],
   contents: [
     { id: "compare-frames", label: "Compare 2.39:1 and 16:9" },
     { id: "what-scope-means", label: "What Scope means" },
@@ -34,8 +35,8 @@ const post: BlogPost = {
     <p>A wide frame gives a filmmaker more horizontal space to work with. That can make a landscape, a group of characters or an empty stretch of a room feel very different. The familiar shape of 2.39:1 also carries an association with theatrical cinema. It is a compositional choice, however, rather than a guarantee of a better image.</p>
 
     <h2 id="compare-frames" tabIndex={-1}>Compare 2.39:1 and 16:9</h2>
-    <p>Start with one scene. In the second panel, a centered 16:9 crop removes information from the sides. Look at the space around the people, rather than just the black borders.</p>
-    <FrameComparison src={staging} />
+    <p>Start with one scene. In the second panel, a centered 16:9 crop removes information from the sides. Look at how much of the setting remains around the man and the machine.</p>
+    <FrameComparison />
     <p>A 16:9 television does not have to crop a Scope film. Fitting the full wide image across the screen leaves letterbox bars above and below it. Our comparison deliberately crops the sides to show the difference between preserving and trimming the composition.</p>
 
     <h2 id="what-scope-means" tabIndex={-1}>What Scope means</h2>
@@ -47,7 +48,7 @@ const post: BlogPost = {
     <p>More horizontal space can hold a conversation, movement and the surrounding setting in one shot. A director can place people at opposite edges or let action unfold across the frame. Whether that works depends on the staging; simply adding width does not make a scene clearer.</p>
     <h3>Let the surroundings matter</h3>
     <p>Space around a character can suggest distance, isolation or scale. A wide composition gives you room to build those relationships, while also asking viewers to choose where to look.</p>
-    <figure><ArticleImage src={negative} alt="Original Hard Quiz illustration of one figure on a cliff beside a large open sea" width={1200} height={675} /><figcaption>Original Hard Quiz illustration, not a film still. The small figure and open sea demonstrate negative space and scale; the aspect ratio alone does not create that relationship.</figcaption></figure>
+    <figure><ArticleImage src={negative.src} alt={negative.alt} width={negative.width} height={negative.height} /><figcaption><FilmFrameCredit id="tears-of-steel-launch" /> The open sky and small rocket set the scale against the dense city. The aspect ratio alone does not create that relationship.</figcaption></figure>
 
     <h2 id="anamorphic" tabIndex={-1}>The lens is a separate choice</h2>
     <p>An anamorphic lens compresses the image horizontally during capture; it is expanded again for viewing. Some anamorphic designs produce vertically oval out-of-focus highlights and horizontal streak flares. Their strength and appearance vary with the optics, lighting and focus.</p>

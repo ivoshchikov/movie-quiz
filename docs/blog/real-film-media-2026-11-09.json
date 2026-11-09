@@ -1,0 +1,2635 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-11-09",
+  "scope": "Correction: real movie posters and CC film frames replace inline geometric illustrations. Unconfirmed images are omitted by the owner’s explicit choice.",
+  "appleTerms": "https://performance-partners.apple.com/search-api",
+  "badgeGuidelines": "https://marketing.services.apple/itunes-identity-guidelines",
+  "conditions": "Apple artwork is conditional promotional material, not a general stock-image license. Each poster links to the corresponding returned US purchase page and has the approved iTunes badge in the same figure. No cover, social image or fallback gallery use; no affiliate tag. Remove if permission or store availability changes.",
+  "limitations": "Provenance and conditions documented; no guarantee against claims or guarantee of advertising-platform approval. No licensed image may be reused outside its documented context.",
+  "counts": {
+    "posters": 46,
+    "ccFilmFrames": 2,
+    "omitted": 25,
+    "retiredInlineIllustrationFiles": 219
+  },
+  "posters": [
+    {
+      "id": "sci-fi-mystery-arrival",
+      "title": "Arrival (2016)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1166395905,
+      "storeTitle": "Arrival",
+      "director": "Denis Villeneuve",
+      "storeReleaseDate": "2016-11-11T08:00:00Z",
+      "storeRuntimeMinutes": 116.86,
+      "storeUrl": "https://itunes.apple.com/us/movie/arrival/id1166395905?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/arrival/umc.cmc.20sgkdxqbvucopzt913joa0gr"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/b4/b1/17/b4b11703-78b0-6f14-32d5-9f8003a13999/pr_source.lsr/900x900bb.jpg",
+      "sourceSha256": "bc4699e13f5ef105eac9506aeab6d9f0cc7f2ffc2f2ec2bb1e0c6092e0598685",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-arrival-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 7466,
+          "sha256": "6de874e740559594deb82c5650bff58cc9ec457d8e63dc113dc47f3e3b1b5c6d"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-arrival-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 21052,
+          "sha256": "6e01dbec2d3b4f918e0900e5e977ef812c8f5c87648315f0c667b9067c5b9f87"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-arrival-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 60110,
+          "sha256": "e2bd7302429c90368e37581d082a0f27ac34faede52a1fde5e4ea147b972c83c"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-moon",
+      "title": "Moon (2009)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 331842140,
+      "storeTitle": "Moon",
+      "director": "Duncan Jones",
+      "storeReleaseDate": "2009-06-12T07:00:00Z",
+      "storeRuntimeMinutes": 97.09,
+      "storeUrl": "https://itunes.apple.com/us/movie/moon/id331842140?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/moon/umc.cmc.kn4jms59nt6y439vqjwgom31"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video/v4/65/33/71/653371f4-04fc-0f7d-f1ca-3f65032dc821/mza_6246067734843511958.jpg/900x900bb.jpg",
+      "sourceSha256": "b4802ef29ece59a971e3e6bcb3909a37fa8acbadff198a57002b734f61e52c8a",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-moon-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 7232,
+          "sha256": "3d96d9a51204115395063a057d61e94563b2984b4ead80cf67256fe51a366d2d"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-moon-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 40638,
+          "sha256": "781ffc55f1cea9c2299ab8ea979c961cf2f1960d16cf443f1fe4fe8d5ad976e9"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-moon-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 112994,
+          "sha256": "548ca83cb47f98421f4c838bc97fab189cb3288048a2c6366db99d2ba5636e5a"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-coherence",
+      "title": "Coherence (2013)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 892520844,
+      "storeTitle": "Coherence",
+      "director": "James Ward Byrkit",
+      "storeReleaseDate": "2014-06-20T07:00:00Z",
+      "storeRuntimeMinutes": 88.31,
+      "storeUrl": "https://itunes.apple.com/us/movie/coherence/id892520844?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/coherence/umc.cmc.hdoayzcx3u9ofxfawjrt3hgc"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/31/42/c1/3142c133-2d7e-ee76-fb2e-77602fec5e3a/pr_source.lsr/900x900bb.jpg",
+      "sourceSha256": "e4710e44d988974731b056b613440c18c0785fd8352b280d10b5c6f77af003bf",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-coherence-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 4962,
+          "sha256": "d2462f834b539a8a8562fb344803baba2d0887aaff99a8cd197ac152d4ac1286"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-coherence-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 15116,
+          "sha256": "02061c884e72f5ee97956872cff1cb57c5609833613d4ba3f3d8dfb6e6bef606"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-coherence-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 44302,
+          "sha256": "a8ebd353f628a71a7dcbef05827863e35ef467435599f83468d2d7b8db5da9e7"
+        }
+      ],
+      "identityNote": "Article uses the original film year; store release date reflects its later release. Director and film identity match."
+    },
+    {
+      "id": "sci-fi-mystery-source-code",
+      "title": "Source Code (2011)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1090244446,
+      "storeTitle": "Source Code",
+      "director": "Duncan Jones",
+      "storeReleaseDate": "2011-04-01T07:00:00Z",
+      "storeRuntimeMinutes": 92.88,
+      "storeUrl": "https://itunes.apple.com/us/movie/source-code/id1090244446?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/source-code/umc.cmc.3qh64tqrye0qklconl4j5ihmb"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video69/v4/a9/31/0d/a9310d47-a4cf-3bb0-d1f3-62e5617ffb54/2550030LGINT.jpg/900x900bb.jpg",
+      "sourceSha256": "06caa99b3ccfa1690f98b14e126146261e471ae62e04d769fa608c739ff8f3e0",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-source-code-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 14750,
+          "sha256": "0a3a852857f81969594209c33c24d68c9061c122d131b8b8a6c6f868b52f9a19"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-source-code-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 48504,
+          "sha256": "78b0a1b44810e9e3322d0df9c6df5ae94677f7dd4376b9e764af27eb60724975"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-source-code-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 136056,
+          "sha256": "a9e1ae5cccb039f72d9101054eb208869c0be77c15acecae902869fbb399e246"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-ex-machina",
+      "title": "Ex Machina (2015)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 983488795,
+      "storeTitle": "Ex Machina",
+      "director": "Alex Garland",
+      "storeReleaseDate": "2015-04-10T07:00:00Z",
+      "storeRuntimeMinutes": 108.28,
+      "storeUrl": "https://itunes.apple.com/us/movie/ex-machina/id983488795?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/ex-machina/umc.cmc.3px5tjkllmjkrluv2ui9m6hbw"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/e1/69/d9/e169d936-9362-14b5-3314-21e6a7de88c1/pr_source.lsr/900x900bb.jpg",
+      "sourceSha256": "c684d266b09354694016788885dcf56a9351af5e0111232d3a68906ea5b8bec6",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-ex-machina-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9748,
+          "sha256": "df5212bb9be78be338d65f9d69f50823db6bf3403f89cb22b0056770759836f5"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-ex-machina-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 32154,
+          "sha256": "f40fed8a3a4b5cef90cf48193c685ab808a1f8f0cc2142d6fc5c57d5a169bd58"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-ex-machina-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 85868,
+          "sha256": "8f19733cb921d34c1f9ecca699bb6dc4d42b38ee1def5b7f3a945b8c0b5f816e"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-dark-city",
+      "title": "Dark City (1998)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1030118145,
+      "storeTitle": "Dark City (Director's Cut)",
+      "director": "Alex Proyas",
+      "storeReleaseDate": "2008-04-11T07:00:00Z",
+      "storeRuntimeMinutes": 111.72,
+      "storeUrl": "https://itunes.apple.com/us/movie/dark-city-directors-cut/id1030118145?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/dark-city/umc.cmc.p6nniounug6r9t45gu4210pj"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video1/v4/d3/1b/dc/d31bdc22-7e6e-e725-2594-c7b3022627aa/Dark_City_DIR_1400x2100_EN.jpg/900x900bb.jpg",
+      "sourceSha256": "44591facd97cfeb635c706f4472151be3caffe5e6d27350e2c48d4d2b059fc87",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-dark-city-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10348,
+          "sha256": "4d7dae8d17b3339ce61a2e47ac33407eb060f471a3577b6576d22bf35dee3d1c"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-dark-city-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 34870,
+          "sha256": "034645c89facdb3d5b45e0785d4e18c47d65e5f58f9375e84853712ad9e374c3"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-dark-city-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 102530,
+          "sha256": "da74693450808a0f8041063f3f6c868c15d6eec129eff630c6444d09eae782be"
+        }
+      ],
+      "identityNote": "Original film 1998; Apple offers the 111.72-minute Director’s Cut, dated 2008. Caption explicitly identifies this edition."
+    },
+    {
+      "id": "sci-fi-mystery-minority-report",
+      "title": "Minority Report (2002)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 573718569,
+      "storeTitle": "Minority Report",
+      "director": "Steven Spielberg",
+      "storeReleaseDate": "2002-06-21T07:00:00Z",
+      "storeRuntimeMinutes": 145.58,
+      "storeUrl": "https://itunes.apple.com/us/movie/minority-report/id573718569?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/minority-report/umc.cmc.4e8pvt0eezl2rnq71x4nx3atn"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/76/ed/dd/76edddee-30e4-8df3-6c21-8e39c289a85f/MinorityReport_EN_2000x3000.jpg/900x900bb.jpg",
+      "sourceSha256": "41a5950f316bc989632545020dac3ea5033026503b7c256d31497d0b4ec1584c",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-minority-report-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9714,
+          "sha256": "3e8270711f8c4e5e8c93557b98cdcbcda8e4c3e36046a7a10740137681f80788"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-minority-report-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 29468,
+          "sha256": "97c1a27aba14a8274d1d1138da40843355fa8c5db7beb10a5e993a209e5bc226"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-minority-report-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 100284,
+          "sha256": "a1ca04adca2a69d763b4f3ee0140f59aa9496729038ef40f69c6c5ad3696ea19"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-gattaca",
+      "title": "Gattaca (1997)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 542688199,
+      "storeTitle": "Gattaca",
+      "director": "Andrew Niccol",
+      "storeReleaseDate": "1997-10-24T07:00:00Z",
+      "storeRuntimeMinutes": 106.62,
+      "storeUrl": "https://itunes.apple.com/us/movie/gattaca/id542688199?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/gattaca/umc.cmc.5ezqaeo0qqkflzp5ofr6s33ny"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video/v4/ac/86/63/ac866356-8664-6055-7aed-ec2bd05b08ee/gattaca_1997_800x1200.jpg/900x900bb.jpg",
+      "sourceSha256": "e4db0164a2599ff5d254c3d15d24f042b6e3d2db90afea9bf1b749cadf65a5be",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-gattaca-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9640,
+          "sha256": "530e558bc8287237039ccae815404e42f272bcaac329215cc5ec477f84801f18"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-gattaca-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 25884,
+          "sha256": "8acbb308973b3e60c85e0ca240ac2af633bc305d9be826722bc63992be6e87ce"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-gattaca-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 71486,
+          "sha256": "92b80cecece7f5312facbfdb09040af390816740268104b51a65c4fb207a21a4"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-the-thirteenth-floor",
+      "title": "The Thirteenth Floor (1999)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 284571749,
+      "storeTitle": "The Thirteenth Floor",
+      "director": "Josef Rusnak",
+      "storeReleaseDate": "1999-05-28T07:00:00Z",
+      "storeRuntimeMinutes": 100.47,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-thirteenth-floor/id284571749?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-thirteenth-floor/umc.cmc.4zxdrzgea9fj0i3pi54278l3r"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/b0/4e/50/mzi.fponcvkt.jpg/900x900bb.jpg",
+      "sourceSha256": "469354499ba75c38a3b06f8d39fc61414f38afe834b498bee3d6d2915f6db745",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-the-thirteenth-floor-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 12008,
+          "sha256": "7c3eda76425dfae04393e658b21d793625dbc6925569c15ff9c8c2033ec907b4"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-the-thirteenth-floor-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 38450,
+          "sha256": "3fc54169d76bdbcb9156bb405433a08fbba8c40cdb5414d8580336bdbce2ee72"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-the-thirteenth-floor-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 103442,
+          "sha256": "14b76427cf9ccee038a6ae427ce5d7366bc32ea7705e12eadf7a8a06ec593c3c"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-mystery-the-vast-of-night",
+      "title": "The Vast of Night (2020)",
+      "article": "sci-fi-mystery-movies",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 6827408315,
+      "storeTitle": "Vast of Night",
+      "director": "Andrew Patterson",
+      "storeReleaseDate": "2020-05-29T07:00:00Z",
+      "storeRuntimeMinutes": 91.01,
+      "storeUrl": "https://itunes.apple.com/us/movie/vast-of-night/id6827408315?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-vast-of-night/umc.cmc.631ylsyfs43wyhf3x1he1wmhz"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fc/9c/8a/fc9c8a0a-611e-19a5-2d2e-f1107927c9df/9383124268176_.jpg/900x900bb.jpg",
+      "sourceSha256": "42bf653bc5b462d8cb646e7f51cdf6d99e1ede4073c1695eb06008cb8e9ff744",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-the-vast-of-night-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 7432,
+          "sha256": "eb2284ac970419cb89ef53252c4e3eb931091efae2987a0c3c27d01f347eea18"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-the-vast-of-night-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 22290,
+          "sha256": "929659278e8b9fafe04fb84a921963146a83908fda6ba4b2d6ea59ec870abf24"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-mystery-the-vast-of-night-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 61226,
+          "sha256": "55bdc4a8351a74019332edf6f31f872a7bcccf3dbdd007450e9493d353263daf"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-project-hail-mary",
+      "title": "Project Hail Mary",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1880810604,
+      "storeTitle": "Project Hail Mary",
+      "director": "Phil Lord & Christopher Miller",
+      "storeReleaseDate": "2026-03-20T07:00:00Z",
+      "storeRuntimeMinutes": 156.91,
+      "storeUrl": "https://itunes.apple.com/us/movie/project-hail-mary/id1880810604?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/project-hail-mary/umc.cmc.7jxdlxvz304lj3iwhtrhbe8fv"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/72/91/05/72910566-11dc-349d-00f6-9320bb8f5f86/2000x3000_ProjectHailMary.jpg/900x900bb.jpg",
+      "sourceSha256": "100a3abbb75728308f1d673e3d974549ef7377ad54b40ade5964a5eb9bc538e9",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-project-hail-mary-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10156,
+          "sha256": "3a1f04ed142649bfd4ab6d702b7fb4ccfc97a73f18b9ebe9aa84b15d9f909b96"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-project-hail-mary-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 26754,
+          "sha256": "56f4aacd727c30049ddc5ba38b671870747631cff3096222b5926b93c006f1af"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-project-hail-mary-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 68718,
+          "sha256": "5139c167fbfbf4aded593098adfc3bf93195ed93474c5783824f615f1f6481ff"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-disclosure-day",
+      "title": "Disclosure Day",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1896844187,
+      "storeTitle": "Disclosure Day",
+      "director": "Steven Spielberg",
+      "storeReleaseDate": "2026-06-12T07:00:00Z",
+      "storeRuntimeMinutes": 145.95,
+      "storeUrl": "https://itunes.apple.com/us/movie/disclosure-day/id1896844187?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/disclosure-day/umc.cmc.1i56xrk36gdembwgd2qfll4qi"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/c4/e1/7f/c4e17f16-e085-54d5-bc1d-7c99258bf053/UNI_DISCLOSURE_DAY_TH_ITUNES_EPO_WW_ARTWORK_EN_2000x3000_5F1LFI0000046N.png/900x900bb.jpg",
+      "sourceSha256": "ae3e86b627f0dd49ea1b1f6ff700dc87beff8e1202831163f30dee0f282c259a",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-disclosure-day-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 4300,
+          "sha256": "8dcc593baac9d2cde4bc515287795d630bc1567ff6e36812dbf2db15d1c0e8cc"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-disclosure-day-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 11556,
+          "sha256": "faba86a926ac231929808b2c9bcca8067b5d4de8ca6424140b10210fc87cae5f"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-disclosure-day-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 50158,
+          "sha256": "21a4470a559e5df70803c29e293e3993b3a64e5a206509646d279d4ea10a9d88"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-good-luck-have-fun-dont-die",
+      "title": "Good Luck, Have Fun, Don’t Die",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1880070134,
+      "storeTitle": "Good Luck, Have Fun, Don't Die",
+      "director": "Gore Verbinski",
+      "storeReleaseDate": "2026-02-13T08:00:00Z",
+      "storeRuntimeMinutes": 134.45,
+      "storeUrl": "https://itunes.apple.com/us/movie/good-luck-have-fun-dont-die/id1880070134?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/good-luck-have-fun-dont-die/umc.cmc.7jtkucfs19f2zz383s5n0katk"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/ac/fc/12/acfc12ab-a48c-615e-6b9e-1e2c94754a19/UNI_GOOD_LUCK_HAVE_FUN_DONT_DIE_TH_ITUNES_WW_ARTWORK_EN_2000x3000_59ML2G00000CSW.lsr/900x900bb.jpg",
+      "sourceSha256": "b27a9efff30c510198b8b4f2bffdbdb77471f9a9a469cfdb4b64723139554c20",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-good-luck-have-fun-dont-die-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 17012,
+          "sha256": "2bb8c77a9edc8458caf3c73bd9a75d7dc5a44efd6a3099a47c4aeb497f589ac4"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-good-luck-have-fun-dont-die-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 57610,
+          "sha256": "e30c4c149165e1fa3929362474f19b79471a10de621990f924611c4228be42a6"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-good-luck-have-fun-dont-die-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 172810,
+          "sha256": "c86ef11f979a2fefb6f825588a8c51b8a3eb10561fd563391dd55c83392dab2a"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-hoppers",
+      "title": "Hoppers",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1889443764,
+      "storeTitle": "Hoppers",
+      "director": "Daniel Chong",
+      "storeReleaseDate": "2026-03-06T08:00:00Z",
+      "storeRuntimeMinutes": 104.66,
+      "storeUrl": "https://itunes.apple.com/us/movie/hoppers/id1889443764?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/hoppers/umc.cmc.3134whtbg7mm804sgls7iosi3"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/20/14/2d/20142d76-db5e-e958-f32c-f964c9d5fbe8/DIS_HOPPERS_ITUNES_WW_ARTWORK_EN_2000x3000_5B87CN00000AG0.png/900x900bb.jpg",
+      "sourceSha256": "34e8ee68ac4aea6d2bc78d2d9656e2019a5c52b1a62d976b6a39efe4deefab04",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-hoppers-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 6802,
+          "sha256": "d4deab2d20800bc0f2fa8540b568ff0898f13d1753236ad47679e4b39b6776fe"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-hoppers-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 22788,
+          "sha256": "84c4d8e20c03996b6f509bd63da0d2046b026aeeb9625d0c8f7062e492c33a6d"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-hoppers-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 78310,
+          "sha256": "45a29c3508d216aa43498ea3a1eac850f00d246b0627f932206ba53be6464ad5"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-the-end-of-oak-street",
+      "title": "The End of Oak Street",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 6788867495,
+      "storeTitle": "The End of Oak Street",
+      "director": "David Robert Mitchell",
+      "storeReleaseDate": "2026-08-14T07:00:00Z",
+      "storeRuntimeMinutes": 99.51,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-end-of-oak-street/id6788867495?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-end-of-oak-street/umc.cmc.zgc43vpna42wfgfi645em0sm"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/b5/8e/52/b58e52f2-d414-d676-786e-ef092891da36/End_of_Oak_Street_PREM_V_KA_TT_2000x3000_300dpi_EN.png/900x900bb.jpg",
+      "sourceSha256": "d6b96fbb9a5d293ff991bbee414969213aec6af078fe077a8de6ab90a87952e9",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-the-end-of-oak-street-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9532,
+          "sha256": "7264dd877df7325a5153ee2a227d0d90c72c918dbdf4ec47887d89c1ce346d15"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-the-end-of-oak-street-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 24708,
+          "sha256": "93c00d724e070daf248a92ef7bb894fae089bb3712a6df32f17fff33561d924f"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-the-end-of-oak-street-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 57848,
+          "sha256": "cae97c7e4553c7d65e07263720f08806275d60c676a340c14fbc5cc377fc7355"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-redux-redux",
+      "title": "Redux Redux",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1875111283,
+      "storeTitle": "Redux Redux",
+      "director": "Kevin McManus & Matthew McManus",
+      "storeReleaseDate": "2026-03-24T07:00:00Z",
+      "storeRuntimeMinutes": 108.93,
+      "storeUrl": "https://itunes.apple.com/us/movie/redux-redux/id1875111283?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/redux-redux/umc.cmc.1q1ov2dsu0t9r4fb7caznimtz"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/2f/f3/59/2ff3598f-71fa-3cd9-921e-27ff41d17413/SPE_REDUX_REDUX_TH_WW_ARTWORK_EN-US_2000x3000_3U6QFC000007YI.jpg/900x900bb.jpg",
+      "sourceSha256": "441502997a3d3f4fe278e06329bcfb6b3f4740eeca569331342b0a562c8251f8",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-redux-redux-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9392,
+          "sha256": "53d162625ba253b25bf7b77a201c750587b525a42e6619a734b8849d1436dd56"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-redux-redux-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 25574,
+          "sha256": "06083b424790a29752a6ab74ee648bf94cfb429efef2d62e7b076e0253d73c23"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-redux-redux-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 69048,
+          "sha256": "88613a336772c98db882952654aabff9d6bf8b161ad1ee1b6b433d3adb0fd0ab"
+        }
+      ]
+    },
+    {
+      "id": "sci-fi-2026-rose-of-nevada",
+      "title": "Rose of Nevada",
+      "article": "best-sci-fi-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 6779736841,
+      "storeTitle": "Rose of Nevada",
+      "director": "Mark Jenkin",
+      "storeReleaseDate": "2026-06-19T07:00:00Z",
+      "storeRuntimeMinutes": 114.64,
+      "storeUrl": "https://itunes.apple.com/us/movie/rose-of-nevada/id6779736841?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/rose-of-nevada/umc.cmc.rosiiib6g1zh9lljugh2v0m6"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/9d/cf/db/9dcfdb20-9fef-1e5d-f097-501797a76231/RoseOfNevada_KeyArt_Apple_key_2000x3000.png/900x900bb.jpg",
+      "sourceSha256": "4a6cf0ce51427cbefaf897c4661c9e3f01c9049c1f3021ec010df9bcf153a961",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-rose-of-nevada-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10290,
+          "sha256": "6fbe916c4a795b7df4a87a0eb1d7c258e0391693009fd776f57c063149f2fbb2"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-rose-of-nevada-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 38424,
+          "sha256": "9dca3fd7f48520d8048741d24640ac4d0418e1cb7095132dc4b41ec2484bb2f2"
+        },
+        {
+          "src": "/blog-assets/posters/sci-fi-2026-rose-of-nevada-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 155162,
+          "sha256": "a64dd40b7a9dc692e37673fa6079048822f6cb2fa0c1c9b7337b7d5a47456a50"
+        }
+      ]
+    },
+    {
+      "id": "miniseries-unorthodox",
+      "title": "Unorthodox",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-when-they-see-us",
+      "title": "When They See Us",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-chernobyl",
+      "title": "Chernobyl",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-normal-people",
+      "title": "Normal People",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-five-days-at-memorial",
+      "title": "Five Days at Memorial",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-the-queens-gambit",
+      "title": "The Queen's Gambit",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-one-day",
+      "title": "One Day",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-godless",
+      "title": "Godless",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-station-eleven",
+      "title": "Station Eleven",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "miniseries-maid",
+      "title": "Maid",
+      "article": "completed-miniseries-to-watch",
+      "kind": "tv",
+      "status": "omitted_pending_permission",
+      "reason": "No matching series promotional purchase record or approved press-photo permission was confirmed; a similarly named film is not a substitute."
+    },
+    {
+      "id": "knives-out-glass-onion",
+      "title": "Glass Onion (2022)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching store promotion record confirmed; Netflix press images require an approved press account."
+    },
+    {
+      "id": "knives-out-wake-up-dead-man",
+      "title": "Wake Up Dead Man (2025)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching store promotion record confirmed; Netflix press images require an approved press account."
+    },
+    {
+      "id": "knives-out-clue",
+      "title": "Clue (1985)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 210489705,
+      "storeTitle": "Clue",
+      "director": "Jonathan Lynn",
+      "storeReleaseDate": "1985-12-13T08:00:00Z",
+      "storeRuntimeMinutes": 96.87,
+      "storeUrl": "https://itunes.apple.com/us/movie/clue/id210489705?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/clue/umc.cmc.6puzo43jwqta4hmhb6341d8s9"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/36/82/cb/3682cbd6-e316-91d5-08aa-df2f79c52f31/pr_source.lsr/900x900bb.jpg",
+      "sourceSha256": "f5b3740c7409568ab11f32f0eef9843d51a775ff9be70bc52437140869107d03",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-clue-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 12682,
+          "sha256": "99a87eea531d9aef956f81b71ea5f342aa769379ae37e592647a0b22fc06182d"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-clue-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 34946,
+          "sha256": "715e4770cc5ff81c5be4be8bd968da87d87bd2a7a1066d0017b95374d09b572e"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-clue-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 88228,
+          "sha256": "a102b2f1eedfbd8c43646c1b38a654aaa8129f6c268522fc2ef56be6fda46fc6"
+        }
+      ]
+    },
+    {
+      "id": "knives-out-see-how-they-run",
+      "title": "See How They Run (2022)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1646766139,
+      "storeTitle": "See How They Run (2022)",
+      "director": "Tom George",
+      "storeReleaseDate": "2022-09-16T07:00:00Z",
+      "storeRuntimeMinutes": 98.49,
+      "storeUrl": "https://itunes.apple.com/us/movie/see-how-they-run-2022/id1646766139?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/see-how-they-run/umc.cmc.5gnnt25v5axlhfvdk3fpzovo9"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/61/99/43/61994370-5a2f-73ac-54c7-c68898957525/FOX_SEE_HOW_THEY_RUN_ITUNES-KEY-ART_WW_ARTWORK_EN_2000x3000_3HJX1600000191.lsr/900x900bb.jpg",
+      "sourceSha256": "e3dceb654b7dd98837a3d7d95d8c8f2780c06f64d99b9f55639c6ddbbeec119a",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-see-how-they-run-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 8272,
+          "sha256": "50cb47e1f93d2c9b77b7d3f73c57fcfb8ab0bd1c18554e3da2a84b785f9c00c6"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-see-how-they-run-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 23596,
+          "sha256": "4a808b0acb82b86bc0761da4f9789c543734bee21591f24b91bc0356d602ee67"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-see-how-they-run-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 76932,
+          "sha256": "eeefea8aea0ef1b246021c2a61ff7a3e607dd5c1dcb81407ac211cf048dcdd01"
+        }
+      ]
+    },
+    {
+      "id": "knives-out-the-last-of-sheila",
+      "title": "The Last of Sheila (1973)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 296481094,
+      "storeTitle": "The Last of Sheila",
+      "director": "Herbert Ross",
+      "storeReleaseDate": "1973-06-01T07:00:00Z",
+      "storeRuntimeMinutes": 119.37,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-last-of-sheila/id296481094?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-last-of-sheila/umc.cmc.36064z1lvc2kh6oorrm6yhfhp"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video/09/29/1f/mzi.hpyeftvj.jpg/900x900bb.jpg",
+      "sourceSha256": "8099bd972c6074d3e4b9f28a6e02ff2fd8262ddc76dca027a8419b1e8951f4d7",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-the-last-of-sheila-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 11942,
+          "sha256": "ba6dd5b803b9309d5cb6731463fec30bc45b46970307bdbcb83ea416b74c5d08"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-the-last-of-sheila-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 35720,
+          "sha256": "2df2ff751a2536cb896609fbd464896068157ea5d6ec2aced0e4970141d0eeb1"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-the-last-of-sheila-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 89950,
+          "sha256": "21f50c1e4f5462440f96ae82e046a9090a64da3db6bf036bab93cf5e7c2da917"
+        }
+      ]
+    },
+    {
+      "id": "knives-out-gosford-park",
+      "title": "Gosford Park (2001)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 284989889,
+      "storeTitle": "Gosford Park",
+      "director": "Robert Altman",
+      "storeReleaseDate": "2002-06-25T07:00:00Z",
+      "storeRuntimeMinutes": 137.35,
+      "storeUrl": "https://itunes.apple.com/us/movie/gosford-park/id284989889?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/gosford-park/umc.cmc.1041ocxpgk7kfwogfrp8xq8nk"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/3f/9a/bd/mzi.rhycsfmu.jpg/900x900bb.jpg",
+      "sourceSha256": "897bfd9736b0d12f89da9f8c0b86742f6e20f1ae402a55ff89700c672ea756d6",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-gosford-park-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 6562,
+          "sha256": "7584e6b6840c50485e2442bfb0c8abf1cfc4a1b689eb3bbe94cfe1df1c129eb5"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-gosford-park-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 14794,
+          "sha256": "45424048ee8213bdc7736ce65db7969e687a799c1396fab3f607c8cf69793101"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-gosford-park-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 30640,
+          "sha256": "c4a439060552f64bd304ed9c942491e76511a99370d07fcee9114f31a52fa044"
+        }
+      ],
+      "identityNote": "Article uses the original film year; store release date reflects its later release. Director and film identity match."
+    },
+    {
+      "id": "knives-out-murder-on-the-orient-express",
+      "title": "Murder on the Orient Express (1974)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1298073618,
+      "storeTitle": "Murder on the Orient Express",
+      "director": "Sidney Lumet",
+      "storeReleaseDate": "1974-11-24T08:00:00Z",
+      "storeRuntimeMinutes": 127.44,
+      "storeUrl": "https://itunes.apple.com/us/movie/murder-on-the-orient-express/id1298073618?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/murder-on-the-orient-express/umc.cmc.3ln4aukghc5sgih8inn2xbf90"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video128/v4/09/53/f2/0953f2bd-37da-0dd8-b460-c45cc0f9964b/contsched.twcclhnm.lsr/900x900bb.jpg",
+      "sourceSha256": "057da20114665dbc31aceea7c5988322400fe67cfc5cbb1f23912e8af2ebb3b8",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-murder-on-the-orient-express-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10238,
+          "sha256": "f5bf4661cea1284c877cfb70c4f7e25eabbf3ad231b65a1ed683143d53b941c1"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-murder-on-the-orient-express-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 30588,
+          "sha256": "81bb471cc4557be8fe7da9d6a72b049f2910809b19f470d83cc0a4d923707639"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-murder-on-the-orient-express-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 77674,
+          "sha256": "d2f10e3fabcba98e4015db1c34f952332b4fea6c8875570cd4a0c49afb7d17c1"
+        }
+      ]
+    },
+    {
+      "id": "knives-out-death-on-the-nile",
+      "title": "Death on the Nile (1978)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1630036448,
+      "storeTitle": "Death on the Nile",
+      "director": "John Guillermin",
+      "storeReleaseDate": "1978-09-29T07:00:00Z",
+      "storeRuntimeMinutes": 140.19,
+      "storeUrl": "https://itunes.apple.com/us/movie/death-on-the-nile/id1630036448?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/death-on-the-nile/umc.cmc.6mv4ux3hvdswdaga71gvf8vzs"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/b4/bb/7a/b4bb7abb-c6c2-5d7d-4770-eda0f88418c1/DeathOnTheNile_iTunes_Poster_2000x3000.png/900x900bb.jpg",
+      "sourceSha256": "906de58b49dfd867684b55093dc8047d04a25b22cf63c9ba87fe3691225fe581",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-death-on-the-nile-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9506,
+          "sha256": "f0b0d0ee0b04bfd23c0a5d462f6b4ef28dab8462c1f8ab6db9f89fdad6d0e045"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-death-on-the-nile-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 32340,
+          "sha256": "052e6be1e289d63b9b43f30b394c028f2083d3fc9ca20f7ea6be3ce769021331"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-death-on-the-nile-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 94094,
+          "sha256": "61d19efdab83bc2aa831130ad7c0d290e114fb4f8f6cab816721b5b6261f898f"
+        }
+      ]
+    },
+    {
+      "id": "knives-out-sleuth",
+      "title": "Sleuth (1972)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "The available store result is the 2007 remake; no permission for the 1972 film image was confirmed."
+    },
+    {
+      "id": "knives-out-deathtrap",
+      "title": "Deathtrap (1982)",
+      "article": "movies-like-knives-out",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 313972532,
+      "storeTitle": "Deathtrap",
+      "director": "Sidney Lumet",
+      "storeReleaseDate": "1982-03-19T08:00:00Z",
+      "storeRuntimeMinutes": 116.19,
+      "storeUrl": "https://itunes.apple.com/us/movie/deathtrap/id313972532?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/deathtrap/umc.cmc.1w0kcksofsbzxokyc7wx87r7q"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video/cf/40/21/mzi.yofwtimi.jpg/900x900bb.jpg",
+      "sourceSha256": "ecfba226f9c4138fe9439d5778f3c709b50b42becbc47ada08d97a158939fa07",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/knives-out-deathtrap-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 7160,
+          "sha256": "70ecbb465e680c9337703f3182fdd1c05ee003943284c46127282662fb764762"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-deathtrap-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 18828,
+          "sha256": "30de7e7fb8f47b5eab4d5d33132aaf57b9d538f50d5cdaf20043872c04cf9c6e"
+        },
+        {
+          "src": "/blog-assets/posters/knives-out-deathtrap-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 43526,
+          "sha256": "8e25cd01f7e987bc9e4331ebc3570ad263b9bf586f092daccb5c97f714ee5880"
+        }
+      ]
+    },
+    {
+      "id": "november-2026-the-cat-in-the-hat",
+      "title": "The Cat in the Hat",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "Matching Apple record has no purchase/rental price as checked; a catalog image alone does not establish the required promotional purchase context."
+    },
+    {
+      "id": "november-2026-godzilla-minus-zero",
+      "title": "Godzilla Minus Zero",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "november-2026-wild-horse-nine",
+      "title": "Wild Horse Nine",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "november-2026-ebenezer",
+      "title": "Ebenezer",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "Store results found are different films (2024 Joe Valenti and 2026 Marcel Walz), not the Ti West film; no matching licensed image confirmed."
+    },
+    {
+      "id": "november-2026-how-to-rob-a-bank",
+      "title": "How to Rob a Bank",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "november-2026-paper-tiger",
+      "title": "Paper Tiger",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "The store record found is Paul Kowalski’s 2021 film, not James Gray’s 2026 film; no matching licensed image confirmed."
+    },
+    {
+      "id": "november-2026-sunrise-on-the-reaping",
+      "title": "The Hunger Games: Sunrise on the Reaping",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "november-2026-i-play-rocky",
+      "title": "I Play Rocky",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "november-2026-hexed",
+      "title": "Hexed",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "november-2026-focker-in-law",
+      "title": "Focker-In-Law",
+      "article": "november-2026-movie-releases",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "whalefall-coast",
+      "title": "Whalefall",
+      "article": "is-whalefall-based-on-a-book",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "horror-2026-resident-evil",
+      "title": "Resident Evil (2026)",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 6807575287,
+      "storeTitle": "Resident Evil (2026)",
+      "director": "Zach Cregger",
+      "storeReleaseDate": "2026-09-18T07:00:00Z",
+      "storeRuntimeMinutes": 93.83,
+      "storeUrl": "https://itunes.apple.com/us/movie/resident-evil-2026/id6807575287?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/resident-evil/umc.cmc.1oweeytxhn136fmlgpizbxsc5"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/55/73/ea/5573ea8f-0627-4e78-194f-9498c5fd75c8/DP_10615928_RESIDENTEVIL_2026_2000x3000_HEKeyArt.jpg/900x900bb.jpg",
+      "sourceSha256": "7e305ec586ef426184db8192e9af9e5b8ac07eb83c70a35d3c69162b68cd665d",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-resident-evil-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 8344,
+          "sha256": "33dbda3551d78621c79c9489104c3389adaa1c8799c3f08f6443c9b4a595e063"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-resident-evil-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 23478,
+          "sha256": "fbe0f819ec0737eb0bd60b032b78dcf614a2dc6831420403d9b58834a8a54a5f"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-resident-evil-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 65778,
+          "sha256": "84f49722092692b02660b6bb1690b40d17e6f1615e6cccd30dc594c952128820"
+        }
+      ]
+    },
+    {
+      "id": "horror-2026-obsession",
+      "title": "Obsession",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1895945921,
+      "storeTitle": "Obsession (2026)",
+      "director": "Curry Barker",
+      "storeReleaseDate": "2026-05-15T07:00:00Z",
+      "storeRuntimeMinutes": 109.38,
+      "storeUrl": "https://itunes.apple.com/us/movie/obsession-2026/id1895945921?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/obsession/umc.cmc.5n9tcj7azek0g9igds7ybcc0s"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/26/db/16/26db1681-d180-1d95-cb5d-7c6f3199e8fe/OBSESSION_PVOD_LSR_2000x3000_Poster.jpg/900x900bb.jpg",
+      "sourceSha256": "3ca460c3ba3298f1196b4606428792eed3e30b5c1348f5242515a023ede74379",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-obsession-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 5120,
+          "sha256": "9518fccf602fd048865d3cc20b9b755e55dd7ceadbc23a5ea9511742c3d7c3a6"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-obsession-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 12780,
+          "sha256": "4eb33495c10efdc9df2b1fc0ff825fe973cf1b7c333fa9fa06f887d4adffedfd"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-obsession-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 34190,
+          "sha256": "5ca1661744e497f1ec2a218783e5f2b72f532e94073e33bc212e01ec8d00160a"
+        }
+      ]
+    },
+    {
+      "id": "horror-2026-hokum",
+      "title": "Hokum",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1892515758,
+      "storeTitle": "Hokum",
+      "director": "Damian McCarthy",
+      "storeReleaseDate": "2026-05-01T07:00:00Z",
+      "storeRuntimeMinutes": 107.26,
+      "storeUrl": "https://itunes.apple.com/us/movie/hokum/id1892515758?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/hokum/umc.cmc.5st3g3pqjevu46rzn6pa7zorc"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/74/f6/68/74f6688b-9332-f4c0-a739-cfb1b1db604a/HOKUM_APPLE_2000x3000__U00281_U0029.png/900x900bb.jpg",
+      "sourceSha256": "b0412cd3888788e7da95c34ecea202e23decf39a56130a0e8d86df481932f583",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-hokum-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9718,
+          "sha256": "82f977ba82c8863102dca4b711f3932501bc3a1aefb3fa9766ed246328e0e9d3"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-hokum-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 27306,
+          "sha256": "63a1c048f41e32aca8746c58f9b9ab50bb84cea911a01f1f55f58f484fdfe95b"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-hokum-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 70676,
+          "sha256": "5ddbeab746ff4545b06254a435e5e21821d60ea234d91aab4299dcfbb95ca07d"
+        }
+      ]
+    },
+    {
+      "id": "horror-2026-send-help",
+      "title": "Send Help",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1877120652,
+      "storeTitle": "Send Help",
+      "director": "Sam Raimi",
+      "storeReleaseDate": "2026-01-30T08:00:00Z",
+      "storeRuntimeMinutes": 113.6,
+      "storeUrl": "https://itunes.apple.com/us/movie/send-help/id1877120652?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/send-help/umc.cmc.12p0bm22mrty21prw1od4nwl0"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/30/ca/78/30ca78b6-86fc-d1b3-1521-011336589897/SendHelp_Apple_CoverArt_2000x3000_ENG.png/900x900bb.jpg",
+      "sourceSha256": "544867b5e992e2b400ee86ca66cdbae2db5c7e5fcb33fac261d4dccdbe3ee1f8",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-send-help-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10088,
+          "sha256": "de2acae11dfddac0bfd1b48c926a4f76d6a41b0d5c0e61ea1d82ef83affe1eec"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-send-help-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 31160,
+          "sha256": "010d0b8c186bc7d33a8b0ff3f6a3ddae5d2b2e8e256db82b764a29bb8f8fc5e7"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-send-help-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 95404,
+          "sha256": "04b683d269f6ba0aaeaadca537befb25ee77e20f1d252367e2bef82ddb8ef147"
+        }
+      ]
+    },
+    {
+      "id": "horror-2026-backrooms",
+      "title": "Backrooms",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1896873728,
+      "storeTitle": "Backrooms",
+      "director": "Kane Parsons",
+      "storeReleaseDate": "2026-05-29T07:00:00Z",
+      "storeRuntimeMinutes": 110.48,
+      "storeUrl": "https://itunes.apple.com/us/movie/backrooms/id1896873728?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/backrooms/umc.cmc.gceh2i2w95yi0dm29fusg3jw"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/a0/0f/7e/a00f7e26-44eb-447a-6f6e-d989aed836f2/A24-Backrooms-V-2000x3000.jpg/900x900bb.jpg",
+      "sourceSha256": "d66997a067cf417a6eaf75e926ff3e72d004ba6e9455e24053968781d498dd8d",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-backrooms-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 4578,
+          "sha256": "fa556e6889eb64545d545c4974d6ff236327ef5bb59cf6deb08aa3bbad92fd89"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-backrooms-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 13104,
+          "sha256": "156074d9ad3493c86cb0ff6dee2fb5e132581b2fb917c620a1d5ad3da39f2f63"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-backrooms-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 72642,
+          "sha256": "dfcd2c3d9ed21fa15cc38d1ea2d198ef6ea220c68499a2a1e05bcc18d3ce3414"
+        }
+      ]
+    },
+    {
+      "id": "horror-2026-the-bone-temple",
+      "title": "28 Years Later: The Bone Temple",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1863800937,
+      "storeTitle": "28 Years Later: The Bone Temple",
+      "director": "Nia Dacosta",
+      "storeReleaseDate": "2026-01-16T08:00:00Z",
+      "storeRuntimeMinutes": 109.34,
+      "storeUrl": "https://itunes.apple.com/us/movie/28-years-later-the-bone-temple/id1863800937?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.143Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/28-years-later-the-bone-temple/umc.cmc.41uo5gp1q7j7ox7ml9cy2gt4u"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/8e/bd/21/8ebd2118-2698-65c7-ae2d-677050d4299d/DP_10060159_28YEARSLATERTHEBONETEMPLE_2000x3000_HEKeyArt.png/900x900bb.jpg",
+      "sourceSha256": "a714e43eb102766521b88843dd08573e49dde49964483695e92977d6b4d2fa40",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-the-bone-temple-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10312,
+          "sha256": "0f355677f80d55981fccc9c32a4c21de420a5defad34337ad9c8f883e4559576"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-the-bone-temple-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 32932,
+          "sha256": "72ca7b38ba31b41ff8d5ec2852b71ce2ae7229553c875426a389fe2263d0b65c"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-the-bone-temple-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 101802,
+          "sha256": "aa82427b295bc2645f388be876348271a025523556f64ba0837b1559ec104b8e"
+        }
+      ]
+    },
+    {
+      "id": "horror-2026-primate",
+      "title": "Primate",
+      "article": "best-horror-movies-2026",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1858833065,
+      "storeTitle": "Primate",
+      "director": "Johannes Roberts",
+      "storeReleaseDate": "2026-01-09T08:00:00Z",
+      "storeRuntimeMinutes": 88.95,
+      "storeUrl": "https://itunes.apple.com/us/movie/primate/id1858833065?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/primate/umc.cmc.5nuwqj1t8zwf7z1lu3saxapo7"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/a7/fe/16/a7fe168b-201d-673a-432b-119cb2ea27f1/PRIMATE_FTO_PosterArt_2000x3000.jpg/900x900bb.jpg",
+      "sourceSha256": "fce6544ec8e3cbfdae53a3a8fe6beb1f7b0e3632cfe14c7976c9130be9bfd80d",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/horror-2026-primate-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 8942,
+          "sha256": "54347e795069a27b547ee6061fe195e104825c6fb48fa28088faaf8ced51a506"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-primate-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 26658,
+          "sha256": "8e88def5db51edfa4e8f574ab4bc9402c09a0a08dc402aa3a8328aea9a5a77e2"
+        },
+        {
+          "src": "/blog-assets/posters/horror-2026-primate-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 76918,
+          "sha256": "9fe05d118ded7afba49568b922192f30e0304c820dba65b4a2bb7d3701b39440"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-the-conjuring-last-rites",
+      "title": "The Conjuring: Last Rites",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1830438012,
+      "storeTitle": "The Conjuring: Last Rites",
+      "director": "Michael Chaves",
+      "storeReleaseDate": "2025-09-05T07:00:00Z",
+      "storeRuntimeMinutes": 135.53,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-conjuring-last-rites/id1830438012?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-conjuring-last-rites/umc.cmc.4yez0a9f9viozv1ef740gwsh1"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/e2/a9/39/e2a9393a-452e-b352-58a6-0e4e52d9e2d6/Conjuring_Last_Rites_PREM_V_DD_KA_TT_2000x3000_300dpi_EN.png/900x900bb.jpg",
+      "sourceSha256": "a60989d84de5f71b5cc0aed537899052a86274bf1cb6d7fee1903f9f21d8f92c",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-the-conjuring-last-rites-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 4196,
+          "sha256": "2ca385e41fd23a694be6da575fd2e8364c617227f0fb96e53db580ebcf64ef57"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-the-conjuring-last-rites-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 9018,
+          "sha256": "90279b98cae888ff689edc6984724f561d5f19dd25cfab83f3557646f622f559"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-the-conjuring-last-rites-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 18088,
+          "sha256": "72a61c838df98a9d6a103d458cf2ed071b56ad6744cd5b905a0645edc3d252c3"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-demon-slayer-infinity-castle",
+      "title": "Demon Slayer: Infinity Castle",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "omitted_pending_permission",
+      "reason": "No matching promotional purchase/rental record or separately licensed press image was confirmed."
+    },
+    {
+      "id": "september-2025-downton-abbey-the-grand-finale",
+      "title": "Downton Abbey: The Grand Finale",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1835768910,
+      "storeTitle": "Downton Abbey: The Grand Finale",
+      "director": "Simon Curtis",
+      "storeReleaseDate": "2025-09-12T07:00:00Z",
+      "storeRuntimeMinutes": 124.44,
+      "storeUrl": "https://itunes.apple.com/us/movie/downton-abbey-the-grand-finale/id1835768910?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/downton-abbey-the-grand-finale/umc.cmc.1xq4h7y90wa5xkcmyqgaql4tx"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/37/60/c1/3760c165-c677-e691-e94f-b42c46691c8c/DOWNTON_ABBEY_TGF_PVOD_LSR_2000x3000_Poster.lsr/900x900bb.jpg",
+      "sourceSha256": "eb0603135e51ff9fd5a333d5a17c9ef669646193baa2019b736322b49c79a50a",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-downton-abbey-the-grand-finale-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9272,
+          "sha256": "09eca09a7c97c2518d626b7b5be2e460e9a13b3bdb8de0af2ac7f5f2ab976706"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-downton-abbey-the-grand-finale-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 27712,
+          "sha256": "9713a3e1fb093e92b040b3d494a1ffd0fe8397f040e4bc692fa9fd3bc9e72b23"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-downton-abbey-the-grand-finale-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 80580,
+          "sha256": "02ea293e97f2419998c85e519e89f66840dadb022611dac22d82d0a444451601"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-spinal-tap-ii",
+      "title": "Spinal Tap II: The End Continues",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 6784416386,
+      "storeTitle": "Spinal Tap II: The End Continues",
+      "director": "Rob Reiner",
+      "storeReleaseDate": "2025-09-12T07:00:00Z",
+      "storeRuntimeMinutes": 83.33,
+      "storeUrl": "https://itunes.apple.com/us/movie/spinal-tap-ii-the-end-continues/id6784416386?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/spinal-tap-ii-the-end-continues/umc.cmc.2ekv47beio4duo806nhq652bv"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/59/cb/89/59cb899c-277a-66a5-3a20-0e8683b18bc4/BleeckerStreet_SpinalTap2_Poster_2000x3000_R1.png/900x900bb.jpg",
+      "sourceSha256": "469d5278fd6d469b37e4ed8d3db24f09324a2c0e35cd2d4115c87711305cc94e",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-spinal-tap-ii-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 9578,
+          "sha256": "26c08cf1c72ba5320d499f5a890e36f4b0c05fb0e84508ddce1e61af0610eebf"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-spinal-tap-ii-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 28554,
+          "sha256": "1d9a29ccf2bd24c7b877c1455727b7f42cd7c36fc166ca3dffaf45d9e975ebae"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-spinal-tap-ii-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 79940,
+          "sha256": "20b8e7c5fec7b013eabaf649bf9c831a07dd62f88839b2a08076c980b7a42d05"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-the-long-walk",
+      "title": "The Long Walk",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1838516835,
+      "storeTitle": "The Long Walk",
+      "director": "Francis Lawrence",
+      "storeReleaseDate": "2025-09-12T07:00:00Z",
+      "storeRuntimeMinutes": 108.08,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-long-walk/id1838516835?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-long-walk/umc.cmc.4j03c6evpx3y9kx0ntde47g3o"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/bf/aa/81/bfaa8150-c181-ef8f-14b7-d678bbf73b1b/TheLongWalk_iTunesStore_2000x3000.png/900x900bb.jpg",
+      "sourceSha256": "21a3d132683b980a134f47c935d40659420505e61d1303514d7553be5c27da29",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-the-long-walk-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10866,
+          "sha256": "e4c530c609253b4ceea7855bcfea3c2c4ffd6005f9c8eb897a3b46fdab91909e"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-the-long-walk-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 34660,
+          "sha256": "9d4e42339e510fffe26449f13edc33cfad118c17c94b9008307737edff45898b"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-the-long-walk-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 109962,
+          "sha256": "b2629060cb92fabd4c0a16f282ec492ab5a0616b642169e0fd37a7897e946c1a"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-a-big-bold-beautiful-journey",
+      "title": "A Big Bold Beautiful Journey",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1837842289,
+      "storeTitle": "A Big Bold Beautiful Journey",
+      "director": "Kogonada",
+      "storeReleaseDate": "2025-09-19T07:00:00Z",
+      "storeRuntimeMinutes": 109.45,
+      "storeUrl": "https://itunes.apple.com/us/movie/a-big-bold-beautiful-journey/id1837842289?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/a-big-bold-beautiful-journey/umc.cmc.5tmfihq32iza9ob3m3hso570s"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/b6/a8/c1/b6a8c1c3-d533-2340-5ccc-ca3abaf7d5bc/DP_10006921_BIGBOLDBEAUTIFULJOURNEY_2000x3000_HolidayDomesticKeyArt.jpg/900x900bb.jpg",
+      "sourceSha256": "85c02960bce950fa820d03749c7e016103ea79c9563d8da90083e199e81b243f",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-a-big-bold-beautiful-journey-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 11206,
+          "sha256": "90275a985d8f592aaef74eaec11a7cb30baf3bc3cfe93848c14e74741235c54e"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-a-big-bold-beautiful-journey-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 32460,
+          "sha256": "1fdc8fe52446753ccc607cb865bad44b239c38b26d8d4300d04102f58c44a41d"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-a-big-bold-beautiful-journey-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 84758,
+          "sha256": "a7391de21dbbd46db7174b51cce0de7c88286284914339d0de5214e23cd3cf3b"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-him-2025",
+      "title": "HIM",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1837959514,
+      "storeTitle": "Him",
+      "director": "Justin Tipping",
+      "storeReleaseDate": "2025-09-19T07:00:00Z",
+      "storeRuntimeMinutes": 96.66,
+      "storeUrl": "https://itunes.apple.com/us/movie/him/id1837959514?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/him/umc.cmc.1mhdm0ohyhxi1alcobznsgeqw"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/7a/e9/b0/7ae9b04f-868e-9526-3f63-5c7ce9ef03ca/UNI_HIM_TH_ITUNES_MLNA_PVOD_WW_ARTWORK_EN_2000x3000_51CI3A00000ERT.jpg/900x900bb.jpg",
+      "sourceSha256": "597ccf9b6d87b2d2cb3d019a2e745a585e0cf12168e87c9f4c5520a9a098e0f1",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-him-2025-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 6232,
+          "sha256": "07c52fb5b8f9ec2f1088505f8ee4a7128b3daf724e9e53e168a46e4f5e9210a9"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-him-2025-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 17386,
+          "sha256": "74ab42f37747591638410ba493ab2c8227ce7b5a46c50b9cf4505e3ecf2c5d5e"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-him-2025-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 43418,
+          "sha256": "b9c07e4c86db8ef41ba74e688634dc6daa17ba496eb329079520b9de3c08f863"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-the-strangers-chapter-2",
+      "title": "The Strangers: Chapter 2",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1840758768,
+      "storeTitle": "The Strangers: Chapter 2",
+      "director": "Renny Harlin",
+      "storeReleaseDate": "2025-09-26T07:00:00Z",
+      "storeRuntimeMinutes": 98.42,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-strangers-chapter-2/id1840758768?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-strangers-chapter-2/umc.cmc.736igzl6tqdjsyvj0lm11kuf0"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/24/85/67/248567df-c2f5-3ac7-cbe4-c8d05460bf64/STRNGR2_2000x3000.jpg/900x900bb.jpg",
+      "sourceSha256": "c473be4194072690f1a36feb91415cb287b012005271a3e8bd3361f18f9e8689",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-the-strangers-chapter-2-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 7690,
+          "sha256": "5e291ea7802936294abe3dc3a4b7ee9d6f3ebd4e800b98a526944a9f2d61266a"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-the-strangers-chapter-2-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 23812,
+          "sha256": "744613fc4b6a5ce44be1707d0dc11fd30a023008c5272149466a090797a4796f"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-the-strangers-chapter-2-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 72510,
+          "sha256": "35a526ee34e441c9436c45f39ee2d9c03e45942867095fcd1ad51ed7c8329012"
+        }
+      ]
+    },
+    {
+      "id": "september-2025-gabbys-dollhouse-the-movie",
+      "title": "Gabby's Dollhouse: The Movie",
+      "article": "september-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1839109614,
+      "storeTitle": "Gabby's Dollhouse: The Movie",
+      "director": "Ryan Crego",
+      "storeReleaseDate": "2025-09-26T07:00:00Z",
+      "storeRuntimeMinutes": 98.41,
+      "storeUrl": "https://itunes.apple.com/us/movie/gabbys-dollhouse-the-movie/id1839109614?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/gabbys-dollhouse-the-movie/umc.cmc.260bu1vickbmxc22ww6nccq3l"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/00/38/41/00384194-47e6-597a-e48e-c6853fe5a0b5/tns.snzvpyde.jpg/900x900bb.jpg",
+      "sourceSha256": "10acd5389e3553d32c4a6884cc2ef71be45e382628ac522cda56ad4560910161",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/september-2025-gabbys-dollhouse-the-movie-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 14302,
+          "sha256": "5c4e951c8b1df98fc7696c577b95bfe0ac39b3904108659d9598309682b55881"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-gabbys-dollhouse-the-movie-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 45200,
+          "sha256": "361dfcfd6c92d1dd92e01be9564525bd697a45764f77f8c4ccdfe651a3dd81df"
+        },
+        {
+          "src": "/blog-assets/posters/september-2025-gabbys-dollhouse-the-movie-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 128976,
+          "sha256": "fffbbca86f463e07af1d080b24aee806b9d7f22b58fcb9b6226333a300e70b0d"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-bad-guys-2",
+      "title": "The Bad Guys 2",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1827318553,
+      "storeTitle": "The Bad Guys 2",
+      "director": "Pierre Perifel",
+      "storeReleaseDate": "2025-08-01T07:00:00Z",
+      "storeRuntimeMinutes": 104.03,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-bad-guys-2/id1827318553?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-bad-guys-2/umc.cmc.2ewfnaq853ueokr49pv4brr1d"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/75/2d/b1/752db141-4ebc-da2f-fd35-3ff48969670e/UNI_BAD_GUYS_2_THE_TH_ITUNES_MLNA_PREORDER_WW_ARTWORK_EN_2000x3000_4YIX4H000003B6.jpg/900x900bb.jpg",
+      "sourceSha256": "5a0f11e4788488556b67c38caa035ff3130efeb70104a0a64daf2ef48cdbfcc2",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-bad-guys-2-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 10548,
+          "sha256": "15b393aac7e034104a4d5fca19e7ccf9da2a2079f8dd60e652fac987060326cb"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-bad-guys-2-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 25640,
+          "sha256": "4cf3963dab43e688db0c78261942097f54f3c00cd59195333c2b7832647db69c"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-bad-guys-2-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 58078,
+          "sha256": "7ea3a63328ec8ca65dfe6a35aad6746cdd9b6903ad55913c50f3fa929e128451"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-naked-gun-2025",
+      "title": "The Naked Gun",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1828420344,
+      "storeTitle": "The Naked Gun (2025)",
+      "director": "Akiva Schaffer",
+      "storeReleaseDate": "2025-08-01T07:00:00Z",
+      "storeRuntimeMinutes": 85.41,
+      "storeUrl": "https://itunes.apple.com/us/movie/the-naked-gun-2025/id1828420344?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/the-naked-gun/umc.cmc.1xxdc6iqsngcnaihkrh9le0gw"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/f6/5c/19/f65c194b-e341-ad16-74ca-d009a1af5783/TheNakedGun2025_FTO_EN_2000x3000.png/900x900bb.jpg",
+      "sourceSha256": "7f25c8d8643a2a3b1d4ce51806372bada464fe06f1d6a3906931ad3ccac1cfbe",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-naked-gun-2025-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 11258,
+          "sha256": "0495e67ace2f2f96f0142ac47ad16c1b2408598be6a766d2bb54a1e77a6cc794"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-naked-gun-2025-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 30300,
+          "sha256": "831025f79567dc1577868449e0dc7d61ffb828d8e6616387e9bdee3bd0318511"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-naked-gun-2025-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 73118,
+          "sha256": "96982a96f9216cae54bec1b67c9277b696bfb047d9e49d29a09cfe7d1cc3b065"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-freaky-friday-2",
+      "title": "Freakier Friday",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1837821710,
+      "storeTitle": "Freakier Friday",
+      "director": "Nisha Ganatra",
+      "storeReleaseDate": "2025-08-08T07:00:00Z",
+      "storeRuntimeMinutes": 110.92,
+      "storeUrl": "https://itunes.apple.com/us/movie/freakier-friday/id1837821710?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=1863800937,1837842289,1166395905,1896873728,210489705,892520844,1030118145,1630036448,313972532,1896844187,1835768910,6830259751,1777117620,983488795,1895859435,1837821710,1839109614,542688199,1793253337,1880070134&country=us",
+      "checkedAt": "2026-11-09T21:15:24.144Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/freakier-friday/umc.cmc.uisghvaoigy8pzo42xp8u55u"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/20/07/ca/2007cac4-b5fe-1bb3-f60e-0809c759c7d2/DIS_FREAKIER_FRIDAY_ITUNES_ARTWORK_WW_ARTWORK_EN_2000x3000_50Y0NA00000AQM.lsr/900x900bb.jpg",
+      "sourceSha256": "ca14103e80fac207d0aa048798e2874dca268d9ab1b22bf4e61bae52e6471415",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-freaky-friday-2-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 12686,
+          "sha256": "ca5983ca48e4e4e597d31bec88384cdb65e93363ccdbb9270e7f8b9ddde9fbd2"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-freaky-friday-2-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 32724,
+          "sha256": "de4d7c8f312d2990a1b92c14bb7cc27f5797fca3772598dbe4910a84a0a551ef"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-freaky-friday-2-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 77324,
+          "sha256": "0b026c88f099c2f382eee8a114eaa8886e9b4c6af5cd4e3326b5f3e0b0c5be94"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-weapons-2025",
+      "title": "Weapons",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1830433930,
+      "storeTitle": "Weapons",
+      "director": "Zach Cregger",
+      "storeReleaseDate": "2025-08-08T07:00:00Z",
+      "storeRuntimeMinutes": 128.66,
+      "storeUrl": "https://itunes.apple.com/us/movie/weapons/id1830433930?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=6807575287,287663769,6779736841,1646766139,1877120652,279305478,1090244446,6784416386,1827318553,6823693602,1830438012,6788867495,296481094,1838516835,1828420344,1840758768,284571749,6827408315,1830433930,6804164790&country=us",
+      "checkedAt": "2026-11-09T21:15:31.516Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/weapons/umc.cmc.1w94v96qy93tirc7zhbtbd1s0"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/80/8a/b7/808ab7ba-e22a-13a0-7d56-1c83000c7ccd/Weapons_V_KA_TT_2000x3000_EN.png/900x900bb.jpg",
+      "sourceSha256": "d0ec5420233bc3a70eb3c82d1811301822f297486ef956ec83a0707e90f30c13",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-weapons-2025-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 5216,
+          "sha256": "37690906b52247df1878fda975e701b10a47e1fbfeda0fd7c56f03bc48b48388"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-weapons-2025-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 13826,
+          "sha256": "442c26e15a2a4d097349cf3ab404b001fc5dec12ae2548de151c54cc3f4d663c"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-weapons-2025-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 34196,
+          "sha256": "8ca5e26bac1165761e9282da2c1d44f653cf36333f001fd00eab4a09bbb25e02"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-nobody-2",
+      "title": "Nobody 2",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1830519545,
+      "storeTitle": "Nobody 2",
+      "director": "Timo Tjahjanto",
+      "storeReleaseDate": "2025-08-15T07:00:00Z",
+      "storeRuntimeMinutes": 89.81,
+      "storeUrl": "https://itunes.apple.com/us/movie/nobody-2/id1830519545?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/nobody-2/umc.cmc.70ynjs10thb3tk5tg78g9rnp6"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/c9/95/5d/c9955d80-bfb8-c2bf-5ef6-c30d7e2256f5/Nobody2_2000x3000_PVOD.jpg/900x900bb.jpg",
+      "sourceSha256": "882f31116cf241d5fba55c41d57bc7097b1a2a5183c031aa9d1cddb227dbac2e",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-nobody-2-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 11424,
+          "sha256": "d58527fd37bb803432a94268698a96a3c2a9ea84429aec8cb42ae015502c5227"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-nobody-2-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 32696,
+          "sha256": "c138fb71363fdb2e63ea797341d5df271662ae12f075e29101dca4a58b20c850"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-nobody-2-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 89852,
+          "sha256": "2149e4a42b0c54db75a7eb2c19c7bcade03407b279b5ae6b95f4f78ae02db5ff"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-honey-dont",
+      "title": "Honey Don't!",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1832028837,
+      "storeTitle": "Honey Don't!",
+      "director": "Ethan Coen",
+      "storeReleaseDate": "2025-08-22T07:00:00Z",
+      "storeRuntimeMinutes": 89.71,
+      "storeUrl": "https://itunes.apple.com/us/movie/honey-dont/id1832028837?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/honey-dont/umc.cmc.44pxarhym3cp3v2c66e0oe0xm"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/ad/eb/a0/adeba0fc-0430-f399-cf63-329ac551763a/HoneyDont_AllWindows_LSR_2000x3000.lsr/900x900bb.jpg",
+      "sourceSha256": "38adf1f05e8369c611a449d0091ab22a1486b782327d571395a0133e082ab3b6",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-honey-dont-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 8132,
+          "sha256": "f5317ce6679b7c54aa3c775bd1f7093d207825c324c802fc3d931e74e382afd3"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-honey-dont-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 22486,
+          "sha256": "ecb8b414db7f327dd458f40c77d5d1f85f93cfa18f3854480a7a11ecf20cb13a"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-honey-dont-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 58564,
+          "sha256": "2ce7f52a349a7f78bd44d8b88e21f32932375ec7454a49d79842a0e70b060cb8"
+        }
+      ]
+    },
+    {
+      "id": "august-2025-ne-zha-2",
+      "title": "Ne Zha II",
+      "article": "august-2025-new-movies-guide",
+      "kind": "movie",
+      "status": "conditional_apple_promotion",
+      "trackId": 1833287869,
+      "storeTitle": "Ne Zha II",
+      "director": "Jiao Zi",
+      "storeReleaseDate": "2025-08-22T07:00:00Z",
+      "storeRuntimeMinutes": 144.64,
+      "storeUrl": "https://itunes.apple.com/us/movie/ne-zha-ii/id1833287869?uo=4",
+      "lookupUrl": "https://itunes.apple.com/lookup?id=284989889,6783911158,1837959514,1892515758,1832028837,1889443764,6779416227,6791771816,573718569,331842140,1298073618,1833287869,1830519545,1895945921,467274159,6804045748,1581010585,1858833065,1880810604,1875111283&country=us",
+      "checkedAt": "2026-11-09T21:15:27.819Z",
+      "publicPages": [
+        "https://tv.apple.com/us/movie/ne-zha-ii/umc.cmc.1qa5qqta6hyxycgad02e9dsi0"
+      ],
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/f0/b2/59/f0b259e5-6f08-56fd-299a-fc4d5bed41a3/A24-NZ2025-Transactional-Movies-Cover_2x3.jpg/900x900bb.jpg",
+      "sourceSha256": "a3692c3495cf434bc9ba620419d41d1bb34fe358ecc5cd351e3e293a247cad69",
+      "sourceWidth": 600,
+      "sourceHeight": 900,
+      "processing": "Whole poster preserved; proportional resizing and WebP compression only. No crop, text overlay or generative editing.",
+      "files": [
+        {
+          "src": "/blog-assets/posters/august-2025-ne-zha-2-poster-160.webp",
+          "width": 160,
+          "height": 240,
+          "bytes": 6316,
+          "sha256": "9bafcf0fc7343ffb8e76cf858442b39cc22c0d10f64ff89d92a4fd46724069f0"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-ne-zha-2-poster-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 16046,
+          "sha256": "fec914d47da7c4b266575593e8f781d56d38556706510d4aae692566a75c661d"
+        },
+        {
+          "src": "/blog-assets/posters/august-2025-ne-zha-2-poster.webp",
+          "width": 600,
+          "height": 900,
+          "bytes": 36022,
+          "sha256": "33596a797c1fbe5f4791466a663129359da16e07e33ee3c20edd338f2ffa4ff9"
+        }
+      ]
+    }
+  ],
+  "filmFrames": [
+    {
+      "id": "tears-of-steel-conversation",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "title": "Tears of Steel (2012)",
+      "creator": "Blender Foundation / Project Mango",
+      "basis": "cc_by_3_0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_08_4a.jpg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Tears_of_Steel_frame_08_4a.jpg",
+      "sourceSha256": "62d99dc902ef52bcc69bb3cd9e7554c7f049303fdb6331f92c76045ed2c69d34",
+      "sourceWidth": 3840,
+      "sourceHeight": 1600,
+      "alt": "A grey-haired man beside a graffiti-covered machine in Tears of Steel (2012)",
+      "processing": "Resized and compressed to WebP. The comparison shows deliberate centered CSS crops; the source frame is 2.40:1.",
+      "files": [
+        {
+          "src": "/blog-assets/frames/tears-of-steel-conversation-480.webp",
+          "width": 480,
+          "height": 200,
+          "bytes": 25810,
+          "sha256": "17d019a41a8505f67fa24b04878b8c1d29dbd2a2a2cae251edc9867763720980"
+        },
+        {
+          "src": "/blog-assets/frames/tears-of-steel-conversation-960.webp",
+          "width": 960,
+          "height": 400,
+          "bytes": 72512,
+          "sha256": "d4a44f886ca5860d1ddc6313542c1e145915c325cdd55e7c1b8b8f936a658231"
+        },
+        {
+          "src": "/blog-assets/frames/tears-of-steel-conversation.webp",
+          "width": 1440,
+          "height": 600,
+          "bytes": 134452,
+          "sha256": "e7010af63b14130953aacd37df8012922ed6b5b53728e30a645bdf034e832717"
+        }
+      ]
+    },
+    {
+      "id": "tears-of-steel-launch",
+      "article": "why-2-39-1-feels-more-cinematic",
+      "title": "Tears of Steel (2012)",
+      "creator": "Blender Foundation / Project Mango",
+      "basis": "cc_by_3_0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Tears_of_Steel_frame_00_1c.jpg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Tears_of_Steel_frame_00_1c.jpg",
+      "sourceSha256": "56f12744321f85027e8840c9312c1528cc9bbe3f8faae56312ebd2e95d2787e4",
+      "sourceWidth": 3840,
+      "sourceHeight": 1600,
+      "alt": "A rocket rises above a city and tall industrial structures in Tears of Steel (2012)",
+      "processing": "Resized and compressed to WebP. The comparison shows deliberate centered CSS crops; the source frame is 2.40:1.",
+      "files": [
+        {
+          "src": "/blog-assets/frames/tears-of-steel-launch-480.webp",
+          "width": 480,
+          "height": 200,
+          "bytes": 12610,
+          "sha256": "cff0e1469b3d6b1c4f49485992ca268d70af9ca4ab3b247335dad9788d8d4caf"
+        },
+        {
+          "src": "/blog-assets/frames/tears-of-steel-launch-960.webp",
+          "width": 960,
+          "height": 400,
+          "bytes": 41004,
+          "sha256": "66266d29a7ee14e80119d359ce8bf24faaaa6322ee58f8b3e99fe245e4f2bda1"
+        },
+        {
+          "src": "/blog-assets/frames/tears-of-steel-launch.webp",
+          "width": 1440,
+          "height": 600,
+          "bytes": 79662,
+          "sha256": "c11138c289dbb1ed6ed1413ea40580f8129eecaaa52aa14599302942d9279b68"
+        }
+      ]
+    }
+  ],
+  "retiredIllustrationFiles": [
+    "/blog-assets/original/august-2025-bad-guys-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-bad-guys-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-bad-guys-2-illustration.webp",
+    "/blog-assets/original/august-2025-freaky-friday-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-freaky-friday-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp",
+    "/blog-assets/original/august-2025-honey-dont-illustration-160.webp",
+    "/blog-assets/original/august-2025-honey-dont-illustration-320.webp",
+    "/blog-assets/original/august-2025-honey-dont-illustration.webp",
+    "/blog-assets/original/august-2025-naked-gun-2025-illustration-160.webp",
+    "/blog-assets/original/august-2025-naked-gun-2025-illustration-320.webp",
+    "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp",
+    "/blog-assets/original/august-2025-ne-zha-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-ne-zha-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-ne-zha-2-illustration.webp",
+    "/blog-assets/original/august-2025-nobody-2-illustration-160.webp",
+    "/blog-assets/original/august-2025-nobody-2-illustration-320.webp",
+    "/blog-assets/original/august-2025-nobody-2-illustration.webp",
+    "/blog-assets/original/august-2025-weapons-2025-illustration-160.webp",
+    "/blog-assets/original/august-2025-weapons-2025-illustration-320.webp",
+    "/blog-assets/original/august-2025-weapons-2025-illustration.webp",
+    "/blog-assets/original/horror-2026-backrooms-illustration-480.webp",
+    "/blog-assets/original/horror-2026-backrooms-illustration-800.webp",
+    "/blog-assets/original/horror-2026-backrooms-illustration.webp",
+    "/blog-assets/original/horror-2026-hokum-illustration-480.webp",
+    "/blog-assets/original/horror-2026-hokum-illustration-800.webp",
+    "/blog-assets/original/horror-2026-hokum-illustration.webp",
+    "/blog-assets/original/horror-2026-obsession-illustration-480.webp",
+    "/blog-assets/original/horror-2026-obsession-illustration-800.webp",
+    "/blog-assets/original/horror-2026-obsession-illustration.webp",
+    "/blog-assets/original/horror-2026-primate-illustration-480.webp",
+    "/blog-assets/original/horror-2026-primate-illustration-800.webp",
+    "/blog-assets/original/horror-2026-primate-illustration.webp",
+    "/blog-assets/original/horror-2026-resident-evil-illustration-480.webp",
+    "/blog-assets/original/horror-2026-resident-evil-illustration-800.webp",
+    "/blog-assets/original/horror-2026-resident-evil-illustration.webp",
+    "/blog-assets/original/horror-2026-send-help-illustration-480.webp",
+    "/blog-assets/original/horror-2026-send-help-illustration-800.webp",
+    "/blog-assets/original/horror-2026-send-help-illustration.webp",
+    "/blog-assets/original/horror-2026-the-bone-temple-illustration-480.webp",
+    "/blog-assets/original/horror-2026-the-bone-temple-illustration-800.webp",
+    "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp",
+    "/blog-assets/original/knives-out-clue-illustration-480.webp",
+    "/blog-assets/original/knives-out-clue-illustration-800.webp",
+    "/blog-assets/original/knives-out-clue-illustration.webp",
+    "/blog-assets/original/knives-out-death-on-the-nile-illustration-480.webp",
+    "/blog-assets/original/knives-out-death-on-the-nile-illustration-800.webp",
+    "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp",
+    "/blog-assets/original/knives-out-deathtrap-illustration-480.webp",
+    "/blog-assets/original/knives-out-deathtrap-illustration-800.webp",
+    "/blog-assets/original/knives-out-deathtrap-illustration.webp",
+    "/blog-assets/original/knives-out-glass-onion-illustration-480.webp",
+    "/blog-assets/original/knives-out-glass-onion-illustration-800.webp",
+    "/blog-assets/original/knives-out-glass-onion-illustration.webp",
+    "/blog-assets/original/knives-out-gosford-park-illustration-480.webp",
+    "/blog-assets/original/knives-out-gosford-park-illustration-800.webp",
+    "/blog-assets/original/knives-out-gosford-park-illustration.webp",
+    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-480.webp",
+    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration-800.webp",
+    "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp",
+    "/blog-assets/original/knives-out-see-how-they-run-illustration-480.webp",
+    "/blog-assets/original/knives-out-see-how-they-run-illustration-800.webp",
+    "/blog-assets/original/knives-out-see-how-they-run-illustration.webp",
+    "/blog-assets/original/knives-out-sleuth-illustration-480.webp",
+    "/blog-assets/original/knives-out-sleuth-illustration-800.webp",
+    "/blog-assets/original/knives-out-sleuth-illustration.webp",
+    "/blog-assets/original/knives-out-the-last-of-sheila-illustration-480.webp",
+    "/blog-assets/original/knives-out-the-last-of-sheila-illustration-800.webp",
+    "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp",
+    "/blog-assets/original/knives-out-wake-up-dead-man-illustration-480.webp",
+    "/blog-assets/original/knives-out-wake-up-dead-man-illustration-800.webp",
+    "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp",
+    "/blog-assets/original/miniseries-chernobyl-illustration-480.webp",
+    "/blog-assets/original/miniseries-chernobyl-illustration-800.webp",
+    "/blog-assets/original/miniseries-chernobyl-illustration.webp",
+    "/blog-assets/original/miniseries-five-days-at-memorial-illustration-480.webp",
+    "/blog-assets/original/miniseries-five-days-at-memorial-illustration-800.webp",
+    "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp",
+    "/blog-assets/original/miniseries-godless-illustration-480.webp",
+    "/blog-assets/original/miniseries-godless-illustration-800.webp",
+    "/blog-assets/original/miniseries-godless-illustration.webp",
+    "/blog-assets/original/miniseries-maid-illustration-480.webp",
+    "/blog-assets/original/miniseries-maid-illustration-800.webp",
+    "/blog-assets/original/miniseries-maid-illustration.webp",
+    "/blog-assets/original/miniseries-normal-people-illustration-480.webp",
+    "/blog-assets/original/miniseries-normal-people-illustration-800.webp",
+    "/blog-assets/original/miniseries-normal-people-illustration.webp",
+    "/blog-assets/original/miniseries-one-day-illustration-480.webp",
+    "/blog-assets/original/miniseries-one-day-illustration-800.webp",
+    "/blog-assets/original/miniseries-one-day-illustration.webp",
+    "/blog-assets/original/miniseries-station-eleven-illustration-480.webp",
+    "/blog-assets/original/miniseries-station-eleven-illustration-800.webp",
+    "/blog-assets/original/miniseries-station-eleven-illustration.webp",
+    "/blog-assets/original/miniseries-the-queens-gambit-illustration-480.webp",
+    "/blog-assets/original/miniseries-the-queens-gambit-illustration-800.webp",
+    "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp",
+    "/blog-assets/original/miniseries-unorthodox-illustration-480.webp",
+    "/blog-assets/original/miniseries-unorthodox-illustration-800.webp",
+    "/blog-assets/original/miniseries-unorthodox-illustration.webp",
+    "/blog-assets/original/miniseries-when-they-see-us-illustration-480.webp",
+    "/blog-assets/original/miniseries-when-they-see-us-illustration-800.webp",
+    "/blog-assets/original/miniseries-when-they-see-us-illustration.webp",
+    "/blog-assets/original/november-2026-ebenezer-illustration-480.webp",
+    "/blog-assets/original/november-2026-ebenezer-illustration-800.webp",
+    "/blog-assets/original/november-2026-ebenezer-illustration.webp",
+    "/blog-assets/original/november-2026-focker-in-law-illustration-480.webp",
+    "/blog-assets/original/november-2026-focker-in-law-illustration-800.webp",
+    "/blog-assets/original/november-2026-focker-in-law-illustration.webp",
+    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-480.webp",
+    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration-800.webp",
+    "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp",
+    "/blog-assets/original/november-2026-hexed-illustration-480.webp",
+    "/blog-assets/original/november-2026-hexed-illustration-800.webp",
+    "/blog-assets/original/november-2026-hexed-illustration.webp",
+    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-480.webp",
+    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration-800.webp",
+    "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp",
+    "/blog-assets/original/november-2026-i-play-rocky-illustration-480.webp",
+    "/blog-assets/original/november-2026-i-play-rocky-illustration-800.webp",
+    "/blog-assets/original/november-2026-i-play-rocky-illustration.webp",
+    "/blog-assets/original/november-2026-paper-tiger-illustration-480.webp",
+    "/blog-assets/original/november-2026-paper-tiger-illustration-800.webp",
+    "/blog-assets/original/november-2026-paper-tiger-illustration.webp",
+    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-480.webp",
+    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration-800.webp",
+    "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp",
+    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-480.webp",
+    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration-800.webp",
+    "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp",
+    "/blog-assets/original/november-2026-wild-horse-nine-illustration-480.webp",
+    "/blog-assets/original/november-2026-wild-horse-nine-illustration-800.webp",
+    "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-hoppers-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-hoppers-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-redux-redux-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-redux-redux-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp",
+    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-480.webp",
+    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration-800.webp",
+    "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-arrival-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-arrival-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-coherence-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-coherence-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-dark-city-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-dark-city-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-gattaca-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-gattaca-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-minority-report-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-minority-report-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-moon-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-moon-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-moon-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-source-code-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-source-code-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp",
+    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-480.webp",
+    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration-800.webp",
+    "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp",
+    "/blog-assets/original/scope-composition-station-illustration-1440.webp",
+    "/blog-assets/original/scope-composition-station-illustration-960.webp",
+    "/blog-assets/original/scope-composition-station-illustration.webp",
+    "/blog-assets/original/scope-negative-space-illustration-480.webp",
+    "/blog-assets/original/scope-negative-space-illustration-800.webp",
+    "/blog-assets/original/scope-negative-space-illustration.webp",
+    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-160.webp",
+    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration-320.webp",
+    "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp",
+    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-160.webp",
+    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration-320.webp",
+    "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp",
+    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-160.webp",
+    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration-320.webp",
+    "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp",
+    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-160.webp",
+    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration-320.webp",
+    "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp",
+    "/blog-assets/original/september-2025-him-2025-illustration-160.webp",
+    "/blog-assets/original/september-2025-him-2025-illustration-320.webp",
+    "/blog-assets/original/september-2025-him-2025-illustration.webp",
+    "/blog-assets/original/september-2025-spinal-tap-ii-illustration-160.webp",
+    "/blog-assets/original/september-2025-spinal-tap-ii-illustration-320.webp",
+    "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp",
+    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-160.webp",
+    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration-320.webp",
+    "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp",
+    "/blog-assets/original/september-2025-the-long-walk-illustration-160.webp",
+    "/blog-assets/original/september-2025-the-long-walk-illustration-320.webp",
+    "/blog-assets/original/september-2025-the-long-walk-illustration.webp",
+    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-160.webp",
+    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration-320.webp",
+    "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp",
+    "/blog-assets/original/whalefall-coast-illustration-480.webp",
+    "/blog-assets/original/whalefall-coast-illustration-800.webp",
+    "/blog-assets/original/whalefall-coast-illustration.webp"
+  ]
+}
