@@ -1,3 +1,14 @@
+## Privacy browser diagnostics — 9 November 2026
+
+The explicit home URL `/?privacy=diagnostics` provides a local 20-second report
+of the existing CMP bridge. It blocks optional measurement even with an earlier
+grant, preserves that choice, and offers an explicit copy action. Only load/
+readiness status, safe native TCF fields, failure categories and CSP origins
+are included; no TC strings, identifiers, storage values or URL parameters.
+Normal privacy controls remain available and the ad-script exclusion stays in
+force. Regional delivery remains a separate verification gate; this diagnostic
+does not establish that the European message is delivered.
+
 ## Consent before optional analytics — 8 November 2026
 
 Stage 11 replaces the earlier opt-out model with prior permission for GA4 and

@@ -39,12 +39,27 @@ let timeout: number | undefined;
 let memoryOptOut = false;
 let directivesApplied = false;
 let documentChoice: { measurement: boolean; analytics: boolean } | null = null;
+let tagStatus: "not-started" | "loading" | "loaded" | "failed" = "not-started";
+let firstFailure: string | null = null;
 
 export const getConsent = () => state;
 export const getServerConsent = () => initial;
 export function subscribeConsent(callback: () => void) { listeners.add(callback); return () => { listeners.delete(callback); }; }
 export function onConsentRevoked(callback: (permission: Permission) => void) { revokers.add(callback); return () => { revokers.delete(callback); }; }
 export function isPrivacyDocument(path = typeof location === "undefined" ? "" : location.pathname) { return /^\/privacy(?:\/|$|\.html$)/.test(path); }
+export function isPrivacyDiagnostics(path: string, search: string) {
+  return path === "/" && new URLSearchParams(search).get("privacy") === "diagnostics";
+}
+/** Explicit allowlist: never include TC strings, identifiers, storage or URL parameters. */
+export function getConsentDiagnostics() {
+  return {
+    version: 1, tagStatus, apiReady, modeReady, firstFailure,
+    native: tc ? { cmpId: tc.cmpId ?? null, cmpStatus: tc.cmpStatus ?? null,
+      gdprApplies: tc.gdprApplies ?? null, eventStatus: tc.eventStatus ?? null } : null,
+    bridge: { status: state.status, region: state.region, measurementConsent: state.measurement,
+      analyticsConsent: state.analytics, deferred: state.deferred },
+  };
+}
 export function consentHostAllowed() {
   if (typeof location === "undefined") return false;
   return ["hard-quiz.com", "www.hard-quiz.com"].includes(location.hostname) ||
@@ -79,17 +94,20 @@ function storedChoice(): { measurement: boolean; analytics: boolean } | null {
     return value;
   } catch { return null; }
 }
-function fail() { publish({ status: "unavailable", measurement: false, analytics: false }); }
+function fail(reason: string) {
+  firstFailure ??= reason;
+  publish({ status: "unavailable", measurement: false, analytics: false });
+}
 function evaluateChoice() {
   if (!tc) return;
-  if (tc.cmpId !== 300 || tc.cmpStatus !== "loaded" || typeof tc.gdprApplies !== "boolean") { fail(); return; }
+  if (tc.cmpId !== 300 || tc.cmpStatus !== "loaded" || typeof tc.gdprApplies !== "boolean") { fail("invalid-tcf-data"); return; }
   if (tc.gdprApplies) {
     if (!["tcloaded", "useractioncomplete"].includes(tc.eventStatus || "")) {
       publish({ region: "europe", measurement: false, analytics: false }); return;
     }
     const purposes = tc.publisher?.consents;
     let google: ConsentMode | undefined;
-    try { if (modeReady) google = window.googlefc?.getGoogleConsentModeValues?.(); } catch { fail(); return; }
+    try { if (modeReady) google = window.googlefc?.getGoogleConsentModeValues?.(); } catch { fail("consent-mode-error"); return; }
     const measurement = purposes?.[1] === true && purposes?.[8] === true;
     // 0=unknown, 2=denied, 3=not applicable and 4=not configured NEVER grant analytics.
     const analytics = measurement && purposes?.[9] === true && google?.analyticsStoragePurposeConsentStatus === 1;
@@ -101,7 +119,7 @@ function evaluateChoice() {
     // separate opt-in for measurement; an inapplicable TCF/Consent Mode is not an opt-in.
     const choice = storedChoice();
     publish({ status: "ready", region: "other", measurement: choice?.measurement === true,
-      analytics: choice?.analytics === true, settings: state.settings || !choice });
+      analytics: choice?.analytics === true, settings: state.settings || !choice && !isPrivacyDiagnostics(location.pathname, location.search) });
   }
   if (timeout) window.clearTimeout(timeout);
 }
@@ -126,9 +144,9 @@ export function initializeConsent() {
   };
   fc.callbackQueue.push({ CONSENT_API_READY: () => {
     apiReady = true;
-    if (!window.__tcfapi) { fail(); return; }
+    if (!window.__tcfapi) { fail("tcf-api-missing"); return; }
     window.__tcfapi("addEventListener", 0, (data, success) => {
-      if (!success || !data || data.cmpStatus === "error") { tc = null; fail(); return; }
+      if (!success || !data || data.cmpStatus === "error") { tc = null; fail("tcf-callback-error"); return; }
       tc = data;
       if (data.eventStatus === "cmpuishown") publish({ measurement: false, analytics: false });
       evaluateChoice();
@@ -144,13 +162,15 @@ export function initializeConsent() {
       publish({ status: "unavailable", region: "unknown", measurement: false, analytics: false, settings: true });
     }
   });
-  timeout = window.setTimeout(fail, 12000);
+  timeout = window.setTimeout(() => fail("timeout"), 12000);
   const script = document.createElement("script");
   script.id = "hq-google-cmp"; script.async = true;
   // Exact standalone message tag supplied by this publisher's Privacy & messaging UI.
   // No AdSense ad loader, ad units, recovery/Offerwall message or error-protection code.
   script.src = "https://fundingchoicesmessages.google.com/i/pub-7817531684692124?ers=1";
-  script.onerror = fail;
+  tagStatus = "loading";
+  script.onload = () => { tagStatus = "loaded"; };
+  script.onerror = () => { tagStatus = "failed"; fail("script-load-error"); };
   document.head.appendChild(script);
   if (!document.querySelector('iframe[name="googlefcPresent"]')) {
     const signal = document.createElement("iframe"); signal.name = "googlefcPresent";
