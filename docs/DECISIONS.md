@@ -11,6 +11,11 @@ adsbygoogle.js/show_ads_impl.js with other ad/measurement requests intercepted,
 then publication of this document after checks. This does not authorize ad
 serving or submission for review.
 
+The diagnostic retains the official AdSense tag's anonymous CORS mode but does
+not impose it on the standalone classic CMP tag. Cover a response without a CORS
+header using cross-origin local HTTP; keep the existing CSP transport restrictions
+and treat regional delivery as a separate unresolved verification.
+
 ## ADS-02 — Require permission before optional measurement
 
 8 November 2026. The owner authorized stage 11. Use the existing Google CMP and
