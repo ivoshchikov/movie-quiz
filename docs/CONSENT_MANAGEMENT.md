@@ -136,6 +136,12 @@ or pushes an ad request. The existing standalone privacy tag is included
 for comparison with the current integration. Only readiness/native status,
 message-gate counts and sanitized CSP origins/directives can be copied.
 
+The official AdSense tag retains `crossorigin="anonymous"`. The standalone CMP
+uses its ordinary classic-script loading, matching the site's existing loader;
+it does not require an additional CORS response header. A cross-origin local
+HTTP regression test covers that distinction. This fixes the diagnostic loader's
+unnecessary CORS requirement, not a confirmed cause of regional message failure.
+
 `pauseRequestedBeforeSdk` records the readable value before script insertion.
 The native SDK replaces that queue with a write-only pause setter, so a null
 `pauseControlReadback` is not evidence that requests resumed. The report labels
@@ -157,3 +163,4 @@ Official references checked 9 November 2026:
 
 - [European message deployment troubleshooting](https://support.google.com/adsense/answer/14660912?hl=en)
 - [Pausing AdSense requests](https://support.google.com/adsense/answer/7670312?hl=en)
+- [Script CORS attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/crossorigin)

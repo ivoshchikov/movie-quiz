@@ -51,7 +51,10 @@ export function privacySdkCheck(request: Request, inheritedHeaders: Headers): Re
   });
   const tag=(src,key)=>{
     report[key]='loading';const script=document.createElement('script');
-    script.async=true;script.crossOrigin='anonymous';script.src=src;
+    script.async=true;
+    // Keep AdSense's official CORS mode; the standalone CMP is a classic tag.
+    if(key==='sdkStatus')script.crossOrigin='anonymous';
+    script.src=src;
     script.onload=()=>{report[key]='loaded';render();};
     script.onerror=()=>{report[key]='failed';render();};
     document.head.append(script);

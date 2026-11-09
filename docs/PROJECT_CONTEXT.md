@@ -12,6 +12,11 @@ AdSense SDK files and publication of this separate document after checks.
 Source, successful CI, Cloudflare publication and regional delivery remain
 distinct verification steps. Ad serving is not authorized by this check.
 
+The diagnostic's official AdSense tag uses anonymous CORS; its separate CMP tag
+uses classic loading, as on the normal site. The latter must also work when the
+script response has no CORS header, covered by an actual cross-origin local HTTP
+test. This diagnostic correction does not establish regional message delivery.
+
 ## Privacy browser diagnostics — 9 November 2026
 
 The explicit home URL `/?privacy=diagnostics` provides a local 20-second report
