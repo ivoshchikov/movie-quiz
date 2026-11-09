@@ -267,7 +267,7 @@ for (const size of [{ width: 1440, height: 900 }, { width: 768, height: 1024 }, 
     for (const link of await page.locator(".hq-article-contents a").all()) expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     if (article.films) {
       const poster = await page.locator(".hq-movie-poster").first().boundingBox();
-      expect(poster!.width).toBeLessThanOrEqual(152);
+      expect(poster!.width).toBeLessThanOrEqual(190);
       expect((await page.locator(".hq-movie-heading").first().boundingBox())!.y).toBeLessThan(poster!.y);
     } else {
       const round = await page.locator(".hq-optics-lights:not(.hq-optics-ovals) span").first().boundingBox();

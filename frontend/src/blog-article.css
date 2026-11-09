@@ -51,7 +51,7 @@
 .hq-release-index.hq-mystery-index tbody th { padding-bottom: 12px; }
 .hq-mystery-index .hq-release-note { margin-top: 0; font-weight: 400; }
 .hq-release-note { display: block; margin-top: 5px; color: var(--hq-muted); font-size: 12px; }
-.hq-movie { display: grid; grid-template-columns: 152px minmax(0, 1fr); gap: 18px 24px; padding-block: 28px; border-top: 1px solid var(--hq-border); }
+.hq-movie { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 18px 24px; padding-block: 28px; border-top: 1px solid var(--hq-border); align-items: start; }
 .hq-movie-heading { grid-column: 1 / -1; }
 .hq-movie-heading h2 { margin: 0 0 5px; }
 .hq-movie-heading p { margin: 0; color: var(--hq-muted); font-size: 13px; }
@@ -65,18 +65,19 @@
 .hq-movie-facts dd span { display: block; color: var(--hq-muted); font-size: 12px; }
 .hq-movie-copy p:last-child { margin-bottom: 0; }
 .hq-watchlist-entry { padding-block: 10px 4px; border-top: 1px solid var(--hq-border); }
-.hq-article-prose .hq-film-still { width: 100%; margin-inline: auto; }
 .hq-article-prose .hq-watchlist-facts { color: var(--hq-muted); font-size: 14px; line-height: 1.8; }
 .hq-article-prose .hq-watchlist-facts strong { color: var(--hq-reading-text); }
-.hq-thanksgiving-film { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; align-items: start; }
+.hq-film-layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; align-items: start; margin-block: 20px 28px; }
+.hq-film-copy { min-width: 0; }
+.hq-film-copy > :first-child { margin-top: 0; }
+.hq-film-copy > :last-child { margin-bottom: 0; }
 .hq-article-prose .hq-store-poster { width: 190px; margin: 0; }
 .hq-store-poster > a:first-child { display: block; }
 .hq-store-poster figcaption { font-size: 12px; line-height: 1.5; margin-top: 10px; }
 .hq-store-badge { display: inline-flex; padding: 8px; margin-top: 6px; }
 .hq-store-badge img { display: block; width: 139.86px; height: 41px; border-radius: 0; }
-.hq-thanksgiving-film > div > p:first-child { margin-top: 0; }
 @media (max-width: 600px) {
-  .hq-thanksgiving-film { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .hq-film-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .hq-article-prose .hq-store-poster { width: 180px; margin-inline: auto; }
 }
 .hq-article-faq { padding-top: 2px; border-top: 1px solid var(--hq-border); }
@@ -124,10 +125,7 @@
   .hq-article-prose { font-size: 16px; line-height: 1.75; }
   .hq-article h2 { font-size: 22px; }
   .hq-article-archive { padding: 12px 14px; }
-  .hq-movie { grid-template-columns: 120px minmax(0, 1fr); gap: 14px 18px; }
-  .hq-movie-info { display: contents; }
-  .hq-movie-facts { margin: 0; }
-  .hq-movie-copy { grid-column: 1 / -1; }
+  .hq-movie { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .hq-frame-pair { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .hq-release-index th, .hq-release-index td { padding-inline: 6px; font-size: 13px; }
   .hq-release-index th:first-child { width: 43%; }
@@ -136,13 +134,15 @@
   .hq-article-cta { padding: 18px; }
 }
 @media (max-width: 360px) {
-  .hq-movie { gap: 12px; }
   .hq-optics-lights { gap: 5px; }
   .hq-article-actions { flex-direction: column; }
 }
-.hq-article-prose .hq-film-poster { width: 240px; max-width: 100%; margin: 22px auto 28px; }
-.hq-film-poster .hq-article-image { border-radius: 0; }
-.hq-article-prose .hq-film-poster.hq-movie-poster { width: 100%; margin: 0; }
+.hq-article-prose .hq-film-poster { width: 190px; max-width: 100%; margin: 0; }
+.hq-film-poster .hq-article-image { border-radius: 10px; }
+.hq-article-prose .hq-film-poster.hq-movie-poster { margin: 0; }
 .hq-film-poster .hq-store-badge { max-width: 100%; box-sizing: border-box; padding: 5px; }
 .hq-film-poster .hq-store-badge img { max-width: 100%; height: auto; }
 .hq-movie.hq-movie-no-image { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 600px) {
+  .hq-article-prose .hq-film-poster { width: 180px; margin-inline: auto; }
+}

@@ -7,7 +7,7 @@ export default function filmPoster(id: string, archive = false) {
   if (!image) return null;
   return <figure className={`hq-store-poster hq-film-poster ${archive ? "hq-movie-poster" : "hq-film-still"}`}>
     <a href={image.storeUrl} aria-label={`View ${image.title} in the US Apple TV Store`}>
-      <ArticleImage src={image.src} alt={image.alt} width={image.width} height={image.height} sizes={archive ? "(max-width: 600px) 120px, 152px" : "240px"} />
+      <ArticleImage src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 600px) 180px, 190px" />
     </a>
     <figcaption>{image.title}. Promotional store poster via Apple iTunes. Film artwork © its respective rights holders.</figcaption>
     <a className="hq-store-badge" href={image.storeUrl} aria-label={`Get ${image.title} on iTunes — US store`}>
