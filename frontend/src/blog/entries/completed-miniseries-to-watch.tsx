@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
-import editorialIllustration from "../components/editorialIllustration";
+import filmPoster from "../components/filmPoster";
 
 const coverPath = "/blog-assets/completed-miniseries-to-watch-cover.webp";
 const sources = {
@@ -54,7 +54,7 @@ function seriesFacts(id: string) {
 }
 
 function seriesStill(id: string) {
-  return editorialIllustration(`miniseries-${id}`);
+  return filmPoster(`miniseries-${id}`);
 }
 
 

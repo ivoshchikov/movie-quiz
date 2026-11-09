@@ -31,7 +31,7 @@ for (const width of [320, 1440]) {
     await expect(page.locator(".hq-film-still")).toHaveCount(filmIds.length);
     for (const id of filmIds) {
       const figure = page.locator(`section[aria-labelledby="${id}"] .hq-film-still`);
-      const image = figure.getByRole("img");
+      const image = figure.locator(".hq-article-image img");
       await expect(image).toHaveAttribute("alt", /\S/);
       await expect(image).toHaveAttribute("loading", "lazy");
       await expect(figure.locator("figcaption")).toHaveText(/\S/);
@@ -43,11 +43,11 @@ for (const width of [320, 1440]) {
         ratio: element.clientWidth / element.clientHeight,
         originalRatio: Number(element.getAttribute("width")) / Number(element.getAttribute("height")),
       }));
-      expect(display.src).toMatch(width === 320 ? /-illustration-480\.webp$/ : /-illustration-800\.webp$/);
+      expect(display.src).toMatch(/-poster-320\.webp$/);
       expect(display.fit).toBe("contain");
       expect(display.ratio).toBeCloseTo(display.originalRatio, 1);
     }
-    await page.locator(".hq-film-still").first().screenshot({ path: testInfo.outputPath(`mystery-illustration-${width}.png`) });
+    await page.locator(".hq-film-still").first().screenshot({ path: testInfo.outputPath(`mystery-poster-${width}.png`) });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const contents = page.getByRole("navigation", { name: "Article contents" });
     await contents.locator("summary").click();

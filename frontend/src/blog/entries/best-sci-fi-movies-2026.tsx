@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import ArticleImage from "../components/ArticleImage";
-import editorialIllustration from "../components/editorialIllustration";
+import filmPoster from "../components/filmPoster";
 import type { BlogPost } from "../types";
 
 const cover = "/blog-assets/best-sci-fi-movies-2026-cover.webp";
@@ -163,7 +163,7 @@ const post: BlogPost = {
     {films.map(film => <section className="hq-watchlist-entry" key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{film.title}</h2>
       <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · US release {film.release} · {film.runtime} · <a href={film.url}>{film.viewing}</a></p>
-      {editorialIllustration(`sci-fi-2026-${film.id}`)}
+      {filmPoster(`sci-fi-2026-${film.id}`)}
       <p>{film.premise}</p>
       <p>{film.reason}</p>
     </section>)}

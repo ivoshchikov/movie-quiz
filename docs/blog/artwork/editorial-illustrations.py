@@ -236,7 +236,10 @@ def compose(record, height=None):
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True);brief=json.loads(BRIEF.read_text());metadata={};manifest=[];thumbs=[]
+    # Inline film illustrations were withdrawn at the owner’s request; retain title cards only.
     for record in brief:
+        if record['layout'] != 'cover':
+            continue
         im=compose(record);w,h=im.size;cover=record['layout']=='cover';stem=record['id']+('-cover' if cover else '-illustration');variants=[]
         widths=([480,640,800,1200] if cover else [160,320,600] if record['layout']=='portrait' else [960,1440,2390] if record['layout']=='station' else [480,800,1200])
         for width in widths:

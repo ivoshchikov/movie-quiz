@@ -7,7 +7,7 @@ import { responsiveImage } from "../blog/imageSources";
 const images = "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/movies/";
 function Photo({ path }: { path: string }) {
   const [failed, setFailed] = useState(false);
-  const image = responsiveImage(images + path);
+  const image = responsiveImage(path.startsWith("/") ? path : images + path);
   return failed ? <span className="hq-preview-photo-fallback"><SiteIcon name="film" /></span>
     : <img {...image} sizes={image.srcSet ? "(max-width: 680px) calc((100vw - 108px) * 0.616), 360px" : undefined} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} />;
 }
@@ -29,7 +29,7 @@ export default function ModePreview({ mode, questionLabel = "Which movie is this
         <div className="hq-preview-days">{Array.from({ length: 7 }, (_, i) => <span key={i} className={i === 3 ? "is-today" : ""}>{i === 3 ? <SiteIcon name="calendar" /> : "·"}</span>)}</div>
       </div> : <div className="hq-preview-quiz">
         <div className="hq-preview-hud">{mode === "time-attack" ? <><span><SiteIcon name="timer" />01:24</span><span>+2 / −1</span></> : <><span>{questionLabel}</span><span><SiteIcon name="heart" /><SiteIcon name="heart" /><SiteIcon name="heart" /></span></>}</div>
-        <div className="hq-preview-frame"><Photo path="general/g_00001.webp" /></div>
+        <div className="hq-preview-frame"><Photo path="/blog-assets/responsive/classic-preview-640.webp" /></div>
         <div className="hq-preview-answers">{["A", "B", "C", "D"].map(letter => <span key={letter}><b>{letter}</b><i /></span>)}</div>
         {mode === "time-attack" && <div className="hq-preview-clock-track"><span /></div>}
       </div>}

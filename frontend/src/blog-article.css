@@ -124,7 +124,7 @@
   .hq-article-prose { font-size: 16px; line-height: 1.75; }
   .hq-article h2 { font-size: 22px; }
   .hq-article-archive { padding: 12px 14px; }
-  .hq-movie { grid-template-columns: 110px minmax(0, 1fr); gap: 14px 18px; }
+  .hq-movie { grid-template-columns: 120px minmax(0, 1fr); gap: 14px 18px; }
   .hq-movie-info { display: contents; }
   .hq-movie-facts { margin: 0; }
   .hq-movie-copy { grid-column: 1 / -1; }
@@ -136,7 +136,13 @@
   .hq-article-cta { padding: 18px; }
 }
 @media (max-width: 360px) {
-  .hq-movie { grid-template-columns: 88px minmax(0, 1fr); gap: 12px; }
+  .hq-movie { gap: 12px; }
   .hq-optics-lights { gap: 5px; }
   .hq-article-actions { flex-direction: column; }
 }
+.hq-article-prose .hq-film-poster { width: 240px; max-width: 100%; margin: 22px auto 28px; }
+.hq-film-poster .hq-article-image { border-radius: 0; }
+.hq-article-prose .hq-film-poster.hq-movie-poster { width: 100%; margin: 0; }
+.hq-film-poster .hq-store-badge { max-width: 100%; box-sizing: border-box; padding: 5px; }
+.hq-film-poster .hq-store-badge img { max-width: 100%; height: auto; }
+.hq-movie.hq-movie-no-image { grid-template-columns: minmax(0, 1fr); }
