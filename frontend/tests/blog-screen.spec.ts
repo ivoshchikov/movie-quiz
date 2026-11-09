@@ -122,7 +122,7 @@ test("covers use all declared assets, reserved space and lazy decoding", async (
   await open(page);
   const images = cards(page).locator("img");
   await expect(images).toHaveCount(12);
-  const covers = [/thanksgiving-movies-by-mood-640\.webp$/, /sci-fi-mystery-movies-640\.webp$/, /best-sci-fi-movies-2026-640\.webp$/, /completed-miniseries-to-watch-640\.webp$/, /movies-like-knives-out-640\.webp$/, /best-thriller-movies-2026-cover\.webp$/, /november-2026-movie-releases-cover\.webp$/, /whalefall-book-to-film-cover\.webp$/, /best-horror-movies-2026-cover\.webp$/, /the-conjuring-last-rites-640\.webp$/, /flat-vs-scope\.webp$/, /bad-guys-2-640\.webp$/];
+  const covers = [/thanksgiving-movies-by-mood-640\.webp$/, /sci-fi-mystery-movies-640\.webp$/, /best-sci-fi-movies-2026-640\.webp$/, /completed-miniseries-to-watch-640\.webp$/, /movies-like-knives-out-640\.webp$/, /best-thriller-movies-2026-cover\.webp$/, /november-2026-movie-releases-cover\.webp$/, /whalefall-book-to-film-cover\.webp$/, /best-horror-movies-2026-cover\.webp$/, /archive-september-2025-cover-640\.webp$/, /scope-guide-cover-640\.webp$/, /archive-august-2025-cover-640\.webp$/];
   for (const [index, cover] of covers.entries()) await expect(images.nth(index)).toHaveAttribute("src", cover);
   await expect(images.nth(0)).toHaveAttribute("loading", "eager");
   await expect(images.nth(1)).toHaveAttribute("loading", "lazy");
@@ -134,9 +134,9 @@ test("covers use all declared assets, reserved space and lazy decoding", async (
 
 test("one failed cover falls back to an existing gallery image", async ({ page }) => {
   await mockQuizApi(page);
-  await page.route("**/*the-conjuring-last-rites*.webp", route => route.abort());
+  await page.route("**/original/archive-september-2025-cover*.webp", route => route.abort());
   await page.goto("/blog");
-  await expect(cards(page).filter({ hasText: september }).locator("img")).toHaveAttribute("src", /demon-slayer-infinity-castle-640\.webp$/);
+  await expect(cards(page).filter({ hasText: september }).locator("img")).toHaveAttribute("src", /september-2025-the-conjuring-last-rites-illustration\.webp$/);
   await cards(page).filter({ hasText: september }).locator(".hq-blog-excerpt").click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(september);
 });

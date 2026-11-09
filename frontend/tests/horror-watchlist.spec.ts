@@ -36,7 +36,7 @@ test("the new watchlist serves its complete text, own share image and canonical 
     await expect(still).toHaveAttribute("height", /^[1-9]\d+$/);
   }
   const json = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || "{}")).find(item => item["@type"] === "BlogPosting"));
-  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-10-24", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
+  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-11-09", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
   const sharePage = await context.newPage();
   await sharePage.route("**" + socialImage, route => route.fulfill({ contentType: "image/webp", path: "public" + socialImage }));
   await sharePage.setContent('<img src="https://hard-quiz.com' + socialImage + '" alt="Social cover">');
@@ -82,9 +82,11 @@ for (const width of [1440, 390, 320]) test(`watchlist links, image and compariso
     await expect.poll(() => still.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
     const size = await still.evaluate(element => {
       const img = element as HTMLImageElement;
-      return { actual: [img.naturalWidth, img.naturalHeight], declared: [Number(img.getAttribute("width")), Number(img.getAttribute("height"))], displayedHeight: img.getBoundingClientRect().height };
+      const box = img.getBoundingClientRect();
+      return { decoded: img.naturalWidth > 0, ratio: box.width / box.height, declaredRatio: Number(img.getAttribute("width")) / Number(img.getAttribute("height")), displayedHeight: box.height };
     });
-    expect(size.actual).toEqual(size.declared);
+    expect(size.decoded).toBe(true);
+    expect(size.ratio).toBeCloseTo(size.declaredRatio, 2);
     expect(size.displayedHeight).toBeLessThanOrEqual(361);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

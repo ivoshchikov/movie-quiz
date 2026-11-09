@@ -1,0 +1,1456 @@
+{
+  "reviewedOn": "2026-11-09",
+  "baseRevision": "4cfdccebbbbf949cd350574effe0c0c48856c8bf",
+  "reviewScope": "All twelve blog entries, inline images, covers, listing fallbacks and social metadata. No game question images are replaced.",
+  "replacements": [
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-arrival-still.webp",
+      "originalArtworkId": "sci-fi-mystery-arrival",
+      "newSource": "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-moon-still.webp",
+      "originalArtworkId": "sci-fi-mystery-moon",
+      "newSource": "/blog-assets/original/sci-fi-mystery-moon-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-coherence-still.webp",
+      "originalArtworkId": "sci-fi-mystery-coherence",
+      "newSource": "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-source-code-still.webp",
+      "originalArtworkId": "sci-fi-mystery-source-code",
+      "newSource": "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-ex-machina-still.webp",
+      "originalArtworkId": "sci-fi-mystery-ex-machina",
+      "newSource": "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-dark-city-still.webp",
+      "originalArtworkId": "sci-fi-mystery-dark-city",
+      "newSource": "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-minority-report-still.webp",
+      "originalArtworkId": "sci-fi-mystery-minority-report",
+      "newSource": "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-gattaca-still.webp",
+      "originalArtworkId": "sci-fi-mystery-gattaca",
+      "newSource": "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp",
+      "originalArtworkId": "sci-fi-mystery-the-thirteenth-floor",
+      "newSource": "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "sci-fi-mystery-movies",
+      "legacySource": "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp",
+      "originalArtworkId": "sci-fi-mystery-the-vast-of-night",
+      "newSource": "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-project-hail-mary-still.webp",
+      "originalArtworkId": "sci-fi-2026-project-hail-mary",
+      "newSource": "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-disclosure-day-still.webp",
+      "originalArtworkId": "sci-fi-2026-disclosure-day",
+      "newSource": "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp",
+      "originalArtworkId": "sci-fi-2026-good-luck-have-fun-dont-die",
+      "newSource": "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-hoppers-still.webp",
+      "originalArtworkId": "sci-fi-2026-hoppers",
+      "newSource": "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp",
+      "originalArtworkId": "sci-fi-2026-the-end-of-oak-street",
+      "newSource": "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-redux-redux-still.webp",
+      "originalArtworkId": "sci-fi-2026-redux-redux",
+      "newSource": "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-sci-fi-movies-2026",
+      "legacySource": "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp",
+      "originalArtworkId": "sci-fi-2026-rose-of-nevada",
+      "newSource": "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-unorthodox-still.webp",
+      "originalArtworkId": "miniseries-unorthodox",
+      "newSource": "/blog-assets/original/miniseries-unorthodox-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-when-they-see-us-still.webp",
+      "originalArtworkId": "miniseries-when-they-see-us",
+      "newSource": "/blog-assets/original/miniseries-when-they-see-us-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-chernobyl-still.webp",
+      "originalArtworkId": "miniseries-chernobyl",
+      "newSource": "/blog-assets/original/miniseries-chernobyl-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-normal-people-still.webp",
+      "originalArtworkId": "miniseries-normal-people",
+      "newSource": "/blog-assets/original/miniseries-normal-people-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-five-days-at-memorial-still.webp",
+      "originalArtworkId": "miniseries-five-days-at-memorial",
+      "newSource": "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-the-queens-gambit-still.webp",
+      "originalArtworkId": "miniseries-the-queens-gambit",
+      "newSource": "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-one-day-still.webp",
+      "originalArtworkId": "miniseries-one-day",
+      "newSource": "/blog-assets/original/miniseries-one-day-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-godless-still.webp",
+      "originalArtworkId": "miniseries-godless",
+      "newSource": "/blog-assets/original/miniseries-godless-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-station-eleven-still.webp",
+      "originalArtworkId": "miniseries-station-eleven",
+      "newSource": "/blog-assets/original/miniseries-station-eleven-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "completed-miniseries-to-watch",
+      "legacySource": "/blog-assets/miniseries-maid-still.webp",
+      "originalArtworkId": "miniseries-maid",
+      "newSource": "/blog-assets/original/miniseries-maid-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-glass-onion-still.webp",
+      "originalArtworkId": "knives-out-glass-onion",
+      "newSource": "/blog-assets/original/knives-out-glass-onion-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-wake-up-dead-man-still.webp",
+      "originalArtworkId": "knives-out-wake-up-dead-man",
+      "newSource": "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-clue-still.webp",
+      "originalArtworkId": "knives-out-clue",
+      "newSource": "/blog-assets/original/knives-out-clue-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-see-how-they-run-still.webp",
+      "originalArtworkId": "knives-out-see-how-they-run",
+      "newSource": "/blog-assets/original/knives-out-see-how-they-run-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-the-last-of-sheila-still.webp",
+      "originalArtworkId": "knives-out-the-last-of-sheila",
+      "newSource": "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-gosford-park-still.webp",
+      "originalArtworkId": "knives-out-gosford-park",
+      "newSource": "/blog-assets/original/knives-out-gosford-park-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-murder-on-the-orient-express-still.webp",
+      "originalArtworkId": "knives-out-murder-on-the-orient-express",
+      "newSource": "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-death-on-the-nile-still.webp",
+      "originalArtworkId": "knives-out-death-on-the-nile",
+      "newSource": "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-sleuth-still.webp",
+      "originalArtworkId": "knives-out-sleuth",
+      "newSource": "/blog-assets/original/knives-out-sleuth-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "movies-like-knives-out",
+      "legacySource": "/blog-assets/knives-out-deathtrap-still.webp",
+      "originalArtworkId": "knives-out-deathtrap",
+      "newSource": "/blog-assets/original/knives-out-deathtrap-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-the-cat-in-the-hat-still.webp",
+      "originalArtworkId": "november-2026-the-cat-in-the-hat",
+      "newSource": "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-godzilla-minus-zero-poster.webp",
+      "originalArtworkId": "november-2026-godzilla-minus-zero",
+      "newSource": "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-wild-horse-nine-still.webp",
+      "originalArtworkId": "november-2026-wild-horse-nine",
+      "newSource": "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-ebenezer-still.webp",
+      "originalArtworkId": "november-2026-ebenezer",
+      "newSource": "/blog-assets/original/november-2026-ebenezer-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-how-to-rob-a-bank-still.webp",
+      "originalArtworkId": "november-2026-how-to-rob-a-bank",
+      "newSource": "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-paper-tiger-poster.webp",
+      "originalArtworkId": "november-2026-paper-tiger",
+      "newSource": "/blog-assets/original/november-2026-paper-tiger-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-sunrise-on-the-reaping-poster.webp",
+      "originalArtworkId": "november-2026-sunrise-on-the-reaping",
+      "newSource": "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-i-play-rocky-still.webp",
+      "originalArtworkId": "november-2026-i-play-rocky",
+      "newSource": "/blog-assets/original/november-2026-i-play-rocky-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-hexed-still.webp",
+      "originalArtworkId": "november-2026-hexed",
+      "newSource": "/blog-assets/original/november-2026-hexed-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "november-2026-movie-releases",
+      "legacySource": "/blog-assets/november-2026-focker-in-law-poster.webp",
+      "originalArtworkId": "november-2026-focker-in-law",
+      "newSource": "/blog-assets/original/november-2026-focker-in-law-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "is-whalefall-based-on-a-book",
+      "legacySource": "/blog-assets/whalefall-coast-still.webp",
+      "originalArtworkId": "whalefall-coast",
+      "newSource": "/blog-assets/original/whalefall-coast-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-resident-evil-still.webp",
+      "originalArtworkId": "horror-2026-resident-evil",
+      "newSource": "/blog-assets/original/horror-2026-resident-evil-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-obsession-still.webp",
+      "originalArtworkId": "horror-2026-obsession",
+      "newSource": "/blog-assets/original/horror-2026-obsession-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-hokum-still.webp",
+      "originalArtworkId": "horror-2026-hokum",
+      "newSource": "/blog-assets/original/horror-2026-hokum-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-send-help-still.webp",
+      "originalArtworkId": "horror-2026-send-help",
+      "newSource": "/blog-assets/original/horror-2026-send-help-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-backrooms-still.webp",
+      "originalArtworkId": "horror-2026-backrooms",
+      "newSource": "/blog-assets/original/horror-2026-backrooms-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-the-bone-temple-still.webp",
+      "originalArtworkId": "horror-2026-the-bone-temple",
+      "newSource": "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "best-horror-movies-2026",
+      "legacySource": "/blog-assets/horror-2026-primate-still.webp",
+      "originalArtworkId": "horror-2026-primate",
+      "newSource": "/blog-assets/original/horror-2026-primate-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp",
+      "originalArtworkId": "september-2025-the-conjuring-last-rites",
+      "newSource": "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp",
+      "originalArtworkId": "september-2025-demon-slayer-infinity-castle",
+      "newSource": "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp",
+      "originalArtworkId": "september-2025-downton-abbey-the-grand-finale",
+      "newSource": "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-spinal-tap-ii-640.webp",
+      "originalArtworkId": "september-2025-spinal-tap-ii",
+      "newSource": "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-the-long-walk-640.webp",
+      "originalArtworkId": "september-2025-the-long-walk",
+      "newSource": "/blog-assets/original/september-2025-the-long-walk-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp",
+      "originalArtworkId": "september-2025-a-big-bold-beautiful-journey",
+      "newSource": "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-him-2025-640.webp",
+      "originalArtworkId": "september-2025-him-2025",
+      "newSource": "/blog-assets/original/september-2025-him-2025-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp",
+      "originalArtworkId": "september-2025-the-strangers-chapter-2",
+      "newSource": "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "september-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp",
+      "originalArtworkId": "september-2025-gabbys-dollhouse-the-movie",
+      "newSource": "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-bad-guys-2-640.webp",
+      "originalArtworkId": "august-2025-bad-guys-2",
+      "newSource": "/blog-assets/original/august-2025-bad-guys-2-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-naked-gun-2025-640.webp",
+      "originalArtworkId": "august-2025-naked-gun-2025",
+      "newSource": "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-freaky-friday-2-640.webp",
+      "originalArtworkId": "august-2025-freaky-friday-2",
+      "newSource": "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-weapons-2025-640.webp",
+      "originalArtworkId": "august-2025-weapons-2025",
+      "newSource": "/blog-assets/original/august-2025-weapons-2025-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-nobody-2-640.webp",
+      "originalArtworkId": "august-2025-nobody-2",
+      "newSource": "/blog-assets/original/august-2025-nobody-2-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-honey-dont-640.webp",
+      "originalArtworkId": "august-2025-honey-dont",
+      "newSource": "/blog-assets/original/august-2025-honey-dont-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "august-2025-new-movies-guide",
+      "legacySource": "/blog-assets/responsive/august-2025-ne-zha-2-640.webp",
+      "originalArtworkId": "august-2025-ne-zha-2",
+      "newSource": "/blog-assets/original/august-2025-ne-zha-2-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "why-2-39-1-feels-more-cinematic",
+      "legacySource": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/composition-staging.webp",
+      "originalArtworkId": "scope-composition-station",
+      "newSource": "/blog-assets/original/scope-composition-station-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    },
+    {
+      "article": "why-2-39-1-feels-more-cinematic",
+      "legacySource": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/composition-negative.webp",
+      "originalArtworkId": "scope-negative-space",
+      "newSource": "/blog-assets/original/scope-negative-space-illustration.webp",
+      "reason": "No independently documented commercial-use permission for the imported frame or poster."
+    }
+  ],
+  "retiredCover": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/flat-vs-scope.webp",
+  "retiredPublicFiles": [
+    {
+      "src": "/blog-assets/horror-2026-backrooms-still.webp",
+      "sha256": "0bf1cfd965835b1ac5cfb29126013f66c0a80e1931b888dc5583e990a3090151",
+      "bytes": 22856
+    },
+    {
+      "src": "/blog-assets/horror-2026-hokum-still.webp",
+      "sha256": "92de0c9b6f5524752840d82e7fa6e85fac55d47b6203de100078d0e3874e0f3d",
+      "bytes": 33000
+    },
+    {
+      "src": "/blog-assets/horror-2026-obsession-still.webp",
+      "sha256": "84bc2ce4b17633eee7c76d48a6d7c6d213158c68a885f9c010043391b59e51a7",
+      "bytes": 19644
+    },
+    {
+      "src": "/blog-assets/horror-2026-primate-still.webp",
+      "sha256": "cff92d035ff04ed0e393ece241ed838710443e52be516c51bdc1eafdbb82ddf2",
+      "bytes": 46626
+    },
+    {
+      "src": "/blog-assets/horror-2026-resident-evil-still.webp",
+      "sha256": "02fbac357ed0d464fde343b960299b01345c3189480f749d2bcfeae130e747c6",
+      "bytes": 144568
+    },
+    {
+      "src": "/blog-assets/horror-2026-send-help-still.webp",
+      "sha256": "17310e6f45ce0430d5b5c9ad27571121f1a9e3dc96a7341745eb15a52bba7eb3",
+      "bytes": 62086
+    },
+    {
+      "src": "/blog-assets/horror-2026-the-bone-temple-still.webp",
+      "sha256": "23defdc854ceea169303083635c7306b15291a592d262e0eab32db628ca043cd",
+      "bytes": 59356
+    },
+    {
+      "src": "/blog-assets/knives-out-clue-still-480.webp",
+      "sha256": "02adf130aab680d03fb84e518716a3ff356259cf35b30d92c0939beb0490dcff",
+      "bytes": 12748
+    },
+    {
+      "src": "/blog-assets/knives-out-clue-still-800.webp",
+      "sha256": "8bed181e0d6fb319554dec152b1add7cc5444baab3ffaf41bbeae6a78e6d1a9d",
+      "bytes": 24554
+    },
+    {
+      "src": "/blog-assets/knives-out-clue-still.webp",
+      "sha256": "b41fa8f1c9cd383665070c6e6b7f9fead9fdc132675a53826c31f59fe55a411d",
+      "bytes": 39938
+    },
+    {
+      "src": "/blog-assets/knives-out-death-on-the-nile-still-480.webp",
+      "sha256": "a24674c3dd6be5d7cb924c2027899912c2dc3fd447ac5118e90a29fd2a575936",
+      "bytes": 13620
+    },
+    {
+      "src": "/blog-assets/knives-out-death-on-the-nile-still-800.webp",
+      "sha256": "5561bb15ed51fcb017f365cbd8bbf775dde43977c768cec0319b2a828732e501",
+      "bytes": 24084
+    },
+    {
+      "src": "/blog-assets/knives-out-death-on-the-nile-still.webp",
+      "sha256": "b3b29f3d9c25f8335b31cc30c8047a2357d00cccb695c159aba1bee2ffbc7fa5",
+      "bytes": 38178
+    },
+    {
+      "src": "/blog-assets/knives-out-deathtrap-still-480.webp",
+      "sha256": "5c988f1c33cfa7ca72f58b1a2cc17871f5fe6378e6db04299de43a45c228e1e2",
+      "bytes": 19170
+    },
+    {
+      "src": "/blog-assets/knives-out-deathtrap-still-800.webp",
+      "sha256": "fbd80903ea713dc93754fa0edec0ffea7765080fb4f857d11f9101047a32484d",
+      "bytes": 37700
+    },
+    {
+      "src": "/blog-assets/knives-out-deathtrap-still.webp",
+      "sha256": "80e2f37bf964064d03409a29eb6771b8f68da40826633059e80ec76b91fb897b",
+      "bytes": 59968
+    },
+    {
+      "src": "/blog-assets/knives-out-glass-onion-still-480.webp",
+      "sha256": "0226d0ccec9d03def8c7f376baa25a589497c43df4ba100c6bcae53e57f7503d",
+      "bytes": 11296
+    },
+    {
+      "src": "/blog-assets/knives-out-glass-onion-still-800.webp",
+      "sha256": "e3b75ff8ac0da6dd70f20909a3f766b923926c914a0eee80e562ff39ad4ddd9d",
+      "bytes": 24184
+    },
+    {
+      "src": "/blog-assets/knives-out-glass-onion-still.webp",
+      "sha256": "98d56c0fcb6a09674033cb9e0d11616347330cf529cde9e4711a6f71ee95acc7",
+      "bytes": 41306
+    },
+    {
+      "src": "/blog-assets/knives-out-gosford-park-still-480.webp",
+      "sha256": "7fd6f2853b182c022e2bcebf781ebbef4949e2e558933157fdfffd6c93286718",
+      "bytes": 11500
+    },
+    {
+      "src": "/blog-assets/knives-out-gosford-park-still-800.webp",
+      "sha256": "d130bb613b3f599d0d361a1f23c165b2580f76521cade8d601f4b8925601dabf",
+      "bytes": 20660
+    },
+    {
+      "src": "/blog-assets/knives-out-gosford-park-still.webp",
+      "sha256": "ddbfdf272ce371ea55e6a41ba851f9fa343de599bdabb2cf745e5286570350e9",
+      "bytes": 33690
+    },
+    {
+      "src": "/blog-assets/knives-out-murder-on-the-orient-express-still-480.webp",
+      "sha256": "b7f0fcb13a2a7c3cd976446d06371db31a3284fc88e3bbcf8197e9943949e786",
+      "bytes": 9268
+    },
+    {
+      "src": "/blog-assets/knives-out-murder-on-the-orient-express-still-800.webp",
+      "sha256": "7628fa5417a1456715e14de4ebce5d4e7fab740080d4a8dbec667d928ce1fbd4",
+      "bytes": 17782
+    },
+    {
+      "src": "/blog-assets/knives-out-murder-on-the-orient-express-still.webp",
+      "sha256": "18dd61d76a24f6e9a923c2c2f44b94a6276b60335b680f50f5ec6400316fa993",
+      "bytes": 30228
+    },
+    {
+      "src": "/blog-assets/knives-out-see-how-they-run-still-480.webp",
+      "sha256": "1dbfa6c5fdeab27dbe38d5b7c84b4d0bbfbd2713d0dc30383a23c48a569fdecd",
+      "bytes": 12812
+    },
+    {
+      "src": "/blog-assets/knives-out-see-how-they-run-still-800.webp",
+      "sha256": "32086ea18da7d4aae7e025cd9b397f8a4ac37f0a4c27d8ed463ed24b8a1fdabc",
+      "bytes": 25560
+    },
+    {
+      "src": "/blog-assets/knives-out-see-how-they-run-still.webp",
+      "sha256": "c559a28744ac6cc178b6dffa6fd64b97e9482c922624c895f4c8dbbbc9c629b5",
+      "bytes": 41966
+    },
+    {
+      "src": "/blog-assets/knives-out-sleuth-still-480.webp",
+      "sha256": "57666bb7e941a11e341672feb6d383c63b957ff78bc8e941184a35fc4ca060a5",
+      "bytes": 26094
+    },
+    {
+      "src": "/blog-assets/knives-out-sleuth-still-800.webp",
+      "sha256": "05d76f63d694dbec920112585614b5c89fc75d004b38f74878c982d00c536d35",
+      "bytes": 48118
+    },
+    {
+      "src": "/blog-assets/knives-out-sleuth-still.webp",
+      "sha256": "c53c0d37fc2c7fb1bc93dfeb2d3cfc3cc119c2ddf0ee72c4e297ce7c236fcad3",
+      "bytes": 75872
+    },
+    {
+      "src": "/blog-assets/knives-out-the-last-of-sheila-still-480.webp",
+      "sha256": "0275d3bbb1b8a11dec2d984a5d7e06ff1a0a75b0792d186a619fdd89863a2f9a",
+      "bytes": 12426
+    },
+    {
+      "src": "/blog-assets/knives-out-the-last-of-sheila-still-800.webp",
+      "sha256": "d1a4874d74842e0b432b09eb2eee70cce05c8a00c836e99ddfcd739f5f4ceba8",
+      "bytes": 22918
+    },
+    {
+      "src": "/blog-assets/knives-out-the-last-of-sheila-still.webp",
+      "sha256": "c0b24fb61e4f9bfcf8dd413dc298f3f3278c544f2649d718acab7efb2ca48a5b",
+      "bytes": 35792
+    },
+    {
+      "src": "/blog-assets/knives-out-wake-up-dead-man-still-480.webp",
+      "sha256": "0494349ef2af1856b9000ff8354dab2979518ec0abcccc95a75aa0f3e0220433",
+      "bytes": 28592
+    },
+    {
+      "src": "/blog-assets/knives-out-wake-up-dead-man-still-800.webp",
+      "sha256": "633e04c3dfb7790ff4168c615fa121459996b22b2b64f0454ffde9524fea74ab",
+      "bytes": 64470
+    },
+    {
+      "src": "/blog-assets/knives-out-wake-up-dead-man-still.webp",
+      "sha256": "d966b2cb9fa554d2771feb8473d2fa936721d237eb751ac4f8a7ce0b9460e7ff",
+      "bytes": 114282
+    },
+    {
+      "src": "/blog-assets/miniseries-chernobyl-still-480.webp",
+      "sha256": "5b0dcc06e1cfe7306220067124c2e42e304f96bad3fa4177c003d67127544c0c",
+      "bytes": 11028
+    },
+    {
+      "src": "/blog-assets/miniseries-chernobyl-still-800.webp",
+      "sha256": "9a5b8b6ee69d25eff20a847583f982b448d7feba75a4fd2db30b8b95816ed491",
+      "bytes": 20688
+    },
+    {
+      "src": "/blog-assets/miniseries-chernobyl-still.webp",
+      "sha256": "bb281cb008686d517848736461eb0f3b06a2f3f30083bdf9360b336ad45a4cab",
+      "bytes": 32958
+    },
+    {
+      "src": "/blog-assets/miniseries-five-days-at-memorial-still-480.webp",
+      "sha256": "8af2ac2d1b09e04cf635875d2cd9ef4d608505612bb0a9161ae051e6bcb85d08",
+      "bytes": 7202
+    },
+    {
+      "src": "/blog-assets/miniseries-five-days-at-memorial-still-800.webp",
+      "sha256": "5a36b692018792549b31735c80262bd8a7cb4dd7368072c30f248ba3f7031af4",
+      "bytes": 13694
+    },
+    {
+      "src": "/blog-assets/miniseries-five-days-at-memorial-still.webp",
+      "sha256": "127aaafaca82912f63b2e3680d71cee8841ec5b84efa14da1483a03dc07b177f",
+      "bytes": 22168
+    },
+    {
+      "src": "/blog-assets/miniseries-godless-still-480.webp",
+      "sha256": "4fa2f3bcadf3136c872a2a8670e1ca8eb9071621462cde83462d0f2c1b77c61f",
+      "bytes": 15132
+    },
+    {
+      "src": "/blog-assets/miniseries-godless-still-800.webp",
+      "sha256": "1fdcb8b06dff87e79e34011101730a0afa828885bafa8e0d7bde6c485a08f1e2",
+      "bytes": 29742
+    },
+    {
+      "src": "/blog-assets/miniseries-godless-still.webp",
+      "sha256": "2ffbfce4d2cd357d8f00f1112b2381ff99ba90346d1017e5c03e186f45da8a94",
+      "bytes": 47478
+    },
+    {
+      "src": "/blog-assets/miniseries-maid-still-480.webp",
+      "sha256": "e0181f0da3afb53f4586501b1470fcd6e52431e88361186645c305625ebb7a2e",
+      "bytes": 9672
+    },
+    {
+      "src": "/blog-assets/miniseries-maid-still-800.webp",
+      "sha256": "4ab5246bfbb76e8084f9cb98b1df1e53bc64c6ef723b7ac610d2ae2dfe4a276f",
+      "bytes": 17880
+    },
+    {
+      "src": "/blog-assets/miniseries-maid-still.webp",
+      "sha256": "5a7f484a2624d1e9beba193043b2f6dd17fa6e3ffedd8c5f223a0cc7bb2bb0e5",
+      "bytes": 29842
+    },
+    {
+      "src": "/blog-assets/miniseries-normal-people-still-480.webp",
+      "sha256": "5e8ad84d1fe91a442c253030ed3d139fa6425f1c1be62c225da0cc2bcde93199",
+      "bytes": 10826
+    },
+    {
+      "src": "/blog-assets/miniseries-normal-people-still-800.webp",
+      "sha256": "0153f394a638d0b23c118b20ae5f1b9331de4300605eaa2963f6bd956f1aeb59",
+      "bytes": 18766
+    },
+    {
+      "src": "/blog-assets/miniseries-normal-people-still.webp",
+      "sha256": "c0936697ba49018fa855f2176881fb186af3b65d8d13e9d3288e72e2f7932525",
+      "bytes": 30148
+    },
+    {
+      "src": "/blog-assets/miniseries-one-day-still-480.webp",
+      "sha256": "13fba1903615f0ea6267ce687f179492988e83697f31b828721e142cc4ff7ae0",
+      "bytes": 11676
+    },
+    {
+      "src": "/blog-assets/miniseries-one-day-still-800.webp",
+      "sha256": "d15e2e8af68c9982fd1815b47498ef9159587a62e90fdab3d74ca87a709a4f54",
+      "bytes": 21292
+    },
+    {
+      "src": "/blog-assets/miniseries-one-day-still.webp",
+      "sha256": "2cdb4593aa7f8114fb0681080f946c6d478d0b0a4fc91e6712f1f85b0e277db8",
+      "bytes": 34852
+    },
+    {
+      "src": "/blog-assets/miniseries-station-eleven-still-480.webp",
+      "sha256": "d3c13d4844bc2ba4fe0fae6279da6b97833d18cfbcd621ef75c161b6850c8ec2",
+      "bytes": 9794
+    },
+    {
+      "src": "/blog-assets/miniseries-station-eleven-still-800.webp",
+      "sha256": "e3348295d99422ca1081f902cd719d79100fde4f596c5a1d58b2b7d0ba9ebbed",
+      "bytes": 17980
+    },
+    {
+      "src": "/blog-assets/miniseries-station-eleven-still.webp",
+      "sha256": "4a3ee4a2627f891fc375a52d5d442c4c63ac664e9a97254b5910d1163237ec66",
+      "bytes": 27956
+    },
+    {
+      "src": "/blog-assets/miniseries-the-queens-gambit-still-480.webp",
+      "sha256": "a3bfe09becb8582f75beba2c48eaac204e12841181fc55178a477ea5a16bfd94",
+      "bytes": 6496
+    },
+    {
+      "src": "/blog-assets/miniseries-the-queens-gambit-still-800.webp",
+      "sha256": "7b0aa59878e6325897fdc29f5f9b7cc60db78699b1f372492a6b88b4b8546484",
+      "bytes": 13138
+    },
+    {
+      "src": "/blog-assets/miniseries-the-queens-gambit-still.webp",
+      "sha256": "71c6b145f921d7c9d2e16f5d4fb3fe07671f85a1ea24e3622bfb70ef4ecb6af6",
+      "bytes": 22558
+    },
+    {
+      "src": "/blog-assets/miniseries-unorthodox-still-480.webp",
+      "sha256": "cd57b280a42e4725f2ef507b9e4f868e73a004992342524a552d33ad2896de8f",
+      "bytes": 15956
+    },
+    {
+      "src": "/blog-assets/miniseries-unorthodox-still-800.webp",
+      "sha256": "09c4c68041b20dad0f383606a21e4a678cb1d84538e3f55bbd8c257b11b81143",
+      "bytes": 30332
+    },
+    {
+      "src": "/blog-assets/miniseries-unorthodox-still.webp",
+      "sha256": "36f471ba013c7c2b341bbd87c63e0edddf8f8eb90c155446466d911b4f408017",
+      "bytes": 48290
+    },
+    {
+      "src": "/blog-assets/miniseries-when-they-see-us-still-480.webp",
+      "sha256": "4abe07362782f891d576ed4c91903aee0e66a3bf978e9b1d2b38164bb776c524",
+      "bytes": 6868
+    },
+    {
+      "src": "/blog-assets/miniseries-when-they-see-us-still-800.webp",
+      "sha256": "8c68d916683115922a933071137889c0eccb9ee83bbaf562802f1c9b696b1428",
+      "bytes": 12418
+    },
+    {
+      "src": "/blog-assets/miniseries-when-they-see-us-still.webp",
+      "sha256": "0248660e4f8b76ebba62d9d8cc303056e76300e1d079d97b10d6c44b734640ac",
+      "bytes": 19742
+    },
+    {
+      "src": "/blog-assets/november-2026-ebenezer-still.webp",
+      "sha256": "37092a98b615412e012a61b8e5c5882688252dc68cb2a41e890a8e40f97c0cdf",
+      "bytes": 158064
+    },
+    {
+      "src": "/blog-assets/november-2026-focker-in-law-poster.webp",
+      "sha256": "7241287f5876b4b36c5907578bbf903a0fae0c030da8288f634209383fddb986",
+      "bytes": 53868
+    },
+    {
+      "src": "/blog-assets/november-2026-godzilla-minus-zero-poster.webp",
+      "sha256": "29f17d7c35f02e7967c4a78aa0b06f5d3367aeac1c91fea63e8204976d027bbf",
+      "bytes": 58812
+    },
+    {
+      "src": "/blog-assets/november-2026-hexed-still.webp",
+      "sha256": "ab9db050878be744132525c61b1cdacf8f76e1264a918606d627d2ac736e14ea",
+      "bytes": 50914
+    },
+    {
+      "src": "/blog-assets/november-2026-how-to-rob-a-bank-still.webp",
+      "sha256": "4e34b4d875ee5a0c24bf5ffd36ec97db2e36a0bd3607a65f3c9318fbcaede8ee",
+      "bytes": 103246
+    },
+    {
+      "src": "/blog-assets/november-2026-i-play-rocky-still.webp",
+      "sha256": "199d4ab018b9c9fc07d2f4298f5d0cd6ea750787cb4e64dcb59490d16b8484ff",
+      "bytes": 75422
+    },
+    {
+      "src": "/blog-assets/november-2026-paper-tiger-poster.webp",
+      "sha256": "649a48013804be72f473af94fd6c91f0e147bfc20934f99fc61d387c6de2e9bf",
+      "bytes": 56488
+    },
+    {
+      "src": "/blog-assets/november-2026-sunrise-on-the-reaping-poster.webp",
+      "sha256": "f318182450f229dfac90dd1b4072fd59da0e42ef0b0c1ea15d5d1215160e7c20",
+      "bytes": 74926
+    },
+    {
+      "src": "/blog-assets/november-2026-the-cat-in-the-hat-still.webp",
+      "sha256": "2a744eaed094cebe164244fef2b9bcc1a368d81ed3d3f4620ca3a73d38de2e95",
+      "bytes": 55260
+    },
+    {
+      "src": "/blog-assets/november-2026-wild-horse-nine-still.webp",
+      "sha256": "7181a0fbc8adc4702a39d29477475562c1ee0db47514226cea942ce591c77189",
+      "bytes": 102242
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-bad-guys-2-160.webp",
+      "sha256": "57b144fe7d9a8c2b056a573488ebcb97b228e961a3f93d9feb3d25e62d14634c",
+      "bytes": 11722
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-bad-guys-2-320.webp",
+      "sha256": "2eb3f55eaf51b420cb543c9b8a6e481c552fde4c57d4d6c47297bdaca95b4a3b",
+      "bytes": 32288
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-bad-guys-2-640.webp",
+      "sha256": "46f994e811e02a465a32f035e24833e82eff9e335022c25be21fac70aa8c5f98",
+      "bytes": 86168
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-bad-guys-2-960.webp",
+      "sha256": "a253f916d5b5c6249ac1810a5c299cd75442e1b68cb0ca50af4b1fb221b8fb13",
+      "bytes": 163238
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-freaky-friday-2-160.webp",
+      "sha256": "af77a28983e37e1dd876b6608318d4a5c4553e4b0960de14543d758ef4210a45",
+      "bytes": 8824
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-freaky-friday-2-320.webp",
+      "sha256": "27d6ce25ae71839fcec4f24a8937ed8c6617d6223573b79b74b7168e516b9e67",
+      "bytes": 23570
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-freaky-friday-2-640.webp",
+      "sha256": "df0e701ff2d5af63d23f206387d86f887ac796064580da0c9ff35656a3cdffb2",
+      "bytes": 61608
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-honey-dont-160.webp",
+      "sha256": "ee16983ac3e2ebf59d45c7acae9322819ff49195d350f4d3ec9fa764cb4b73a2",
+      "bytes": 9916
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-honey-dont-320.webp",
+      "sha256": "0d2036218a0a859bf923f638061585d1d0ec934885535e3ddd307c0291ca2be5",
+      "bytes": 28974
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-honey-dont-640.webp",
+      "sha256": "ed3eefe918813dc2020f03fa3a0ba92b100771b44faeb734c9b2b01a4980b89e",
+      "bytes": 89692
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-naked-gun-2025-160.webp",
+      "sha256": "74d873c7059ea8df70fa4f8cdf01056aa284e5fa6bd5a5ec39cab88e2edc7bcb",
+      "bytes": 12056
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-naked-gun-2025-320.webp",
+      "sha256": "daa2e4651025f0def9484c619b0953a83eea69a8dd8fea73891c438fc9473f72",
+      "bytes": 33362
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-naked-gun-2025-640.webp",
+      "sha256": "79f0106b8dc7fe82a7657faf672f5c2872acb7955a6b2b31f1aad4f25dd021d7",
+      "bytes": 85382
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-ne-zha-2-160.webp",
+      "sha256": "0ccb4bc1cb6b182fce027e049ada2ea72ffbac229a987fea8f4083821762ea85",
+      "bytes": 15986
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-ne-zha-2-320.webp",
+      "sha256": "66e00de01c2f6ce8fb9f0a62cf0104c101bf73a6f764293e8edf284fbf9af288",
+      "bytes": 54414
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-ne-zha-2-640.webp",
+      "sha256": "ed2d851ed09b10bb7b07f07ec311186a50155ebfc7742f2aea987ca6ed36b726",
+      "bytes": 171952
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-nobody-2-160.webp",
+      "sha256": "5bb6b4f13260fc14994706f65addb775b948d05927dd18cf7b0c382705e2aa8d",
+      "bytes": 12122
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-nobody-2-320.webp",
+      "sha256": "4b4c2858d76101e1d57e275c4e688038441ca16ddc70a3c0927d25df5ab045a3",
+      "bytes": 37268
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-nobody-2-640.webp",
+      "sha256": "59015dee91a8f6d62a7750c220ce7f2dd5a17b02305b900747a659710f41a025",
+      "bytes": 113710
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-weapons-2025-160.webp",
+      "sha256": "5a6ecae273bbf74beefcd7f61a315378711db9341c215d6431ba5e7944073324",
+      "bytes": 5252
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-weapons-2025-320.webp",
+      "sha256": "297ee05dc63db6379174866dbe74544900828e9d4f06fc3b53986a21378fcc07",
+      "bytes": 16376
+    },
+    {
+      "src": "/blog-assets/responsive/august-2025-weapons-2025-640.webp",
+      "sha256": "39f5add535bd4bd0e6cbc914dd060f4a30f67a805d8b199c76d977f21b05d774",
+      "bytes": 54496
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-160.webp",
+      "sha256": "5a00b926a70eb5eb3467f47c912b39af7bfd95be8d6c18838b5487ead59fb350",
+      "bytes": 7196
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-320.webp",
+      "sha256": "9ee47ee9ae08474250cde9defaac2ff49a769be884e32ed0b303eb443c80b9be",
+      "bytes": 17942
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp",
+      "sha256": "88fd95b6ccaa378cd595da7e37b9c503e62363aed2f8132b931660e35bf061ad",
+      "bytes": 41692
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-160.webp",
+      "sha256": "505eeca02b9fd37411ba30e1917a13eb09dead5a4f2e5255f3fb50d42acf1368",
+      "bytes": 13754
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-320.webp",
+      "sha256": "ae21aeb7974ead23979850ecff17a27cd61a2983d430b0418e829db646cfb9b6",
+      "bytes": 43624
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp",
+      "sha256": "1d34da55e8a43fa85403227e761dffcf16b7a02a4a335e4b112db53fd0d6d541",
+      "bytes": 131182
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-160.webp",
+      "sha256": "5a87d90cd696ec64ef5e92cf444e9f0f1724a8a700a8654c6c82900f3cb61895",
+      "bytes": 8238
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-320.webp",
+      "sha256": "b6f9104b532ee952b4b7eab81053451e5ecac89a8f6d31b6c940fe7e3769223f",
+      "bytes": 25152
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp",
+      "sha256": "10bc4e1f355c610b7b15a58a6a48dd64b8181ad0407706f45874580f7c4a5aa4",
+      "bytes": 75694
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-160.webp",
+      "sha256": "fc452a1f2bdcc5dfc226091b55000808e71cae59ef6461fccaeebbf3994fe472",
+      "bytes": 14226
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-320.webp",
+      "sha256": "b01fe7e8909757954a8a1b2b8cc667ebb9e5cadfc0eaf1272a2ff22f7e100bd0",
+      "bytes": 45162
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp",
+      "sha256": "94be83deb5c090cb78aa4911a592bb98a08b4bfc99e69b5d33a8872ad7156cbf",
+      "bytes": 134832
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-him-2025-160.webp",
+      "sha256": "382b773c57ff037fdb53416d067131754b6f304ff54134ff4be5ffc2969ccb6b",
+      "bytes": 7350
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-him-2025-320.webp",
+      "sha256": "bb572206b09200e5c834f911b27295a9789b08c62316a90eb63950595844abab",
+      "bytes": 21294
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-him-2025-640.webp",
+      "sha256": "4a37b2486d98448c2bc19b3c7875b354f89e5c3021328044feaccdb1f600710c",
+      "bytes": 61114
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-160.webp",
+      "sha256": "31cb094c8a936e7a894377316d74f4ab645705736591a849b3238ea2205b6ca7",
+      "bytes": 9008
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-320.webp",
+      "sha256": "879b5c759e021832be0349a9840b25da326ca108fc17460c2bb69dfca119d50c",
+      "bytes": 26764
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-spinal-tap-ii-640.webp",
+      "sha256": "5a353c4ae52a2e40246bf67006aa937edb252db1a689d1af095f56bc23ac692d",
+      "bytes": 75362
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-160.webp",
+      "sha256": "e357e7c9257d67c7b93d4c10c9f75e2b280b98222e8c7b61c75a17823412a39f",
+      "bytes": 8730
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-320.webp",
+      "sha256": "46dfb77d109a5ec188816d59f89d9f3ca75c9349d1ee33862c49de04f9a57d17",
+      "bytes": 27276
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp",
+      "sha256": "2cf819d7f1315b73f4bd500457f24c89c7e1c99108ce9cd6c6ad6831c1c0a93e",
+      "bytes": 82358
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-960.webp",
+      "sha256": "d7fd3764b12dffa95bf62387c86ce7f1304dcbc1e41592f6f5a7d7fdf90e9001",
+      "bytes": 143808
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-long-walk-160.webp",
+      "sha256": "4e21cdb27db69f93c23ee6978e7700c47fc04822ae6e38df8eca6a95dee6d408",
+      "bytes": 10276
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-long-walk-320.webp",
+      "sha256": "8cee9a0afc118e4cbf282754330530fdc4883ba72afaadf651cb0bdb4a9685ba",
+      "bytes": 32108
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-long-walk-640.webp",
+      "sha256": "3946f03f46f8013c98ec591f6b3a667ad2c19c686a1d5ea70aea20dc6951b1a2",
+      "bytes": 111734
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-160.webp",
+      "sha256": "99c2e3b179bad25ae97784f65b1ec905e173dd34711449c72328b925e96ebdc3",
+      "bytes": 5392
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-320.webp",
+      "sha256": "bcdfbaa957feec6e83d71bc4eb1c4b8bad4bacf1eff19e2c2748206f5e66b562",
+      "bytes": 15834
+    },
+    {
+      "src": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp",
+      "sha256": "6352d79cf4f5d7dde661c064925144100d427065c26c25eafcc97dc486f4a487",
+      "bytes": 51822
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-disclosure-day-still-480.webp",
+      "sha256": "1bf18863e5c0f96fc9b2373e83caa86d0701d4e8ea4b04e0e6faa2c171f86d4e",
+      "bytes": 17530
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-disclosure-day-still-800.webp",
+      "sha256": "1903ffac286713428e10fff122d9ef6b891c948aa0fd928926783ae265ddb77e",
+      "bytes": 34102
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-disclosure-day-still.webp",
+      "sha256": "56f6691afc57d9a03655b030fdbc418b558b3c7074c693a06509bf50ad45b3f0",
+      "bytes": 55788
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-480.webp",
+      "sha256": "45d47f1d1514af834679f092fa5c8ea88a439cb7d71e9bdc5145a6976763356f",
+      "bytes": 12942
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-800.webp",
+      "sha256": "f7e65ee2eeebb001e9ef2684a26292ff123a7543e0498578a6961cf32ff754ce",
+      "bytes": 23964
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp",
+      "sha256": "80b2b57f47a08ab20f027b1becdc31632301c2abe968513a736f9aacf6f13f67",
+      "bytes": 37666
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-hoppers-still-480.webp",
+      "sha256": "aafe450fc4d03fcafd9cda9650efe86c28309b947f61350617878ed7ab23bc3b",
+      "bytes": 31860
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-hoppers-still-800.webp",
+      "sha256": "43a445b04c0f130f8bf7b5c1d40db8b350e527e67a46f2903f422e169fea270a",
+      "bytes": 63788
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-hoppers-still.webp",
+      "sha256": "cf07a692fc88ec8a8ba0ccc7b26fe830c366ffbbd5a808bae4891a4fc2f7d3f6",
+      "bytes": 103888
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-project-hail-mary-still-480.webp",
+      "sha256": "8de56ff01d527c26be4822eb280a670e99bb9c051e5b3eb23e7891582403aff5",
+      "bytes": 21058
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-project-hail-mary-still-800.webp",
+      "sha256": "bb01950fde5d796858429946250e8166591dc8968a85a5f1d55f2dbec34f6002",
+      "bytes": 40062
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-project-hail-mary-still.webp",
+      "sha256": "233c007b69e9864b42d51092bac572ded7e6694c458c709221abccc6d1cf19c0",
+      "bytes": 62244
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-redux-redux-still-480.webp",
+      "sha256": "44048e49412ecbffc0fbf507bb1c2bab6fe9dc21c4bb024c1386f15173617c57",
+      "bytes": 2660
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-redux-redux-still-800.webp",
+      "sha256": "87788133827cfeaf5584d6626b5c387a18da1fa5dfa1b5b64c5b967a0e90f953",
+      "bytes": 5274
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-redux-redux-still.webp",
+      "sha256": "08ec2cccc173aa45f40cd29578f481907abe73e7c6e7365d24e91db51296cc9a",
+      "bytes": 8878
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-rose-of-nevada-still-480.webp",
+      "sha256": "250cb144e63fe6b227ee4ac1fb2874cb1269ad79c4d5d2d0abd27849f6439143",
+      "bytes": 23344
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-rose-of-nevada-still-800.webp",
+      "sha256": "c969a043e38b606a1c1d61e2c53983d8bfd8c5e1015952bd7ece63ddce4b85f6",
+      "bytes": 42252
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp",
+      "sha256": "a1314c62ce3955f008ea571605576df06d1f5ba8f1227d22e65171108b38a71f",
+      "bytes": 67142
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still-480.webp",
+      "sha256": "0e41f8df7c01d92ae1bc5368a343d204b3c580233e5ec539ab8ff770823fad91",
+      "bytes": 18234
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still-800.webp",
+      "sha256": "f3796345f536ed4a5b407d28c3c32f38aa07a747e544c14a42002aebb316e931",
+      "bytes": 37908
+    },
+    {
+      "src": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp",
+      "sha256": "1269dc9cd29130802c73a1a94422d43be3cd87868925a3d09290aee9e861008c",
+      "bytes": 61754
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-arrival-still-480.webp",
+      "sha256": "8a794c5fac98e177f1b7e70429afae94fe9155aa775b1582aa9e964de96bdd2b",
+      "bytes": 3520
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-arrival-still-800.webp",
+      "sha256": "5f9db57690a056deae1738213a0fba03afa9165c9380abe25b434081ddc76e39",
+      "bytes": 6790
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-arrival-still.webp",
+      "sha256": "45a5121594696989caaf5436036bc9049c1401d8da3582c6554b11d3b03f69cd",
+      "bytes": 10934
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-coherence-still-480.webp",
+      "sha256": "0a3ec0d2b7acfc3ce280c637c190fbc1703e690a8561806c4f7a98401b6da1fa",
+      "bytes": 8954
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-coherence-still-800.webp",
+      "sha256": "f9ea0b6738888bba7672f81ed7cef75ad6444f84ebef41a451a0b9e3d9266b66",
+      "bytes": 16310
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-coherence-still.webp",
+      "sha256": "0c93566f91ba526ad887c238ff397aacdd0b052485463dc72050e28e1cb6b918",
+      "bytes": 26092
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-dark-city-still-480.webp",
+      "sha256": "470ad898be71961686851b4493d4051f96672168d60ef83b8ef40d78dbb7068c",
+      "bytes": 4880
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-dark-city-still-800.webp",
+      "sha256": "b6826eca7985e01bd2ea894cdfbd43d53f69482e53894d1ea9c4729a0ce34be2",
+      "bytes": 9112
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-dark-city-still.webp",
+      "sha256": "32ca46bd551436b8f263c19bc19f6b450023b53a30f10a1543017cca6f210ca4",
+      "bytes": 15314
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-ex-machina-still-480.webp",
+      "sha256": "add9bc344a2aeaad2a5341a7dfaeccd03f446484607627d0f00a530a9a37e977",
+      "bytes": 4174
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-ex-machina-still-800.webp",
+      "sha256": "4b06bfbb3017ca213105b787ff80108c318b9d0b610be3373bcd06bfe265b95b",
+      "bytes": 8728
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-ex-machina-still.webp",
+      "sha256": "536e4a10d61ffaf47477d500e6af648b99587e46ea5269349800b4ca8530b74e",
+      "bytes": 15894
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-gattaca-still-480.webp",
+      "sha256": "029ad7deb0bae46af4269a022fed2d73ba35e39fdb026afd6b1dc2f61412dcdd",
+      "bytes": 10442
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-gattaca-still-800.webp",
+      "sha256": "9a18006d4c1866943610160abc7ecdac0a6ad7d4890d2299f13a6a9af6de3ba2",
+      "bytes": 18262
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-gattaca-still.webp",
+      "sha256": "da8f077b9574c6b563ccf63bda624c0b54a834093f64c96e3bdfa4bddcaf8d51",
+      "bytes": 28014
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-minority-report-still-480.webp",
+      "sha256": "e15c4854db8751cdab5d256cfa349956229076c4461d0040b70c73a70a8737d8",
+      "bytes": 19588
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-minority-report-still-800.webp",
+      "sha256": "9b034ed1dc911abe4ca16ea24ccb5e35b9e529b7c17bc3e927d0d1b74858f3e2",
+      "bytes": 36382
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-minority-report-still.webp",
+      "sha256": "5b7a8c9b3e5dc71ea8ec8983825703fd0fe2fb7235c3e047420365207da4bcdb",
+      "bytes": 56842
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-moon-still-480.webp",
+      "sha256": "38a46d8103a6eb238e60b76597c13f4029fa1bf294a38057f78b2232a984b6d3",
+      "bytes": 8720
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-moon-still-800.webp",
+      "sha256": "d1d2ed622d249aab6f23b86d328469b97c384ef4d53b9678221c5d3004454e93",
+      "bytes": 17154
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-moon-still.webp",
+      "sha256": "4c0636bc3dc4a6a97ef2e6e16b8e0e7880c416dd250136f9c76e52fecb1d336b",
+      "bytes": 29190
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-source-code-still-480.webp",
+      "sha256": "63fbf557f6d4893ab532e35aef9651fec29acdda87a7716b73f0cab65d4344a5",
+      "bytes": 20974
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-source-code-still-800.webp",
+      "sha256": "04e93ca3a2281950ae3adeff0be207309e4054d363e51bdc789c68f9ec35532a",
+      "bytes": 41116
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-source-code-still.webp",
+      "sha256": "077dfe696d6832429744d62b3c8e9e713a2eaa8336722ed4c13ead06661330cf",
+      "bytes": 67170
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-480.webp",
+      "sha256": "38c13d4e32e96e2b8f5aded57fdea673e4cb8e24f7d215320ccf7f6a300eb02b",
+      "bytes": 12674
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-800.webp",
+      "sha256": "af8bd3de210e3bd02144a2608bb95b5adb8157bd69936e57f2489088e77e0ca1",
+      "bytes": 22494
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp",
+      "sha256": "0ebb0a0d1fd0ce6a03c1211c45d276de48d6654a8652451f9bbde23b97b6fc79",
+      "bytes": 36276
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-480.webp",
+      "sha256": "152788ab52c01503e872edd530797027185dd71a81e45c5c82673da4bb52915a",
+      "bytes": 4976
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-800.webp",
+      "sha256": "0a4d63dd81328c5b0944b278c2bd4442d825440d9803e712b0aa7f5d3dfe7143",
+      "bytes": 9468
+    },
+    {
+      "src": "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp",
+      "sha256": "c3f9a19fb052003b4402331efe927401a8171eea4f774abeecee6dfb9d05972f",
+      "bytes": 16004
+    },
+    {
+      "src": "/blog-assets/whalefall-coast-still.webp",
+      "sha256": "c0a6fe978a173370f6999b31b8dba83744cd435add094ec4980ef0a7d7a73f70",
+      "bytes": 41092
+    }
+  ],
+  "legacyStorageUrls": [
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/composition-negative.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/composition-staging.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/flat-vs-scope.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/bad-guys-2.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/freaky-friday-2.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/honey-dont.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/naked-gun-2025.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/ne-zha-2.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/nobody-2.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/august-2025/weapons-2025.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/a-big-bold-beautiful-journey.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/demon-slayer-infinity-castle.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/downton-abbey-the-grand-finale.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/gabbys-dollhouse-the-movie.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/him-2025.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/spinal-tap-ii.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-conjuring-last-rites.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-long-walk.webp",
+    "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/new_releases/september-2025/the-strangers-chapter-2.webp"
+  ],
+  "affectedArticles": [
+    "august-2025-new-movies-guide",
+    "best-horror-movies-2026",
+    "best-sci-fi-movies-2026",
+    "completed-miniseries-to-watch",
+    "is-whalefall-based-on-a-book",
+    "movies-like-knives-out",
+    "november-2026-movie-releases",
+    "sci-fi-mystery-movies",
+    "september-2025-new-movies-guide",
+    "why-2-39-1-feels-more-cinematic"
+  ],
+  "retainedPromotionalArticle": {
+    "slug": "thanksgiving-movies-by-mood",
+    "basis": "Conditional Apple iTunes Search API promotional use, with matching store links and an approved badge in each film card. Not an unrestricted image license.",
+    "terms": "https://performance-partners.apple.com/search-api",
+    "provenance": "docs/blog/thanksgiving-movies-by-mood-images.json"
+  },
+  "limits": "Neither provenance checks nor original artwork guarantee acceptance by advertising partners or freedom from third-party claims."
+}

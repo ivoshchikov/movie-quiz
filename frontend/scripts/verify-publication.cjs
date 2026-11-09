@@ -270,8 +270,8 @@ async function runChecks(options = {}) {
       } catch (error) { fail("404", canonicalOrigin + route, error.message); }
     }
     // Fetch only image URLs from the trusted build, with deduplication and a bounded budget.
-    // N08 adds 21 responsive posters, five original covers and one shared badge.
-    if (assets.size > 247) throw new Error("Image budget exceeded; review the catalog before increasing it");
+    // Reviewed blog-media replacement catalog: original responsive art, covers and retained licensed promotions.
+    if (assets.size > 293) throw new Error("Image budget exceeded; review the catalog before increasing it");
     for (const url of assets) {
       report.currentUrl = url; checkpoint();
       try {

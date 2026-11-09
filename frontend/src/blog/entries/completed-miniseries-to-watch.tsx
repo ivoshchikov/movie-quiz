@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
+import editorialIllustration from "../components/editorialIllustration";
 
 const coverPath = "/blog-assets/completed-miniseries-to-watch-cover.webp";
 const sources = {
@@ -52,23 +53,10 @@ function seriesFacts(id: string) {
   return <p className="hq-watchlist-facts"><strong>{pick.year}</strong> · {pick.minutes.length} episodes · {viewingTime(pick.minutes)} · <a href={pick.viewing}>{pick.service}: viewing page</a></p>;
 }
 
-const stills = {
-  "unorthodox": {"src": "/blog-assets/miniseries-unorthodox-still.webp", "width": 1200, "height": 645, "alt": "Esty sits among friends in the back seat of a car in Unorthodox (2020).", "caption": "Esty and a new circle of friends in Unorthodox (2020)."},
-  "when-they-see-us": {"src": "/blog-assets/miniseries-when-they-see-us-still.webp", "width": 1200, "height": 594, "alt": "A small television inside a shop shows a man speaking into microphones in When They See Us (2019).", "caption": "An in-store television broadcast in When They See Us (2019)."},
-  "chernobyl": {"src": "/blog-assets/miniseries-chernobyl-still.webp", "width": 1200, "height": 592, "alt": "Two men stand in front of a wall map, one wearing a white coat, in Chernobyl (2019).", "caption": "An office conversation in Chernobyl (2019)."},
-  "normal-people": {"src": "/blog-assets/miniseries-normal-people-still.webp", "width": 1200, "height": 657, "alt": "A woman holds a mug while sitting on the edge of a table in Normal People (2020).", "caption": "Normal People (2020) makes room for quiet domestic moments."},
-  "five-days-at-memorial": {"src": "/blog-assets/miniseries-five-days-at-memorial-still.webp", "width": 1200, "height": 496, "alt": "Two hospital workers, one in a white coat, stand beside a bed in Five Days at Memorial (2022).", "caption": "Hospital staff in Five Days at Memorial (2022)."},
-  "the-queens-gambit": {"src": "/blog-assets/miniseries-the-queens-gambit-still.webp", "width": 1200, "height": 664, "alt": "Beth Harmon stands with her arms folded in a cardigan in The Queen's Gambit (2020).", "caption": "Beth Harmon in The Queen's Gambit (2020)."},
-  "one-day": {"src": "/blog-assets/miniseries-one-day-still.webp", "width": 1200, "height": 504, "alt": "Emma and Dexter sit together on a grassy hillside in One Day (2024).", "caption": "Emma and Dexter in the 2024 television adaptation of One Day."},
-  "godless": {"src": "/blog-assets/miniseries-godless-still.webp", "width": 1200, "height": 492, "alt": "A man in a broad-brimmed hat faces people outside wooden storefronts in Godless (2017).", "caption": "The frontier-town setting of Godless (2017)."},
-  "station-eleven": {"src": "/blog-assets/miniseries-station-eleven-still.webp", "width": 1200, "height": 589, "alt": "A crowned performer leans forward under blue stage lighting in Station Eleven (2021–2022).", "caption": "Theatre connects the story's different worlds in Station Eleven (2021–2022)."},
-  "maid": {"src": "/blog-assets/miniseries-maid-still.webp", "width": 1200, "height": 594, "alt": "Alex looks toward someone, with a counter behind her, in Maid (2021).", "caption": "Alex in Maid (2021), a story shaped by work, housing and care."},
-} as const;
-
-function seriesStill(id: keyof typeof stills) {
-  const { caption, ...image } = stills[id];
-  return <figure className="hq-film-still"><ArticleImage {...image} /><figcaption>{caption}</figcaption></figure>;
+function seriesStill(id: string) {
+  return editorialIllustration(`miniseries-${id}`);
 }
+
 
 const post: BlogPost = {
   slug: "completed-miniseries-to-watch",
@@ -76,6 +64,7 @@ const post: BlogPost = {
   seoTitle: "10 Completed Miniseries to Watch Over a Weekend",
   excerpt: "Find a finished miniseries for the weekend: ten spoiler-free picks with episode counts, calculated viewing times, tone notes and US streaming links.",
   date: "2026-11-01",
+  modified: "2026-11-09",
   tags: ["Streaming & New Releases", "Drama", "2010s", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com/blog-assets/completed-miniseries-to-watch-640.webp",

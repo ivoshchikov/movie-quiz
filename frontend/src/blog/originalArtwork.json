@@ -1,0 +1,540 @@
+{
+  "sci-fi-mystery-arrival": {
+    "src": "/blog-assets/original/sci-fi-mystery-arrival-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Arrival (2016): a radio signal.",
+    "caption": "Arrival (2016): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-moon": {
+    "src": "/blog-assets/original/sci-fi-mystery-moon-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Moon (2009): a planet and orbital paths.",
+    "caption": "Moon (2009): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-coherence": {
+    "src": "/blog-assets/original/sci-fi-mystery-coherence-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Coherence (2013): overlapping rectangles.",
+    "caption": "Coherence (2013): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-source-code": {
+    "src": "/blog-assets/original/sci-fi-mystery-source-code-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Source Code (2011): a clock.",
+    "caption": "Source Code (2011): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-ex-machina": {
+    "src": "/blog-assets/original/sci-fi-mystery-ex-machina-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Ex Machina (2015): connected nodes.",
+    "caption": "Ex Machina (2015): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-dark-city": {
+    "src": "/blog-assets/original/sci-fi-mystery-dark-city-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Dark City (1998): a geometric city.",
+    "caption": "Dark City (1998): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-minority-report": {
+    "src": "/blog-assets/original/sci-fi-mystery-minority-report-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Minority Report (2002): a magnifying glass.",
+    "caption": "Minority Report (2002): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-gattaca": {
+    "src": "/blog-assets/original/sci-fi-mystery-gattaca-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Gattaca (1997): a double helix.",
+    "caption": "Gattaca (1997): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-the-thirteenth-floor": {
+    "src": "/blog-assets/original/sci-fi-mystery-the-thirteenth-floor-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The Thirteenth Floor (1999): a geometric city.",
+    "caption": "The Thirteenth Floor (1999): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-mystery-the-vast-of-night": {
+    "src": "/blog-assets/original/sci-fi-mystery-the-vast-of-night-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The Vast of Night (2020): a radio signal.",
+    "caption": "The Vast of Night (2020): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-project-hail-mary": {
+    "src": "/blog-assets/original/sci-fi-2026-project-hail-mary-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Project Hail Mary: a planet and orbital paths.",
+    "caption": "Project Hail Mary: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-disclosure-day": {
+    "src": "/blog-assets/original/sci-fi-2026-disclosure-day-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Disclosure Day: a radio signal.",
+    "caption": "Disclosure Day: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-good-luck-have-fun-dont-die": {
+    "src": "/blog-assets/original/sci-fi-2026-good-luck-have-fun-dont-die-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Good Luck, Have Fun, Don\u2019t Die: a clock.",
+    "caption": "Good Luck, Have Fun, Don\u2019t Die: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-hoppers": {
+    "src": "/blog-assets/original/sci-fi-2026-hoppers-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Hoppers: trees and a path.",
+    "caption": "Hoppers: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-the-end-of-oak-street": {
+    "src": "/blog-assets/original/sci-fi-2026-the-end-of-oak-street-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The End of Oak Street: a geometric city.",
+    "caption": "The End of Oak Street: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-redux-redux": {
+    "src": "/blog-assets/original/sci-fi-2026-redux-redux-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Redux Redux: overlapping rectangles.",
+    "caption": "Redux Redux: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "sci-fi-2026-rose-of-nevada": {
+    "src": "/blog-assets/original/sci-fi-2026-rose-of-nevada-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Rose of Nevada: a boat and waves.",
+    "caption": "Rose of Nevada: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-unorthodox": {
+    "src": "/blog-assets/original/miniseries-unorthodox-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Unorthodox: an open door.",
+    "caption": "Unorthodox: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-when-they-see-us": {
+    "src": "/blog-assets/original/miniseries-when-they-see-us-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for When They See Us: a balance scale.",
+    "caption": "When They See Us: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-chernobyl": {
+    "src": "/blog-assets/original/miniseries-chernobyl-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Chernobyl: a radio signal.",
+    "caption": "Chernobyl: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-normal-people": {
+    "src": "/blog-assets/original/miniseries-normal-people-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Normal People: a bridge.",
+    "caption": "Normal People: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-five-days-at-memorial": {
+    "src": "/blog-assets/original/miniseries-five-days-at-memorial-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Five Days at Memorial: rain and a building.",
+    "caption": "Five Days at Memorial: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-the-queens-gambit": {
+    "src": "/blog-assets/original/miniseries-the-queens-gambit-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The Queen's Gambit: a chess pawn and board.",
+    "caption": "The Queen's Gambit: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-one-day": {
+    "src": "/blog-assets/original/miniseries-one-day-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for One Day: a clock.",
+    "caption": "One Day: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-godless": {
+    "src": "/blog-assets/original/miniseries-godless-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Godless: mountains and a path.",
+    "caption": "Godless: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-station-eleven": {
+    "src": "/blog-assets/original/miniseries-station-eleven-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Station Eleven: a theatre stage.",
+    "caption": "Station Eleven: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "miniseries-maid": {
+    "src": "/blog-assets/original/miniseries-maid-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Maid: an open door.",
+    "caption": "Maid: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-glass-onion": {
+    "src": "/blog-assets/original/knives-out-glass-onion-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Glass Onion (2022): a geometric maze.",
+    "caption": "Glass Onion (2022): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-wake-up-dead-man": {
+    "src": "/blog-assets/original/knives-out-wake-up-dead-man-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Wake Up Dead Man (2025): an arch and columns.",
+    "caption": "Wake Up Dead Man (2025): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-clue": {
+    "src": "/blog-assets/original/knives-out-clue-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Clue (1985): a key.",
+    "caption": "Clue (1985): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-see-how-they-run": {
+    "src": "/blog-assets/original/knives-out-see-how-they-run-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for See How They Run (2022): a theatre stage.",
+    "caption": "See How They Run (2022): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-the-last-of-sheila": {
+    "src": "/blog-assets/original/knives-out-the-last-of-sheila-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The Last of Sheila (1973): a boat and waves.",
+    "caption": "The Last of Sheila (1973): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-gosford-park": {
+    "src": "/blog-assets/original/knives-out-gosford-park-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Gosford Park (2001): a dinner place setting.",
+    "caption": "Gosford Park (2001): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-murder-on-the-orient-express": {
+    "src": "/blog-assets/original/knives-out-murder-on-the-orient-express-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Murder on the Orient Express (1974): a train and city.",
+    "caption": "Murder on the Orient Express (1974): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-death-on-the-nile": {
+    "src": "/blog-assets/original/knives-out-death-on-the-nile-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Death on the Nile (1978): a boat and waves.",
+    "caption": "Death on the Nile (1978): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-sleuth": {
+    "src": "/blog-assets/original/knives-out-sleuth-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Sleuth (1972): a geometric maze.",
+    "caption": "Sleuth (1972): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "knives-out-deathtrap": {
+    "src": "/blog-assets/original/knives-out-deathtrap-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Deathtrap (1982): a theatre stage.",
+    "caption": "Deathtrap (1982): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-the-cat-in-the-hat": {
+    "src": "/blog-assets/original/november-2026-the-cat-in-the-hat-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The Cat in the Hat: an open book.",
+    "caption": "The Cat in the Hat: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-godzilla-minus-zero": {
+    "src": "/blog-assets/original/november-2026-godzilla-minus-zero-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Godzilla Minus Zero: a geometric city.",
+    "caption": "Godzilla Minus Zero: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-wild-horse-nine": {
+    "src": "/blog-assets/original/november-2026-wild-horse-nine-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Wild Horse Nine: mountains and a path.",
+    "caption": "Wild Horse Nine: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-ebenezer": {
+    "src": "/blog-assets/original/november-2026-ebenezer-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Ebenezer: a clock.",
+    "caption": "Ebenezer: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-how-to-rob-a-bank": {
+    "src": "/blog-assets/original/november-2026-how-to-rob-a-bank-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for How to Rob a Bank: a key.",
+    "caption": "How to Rob a Bank: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-paper-tiger": {
+    "src": "/blog-assets/original/november-2026-paper-tiger-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Paper Tiger: overlapping rectangles.",
+    "caption": "Paper Tiger: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-sunrise-on-the-reaping": {
+    "src": "/blog-assets/original/november-2026-sunrise-on-the-reaping-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for The Hunger Games: Sunrise on the Reaping: an arch and columns.",
+    "caption": "The Hunger Games: Sunrise on the Reaping: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-i-play-rocky": {
+    "src": "/blog-assets/original/november-2026-i-play-rocky-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for I Play Rocky: a theatre stage.",
+    "caption": "I Play Rocky: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-hexed": {
+    "src": "/blog-assets/original/november-2026-hexed-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Hexed: an open book.",
+    "caption": "Hexed: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "november-2026-focker-in-law": {
+    "src": "/blog-assets/original/november-2026-focker-in-law-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Focker-In-Law: a dinner place setting.",
+    "caption": "Focker-In-Law: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "whalefall-coast": {
+    "src": "/blog-assets/original/whalefall-coast-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Whalefall: a boat and waves.",
+    "caption": "Whalefall: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-resident-evil": {
+    "src": "/blog-assets/original/horror-2026-resident-evil-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Resident Evil (2026): a geometric city.",
+    "caption": "Resident Evil (2026): original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-obsession": {
+    "src": "/blog-assets/original/horror-2026-obsession-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Obsession: a magnifying glass.",
+    "caption": "Obsession: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-hokum": {
+    "src": "/blog-assets/original/horror-2026-hokum-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Hokum: an open door.",
+    "caption": "Hokum: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-send-help": {
+    "src": "/blog-assets/original/horror-2026-send-help-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Send Help: an island and waves.",
+    "caption": "Send Help: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-backrooms": {
+    "src": "/blog-assets/original/horror-2026-backrooms-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Backrooms: a geometric maze.",
+    "caption": "Backrooms: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-the-bone-temple": {
+    "src": "/blog-assets/original/horror-2026-the-bone-temple-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for 28 Years Later: The Bone Temple: an arch and columns.",
+    "caption": "28 Years Later: The Bone Temple: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "horror-2026-primate": {
+    "src": "/blog-assets/original/horror-2026-primate-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Primate: trees and a path.",
+    "caption": "Primate: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-the-conjuring-last-rites": {
+    "src": "/blog-assets/original/september-2025-the-conjuring-last-rites-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for The Conjuring: Last Rites: an open door.",
+    "caption": "The Conjuring: Last Rites: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-demon-slayer-infinity-castle": {
+    "src": "/blog-assets/original/september-2025-demon-slayer-infinity-castle-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Demon Slayer: Infinity Castle: an arch and columns.",
+    "caption": "Demon Slayer: Infinity Castle: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-downton-abbey-the-grand-finale": {
+    "src": "/blog-assets/original/september-2025-downton-abbey-the-grand-finale-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Downton Abbey: The Grand Finale: a dinner place setting.",
+    "caption": "Downton Abbey: The Grand Finale: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-spinal-tap-ii": {
+    "src": "/blog-assets/original/september-2025-spinal-tap-ii-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Spinal Tap II: The End Continues: a theatre stage.",
+    "caption": "Spinal Tap II: The End Continues: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-the-long-walk": {
+    "src": "/blog-assets/original/september-2025-the-long-walk-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for The Long Walk: mountains and a path.",
+    "caption": "The Long Walk: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-a-big-bold-beautiful-journey": {
+    "src": "/blog-assets/original/september-2025-a-big-bold-beautiful-journey-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for A Big Bold Beautiful Journey: a bridge.",
+    "caption": "A Big Bold Beautiful Journey: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-him-2025": {
+    "src": "/blog-assets/original/september-2025-him-2025-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for HIM: an arch and columns.",
+    "caption": "HIM: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-the-strangers-chapter-2": {
+    "src": "/blog-assets/original/september-2025-the-strangers-chapter-2-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for The Strangers: Chapter 2: trees and a path.",
+    "caption": "The Strangers: Chapter 2: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "september-2025-gabbys-dollhouse-the-movie": {
+    "src": "/blog-assets/original/september-2025-gabbys-dollhouse-the-movie-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Gabby's Dollhouse: The Movie: an open book.",
+    "caption": "Gabby's Dollhouse: The Movie: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-bad-guys-2": {
+    "src": "/blog-assets/original/august-2025-bad-guys-2-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for The Bad Guys 2: a key.",
+    "caption": "The Bad Guys 2: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-naked-gun-2025": {
+    "src": "/blog-assets/original/august-2025-naked-gun-2025-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for The Naked Gun: a magnifying glass.",
+    "caption": "The Naked Gun: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-freaky-friday-2": {
+    "src": "/blog-assets/original/august-2025-freaky-friday-2-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Freakier Friday: overlapping rectangles.",
+    "caption": "Freakier Friday: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-weapons-2025": {
+    "src": "/blog-assets/original/august-2025-weapons-2025-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Weapons: an open door.",
+    "caption": "Weapons: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-nobody-2": {
+    "src": "/blog-assets/original/august-2025-nobody-2-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Nobody 2: mountains and a path.",
+    "caption": "Nobody 2: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-honey-dont": {
+    "src": "/blog-assets/original/august-2025-honey-dont-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Honey Don't!: a magnifying glass.",
+    "caption": "Honey Don't!: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "august-2025-ne-zha-2": {
+    "src": "/blog-assets/original/august-2025-ne-zha-2-illustration.webp",
+    "width": 600,
+    "height": 900,
+    "alt": "Original Hard Quiz illustration for Ne Zha II: mountains and a path.",
+    "caption": "Ne Zha II: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "scope-composition-station": {
+    "src": "/blog-assets/original/scope-composition-station-illustration.webp",
+    "width": 2390,
+    "height": 1000,
+    "alt": "Original Hard Quiz illustration for Composition and space: a geometric station scene with a clock and three figures.",
+    "caption": "Composition and space: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "scope-negative-space": {
+    "src": "/blog-assets/original/scope-negative-space-illustration.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for Composition and space: one figure on a cliff beside a large open sea.",
+    "caption": "Composition and space: original Hard Quiz editorial illustration; not a film still or official poster."
+  },
+  "archive-august-2025": {
+    "src": "/blog-assets/original/archive-august-2025-cover.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for August 2025 Movies: an open book.",
+    "caption": "August 2025 Movies: original Hard Quiz editorial illustration; not a film still or official poster.",
+    "social": "/blog-assets/original/archive-august-2025-social.webp",
+    "listing": "/blog-assets/original/archive-august-2025-cover-640.webp"
+  },
+  "archive-september-2025": {
+    "src": "/blog-assets/original/archive-september-2025-cover.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for September 2025 Movies: an open book.",
+    "caption": "September 2025 Movies: original Hard Quiz editorial illustration; not a film still or official poster.",
+    "social": "/blog-assets/original/archive-september-2025-social.webp",
+    "listing": "/blog-assets/original/archive-september-2025-cover-640.webp"
+  },
+  "scope-guide": {
+    "src": "/blog-assets/original/scope-guide-cover.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": "Original Hard Quiz illustration for A Wider Frame: overlapping rectangles.",
+    "caption": "A Wider Frame: original Hard Quiz editorial illustration; not a film still or official poster.",
+    "social": "/blog-assets/original/scope-guide-social.webp",
+    "listing": "/blog-assets/original/scope-guide-cover-640.webp"
+  }
+}

@@ -10,7 +10,7 @@ for (const width of [390, 1440]) test(`mystery guide loads appropriately sized s
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("10 Movies Like Knives Out: Whodunits to Match Your Mood");
   const stills = page.locator(".hq-film-still img");
   await expect(stills).toHaveCount(10);
-  expect(requested.some(url => url.includes("knives-out-deathtrap-still"))).toBe(false);
+  expect(requested.some(url => url.includes("knives-out-deathtrap-illustration"))).toBe(false);
   for (const still of await stills.all()) {
     await expect(still).toHaveAttribute("loading", "lazy");
     await expect(still).toHaveAttribute("alt", /\S/);
@@ -26,7 +26,7 @@ for (const width of [390, 1440]) test(`mystery guide loads appropriately sized s
         fit: getComputedStyle(img).objectFit,
       };
     });
-    expect(image.src).toMatch(new RegExp(`-still-${width < 620 ? 480 : 800}\\.webp$`));
+    expect(image.src).toMatch(new RegExp(`-illustration-${width < 620 ? 480 : 800}\\.webp$`));
     expect(image.fit).toBe("contain");
     expect(image.declaredRatio).toBeCloseTo(image.naturalRatio, 1);
     const after = await still.locator("..").boundingBox();

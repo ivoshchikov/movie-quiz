@@ -1,0 +1,677 @@
+[
+  {
+    "id": "sci-fi-mystery-arrival",
+    "article": "sci-fi-mystery-movies",
+    "title": "Arrival (2016)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-arrival-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-arrival-still-480.webp 480w, /blog-assets/sci-fi-mystery-arrival-still-800.webp 800w, /blog-assets/sci-fi-mystery-arrival-still.webp 1200w",
+    "legacyCaption": "Louise Banks introduces a word in Arrival (2016)."
+  },
+  {
+    "id": "sci-fi-mystery-moon",
+    "article": "sci-fi-mystery-movies",
+    "title": "Moon (2009)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-moon-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-moon-still-480.webp 480w, /blog-assets/sci-fi-mystery-moon-still-800.webp 800w, /blog-assets/sci-fi-mystery-moon-still.webp 1200w",
+    "legacyCaption": "GERTY aboard the lunar base in Moon (2009)."
+  },
+  {
+    "id": "sci-fi-mystery-coherence",
+    "article": "sci-fi-mystery-movies",
+    "title": "Coherence (2013)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-coherence-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-coherence-still-480.webp 480w, /blog-assets/sci-fi-mystery-coherence-still-800.webp 800w, /blog-assets/sci-fi-mystery-coherence-still.webp 1200w",
+    "legacyCaption": "Em at the dinner gathering in Coherence (2013)."
+  },
+  {
+    "id": "sci-fi-mystery-source-code",
+    "article": "sci-fi-mystery-movies",
+    "title": "Source Code (2011)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-source-code-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-source-code-still-480.webp 480w, /blog-assets/sci-fi-mystery-source-code-still-800.webp 800w, /blog-assets/sci-fi-mystery-source-code-still.webp 1200w",
+    "legacyCaption": "At a commuter train doorway in Source Code (2011)."
+  },
+  {
+    "id": "sci-fi-mystery-ex-machina",
+    "article": "sci-fi-mystery-movies",
+    "title": "Ex Machina (2015)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-ex-machina-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-ex-machina-still-480.webp 480w, /blog-assets/sci-fi-mystery-ex-machina-still-800.webp 800w, /blog-assets/sci-fi-mystery-ex-machina-still.webp 1200w",
+    "legacyCaption": "Ava behind glass in Ex Machina (2015)."
+  },
+  {
+    "id": "sci-fi-mystery-dark-city",
+    "article": "sci-fi-mystery-movies",
+    "title": "Dark City (1998)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-dark-city-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-dark-city-still-480.webp 480w, /blog-assets/sci-fi-mystery-dark-city-still-800.webp 800w, /blog-assets/sci-fi-mystery-dark-city-still.webp 1200w",
+    "legacyCaption": "A shadowy interior in Dark City (1998)."
+  },
+  {
+    "id": "sci-fi-mystery-minority-report",
+    "article": "sci-fi-mystery-movies",
+    "title": "Minority Report (2002)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-minority-report-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-minority-report-still-480.webp 480w, /blog-assets/sci-fi-mystery-minority-report-still-800.webp 800w, /blog-assets/sci-fi-mystery-minority-report-still.webp 1200w",
+    "legacyCaption": "The Precrime operations room in Minority Report (2002)."
+  },
+  {
+    "id": "sci-fi-mystery-gattaca",
+    "article": "sci-fi-mystery-movies",
+    "title": "Gattaca (1997)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-gattaca-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-gattaca-still-480.webp 480w, /blog-assets/sci-fi-mystery-gattaca-still-800.webp 800w, /blog-assets/sci-fi-mystery-gattaca-still.webp 1200w",
+    "legacyCaption": "Vincent at work in Gattaca (1997)."
+  },
+  {
+    "id": "sci-fi-mystery-the-thirteenth-floor",
+    "article": "sci-fi-mystery-movies",
+    "title": "The Thirteenth Floor (1999)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-the-thirteenth-floor-still-480.webp 480w, /blog-assets/sci-fi-mystery-the-thirteenth-floor-still-800.webp 800w, /blog-assets/sci-fi-mystery-the-thirteenth-floor-still.webp 1200w",
+    "legacyCaption": "A period street scene in The Thirteenth Floor (1999)."
+  },
+  {
+    "id": "sci-fi-mystery-the-vast-of-night",
+    "article": "sci-fi-mystery-movies",
+    "title": "The Vast of Night (2020)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-mystery-the-vast-of-night-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-mystery-the-vast-of-night-still-480.webp 480w, /blog-assets/sci-fi-mystery-the-vast-of-night-still-800.webp 800w, /blog-assets/sci-fi-mystery-the-vast-of-night-still.webp 1200w",
+    "legacyCaption": "Fay and Everett in The Vast of Night (2020)."
+  },
+  {
+    "id": "sci-fi-2026-project-hail-mary",
+    "article": "best-sci-fi-movies-2026",
+    "title": "Project Hail Mary",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-project-hail-mary-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-project-hail-mary-still-480.webp 480w, /blog-assets/sci-fi-2026-project-hail-mary-still-800.webp 800w, /blog-assets/sci-fi-2026-project-hail-mary-still.webp 1200w",
+    "legacyCaption": "Ryland Grace in the spacecraft cabin."
+  },
+  {
+    "id": "sci-fi-2026-disclosure-day",
+    "article": "best-sci-fi-movies-2026",
+    "title": "Disclosure Day",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-disclosure-day-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-disclosure-day-still-480.webp 480w, /blog-assets/sci-fi-2026-disclosure-day-still-800.webp 800w, /blog-assets/sci-fi-2026-disclosure-day-still.webp 1200w",
+    "legacyCaption": "A conversation on the television news set in Disclosure Day."
+  },
+  {
+    "id": "sci-fi-2026-good-luck-have-fun-dont-die",
+    "article": "best-sci-fi-movies-2026",
+    "title": "Good Luck, Have Fun, Don\u2019t Die",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-480.webp 480w, /blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still-800.webp 800w, /blog-assets/sci-fi-2026-good-luck-have-fun-dont-die-still.webp 1200w",
+    "legacyCaption": "The stranger and the diner patrons in Good Luck, Have Fun, Don\u2019t Die."
+  },
+  {
+    "id": "sci-fi-2026-hoppers",
+    "article": "best-sci-fi-movies-2026",
+    "title": "Hoppers",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-hoppers-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-hoppers-still-480.webp 480w, /blog-assets/sci-fi-2026-hoppers-still-800.webp 800w, /blog-assets/sci-fi-2026-hoppers-still.webp 1200w",
+    "legacyCaption": "A gathering of woodland animals in Hoppers."
+  },
+  {
+    "id": "sci-fi-2026-the-end-of-oak-street",
+    "article": "best-sci-fi-movies-2026",
+    "title": "The End of Oak Street",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-the-end-of-oak-street-still-480.webp 480w, /blog-assets/sci-fi-2026-the-end-of-oak-street-still-800.webp 800w, /blog-assets/sci-fi-2026-the-end-of-oak-street-still.webp 1200w",
+    "legacyCaption": "A chase through the neighborhood in The End of Oak Street."
+  },
+  {
+    "id": "sci-fi-2026-redux-redux",
+    "article": "best-sci-fi-movies-2026",
+    "title": "Redux Redux",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-redux-redux-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-redux-redux-still-480.webp 480w, /blog-assets/sci-fi-2026-redux-redux-still-800.webp 800w, /blog-assets/sci-fi-2026-redux-redux-still.webp 1200w",
+    "legacyCaption": "A nighttime encounter in Redux Redux."
+  },
+  {
+    "id": "sci-fi-2026-rose-of-nevada",
+    "article": "best-sci-fi-movies-2026",
+    "title": "Rose of Nevada",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/sci-fi-2026-rose-of-nevada-still.webp",
+    "legacySrcSet": "/blog-assets/sci-fi-2026-rose-of-nevada-still-480.webp 480w, /blog-assets/sci-fi-2026-rose-of-nevada-still-800.webp 800w, /blog-assets/sci-fi-2026-rose-of-nevada-still.webp 1200w",
+    "legacyCaption": "The fishing boat at the harbor in Rose of Nevada."
+  },
+  {
+    "id": "miniseries-unorthodox",
+    "article": "completed-miniseries-to-watch",
+    "title": "Unorthodox",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-unorthodox-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-unorthodox-still-480.webp 480w, /blog-assets/miniseries-unorthodox-still-800.webp 800w, /blog-assets/miniseries-unorthodox-still.webp 1200w",
+    "legacyCaption": "Esty and a new circle of friends in Unorthodox (2020)."
+  },
+  {
+    "id": "miniseries-when-they-see-us",
+    "article": "completed-miniseries-to-watch",
+    "title": "When They See Us",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-when-they-see-us-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-when-they-see-us-still-480.webp 480w, /blog-assets/miniseries-when-they-see-us-still-800.webp 800w, /blog-assets/miniseries-when-they-see-us-still.webp 1200w",
+    "legacyCaption": "An in-store television broadcast in When They See Us (2019)."
+  },
+  {
+    "id": "miniseries-chernobyl",
+    "article": "completed-miniseries-to-watch",
+    "title": "Chernobyl",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-chernobyl-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-chernobyl-still-480.webp 480w, /blog-assets/miniseries-chernobyl-still-800.webp 800w, /blog-assets/miniseries-chernobyl-still.webp 1200w",
+    "legacyCaption": "An office conversation in Chernobyl (2019)."
+  },
+  {
+    "id": "miniseries-normal-people",
+    "article": "completed-miniseries-to-watch",
+    "title": "Normal People",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-normal-people-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-normal-people-still-480.webp 480w, /blog-assets/miniseries-normal-people-still-800.webp 800w, /blog-assets/miniseries-normal-people-still.webp 1200w",
+    "legacyCaption": "Normal People (2020) makes room for quiet domestic moments."
+  },
+  {
+    "id": "miniseries-five-days-at-memorial",
+    "article": "completed-miniseries-to-watch",
+    "title": "Five Days at Memorial",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-five-days-at-memorial-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-five-days-at-memorial-still-480.webp 480w, /blog-assets/miniseries-five-days-at-memorial-still-800.webp 800w, /blog-assets/miniseries-five-days-at-memorial-still.webp 1200w",
+    "legacyCaption": "Hospital staff in Five Days at Memorial (2022)."
+  },
+  {
+    "id": "miniseries-the-queens-gambit",
+    "article": "completed-miniseries-to-watch",
+    "title": "The Queen's Gambit",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-the-queens-gambit-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-the-queens-gambit-still-480.webp 480w, /blog-assets/miniseries-the-queens-gambit-still-800.webp 800w, /blog-assets/miniseries-the-queens-gambit-still.webp 1200w",
+    "legacyCaption": "Beth Harmon in The Queen's Gambit (2020)."
+  },
+  {
+    "id": "miniseries-one-day",
+    "article": "completed-miniseries-to-watch",
+    "title": "One Day",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-one-day-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-one-day-still-480.webp 480w, /blog-assets/miniseries-one-day-still-800.webp 800w, /blog-assets/miniseries-one-day-still.webp 1200w",
+    "legacyCaption": "Emma and Dexter in the 2024 television adaptation of One Day."
+  },
+  {
+    "id": "miniseries-godless",
+    "article": "completed-miniseries-to-watch",
+    "title": "Godless",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-godless-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-godless-still-480.webp 480w, /blog-assets/miniseries-godless-still-800.webp 800w, /blog-assets/miniseries-godless-still.webp 1200w",
+    "legacyCaption": "The frontier-town setting of Godless (2017)."
+  },
+  {
+    "id": "miniseries-station-eleven",
+    "article": "completed-miniseries-to-watch",
+    "title": "Station Eleven",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-station-eleven-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-station-eleven-still-480.webp 480w, /blog-assets/miniseries-station-eleven-still-800.webp 800w, /blog-assets/miniseries-station-eleven-still.webp 1200w",
+    "legacyCaption": "Theatre connects the story's different worlds in Station Eleven (2021\u20132022)."
+  },
+  {
+    "id": "miniseries-maid",
+    "article": "completed-miniseries-to-watch",
+    "title": "Maid",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/miniseries-maid-still.webp",
+    "legacySrcSet": "/blog-assets/miniseries-maid-still-480.webp 480w, /blog-assets/miniseries-maid-still-800.webp 800w, /blog-assets/miniseries-maid-still.webp 1200w",
+    "legacyCaption": "Alex in Maid (2021), a story shaped by work, housing and care."
+  },
+  {
+    "id": "knives-out-glass-onion",
+    "article": "movies-like-knives-out",
+    "title": "Glass Onion (2022)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-glass-onion-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-glass-onion-still-480.webp 480w, /blog-assets/knives-out-glass-onion-still-800.webp 800w, /blog-assets/knives-out-glass-onion-still.webp 1200w",
+    "legacyCaption": "Glass Onion (2022) takes Blanc to a private island and a new circle of wealthy friends."
+  },
+  {
+    "id": "knives-out-wake-up-dead-man",
+    "article": "movies-like-knives-out",
+    "title": "Wake Up Dead Man (2025)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-wake-up-dead-man-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-wake-up-dead-man-still-480.webp 480w, /blog-assets/knives-out-wake-up-dead-man-still-800.webp 800w, /blog-assets/knives-out-wake-up-dead-man-still.webp 1200w",
+    "legacyCaption": "Wake Up Dead Man (2025) exchanges holiday glamour for a small-town church community."
+  },
+  {
+    "id": "knives-out-clue",
+    "article": "movies-like-knives-out",
+    "title": "Clue (1985)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-clue-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-clue-still-480.webp 480w, /blog-assets/knives-out-clue-still-800.webp 800w, /blog-assets/knives-out-clue-still.webp 1200w",
+    "legacyCaption": "Clue (1985): a formal dinner is an unstable starting point for mansion farce."
+  },
+  {
+    "id": "knives-out-see-how-they-run",
+    "article": "movies-like-knives-out",
+    "title": "See How They Run (2022)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-see-how-they-run-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-see-how-they-run-still-480.webp 480w, /blog-assets/knives-out-see-how-they-run-still-800.webp 800w, /blog-assets/knives-out-see-how-they-run-still.webp 1200w",
+    "legacyCaption": "See How They Run (2022) pairs two investigators in a theatrical world full of performances."
+  },
+  {
+    "id": "knives-out-the-last-of-sheila",
+    "article": "movies-like-knives-out",
+    "title": "The Last of Sheila (1973)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-the-last-of-sheila-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-the-last-of-sheila-still-480.webp 480w, /blog-assets/knives-out-the-last-of-sheila-still-800.webp 800w, /blog-assets/knives-out-the-last-of-sheila-still.webp 1200w",
+    "legacyCaption": "The Last of Sheila (1973) begins with the inviting surface of a yacht holiday."
+  },
+  {
+    "id": "knives-out-gosford-park",
+    "article": "movies-like-knives-out",
+    "title": "Gosford Park (2001)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-gosford-park-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-gosford-park-still-480.webp 480w, /blog-assets/knives-out-gosford-park-still-800.webp 800w, /blog-assets/knives-out-gosford-park-still.webp 1200w",
+    "legacyCaption": "Gosford Park (2001): the dinner table makes the household hierarchy visible."
+  },
+  {
+    "id": "knives-out-murder-on-the-orient-express",
+    "article": "movies-like-knives-out",
+    "title": "Murder on the Orient Express (1974)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-murder-on-the-orient-express-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-murder-on-the-orient-express-still-480.webp 480w, /blog-assets/knives-out-murder-on-the-orient-express-still-800.webp 800w, /blog-assets/knives-out-murder-on-the-orient-express-still.webp 1200w",
+    "legacyCaption": "Murder on the Orient Express (1974), with Albert Finney as Hercule Poirot."
+  },
+  {
+    "id": "knives-out-death-on-the-nile",
+    "article": "movies-like-knives-out",
+    "title": "Death on the Nile (1978)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-death-on-the-nile-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-death-on-the-nile-still-480.webp 480w, /blog-assets/knives-out-death-on-the-nile-still-800.webp 800w, /blog-assets/knives-out-death-on-the-nile-still.webp 1200w",
+    "legacyCaption": "Death on the Nile (1978), with Peter Ustinov as Poirot among the travelers."
+  },
+  {
+    "id": "knives-out-sleuth",
+    "article": "movies-like-knives-out",
+    "title": "Sleuth (1972)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-sleuth-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-sleuth-still-480.webp 480w, /blog-assets/knives-out-sleuth-still-800.webp 800w, /blog-assets/knives-out-sleuth-still.webp 1200w",
+    "legacyCaption": "Sleuth (1972) brings Olivier and Caine together for a contest of egos."
+  },
+  {
+    "id": "knives-out-deathtrap",
+    "article": "movies-like-knives-out",
+    "title": "Deathtrap (1982)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/knives-out-deathtrap-still.webp",
+    "legacySrcSet": "/blog-assets/knives-out-deathtrap-still-480.webp 480w, /blog-assets/knives-out-deathtrap-still-800.webp 800w, /blog-assets/knives-out-deathtrap-still.webp 1200w",
+    "legacyCaption": "Deathtrap (1982) makes a writer\u2019s home a setting for theatrical suspense."
+  },
+  {
+    "id": "november-2026-the-cat-in-the-hat",
+    "article": "november-2026-movie-releases",
+    "title": "The Cat in the Hat",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-the-cat-in-the-hat-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "The Cat in the Hat (2026): scene from the film."
+  },
+  {
+    "id": "november-2026-godzilla-minus-zero",
+    "article": "november-2026-movie-releases",
+    "title": "Godzilla Minus Zero",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-godzilla-minus-zero-poster.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Godzilla Minus Zero (2026): poster."
+  },
+  {
+    "id": "november-2026-wild-horse-nine",
+    "article": "november-2026-movie-releases",
+    "title": "Wild Horse Nine",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-wild-horse-nine-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Wild Horse Nine (2026): scene from the film."
+  },
+  {
+    "id": "november-2026-ebenezer",
+    "article": "november-2026-movie-releases",
+    "title": "Ebenezer",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-ebenezer-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Ebenezer (2026): scene from the film."
+  },
+  {
+    "id": "november-2026-how-to-rob-a-bank",
+    "article": "november-2026-movie-releases",
+    "title": "How to Rob a Bank",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-how-to-rob-a-bank-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "How to Rob a Bank (2026): scene from the film."
+  },
+  {
+    "id": "november-2026-paper-tiger",
+    "article": "november-2026-movie-releases",
+    "title": "Paper Tiger",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-paper-tiger-poster.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Paper Tiger (2026): poster."
+  },
+  {
+    "id": "november-2026-sunrise-on-the-reaping",
+    "article": "november-2026-movie-releases",
+    "title": "The Hunger Games: Sunrise on the Reaping",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-sunrise-on-the-reaping-poster.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "The Hunger Games: Sunrise on the Reaping (2026): poster."
+  },
+  {
+    "id": "november-2026-i-play-rocky",
+    "article": "november-2026-movie-releases",
+    "title": "I Play Rocky",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-i-play-rocky-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "I Play Rocky (2026): scene from the film."
+  },
+  {
+    "id": "november-2026-hexed",
+    "article": "november-2026-movie-releases",
+    "title": "Hexed",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-hexed-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Hexed (2026): scene from the film."
+  },
+  {
+    "id": "november-2026-focker-in-law",
+    "article": "november-2026-movie-releases",
+    "title": "Focker-In-Law",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/november-2026-focker-in-law-poster.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Focker-In-Law (2026): poster."
+  },
+  {
+    "id": "whalefall-coast",
+    "article": "is-whalefall-based-on-a-book",
+    "title": "Whalefall",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/whalefall-coast-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Whalefall (2026): a diver on the coast."
+  },
+  {
+    "id": "horror-2026-resident-evil",
+    "article": "best-horror-movies-2026",
+    "title": "Resident Evil (2026)",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-resident-evil-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Resident Evil (2026): danger outside an emergency entrance."
+  },
+  {
+    "id": "horror-2026-obsession",
+    "article": "best-horror-movies-2026",
+    "title": "Obsession",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-obsession-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Obsession: unease in a crowded room."
+  },
+  {
+    "id": "horror-2026-hokum",
+    "article": "best-horror-movies-2026",
+    "title": "Hokum",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-hokum-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Hokum: an arrival at an old stone building."
+  },
+  {
+    "id": "horror-2026-send-help",
+    "article": "best-horror-movies-2026",
+    "title": "Send Help",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-send-help-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Send Help: a tropical setting for survival horror."
+  },
+  {
+    "id": "horror-2026-backrooms",
+    "article": "best-horror-movies-2026",
+    "title": "Backrooms",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-backrooms-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Backrooms: ordinary spaces made unsettling."
+  },
+  {
+    "id": "horror-2026-the-bone-temple",
+    "article": "best-horror-movies-2026",
+    "title": "28 Years Later: The Bone Temple",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-the-bone-temple-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "The Bone Temple (2026): a figure among towers of bones."
+  },
+  {
+    "id": "horror-2026-primate",
+    "article": "best-horror-movies-2026",
+    "title": "Primate",
+    "layout": "landscape",
+    "legacySource": "/blog-assets/horror-2026-primate-still.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Primate: a home becomes a place of danger."
+  },
+  {
+    "id": "september-2025-the-conjuring-last-rites",
+    "article": "september-2025-new-movies-guide",
+    "title": "The Conjuring: Last Rites",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-the-conjuring-last-rites-160.webp 160w, /blog-assets/responsive/september-2025-the-conjuring-last-rites-320.webp 320w, /blog-assets/responsive/september-2025-the-conjuring-last-rites-640.webp 640w, /blog-assets/responsive/september-2025-the-conjuring-last-rites-960.webp 960w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-demon-slayer-infinity-castle",
+    "article": "september-2025-new-movies-guide",
+    "title": "Demon Slayer: Infinity Castle",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-demon-slayer-infinity-castle-160.webp 160w, /blog-assets/responsive/september-2025-demon-slayer-infinity-castle-320.webp 320w, /blog-assets/responsive/september-2025-demon-slayer-infinity-castle-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-downton-abbey-the-grand-finale",
+    "article": "september-2025-new-movies-guide",
+    "title": "Downton Abbey: The Grand Finale",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-160.webp 160w, /blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-320.webp 320w, /blog-assets/responsive/september-2025-downton-abbey-the-grand-finale-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-spinal-tap-ii",
+    "article": "september-2025-new-movies-guide",
+    "title": "Spinal Tap II: The End Continues",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-spinal-tap-ii-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-spinal-tap-ii-160.webp 160w, /blog-assets/responsive/september-2025-spinal-tap-ii-320.webp 320w, /blog-assets/responsive/september-2025-spinal-tap-ii-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-the-long-walk",
+    "article": "september-2025-new-movies-guide",
+    "title": "The Long Walk",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-the-long-walk-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-the-long-walk-160.webp 160w, /blog-assets/responsive/september-2025-the-long-walk-320.webp 320w, /blog-assets/responsive/september-2025-the-long-walk-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-a-big-bold-beautiful-journey",
+    "article": "september-2025-new-movies-guide",
+    "title": "A Big Bold Beautiful Journey",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-160.webp 160w, /blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-320.webp 320w, /blog-assets/responsive/september-2025-a-big-bold-beautiful-journey-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-him-2025",
+    "article": "september-2025-new-movies-guide",
+    "title": "HIM",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-him-2025-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-him-2025-160.webp 160w, /blog-assets/responsive/september-2025-him-2025-320.webp 320w, /blog-assets/responsive/september-2025-him-2025-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-the-strangers-chapter-2",
+    "article": "september-2025-new-movies-guide",
+    "title": "The Strangers: Chapter 2",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-the-strangers-chapter-2-160.webp 160w, /blog-assets/responsive/september-2025-the-strangers-chapter-2-320.webp 320w, /blog-assets/responsive/september-2025-the-strangers-chapter-2-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "september-2025-gabbys-dollhouse-the-movie",
+    "article": "september-2025-new-movies-guide",
+    "title": "Gabby's Dollhouse: The Movie",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-160.webp 160w, /blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-320.webp 320w, /blog-assets/responsive/september-2025-gabbys-dollhouse-the-movie-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-bad-guys-2",
+    "article": "august-2025-new-movies-guide",
+    "title": "The Bad Guys 2",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-bad-guys-2-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-bad-guys-2-160.webp 160w, /blog-assets/responsive/august-2025-bad-guys-2-320.webp 320w, /blog-assets/responsive/august-2025-bad-guys-2-640.webp 640w, /blog-assets/responsive/august-2025-bad-guys-2-960.webp 960w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-naked-gun-2025",
+    "article": "august-2025-new-movies-guide",
+    "title": "The Naked Gun",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-naked-gun-2025-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-naked-gun-2025-160.webp 160w, /blog-assets/responsive/august-2025-naked-gun-2025-320.webp 320w, /blog-assets/responsive/august-2025-naked-gun-2025-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-freaky-friday-2",
+    "article": "august-2025-new-movies-guide",
+    "title": "Freakier Friday",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-freaky-friday-2-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-freaky-friday-2-160.webp 160w, /blog-assets/responsive/august-2025-freaky-friday-2-320.webp 320w, /blog-assets/responsive/august-2025-freaky-friday-2-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-weapons-2025",
+    "article": "august-2025-new-movies-guide",
+    "title": "Weapons",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-weapons-2025-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-weapons-2025-160.webp 160w, /blog-assets/responsive/august-2025-weapons-2025-320.webp 320w, /blog-assets/responsive/august-2025-weapons-2025-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-nobody-2",
+    "article": "august-2025-new-movies-guide",
+    "title": "Nobody 2",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-nobody-2-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-nobody-2-160.webp 160w, /blog-assets/responsive/august-2025-nobody-2-320.webp 320w, /blog-assets/responsive/august-2025-nobody-2-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-honey-dont",
+    "article": "august-2025-new-movies-guide",
+    "title": "Honey Don't!",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-honey-dont-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-honey-dont-160.webp 160w, /blog-assets/responsive/august-2025-honey-dont-320.webp 320w, /blog-assets/responsive/august-2025-honey-dont-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "august-2025-ne-zha-2",
+    "article": "august-2025-new-movies-guide",
+    "title": "Ne Zha II",
+    "layout": "portrait",
+    "legacySource": "/blog-assets/responsive/august-2025-ne-zha-2-640.webp",
+    "legacySrcSet": "/blog-assets/responsive/august-2025-ne-zha-2-160.webp 160w, /blog-assets/responsive/august-2025-ne-zha-2-320.webp 320w, /blog-assets/responsive/august-2025-ne-zha-2-640.webp 640w",
+    "legacyCaption": "Theatrical poster"
+  },
+  {
+    "id": "scope-composition-station",
+    "article": "why-2-39-1-feels-more-cinematic",
+    "title": "Composition and space",
+    "layout": "station",
+    "legacySource": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/composition-staging.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "The same scene in both panels. The narrower crop removes the sides; it does not stretch the people. Letterboxing would preserve the complete wide frame instead."
+  },
+  {
+    "id": "scope-negative-space",
+    "article": "why-2-39-1-feels-more-cinematic",
+    "title": "Composition and space",
+    "layout": "negative",
+    "legacySource": "https://vgjfbcihppxbtrjcxoci.supabase.co/storage/v1/object/public/blog/Trivia/239/composition-negative.webp",
+    "legacySrcSet": null,
+    "legacyCaption": "Look at the people in relation to the surrounding road and landscape. Negative space and scale come from the composition, not the aspect ratio alone."
+  },
+  {
+    "id": "archive-august-2025",
+    "article": "august-2025-new-movies-guide",
+    "title": "August 2025 Movies",
+    "layout": "cover"
+  },
+  {
+    "id": "archive-september-2025",
+    "article": "september-2025-new-movies-guide",
+    "title": "September 2025 Movies",
+    "layout": "cover"
+  },
+  {
+    "id": "scope-guide",
+    "article": "why-2-39-1-feels-more-cinematic",
+    "title": "A Wider Frame",
+    "layout": "cover"
+  }
+]

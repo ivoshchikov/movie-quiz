@@ -6,9 +6,9 @@ import path from "node:path";
 import { mockQuizApi } from "./fixtures";
 
 const articles = [
-  { slug: "august-2025-new-movies-guide", title: "August 2025 Movie Releases: 7 Picks (US)", date: "2025-08-13", films: 7 },
-  { slug: "september-2025-new-movies-guide", title: "September 2025 Movie Releases: 9 Picks (US)", date: "2025-09-01", films: 9 },
-  { slug: "why-2-39-1-feels-more-cinematic", title: "Why 2.39:1 Feels More Cinematic", date: "2025-08-15", films: 0 },
+  { slug: "august-2025-new-movies-guide", title: "August 2025 Movie Releases: 7 Picks (US)", date: "2025-08-13", social: "/blog-assets/original/archive-august-2025-social.webp", films: 7 },
+  { slug: "september-2025-new-movies-guide", title: "September 2025 Movie Releases: 9 Picks (US)", date: "2025-09-01", social: "/blog-assets/original/archive-september-2025-social.webp", films: 9 },
+  { slug: "why-2-39-1-feels-more-cinematic", title: "Why 2.39:1 Feels More Cinematic", date: "2025-08-15", social: "/blog-assets/original/scope-guide-social.webp", films: 0 },
 ];
 const relatedTitle = "Thanksgiving Movies: What to Watch by Mood";
 const url = (index: number) => "/blog/" + articles[index].slug;
@@ -26,7 +26,7 @@ for (const [index, article] of articles.entries()) {
   test(article.slug + " has a clear header, true dates, contents and official sources", async ({ page }) => {
     const calls = await open(page, index);
     await expect(page.locator(".hq-article-meta time").first()).toHaveAttribute("datetime", article.date);
-    await expect(page.locator(".hq-article-meta")).toContainText("Updated Oct 9, 2026");
+    await expect(page.locator(".hq-article-meta")).toContainText("Updated Nov 9, 2026");
     await expect(page.locator(".hq-article-meta")).toContainText(/~[1-9]\d* min read/);
     await expect(page.locator(".hq-article-topic")).toHaveText(article.films ? "Movie guides" : "Explainers");
     await expect(page.getByRole("complementary", { name: "Archive notice" })).toHaveCount(article.films ? 1 : 0);
@@ -52,12 +52,12 @@ for (const [index, article] of articles.entries()) {
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
     const image = await page.locator('meta[property="og:image"]').getAttribute("content");
     expect(new URL(image!).origin).toBe("https://hard-quiz.com");
-    expect(new URL(image!).pathname).toBe(`/og/posts/${article.slug}.png`);
+    expect(new URL(image!).pathname).toBe(article.social);
     await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute("content", image!);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
     const json = await structuredArticle(page);
     expect(json).toHaveLength(1);
-    expect(json[0]).toMatchObject({ headline: article.title, url: canonical, datePublished: article.date, dateModified: "2026-10-09", publisher: { name: "Hard Quiz" } });
+    expect(json[0]).toMatchObject({ headline: article.title, url: canonical, datePublished: article.date, dateModified: "2026-11-09", publisher: { name: "Hard Quiz" } });
     expect(json[0].author).toBeUndefined();
   });
 }
@@ -154,26 +154,29 @@ test("Back restores an unfragmented article's reading position after a related l
 });
 
 test("a configured origin agrees across generated article metadata, RSS and sitemap", () => {
-  const temp = mkdtempSync(path.join(tmpdir(), "hq-origin-"));
+  const sandbox = mkdtempSync(path.join(tmpdir(), "hq-origin-"));
+  const temp = path.join(sandbox, "frontend");
   const origin = "https://quiz.example.test";
   try {
-    mkdirSync(path.join(temp, "dist"));
+    mkdirSync(path.join(temp, "dist"), { recursive: true });
     copyFileSync(path.resolve("index.html"), path.join(temp, "dist/index.html"));
     copyFileSync(path.resolve("vercel.json"), path.join(temp, "vercel.json"));
     symlinkSync(path.resolve("src"), path.join(temp, "src"), "dir");
     symlinkSync(path.resolve("node_modules"), path.join(temp, "node_modules"), "dir");
+    symlinkSync(path.resolve("public"), path.join(temp, "public"), "dir");
+    symlinkSync(path.resolve("../docs"), path.join(sandbox, "docs"), "dir");
     execFileSync(process.execPath, [path.resolve("scripts/generate-seo.cjs"), "dist"], { cwd: temp, env: { ...process.env, VITE_SITE_URL: origin }, stdio: "pipe" });
     for (const article of articles) {
       const html = readFileSync(path.join(temp, "dist/blog/" + article.slug + ".html"), "utf8");
       expect(html).toContain('rel="canonical" href="' + origin + '/blog/' + article.slug + '"');
       expect(html).toContain('property="og:url" content="' + origin + '/blog/' + article.slug + '"');
-      expect(html).toContain('property="og:image" content="' + origin + '/og/posts/' + article.slug + '.png"');
+      expect(html).toContain('property="og:image" content="' + origin + article.social + '"');
       const structured = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1])).find(item => item["@type"] === "BlogPosting");
       expect(structured.publisher.url).toBe(origin);
       expect(structured.url).toBe(origin + "/blog/" + article.slug);
       for (const file of ["feed.xml", "sitemap.xml"]) expect(readFileSync(path.join(temp, "dist/" + file), "utf8")).toContain(origin + "/blog/" + article.slug);
     }
-  } finally { rmSync(temp, { recursive: true, force: true }); }
+  } finally { rmSync(sandbox, { recursive: true, force: true }); }
 });
 
 test("a failed image reserves its space, stops requests and resets on article navigation", async ({ page }) => {
@@ -197,7 +200,7 @@ test("a failed image reserves its space, stops requests and resets on article na
 
 test("failed comparison images preserve both ratios and still explain the example", async ({ page }) => {
   await mockQuizApi(page);
-  await page.route("**/composition-staging.webp", route => route.abort());
+  await page.route("**/scope-composition-station-illustration*.webp", route => route.abort());
   await page.goto(url(2));
   await expect(page.locator(".hq-frame-pair .hq-article-image-fallback")).toHaveCount(2);
   await expect(page.locator(".hq-frame-comparison figcaption")).toContainText("same scene");
@@ -314,7 +317,7 @@ test("generated articles are complete without JavaScript, preserve RSS URLs, and
     const redirect = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(url(index) + ".html"));
     expect(redirect?.status).toBe(301);
     const sitemap = readFileSync(path.resolve("dist/sitemap.xml"), "utf8");
-    expect(sitemap).toContain("<loc>https://hard-quiz.com" + url(index) + "</loc><lastmod>2026-10-09</lastmod>");
+    expect(sitemap).toContain("<loc>https://hard-quiz.com" + url(index) + "</loc><lastmod>2026-11-09</lastmod>");
     await expect(page.locator(".hq-article-sources a").first()).toBeVisible();
   }
   const response = await page.goto("/blog/not-a-real-article");
