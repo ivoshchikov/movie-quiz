@@ -120,12 +120,13 @@ Sources checked 8 November 2026:
 - [Privacy-policy URL requirements](https://support.google.com/adsense/answer/10961370?hl=en-GB)
 - [US state messages and GPP](https://support.google.com/adsense/answer/10961479?hl=en)
 
-## Prepared paused AdSense check — publication pending
+## Paused AdSense check — publication authorized
 
 The separate Worker path `/api/privacy/adsense-check` is prepared for an
 owner-approved integration test. It is not a change to the normal CMP loader
 and does not establish that European message delivery has been repaired.
-No runtime publication of this diagnostic has been approved yet.
+On 9 November the owner authorized the isolated static SDK load and publication
+of this document after checks. Confirm the actual Cloudflare release separately.
 
 This document does not load the React application, auth, games, first-party
 counters or GA. Google resources start only after its explicit Start button.
@@ -135,13 +136,21 @@ or pushes an ad request. The existing standalone privacy tag is included
 for comparison with the current integration. Only readiness/native status,
 message-gate counts and sanitized CSP origins/directives can be copied.
 
+`pauseRequestedBeforeSdk` records the readable value before script insertion.
+The native SDK replaces that queue with a write-only pause setter, so a null
+`pauseControlReadback` is not evidence that requests resumed. The report labels
+that setter explicitly. `sdkAdLikeElements` counts every matching element;
+`declaredAdSlotElements` counts only elements declaring `data-ad-slot`. The SDK
+can insert a hidden initialization element with no declared slot. Neither DOM
+count is proof of delivered advertising; native network verification is separate.
+
 Its separate response has no-store/noindex headers and a restrictive CSP:
 static AdSense/CMP scripts are allowed, while fetch/beacon, remote frames,
 remote images, workers and form submissions are blocked. These restrictions
 may also prevent native consent UI from rendering. An absent window here
 must not be treated as proof that unrestricted AdSense integration fails.
 Pausing ad requests still loads Google scripts; it is not equivalent to
-blocking the SDK, and publication requires the owner's separate approval.
+blocking the SDK. The owner's approval covers this diagnostic document only.
 The normal site's `security-policy.json` and static headers remain unchanged.
 
 Official references checked 9 November 2026:

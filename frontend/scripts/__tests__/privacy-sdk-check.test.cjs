@@ -44,7 +44,7 @@ test('check routing is exact, read-only, no-store and never reflects query input
   assert.equal((await request('/privacy')).headers.get('content-security-policy'), require('../../security-policy.json').contentSecurityPolicy);
 });
 
-async function isolatedPage(context, { failSdk = false } = {}) {
+async function isolatedPage(context, { failSdk = false, writeOnlyControl = false } = {}) {
   const transported = [], unexpected = [], errors = [];
   await context.routeWebSocket('**/*', socket => socket.close());
   await context.route('**/*', async route => {
@@ -55,6 +55,11 @@ async function isolatedPage(context, { failSdk = false } = {}) {
       if (failSdk) return route.abort('blockedbyclient');
       return route.fulfill({ contentType: 'text/javascript', headers: { 'access-control-allow-origin': '*' }, body: `
         window.__pauseAtSdkLoad=window.adsbygoogle.pauseAdRequests;
+        if (${writeOnlyControl}) {
+          window.adsbygoogle={};Object.defineProperty(window.adsbygoogle,'pauseAdRequests',{set:()=>{}});
+          const init=document.createElement('ins');init.className='adsbygoogle adsbygoogle-noablate';
+          init.setAttribute('data-ad-hi','true');init.style.display='none';document.body.append(init);
+        }
         fetch('https://googleads.g.doubleclick.net/pagead/ads?secret=not-copied').catch(()=>{});
         navigator.sendBeacon('https://www.google-analytics.com/g/collect?secret=not-copied','test');
         const img=new Image();img.src='https://example.test/pixel?secret=not-copied';
@@ -96,13 +101,15 @@ test('explicit start pauses before the SDK, permits messaging and blocks ad/meas
     const report = await read(page);
     assert.equal(await page.evaluate(() => window.__pauseAtSdkLoad), 1);
     assert.equal(await page.evaluate(() => window.__messageAllowed), true);
-    assert.equal(report.pauseAdRequests, 1);
+    assert.equal(report.pauseRequestedBeforeSdk, true);
+    assert.equal(report.pauseControlReadback, 1);
+    assert.equal(report.pauseControlIsWriteOnly, false);
     assert.equal(report.complete, true);
     assert.equal(report.apiReady, true);
     assert.equal(report.modeReady, false);
     assert.deepEqual(report.native, { cmpId: 300, cmpStatus: 'loaded', gdprApplies: true, eventStatus: null });
     assert.equal(report.messagingGateCalls, 1); assert.equal(report.messagingProceedCalls, 1);
-    assert.equal(report.advertisingSlots, 0); assert.equal(report.analyticsScriptElements, 0);
+    assert.equal(report.declaredAdSlotElements, 0); assert.equal(report.sdkAdLikeElements, 0); assert.equal(report.analyticsScriptElements, 0);
     assert.ok(report.blockedResources.some(x => x.directive === 'connect-src'));
     assert.ok(report.blockedResources.some(x => x.directive === 'img-src'));
     assert.ok(report.blockedResources.some(x => x.directive === 'frame-src'));
@@ -123,8 +130,24 @@ test('SDK load failure stays visible and never unpauses or loads the application
     await expect.poll(() => read(page)).toMatchObject({ sdkStatus: 'failed' });
     await page.clock.runFor(20500);
     const report = await read(page);
-    assert.equal(report.complete, true); assert.equal(report.sdkStatus, 'failed'); assert.equal(report.pauseAdRequests, 1);
-    assert.equal(report.advertisingSlots, 0); assert.equal(report.analyticsScriptElements, 0);
+    assert.equal(report.complete, true); assert.equal(report.sdkStatus, 'failed'); assert.equal(report.pauseRequestedBeforeSdk, true);
+    assert.equal(report.pauseControlReadback, 1); assert.equal(report.declaredAdSlotElements, 0); assert.equal(report.analyticsScriptElements, 0);
     assert.deepEqual(unexpected, []); assert.deepEqual(errors, []);
+  } finally { await context.close(); }
+});
+
+test('a write-only native pause API and hidden SDK init node are reported without inventing ad slots', async () => {
+  const context = await browser.newContext({ serviceWorkers: 'block' });
+  try {
+    const { page, unexpected, errors } = await isolatedPage(context, { writeOnlyControl: true });
+    await page.getByRole('button', { name: 'Start paused AdSense check' }).click();
+    await expect.poll(() => read(page)).toMatchObject({ sdkStatus: 'loaded', cmpTagStatus: 'loaded' });
+    await page.clock.runFor(20500);
+    const report = await read(page);
+    assert.equal(report.pauseRequestedBeforeSdk, true);
+    assert.equal(await page.evaluate(() => window.__pauseAtSdkLoad), 1);
+    assert.equal(report.pauseControlReadback, null); assert.equal(report.pauseControlIsWriteOnly, true);
+    assert.equal(report.sdkAdLikeElements, 1); assert.equal(report.declaredAdSlotElements, 0);
+    assert.equal(report.complete, true); assert.deepEqual(unexpected, []); assert.deepEqual(errors, []);
   } finally { await context.close(); }
 });

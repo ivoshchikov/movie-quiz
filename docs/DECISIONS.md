@@ -1,13 +1,15 @@
-## ADS-05 — Prepared paused SDK diagnostic (proposal, unpublished)
+## ADS-05 — Approve the separate paused SDK diagnostic
 
-9 November 2026. Prepare a separate opt-in Worker diagnostic using the official
+9 November 2026. The owner authorized a separate opt-in Worker diagnostic using the official
 AdSense tag with `pauseAdRequests=1` set before insertion and never resumed.
 Do not add ad slots, Auto ads activation, analytics, application data access or
 a site-wide policy exception. Only the diagnostic response can allow the
 static SDK scripts; all other site responses retain the advertising exclusion.
 Its restrictions can affect Google UI, and native regional delivery must be
-verified separately. Publishing this SDK-bearing document awaits an explicit
-owner decision; stage 11 preparation does not authorize ad serving or review.
+verified separately. The owner explicitly authorized the isolated live load of
+adsbygoogle.js/show_ads_impl.js with other ad/measurement requests intercepted,
+then publication of this document after checks. This does not authorize ad
+serving or submission for review.
 
 ## ADS-02 — Require permission before optional measurement
 

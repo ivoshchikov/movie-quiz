@@ -31,13 +31,18 @@ export function privacySdkCheck(request: Request, inheritedHeaders: Headers): Re
   const output=document.getElementById('result'),status=document.getElementById('status');
   const start=document.getElementById('start'),copy=document.getElementById('copy');
   const report={version:1,integration:'paused-adsense',started:false,complete:false,
-    sdkStatus:'not-started',cmpTagStatus:'not-started',apiReady:false,modeReady:false,
+    sdkStatus:'not-started',cmpTagStatus:'not-started',apiReady:false,modeReady:false,pauseRequestedBeforeSdk:false,
     native:null,messagingGateCalls:0,messagingProceedCalls:0,blockedResources:[]};
   let interval,finish;
-  const render=()=>{output.textContent=JSON.stringify({...report,
-    pauseAdRequests:window.adsbygoogle?.pauseAdRequests??null,
-    advertisingSlots:document.querySelectorAll('ins.adsbygoogle').length,
-    analyticsScriptElements:document.querySelectorAll('script[src*="googletagmanager.com/gtag/js"]').length},null,2);};
+  const render=()=>{
+    const pause=Object.getOwnPropertyDescriptor(window.adsbygoogle||{},'pauseAdRequests');
+    output.textContent=JSON.stringify({...report,
+      pauseControlReadback:window.adsbygoogle?.pauseAdRequests??null,
+      pauseControlIsWriteOnly:typeof pause?.set==='function'&&typeof pause.get!=='function',
+      declaredAdSlotElements:document.querySelectorAll('ins.adsbygoogle[data-ad-slot]').length,
+      sdkAdLikeElements:document.querySelectorAll('ins.adsbygoogle').length,
+      analyticsScriptElements:document.querySelectorAll('script[src*="googletagmanager.com/gtag/js"]').length},null,2);
+  };
   document.addEventListener('securitypolicyviolation',event=>{
     let origin;try{origin=new URL(event.blockedURI).origin;}catch{return;}
     const entry={directive:event.effectiveDirective,origin};
@@ -57,6 +62,7 @@ export function privacySdkCheck(request: Request, inheritedHeaders: Headers): Re
     // Set the documented pause BEFORE inserting any Google script. Never
     // resume it, create slots, or push an ad request, even after a consent choice.
     window.adsbygoogle=window.adsbygoogle||[];window.adsbygoogle.pauseAdRequests=1;
+    report.pauseRequestedBeforeSdk=window.adsbygoogle.pauseAdRequests===1;
     const fc=window.googlefc=window.googlefc||{callbackQueue:[]};
     fc.callbackQueue=fc.callbackQueue||[];
     fc.controlledMessagingFunction=message=>{report.messagingGateCalls++;message.proceed(true);report.messagingProceedCalls++;render();};
