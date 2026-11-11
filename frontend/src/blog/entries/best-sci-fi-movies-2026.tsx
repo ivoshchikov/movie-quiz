@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import ArticleImage from "../components/ArticleImage";
 import filmContent from "../components/filmContent";
 import type { BlogPost } from "../types";
+import ExternalLink from "../components/ExternalLink";
 
 const cover = "/blog-assets/best-sci-fi-movies-2026-cover.webp";
 const films = [
@@ -155,14 +156,14 @@ const post: BlogPost = {
         <tbody>{films.map(film => <tr key={film.id}>
           <th scope="row"><a href={`#${film.id}`}>{film.title}</a></th>
           <td>{film.mood}<span className="hq-release-note">{film.runtime}</span></td>
-          <td><a href={film.url}>{film.viewing}</a></td>
+          <td><ExternalLink href={film.url}>{film.viewing}</ExternalLink></td>
         </tr>)}</tbody>
       </table>
     </section>
 
     {films.map(film => <section className="hq-watchlist-entry" key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{film.title}</h2>
-      <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · US release {film.release} · {film.runtime} · <a href={film.url}>{film.viewing}</a></p>
+      <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · US release {film.release} · {film.runtime} · <ExternalLink href={film.url}>{film.viewing}</ExternalLink></p>
       {filmContent(`sci-fi-2026-${film.id}`, <>
         <p>{film.premise}</p>
         <p>{film.reason}</p>

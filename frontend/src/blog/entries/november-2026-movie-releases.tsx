@@ -4,6 +4,7 @@ import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import filmPoster from "../components/filmPoster";
 import { formatBlogDate } from "../presentation";
+import ExternalLink from "../components/ExternalLink";
 
 const coverPath = "/blog-assets/november-2026-movie-releases-cover.webp";
 const sources = {
@@ -60,7 +61,7 @@ const films: ReleaseFilm[] = [
     source: sources.godzilla, sourceLabel: "TOHO / Godzilla",
     body: <>
       <p>Takashi Yamazaki returns to the Shikishima family's story two years after <em>Godzilla Minus One</em>. The setting is 1949, with a fragile recovery threatened by another catastrophe. Ryunosuke Kamiki and Minami Hamabe return, giving the sequel a direct connection to the earlier film's characters.</p>
-      <p>If you have time for one preparatory watch this month, make it <em>Godzilla Minus One</em> (2023). For booking purposes, there are two dates to distinguish: <a href={sources.godzillaEarly}>TOHO and GKIDS confirm IMAX early-access screenings on November 3</a>, followed by the wide release in premium and standard formats on November 6.</p>
+      <p>If you have time for one preparatory watch this month, make it <em>Godzilla Minus One</em> (2023). For booking purposes, there are two dates to distinguish: <ExternalLink href={sources.godzillaEarly}>TOHO and GKIDS confirm IMAX early-access screenings on November 3</ExternalLink>, followed by the wide release in premium and standard formats on November 6.</p>
     </>,
   },
   {
@@ -92,7 +93,7 @@ const films: ReleaseFilm[] = [
     source: sources.bank, sourceLabel: "Amazon MGM Studios' official trailer",
     body: <>
       <p>A bank-robbing crew broadcasts its heists and becomes a social-media phenomenon. That visibility also puts the robbers in the sights of an FBI agent and a software engineer. David Leitch directs, with Nicholas Hoult, Zoë Kravitz and Anna Sawai among the cast.</p>
-      <p>The crew's appetite for an audience is the complication to watch: every new viewer is also another witness. The wide opening remains November 13. <a href={sources.bankEarly}>Harkins also lists an early-access screening on November 11</a>; check participating locations and showtimes before booking.</p>
+      <p>The crew's appetite for an audience is the complication to watch: every new viewer is also another witness. The wide opening remains November 13. <ExternalLink href={sources.bankEarly}>Harkins also lists an early-access screening on November 11</ExternalLink>; check participating locations and showtimes before booking.</p>
     </>,
   },
   {
@@ -103,7 +104,7 @@ const films: ReleaseFilm[] = [
     source: sources.paperTiger, sourceLabel: "NEON",
     body: <>
       <p>Two brothers enter a scheme that promises more than it can safely deliver. Their involvement with the Russian mafia then puts pressure on the family ties they rely on. James Gray directs Adam Driver, Scarlett Johansson and Miles Teller in a story about the point where a financial gamble starts to threaten a family.</p>
-      <p><a href={sources.paperTiger}>NEON's current film page confirms a November 13 theatrical opening</a>. <a href={sources.paperTigerExpansion}>TheWrap reported a November 20 nationwide expansion</a> when the release was announced in June. At our October 31 check, Paper Tiger was absent from Cinema United's wide-release calendar, and NEON's page did not separately confirm that expansion. November 20 remains a reported rollout date, not a guarantee of screenings in your city; check local showtimes. The calendar's omission alone does not establish a delay.</p>
+      <p><ExternalLink href={sources.paperTiger}>NEON's current film page confirms a November 13 theatrical opening</ExternalLink>. <ExternalLink href={sources.paperTigerExpansion}>TheWrap reported a November 20 nationwide expansion</ExternalLink> when the release was announced in June. At our October 31 check, Paper Tiger was absent from Cinema United's wide-release calendar, and NEON's page did not separately confirm that expansion. November 20 remains a reported rollout date, not a guarantee of screenings in your city; check local showtimes. The calendar's omission alone does not establish a delay.</p>
     </>,
   },
   {
@@ -112,7 +113,7 @@ const films: ReleaseFilm[] = [
     source: sources.hunger, sourceLabel: "Stillking Film",
     body: <>
       <p>Haymitch Abernathy takes the central role as the series returns to Panem 24 years before <em>The Hunger Games</em>. Joseph Zada plays the younger Haymitch, and the story begins with the reaping for the 50th Games, the Second Quarter Quell. Francis Lawrence directs the adaptation of Suzanne Collins's novel.</p>
-      <p>The original <em>The Hunger Games</em> (2012) is a useful refresher if you want to reconnect with Panem and the adult Haymitch before this earlier chapter. Reading <em>Sunrise on the Reaping</em> first will reveal its story, so save the novel for afterward if discovering the events on screen matters more to you. <a href={sources.hungerDate}>Lionsgate's announced North American release date is November 20</a>.</p>
+      <p>The original <em>The Hunger Games</em> (2012) is a useful refresher if you want to reconnect with Panem and the adult Haymitch before this earlier chapter. Reading <em>Sunrise on the Reaping</em> first will reveal its story, so save the novel for afterward if discovering the events on screen matters more to you. <ExternalLink href={sources.hungerDate}>Lionsgate's announced North American release date is November 20</ExternalLink>.</p>
     </>,
   },
   {
@@ -123,7 +124,7 @@ const films: ReleaseFilm[] = [
     source: sources.rocky, sourceLabel: "Amazon MGM Studios / About Amazon",
     body: <>
       <p>Anthony Ippolito plays a young Sylvester Stallone trying to get <em>Rocky</em> made with himself in the lead. The drama lies in that condition: getting the screenplay onto a screen is only part of the ambition. Peter Farrelly directs this dramatization of the struggle behind the 1976 film.</p>
-      <p><a href={sources.rocky}>Amazon confirms a select-theater opening on November 6</a>, while <a href={sources.calendar}>Cinema United lists the wide opening on November 20</a>. Watching <em>Rocky</em> beforehand gives you the finished film as a point of comparison. There is no need to work through every subsequent boxing sequel to follow this production story.</p>
+      <p><ExternalLink href={sources.rocky}>Amazon confirms a select-theater opening on November 6</ExternalLink>, while <ExternalLink href={sources.calendar}>Cinema United lists the wide opening on November 20</ExternalLink>. Watching <em>Rocky</em> beforehand gives you the finished film as a point of comparison. There is no need to work through every subsequent boxing sequel to follow this production story.</p>
     </>,
   },
   {
@@ -133,7 +134,7 @@ const films: ReleaseFilm[] = [
     source: sources.hexed, sourceLabel: "Disney",
     body: <>
       <p>Teenager Billie Doe discovers magical abilities that send her from suburbia into Hexe, a realm of witches. Her cautious mother, Alice, comes along, making the mother-daughter relationship central to the adventure. Hailee Steinfeld and Rashida Jones voice Billie and Alice; Jodie Foster voices Queen Celeste.</p>
-      <p>This original Disney fantasy opens on the Wednesday before Thanksgiving. It is an option for a group looking for a new animated world to explore without franchise preparation. Disney now lists <em>Hexed</em> as <strong>PG</strong> on its <a href={sources.hexed}>official US film page</a>. Check the detailed content guidance before choosing it for younger children.</p>
+      <p>This original Disney fantasy opens on the Wednesday before Thanksgiving. It is an option for a group looking for a new animated world to explore without franchise preparation. Disney now lists <em>Hexed</em> as <strong>PG</strong> on its <ExternalLink href={sources.hexed}>official US film page</ExternalLink>. Check the detailed content guidance before choosing it for younger children.</p>
     </>,
   },
   {
@@ -142,7 +143,7 @@ const films: ReleaseFilm[] = [
     cast: "Ben Stiller, Robert De Niro, Ariana Grande",
     source: sources.focker, sourceLabel: "Universal Pictures",
     body: <>
-      <p>The <em>Meet the Parents</em> family gains a new prospective in-law. Ariana Grande plays Olivia, who is involved with Greg Focker's son Henry, bringing Ben Stiller and Robert De Niro back into another round of family scrutiny. <a href={sources.fockerTrailer}>The first trailer's lie-detector sequence</a> makes the connection to the series' old anxieties plain.</p>
+      <p>The <em>Meet the Parents</em> family gains a new prospective in-law. Ariana Grande plays Olivia, who is involved with Greg Focker's son Henry, bringing Ben Stiller and Robert De Niro back into another round of family scrutiny. <ExternalLink href={sources.fockerTrailer}>The first trailer's lie-detector sequence</ExternalLink> makes the connection to the series' old anxieties plain.</p>
       <p>John Hamburg, who co-wrote the previous three films, directs this chapter. If your Thanksgiving group wants returning characters and awkward-family comedy, this is the relevant entry in the calendar. <em>Meet the Parents</em> (2000) is the starting point for the Greg-and-Jack relationship. Universal's US opening is <strong>November 25</strong>.</p>
     </>,
   },
@@ -216,7 +217,7 @@ const post: BlogPost = {
       </dl>
       {filmPoster(`november-2026-${film.id}`)}
       {film.body}
-      <p className="hq-watchlist-facts"><a href={film.source}>{film.sourceLabel}: film details</a></p>
+      <p className="hq-watchlist-facts"><ExternalLink href={film.source}>{film.sourceLabel}: film details</ExternalLink></p>
     </section>)}
 
     <h2 id="thanksgiving-movies" tabIndex={-1}>What should you see over Thanksgiving?</h2>
@@ -235,7 +236,7 @@ const post: BlogPost = {
     <section className="hq-article-faq" aria-labelledby="release-questions">
       <h2 id="release-questions" tabIndex={-1}>Questions about November's releases</h2>
       <h3>Is Narnia still coming out in November 2026?</h3>
-      <p>No. <a href={sources.narnia}>Netflix's current announcement</a> gives <strong>February 12, 2027</strong> for the theatrical release of Greta Gerwig's <em>Narnia: The Magician's Nephew</em>, followed by Netflix on April 2, 2027. Older November 2026 listings are out of date.</p>
+      <p>No. <ExternalLink href={sources.narnia}>Netflix's current announcement</ExternalLink> gives <strong>February 12, 2027</strong> for the theatrical release of Greta Gerwig's <em>Narnia: The Magician's Nephew</em>, followed by Netflix on April 2, 2027. Older November 2026 listings are out of date.</p>
       <h3>Why do Paper Tiger and I Play Rocky have more than one date?</h3>
       <p><em>I Play Rocky</em> starts in selected theaters on November 6, according to Amazon, and Cinema United lists its wide opening on November 20. NEON confirms <em>Paper Tiger</em> for November 13; its November 20 expansion comes from TheWrap's announcement report and is not separately confirmed on NEON's current page. These dates describe different stages of a rollout, so check which one applies to your city.</p>
       <h3>Which movies open during Thanksgiving week?</h3>

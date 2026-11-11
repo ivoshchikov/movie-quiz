@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import filmPoster from "../components/filmPoster";
+import ExternalLink from "../components/ExternalLink";
 
 const coverPath = "/blog-assets/completed-miniseries-to-watch-cover.webp";
 const sources = {
@@ -50,7 +51,7 @@ function viewingTime(minutes: number[]) {
 
 function seriesFacts(id: string) {
   const pick = picks.find(item => item.id === id)!;
-  return <p className="hq-watchlist-facts"><strong>{pick.year}</strong> · {pick.minutes.length} episodes · {viewingTime(pick.minutes)} · <a href={pick.viewing}>{pick.service}: viewing page</a></p>;
+  return <p className="hq-watchlist-facts"><strong>{pick.year}</strong> · {pick.minutes.length} episodes · {viewingTime(pick.minutes)} · <ExternalLink href={pick.viewing}>{pick.service}: viewing page</ExternalLink></p>;
 }
 
 function seriesStill(id: string) {
@@ -124,7 +125,7 @@ const post: BlogPost = {
         <tbody>{picks.map(pick => <tr key={pick.id}>
           <th scope="row"><a href={"#" + pick.id}>{pick.title}</a><span className="hq-release-note">{pick.mood}</span></th>
           <td>{pick.minutes.length} episodes<span className="hq-release-note">{viewingTime(pick.minutes)}</span></td>
-          <td><a href={pick.viewing}>{pick.service}</a></td>
+          <td><ExternalLink href={pick.viewing}>{pick.service}</ExternalLink></td>
         </tr>)}</tbody>
       </table>
       <p>The services shown are selected subscription routes, not an exhaustive list of rental or purchase offers. HBO Max entries link to US availability listings; Apple TV here means its subscription, not every title sold in the Apple TV Store. Confirm the title and your plan before subscribing.</p>

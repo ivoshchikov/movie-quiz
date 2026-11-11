@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import filmContent from "../components/filmContent";
+import ExternalLink from "../components/ExternalLink";
 
 const cover = "/blog-assets/sci-fi-mystery-movies-cover.webp";
 const catalog = (slug: string) => `https://www.justwatch.com/us/movie/${slug}`;
@@ -141,7 +142,7 @@ const post: BlogPost = {
         <thead><tr><th scope="col">Film and puzzle</th><th scope="col">US viewing</th></tr></thead>
         <tbody>{films.map(film => <tr key={film.id}>
           <th scope="row"><a href={`#${film.id}`}>{film.title}</a><span className="hq-release-note">{film.puzzle}<br />{film.runtime}</span></th>
-          <td><a href={film.url}>{film.viewing}</a></td>
+          <td><ExternalLink href={film.url}>{film.viewing}</ExternalLink></td>
         </tr>)}</tbody>
       </table>
     </section>
@@ -149,7 +150,7 @@ const post: BlogPost = {
 
     {films.map((film, index) => <section className="hq-watchlist-entry" key={film.id} aria-labelledby={film.id}>
       <h2 id={film.id} tabIndex={-1}>{index + 1}. {film.title} ({film.year})</h2>
-      <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · Directed by {film.director} · {film.runtime} · <a href={film.url}>{film.viewing}</a></p>
+      <p className="hq-watchlist-facts"><strong>{film.angle}</strong> · Directed by {film.director} · {film.runtime} · <ExternalLink href={film.url}>{film.viewing}</ExternalLink></p>
       {filmContent(`sci-fi-mystery-${film.id}`, <>
         <p>{film.premise}</p>
         <p>{film.reason}</p>

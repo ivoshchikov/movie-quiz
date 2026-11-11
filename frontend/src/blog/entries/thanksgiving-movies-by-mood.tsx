@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import artwork from "../thanksgivingArtwork.json";
+import ExternalLink from "../components/ExternalLink";
 
 const cover = "/blog-assets/thanksgiving-movies-by-mood-cover.webp";
 const films = [
@@ -56,19 +57,19 @@ function renderFilmEntry(film: typeof films[number]) {
     <p className="hq-watchlist-facts"><strong>{film.mood}</strong> · Directed by {film.director} · {film.runtime} · US rating: {film.rating}</p>
     <div className="hq-film-layout">
       <figure className="hq-store-poster">
-        <a href={image.storeUrl} aria-label={`View ${film.title} in the US Apple TV Store`}>
+        <ExternalLink href={image.storeUrl} aria-label={`View ${film.title} in the US Apple TV Store`}>
           <ArticleImage src={image.src} width={image.width} height={image.height} sizes="(max-width: 600px) 180px, 190px" alt={image.alt} />
-        </a>
+        </ExternalLink>
         <figcaption>Promotional store poster via Apple iTunes. Film artwork © its respective rights holders.</figcaption>
-        <a className="hq-store-badge" href={image.storeUrl} aria-label={`Get ${film.title} on iTunes — US store`}>
+        <ExternalLink className="hq-store-badge" href={image.storeUrl} aria-label={`Get ${film.title} on iTunes — US store`}>
           <img src="/blog-assets/itunes-store-get-badge.svg" width={140} height={41} alt="Get it on iTunes" loading="lazy" decoding="async" />
-        </a>
+        </ExternalLink>
       </figure>
       <div className="hq-film-copy">
         <p>{film.premise}</p>
         <p>{film.reason}</p>
         <p><strong>Tone note:</strong> {film.caution}</p>
-        <p><a href={image.storeUrl}>Check US rental or purchase options for {film.title}</a>.</p>
+        <p><ExternalLink href={image.storeUrl}>Check US rental or purchase options for {film.title}</ExternalLink>.</p>
       </div>
     </div>
   </section>;

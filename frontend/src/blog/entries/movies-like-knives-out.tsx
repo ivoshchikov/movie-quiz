@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import filmContent from "../components/filmContent";
+import ExternalLink from "../components/ExternalLink";
 
 const coverPath = "/blog-assets/movies-like-knives-out-cover.webp";
 const sources = {
@@ -99,7 +100,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Writer-director:</strong> Rian Johnson · <strong>Key cast:</strong> Daniel Craig, Edward Norton, Janelle Monáe</p>
       {filmContent("knives-out-glass-onion", <>
         <p>A tech billionaire brings his friends to a private Greek island for a reunion and a murder-mystery game. Blanc joins a group whose public confidence rests on a much less comfortable web of personal dependencies.</p>
-        <p>The familiar pleasure is the distance between what people say about themselves and what their behavior reveals. The change is in volume: this is a brighter, more conspicuous world of celebrity, influence and ostentatious wealth. Johnson describes it as more of a satire and a mystery farce in <a href={sources.glass}>Netflix's film guide</a>. Choose it for the detective's return and the ensemble's comic friction; expect a different social circle from the Thrombey family, rather than another inheritance dispute in the same house.</p>
+        <p>The familiar pleasure is the distance between what people say about themselves and what their behavior reveals. The change is in volume: this is a brighter, more conspicuous world of celebrity, influence and ostentatious wealth. Johnson describes it as more of a satire and a mystery farce in <ExternalLink href={sources.glass}>Netflix's film guide</ExternalLink>. Choose it for the detective's return and the ensemble's comic friction; expect a different social circle from the Thrombey family, rather than another inheritance dispute in the same house.</p>
       </>)}
     </section>
 
@@ -108,7 +109,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Writer-director:</strong> Rian Johnson · <strong>Key cast:</strong> Daniel Craig, Josh O'Connor, Josh Brolin, Glenn Close</p>
       {filmContent("knives-out-wake-up-dead-man", <>
         <p>Blanc teams up with a young priest to investigate an apparently impossible crime at a small-town church. The community has a history, a hierarchy and plenty of reasons to resist an outsider's questions.</p>
-        <p>This is the third Blanc film, already released in 2025. The church setting shifts the social pressure toward faith, authority and belonging, giving the series a more somber atmosphere. It is the most direct choice here if you want another Johnson mystery but would welcome a change from <em>Glass Onion</em>'s holiday glare. Leave room for a darker mood alongside the detective's humor. <a href={sources.wake}>Netflix's official guide</a> confirms the premise and viewing page; avoid the separate ending explainers until afterward.</p>
+        <p>This is the third Blanc film, already released in 2025. The church setting shifts the social pressure toward faith, authority and belonging, giving the series a more somber atmosphere. It is the most direct choice here if you want another Johnson mystery but would welcome a change from <em>Glass Onion</em>'s holiday glare. Leave room for a darker mood alongside the detective's humor. <ExternalLink href={sources.wake}>Netflix's official guide</ExternalLink> confirms the premise and viewing page; avoid the separate ending explainers until afterward.</p>
       </>)}
     </section>
 
@@ -118,7 +119,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Jonathan Lynn · <strong>Key cast:</strong> Tim Curry, Madeline Kahn, Eileen Brennan</p>
       {filmContent("knives-out-clue", <>
         <p>A group of guests gathers in a mansion, each carrying an alias and a reason to be nervous. A butler attempts to keep the evening organized. The evening has other ideas.</p>
-        <p><em>Clue</em> is the pick when the interruptions, accusations and bad behavior matter as much as solving the crime. Its board-game origins provide instantly legible pieces: rooms, weapons, suspects and a house that is increasingly difficult to manage. The comedy is broader than <em>Knives Out</em>'s, with Curry's butler at the center of the commotion. Put it on for a lively group watch, especially when nobody wants a solemn procedural. For a restrained investigation or a sympathetic emotional anchor, start elsewhere on this list. <a href={sources.clue}>Paramount's page</a> identifies the original 1985 film.</p>
+        <p><em>Clue</em> is the pick when the interruptions, accusations and bad behavior matter as much as solving the crime. Its board-game origins provide instantly legible pieces: rooms, weapons, suspects and a house that is increasingly difficult to manage. The comedy is broader than <em>Knives Out</em>'s, with Curry's butler at the center of the commotion. Put it on for a lively group watch, especially when nobody wants a solemn procedural. For a restrained investigation or a sympathetic emotional anchor, start elsewhere on this list. <ExternalLink href={sources.clue}>Paramount's page</ExternalLink> identifies the original 1985 film.</p>
       </>)}
     </section>
 
@@ -127,7 +128,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Tom George · <strong>Key cast:</strong> Sam Rockwell, Saoirse Ronan, Adrien Brody, David Oyelowo</p>
       {filmContent("knives-out-see-how-they-run", <>
         <p>A murder interrupts plans to turn a successful West End play into a film in 1950s London. A weary inspector and an enthusiastic young constable investigate a theatrical world whose inhabitants are unusually familiar with murder-mystery conventions.</p>
-        <p>This is a useful follow-up for viewers who enjoyed the original's affection for the genre. The setting makes suspicion feel like part of show business: people are performing even when they are supposed to be helping the police. Choose it for a lighter detective partnership and the fun of a mystery discussing its own habits. It is a gentler option than the writer-versus-writer games further down the page. Go in for comic company and theatrical detail, rather than expecting Johnson's particular bite about contemporary money. The <a href={sources.run}>studio synopsis</a> gives the premise without requiring a recap.</p>
+        <p>This is a useful follow-up for viewers who enjoyed the original's affection for the genre. The setting makes suspicion feel like part of show business: people are performing even when they are supposed to be helping the police. Choose it for a lighter detective partnership and the fun of a mystery discussing its own habits. It is a gentler option than the writer-versus-writer games further down the page. Go in for comic company and theatrical detail, rather than expecting Johnson's particular bite about contemporary money. The <ExternalLink href={sources.run}>studio synopsis</ExternalLink> gives the premise without requiring a recap.</p>
       </>)}
     </section>
 
@@ -137,7 +138,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Herbert Ross · <strong>Writers:</strong> Stephen Sondheim, Anthony Perkins · <strong>Key cast:</strong> James Coburn, Dyan Cannon, James Mason</p>
       {filmContent("knives-out-the-last-of-sheila", <>
         <p>A film producer invites six friends onto his yacht for a cruise built around a game. His late wife's death hangs over the gathering, and the entertainment soon begins to look like a method of exposing people.</p>
-        <p>This recommendation has a specific connection to the Blanc films: <a href={sources.inspiration}>Johnson identified it as an inspiration for <em>Glass Onion</em></a>. Both premises organize a social group around a powerful host who controls the invitation and the activity. Choose <em>Sheila</em> if the rules, clues and shifting interpretations are what keep you leaning forward. The holiday setting comes with a harsher social atmosphere than a comfortable evening of detective banter. Give the game your attention, and save detailed cast discussions and plot summaries for afterward.</p>
+        <p>This recommendation has a specific connection to the Blanc films: <ExternalLink href={sources.inspiration}>Johnson identified it as an inspiration for <em>Glass Onion</em></ExternalLink>. Both premises organize a social group around a powerful host who controls the invitation and the activity. Choose <em>Sheila</em> if the rules, clues and shifting interpretations are what keep you leaning forward. The holiday setting comes with a harsher social atmosphere than a comfortable evening of detective banter. Give the game your attention, and save detailed cast discussions and plot summaries for afterward.</p>
       </>)}
     </section>
 
@@ -147,7 +148,7 @@ const post: BlogPost = {
       {filmContent("knives-out-gosford-park", <>
         <p>A country-house shooting party brings guests and servants together for a weekend that becomes a murder investigation. The people serving the dinner hear things the people eating it would prefer to keep private.</p>
         <p>If the Thrombeys' assumptions about wealth and work interested you more than the mechanics of the crime, make this your first alternative. The household has two overlapping social worlds, and understanding a person's place in them matters. That makes it worth following an exchange even before you know whether it contains a clue.</p>
-        <p>Allow for an ensemble drama's pace and density. The attraction is the accumulation of relationships, obligations and small acts of condescension, alongside the mystery. It asks for more attention to the room than the rapid comic machinery of <em>Clue</em>. <a href={sources.gosford}>Focus Features</a> confirms the country-house premise and the substantial ensemble.</p>
+        <p>Allow for an ensemble drama's pace and density. The attraction is the accumulation of relationships, obligations and small acts of condescension, alongside the mystery. It asks for more attention to the room than the rapid comic machinery of <em>Clue</em>. <ExternalLink href={sources.gosford}>Focus Features</ExternalLink> confirms the country-house premise and the substantial ensemble.</p>
       </>)}
     </section>
 
@@ -158,7 +159,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Sidney Lumet · <strong>Key cast:</strong> Albert Finney, Lauren Bacall, Ingrid Bergman, Sean Connery</p>
       {filmContent("knives-out-murder-on-the-orient-express", <>
         <p>A train becomes stranded in snow. A passenger has been murdered, and Hercule Poirot must question the people sharing the journey. The setting puts practical limits on the investigation: the relevant people are close by, and their accounts need to fit the same confined space.</p>
-        <p>Choose this for the formal pleasure of an ensemble mystery: interviews, performances, details and a detective steadily arranging what he has heard. It makes a good next step if <em>Knives Out</em> left you wanting more of the tradition Johnson plays with. Expect a measured, star-filled period film, with less contemporary satire. This entry refers specifically to <a href={sources.orient}>the 1974 Finney adaptation</a>; check the year when opening a rental listing.</p>
+        <p>Choose this for the formal pleasure of an ensemble mystery: interviews, performances, details and a detective steadily arranging what he has heard. It makes a good next step if <em>Knives Out</em> left you wanting more of the tradition Johnson plays with. Expect a measured, star-filled period film, with less contemporary satire. This entry refers specifically to <ExternalLink href={sources.orient}>the 1974 Finney adaptation</ExternalLink>; check the year when opening a rental listing.</p>
       </>)}
     </section>
 
@@ -167,7 +168,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> John Guillermin · <strong>Key cast:</strong> Peter Ustinov, Mia Farrow, Bette Davis, Maggie Smith, Angela Lansbury</p>
       {filmContent("knives-out-death-on-the-nile", <>
         <p>Poirot is holidaying on a Nile steamer when an heiress is killed. The travelers' private relationships become his business, and an expensive trip turns into an investigation among people who cannot simply disappear into a crowd.</p>
-        <p>This is the choice for viewers who like a mystery to offer scenery, costumes and personalities before it closes the trap. Ustinov's Poirot provides the recurring detective, while the passengers supply a new arrangement of motives and grievances. Settle in for a leisurely period mystery; it takes a longer route to its destination than <em>See How They Run</em>. The recommended film is <a href={sources.nile}>the 1978 production</a>, rather than the later Kenneth Branagh version.</p>
+        <p>This is the choice for viewers who like a mystery to offer scenery, costumes and personalities before it closes the trap. Ustinov's Poirot provides the recurring detective, while the passengers supply a new arrangement of motives and grievances. Settle in for a leisurely period mystery; it takes a longer route to its destination than <em>See How They Run</em>. The recommended film is <ExternalLink href={sources.nile}>the 1978 production</ExternalLink>, rather than the later Kenneth Branagh version.</p>
       </>)}
     </section>
 
@@ -179,7 +180,7 @@ const post: BlogPost = {
       {filmContent("knives-out-sleuth", <>
         <p>A successful mystery writer invites his wife's lover to his country home. Their conversation becomes a contest in which hospitality, class and the pleasure of having an audience are all weapons.</p>
         <p>Where <em>Knives Out</em> spreads suspicion across a household, <em>Sleuth</em> concentrates attention on a duel. Its appeal lies in watching men try to control the situation by controlling the story. The mood is more caustic than cozy; pick it for performance and manipulation, rather than a lovable investigator guiding you through the case.</p>
-        <p>Look for <a href={sources.sleuth}>the 1972 Olivier–Caine film</a>. The 2007 adaptation also stars Caine, in a different role, so his name alone is not enough to identify the right version. US digital availability was not confirmed in our viewing check; this may be a disc or library pick for another evening.</p>
+        <p>Look for <ExternalLink href={sources.sleuth}>the 1972 Olivier–Caine film</ExternalLink>. The 2007 adaptation also stars Caine, in a different role, so his name alone is not enough to identify the right version. US digital availability was not confirmed in our viewing check; this may be a disc or library pick for another evening.</p>
       </>)}
     </section>
 
@@ -188,7 +189,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Sidney Lumet · <strong>Based on:</strong> Ira Levin's play · <strong>Key cast:</strong> Michael Caine, Christopher Reeve, Dyan Cannon</p>
       {filmContent("knives-out-deathtrap", <>
         <p>A struggling playwright sees a promising script by a younger writer. Professional envy and the possibility of a comeback turn an ordinary invitation into a very uncomfortable proposition.</p>
-        <p>The match is the pleasure of watching people think about plots while becoming caught up in one. Caine and Reeve make a useful change from the detective-and-suspects arrangement, with the theatrical setting keeping attention on words, timing and intention. Roger Ebert's <a href={sources.deathtrapReview}>contemporary review</a> singled out the performers and witty dialogue; the review itself is best saved for after viewing.</p>
+        <p>The match is the pleasure of watching people think about plots while becoming caught up in one. Caine and Reeve make a useful change from the detective-and-suspects arrangement, with the theatrical setting keeping attention on words, timing and intention. Roger Ebert's <ExternalLink href={sources.deathtrapReview}>contemporary review</ExternalLink> singled out the performers and witty dialogue; the review itself is best saved for after viewing.</p>
         <p>Choose it for dark comedy and a tightly contained encounter. As with <em>Sleuth</em>, the people doing the scheming are the main attraction. Reading a longer synopsis beforehand would spend part of what you came to enjoy.</p>
       </>)}
     </section>
@@ -207,16 +208,16 @@ const post: BlogPost = {
         <caption>Viewing routes and the exact versions recommended in this guide</caption>
         <thead><tr><th scope="col">Film</th><th scope="col">Where to check</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Glass Onion (2022)</th><td><a href={sources.glass}>Netflix — official guide and watch link</a></td></tr>
-          <tr><th scope="row">Wake Up Dead Man (2025)</th><td><a href={sources.wake}>Netflix — official guide and watch link</a></td></tr>
-          <tr><th scope="row">Clue (1985)</th><td><a href={sources.clue}>Paramount — digital viewing links</a></td></tr>
-          <tr><th scope="row">See How They Run (2022)</th><td><a href={sources.run}>Studio — Hulu and digital options</a></td></tr>
-          <tr><th scope="row">The Last of Sheila (1973)</th><td><a href={sources.sheila}>Apple TV — US title listing</a></td></tr>
-          <tr><th scope="row">Gosford Park (2001)</th><td><a href={sources.gosford}>Focus Features — Watch at Home page</a></td></tr>
-          <tr><th scope="row">Murder on the Orient Express (1974)</th><td><a href="https://tv.apple.com/us/movie/murder-on-the-orient-express/umc.cmc.3ln4aukghc5sgih8inn2xbf90">Apple TV — Albert Finney version</a></td></tr>
-          <tr><th scope="row">Death on the Nile (1978)</th><td><a href="https://tv.apple.com/us/movie/death-on-the-nile/umc.cmc.6mv4ux3hvdswdaga71gvf8vzs">Apple TV — Peter Ustinov version</a></td></tr>
-          <tr><th scope="row">Sleuth (1972)</th><td>No US digital route confirmed. <a href={sources.sleuthViewing}>JustWatch US — current disc listings</a> Check the edition and playback region before buying.</td></tr>
-          <tr><th scope="row">Deathtrap (1982)</th><td><a href={sources.deathtrap}>Apple TV — US title listing</a></td></tr>
+          <tr><th scope="row">Glass Onion (2022)</th><td><ExternalLink href={sources.glass}>Netflix — official guide and watch link</ExternalLink></td></tr>
+          <tr><th scope="row">Wake Up Dead Man (2025)</th><td><ExternalLink href={sources.wake}>Netflix — official guide and watch link</ExternalLink></td></tr>
+          <tr><th scope="row">Clue (1985)</th><td><ExternalLink href={sources.clue}>Paramount — digital viewing links</ExternalLink></td></tr>
+          <tr><th scope="row">See How They Run (2022)</th><td><ExternalLink href={sources.run}>Studio — Hulu and digital options</ExternalLink></td></tr>
+          <tr><th scope="row">The Last of Sheila (1973)</th><td><ExternalLink href={sources.sheila}>Apple TV — US title listing</ExternalLink></td></tr>
+          <tr><th scope="row">Gosford Park (2001)</th><td><ExternalLink href={sources.gosford}>Focus Features — Watch at Home page</ExternalLink></td></tr>
+          <tr><th scope="row">Murder on the Orient Express (1974)</th><td><ExternalLink href="https://tv.apple.com/us/movie/murder-on-the-orient-express/umc.cmc.3ln4aukghc5sgih8inn2xbf90">Apple TV — Albert Finney version</ExternalLink></td></tr>
+          <tr><th scope="row">Death on the Nile (1978)</th><td><ExternalLink href="https://tv.apple.com/us/movie/death-on-the-nile/umc.cmc.6mv4ux3hvdswdaga71gvf8vzs">Apple TV — Peter Ustinov version</ExternalLink></td></tr>
+          <tr><th scope="row">Sleuth (1972)</th><td>No US digital route confirmed. <ExternalLink href={sources.sleuthViewing}>JustWatch US — current disc listings</ExternalLink> Check the edition and playback region before buying.</td></tr>
+          <tr><th scope="row">Deathtrap (1982)</th><td><ExternalLink href={sources.deathtrap}>Apple TV — US title listing</ExternalLink></td></tr>
         </tbody>
       </table>
     </section>

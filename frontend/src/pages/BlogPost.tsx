@@ -6,6 +6,7 @@ import { articleJsonLd, articleMetadata, blogReturnUrl, blogTopicUrl, formatBlog
 import "../blog-article.css";
 import NotFound from "../components/NotFound";
 import { articleToQuiz } from "../analytics/attempts";
+import ExternalLink from "../blog/components/ExternalLink";
 
 export default function BlogPostPage() {
   const { slug = "" } = useParams();
@@ -47,7 +48,7 @@ export default function BlogPostPage() {
       {!!post.sources?.length && <section className="hq-article-sources" aria-labelledby="sources">
         <h2 id="sources" tabIndex={-1}>Sources</h2>
         <p>Film references, reviews and technical sources used for this article.</p>
-        <ul>{post.sources.map(source => <li key={source.url}><a href={source.url}>{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
+        <ul>{post.sources.map(source => <li key={source.url}><ExternalLink href={source.url}>{source.label}<span aria-hidden="true"> ↗</span></ExternalLink></li>)}</ul>
       </section>}
       {!!tags.length && <div className="hq-article-tags" aria-label="Article tags">{tags.map(tag => <span key={tag}>{tag}</span>)}</div>}
       {!!others.length && <section className="hq-article-more" aria-labelledby="more-articles">

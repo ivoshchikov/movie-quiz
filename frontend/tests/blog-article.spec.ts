@@ -22,6 +22,47 @@ async function structuredArticle(page: Page) {
   return page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || "{}")).filter(item => item["@type"] === "BlogPosting"));
 }
 
+test("every article opens off-site links in a new tab", async ({ page }) => {
+  test.setTimeout(60_000);
+  await mockQuizApi(page);
+  await page.goto("/blog");
+  const cards = page.locator(".hq-blog-card-link");
+  await expect(cards.first()).toBeAttached();
+  const urls = await cards.evaluateAll(elements => elements.map(element => (element as HTMLAnchorElement).href));
+
+  for (const articleUrl of urls) {
+    await page.goto(articleUrl);
+    const article = page.locator(".hq-article");
+    await expect(article).toBeAttached();
+    const incorrect = await article.locator("a[href]").evaluateAll(elements => {
+      const siteHosts = new Set([location.hostname, "hard-quiz.com", "www.hard-quiz.com"]);
+      return (elements as HTMLAnchorElement[]).filter(link => {
+        const destination = new URL(link.href);
+        const offSite = ["http:", "https:"].includes(destination.protocol) && !siteHosts.has(destination.hostname);
+        if (offSite) {
+          return link.target !== "_blank" || !link.relList.contains("noopener") || !link.relList.contains("noreferrer");
+        }
+        return link.target !== "" && link.target !== "_self";
+      }).map(link => ({ href: link.getAttribute("href"), target: link.target, rel: link.rel }));
+    });
+    expect(incorrect, articleUrl).toEqual([]);
+  }
+});
+
+test("a source opens a separate tab and leaves the article open", async ({ page, context }) => {
+  await open(page);
+  const articleUrl = page.url();
+  const source = page.locator(".hq-article-sources a").first();
+  const destination = new URL((await source.getAttribute("href"))!, articleUrl);
+  await context.route(url => url.origin === destination.origin, route =>
+    route.fulfill({ contentType: "text/html", body: "<h1>Source fixture</h1>" }));
+  const [newTab] = await Promise.all([context.waitForEvent("page"), source.click()]);
+  await expect(newTab).toHaveURL(destination.href);
+  expect(await newTab.evaluate(() => window.opener === null)).toBe(true);
+  await expect(page).toHaveURL(articleUrl);
+  await newTab.close();
+});
+
 for (const [index, article] of articles.entries()) {
   test(article.slug + " has a clear header, true dates, contents and official sources", async ({ page }) => {
     const calls = await open(page, index);
