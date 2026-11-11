@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
 import filmPoster from "../components/filmPoster";
+import ExternalLink from "../components/ExternalLink";
 
 const coverPath = "/blog-assets/whalefall-book-to-film-cover.webp";
 const sources = {
@@ -57,12 +58,12 @@ const post: BlogPost = {
       <div><dt>Original US hardcover</dt><dd>336 pages · ISBN 9781665918169</dd></div>
     </dl>
     <p>In the novel, Jay Gardiner dives off California's Monastery Beach to search for his father's remains. An encounter with a sperm whale turns that mission into an immediate struggle for survival, with his air supply running down. Jay's grief and family history give the physical ordeal its emotional stakes.</p>
-    <p>The form matters as much as the setup. In his <a href={sources.npr}>2023 NPR interview</a>, Kraus explained that the book's short chapters and air-pressure headings were designed to make readers feel the urgency. The narrative alternates between the dive and memories of Jay's father. If you want more than the high-concept hook, that shifting perspective is a reason to consider the novel.</p>
-    <p>There is also a movie tie-in paperback listed by <a href={sources.book}>Simon &amp; Schuster</a>, alongside other formats. A cover featuring film artwork does not mean the story originated as a screenplay. Check the format and ISBN when choosing an edition; page counts can vary. The publisher's page also includes a reading-group guide that discusses later events, so skip that section if you want to stay unspoiled.</p>
+    <p>The form matters as much as the setup. In his <ExternalLink href={sources.npr}>2023 NPR interview</ExternalLink>, Kraus explained that the book's short chapters and air-pressure headings were designed to make readers feel the urgency. The narrative alternates between the dive and memories of Jay's father. If you want more than the high-concept hook, that shifting perspective is a reason to consider the novel.</p>
+    <p>There is also a movie tie-in paperback listed by <ExternalLink href={sources.book}>Simon &amp; Schuster</ExternalLink>, alongside other formats. A cover featuring film artwork does not mean the story originated as a screenplay. Check the format and ISBN when choosing an edition; page counts can vary. The publisher's page also includes a reading-group guide that discusses later events, so skip that section if you want to stay unspoiled.</p>
 
     <h2 id="book-to-film" tabIndex={-1}>Did Daniel Kraus help write the movie?</h2>
-    <p>Yes. <a href={sources.film}>20th Century Studios credits both Brian Duffield and Daniel Kraus as screenwriters</a>, with Duffield directing. The novelist therefore took part in turning his own book into a film.</p>
-    <p>That does not make the two versions interchangeable. In an <a href={sources.adaptation}>October 14, 2026 interview with The Talks</a>, Kraus described condensing the novel's many flashbacks into a much smaller number for the screenplay. He explained that the challenge was to deliver what Jay learns from his father efficiently, at the moments the film needs it.</p>
+    <p>Yes. <ExternalLink href={sources.film}>20th Century Studios credits both Brian Duffield and Daniel Kraus as screenwriters</ExternalLink>, with Duffield directing. The novelist therefore took part in turning his own book into a film.</p>
+    <p>That does not make the two versions interchangeable. In an <ExternalLink href={sources.adaptation}>October 14, 2026 interview with The Talks</ExternalLink>, Kraus described condensing the novel's many flashbacks into a much smaller number for the screenplay. He explained that the challenge was to deliver what Jay learns from his father efficiently, at the moments the film needs it.</p>
     <p>That suggests a change in rhythm: a novel can keep returning to memories, while a film has less time to do so. The shared premise does not mean you should expect a page-for-page adaptation.</p>
 
     <h2 id="read-or-watch-first" tabIndex={-1}>Should you read Whalefall before watching the movie?</h2>
@@ -73,9 +74,9 @@ const post: BlogPost = {
     <h2 id="movie-details" tabIndex={-1}>Who stars in Whalefall, and when is it released?</h2>
     {filmPoster("whalefall-coast")}
     <p><strong>Austin Abrams plays Jay Gardiner, and Josh Brolin plays his father, Mitt.</strong> The studio's cast list also includes Elisabeth Shue, John Ortiz, Jane Levy and Emily Rudd. Brian Duffield directs the survival thriller.</p>
-    <p>The <a href={sources.film}>official US film page</a> lists <strong>October 16, 2026</strong> as the theatrical release date and a <strong>PG-13</strong> rating. Those details refer to the United States; release schedules and age classifications can differ elsewhere.</p>
+    <p>The <ExternalLink href={sources.film}>official US film page</ExternalLink> lists <strong>October 16, 2026</strong> as the theatrical release date and a <strong>PG-13</strong> rating. Those details refer to the United States; release schedules and age classifications can differ elsewhere.</p>
     <h3>Where can you watch it?</h3>
-    <p>At our October 23 check, <em>Whalefall</em> was playing in US theaters, according to <a href={sources.film}>20th Century Studios' official film page</a>. The page provides ticket links and lists the film as <strong>PG-13</strong>. Use those links and your local cinema listings to check screenings. The studio page does not announce a subscription-streaming date, so the theatrical release should not be treated as one.</p>
+    <p>At our October 23 check, <em>Whalefall</em> was playing in US theaters, according to <ExternalLink href={sources.film}>20th Century Studios' official film page</ExternalLink>. The page provides ticket links and lists the film as <strong>PG-13</strong>. Use those links and your local cinema listings to check screenings. The studio page does not announce a subscription-streaming date, so the theatrical release should not be treated as one.</p>
     <p>If you want other tense films to consider, our <Link to="/blog/best-thriller-movies-2026">best thriller movies of 2026 guide</Link> compares crime stories, psychological suspense and survival films by the kind of tension you want. Our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> offers more frightening options.</p>
 
     <h2 id="true-story" tabIndex={-1}>Is Whalefall based on a true story?</h2>
@@ -83,7 +84,7 @@ const post: BlogPost = {
     <p>In the NPR interview, Kraus discussed consulting whale scientists and diving experts while developing the book. Consulting specialists can inform the physical details of a thriller without turning its central ordeal into a documented event.</p>
 
     <h2 id="title-meaning" tabIndex={-1}>What does “whalefall” mean?</h2>
-    <p>A <a href={sources.whaleFall}>whale fall, as NOAA explains</a>, is the carcass of a whale that sinks to the ocean floor, where it can support a community of organisms. It is a real ecological term.</p>
+    <p>A <ExternalLink href={sources.whaleFall}>whale fall, as NOAA explains</ExternalLink>, is the carcass of a whale that sinks to the ocean floor, where it can support a community of organisms. It is a real ecological term.</p>
     <p>Knowing that definition gives you context for the title without explaining the ending. There is no need to read a plot summary to understand it.</p>
 
     <h2>A movie question before your next watch</h2>

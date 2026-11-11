@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import ArticleImage from "../components/ArticleImage";
+import ExternalLink from "../components/ExternalLink";
 
 const coverPath = "/blog-assets/best-thriller-movies-2026-cover.webp";
 const official = {
@@ -87,56 +88,56 @@ const post: BlogPost = {
       <h2 id="crime-101" tabIndex={-1}>Crime 101: the first pick for heist-film fans</h2>
       <p className="hq-watchlist-facts"><strong>Director:</strong> Bart Layton · <strong>Key cast:</strong> Chris Hemsworth, Halle Berry, Mark Ruffalo · <strong>US theatrical release:</strong> February 13, 2026</p>
       <p>A jewel thief has been working the 101 freeway so methodically that a detective believes he can finally identify a pattern. An insurance broker, facing a turning point in her own career, becomes entangled in the thief's next move. The setup gives three people a reason to watch one another closely, and three different ideas about what a successful outcome would mean.</p>
-      <p>That is the attraction of <em>Crime 101</em>: the robbery is a meeting point for characters with lives beyond the job. Layton adapts a Don Winslow novella, and the <a href={reviews.crime}>critical response</a> has been especially positive about the ensemble. It is the most natural starting point here if you want professional criminals, patient police work and the pull of a carefully prepared score.</p>
-      <p>Make room for a substantial crime drama rather than expecting a compact puzzle. The interest lies in the people as well as the mechanics. <a href={official.crime}>Amazon's official guide</a> confirms that the film is included with Prime Video; check the local listing before pressing play.</p>
+      <p>That is the attraction of <em>Crime 101</em>: the robbery is a meeting point for characters with lives beyond the job. Layton adapts a Don Winslow novella, and the <ExternalLink href={reviews.crime}>critical response</ExternalLink> has been especially positive about the ensemble. It is the most natural starting point here if you want professional criminals, patient police work and the pull of a carefully prepared score.</p>
+      <p>Make room for a substantial crime drama rather than expecting a compact puzzle. The interest lies in the people as well as the mechanics. <ExternalLink href={official.crime}>Amazon's official guide</ExternalLink> confirms that the film is included with Prime Video; check the local listing before pressing play.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="the-rip">
       <h2 id="the-rip" tabIndex={-1}>The Rip: when the dangerous question is whom to trust</h2>
       <p className="hq-watchlist-facts"><strong>Writer-director:</strong> Joe Carnahan · <strong>Key cast:</strong> Matt Damon, Ben Affleck, Teyana Taylor, Steven Yeun · <strong>Netflix release:</strong> January 16, 2026</p>
       <p>A team of Miami police officers discovers millions of dollars in a stash house. The money has to be counted before they can leave, turning an apparently successful seizure into an extended test of trust. Other people want the cash, and the officers cannot be certain of one another's intentions.</p>
-      <p>Damon and Affleck's familiarity makes the premise particularly appealing: two actors audiences associate with friendship are placed inside a story built on suspicion. Carnahan's film is a good choice if the moment before somebody answers a question interests you as much as the moment somebody reaches for a weapon. <a href={reviews.rip}>Reviews collected by Rotten Tomatoes</a> praise that partnership, while some find the action less persuasive than the early uncertainty.</p>
-      <p>Choose it for a contained crime problem that grows increasingly volatile. It makes a useful double bill with <em>Crime 101</em>: one film follows people moving toward a job, while this one traps its team with the proceeds. <a href={official.rip}>Netflix's film guide</a> confirms the cast, premise and release.</p>
+      <p>Damon and Affleck's familiarity makes the premise particularly appealing: two actors audiences associate with friendship are placed inside a story built on suspicion. Carnahan's film is a good choice if the moment before somebody answers a question interests you as much as the moment somebody reaches for a weapon. <ExternalLink href={reviews.rip}>Reviews collected by Rotten Tomatoes</ExternalLink> praise that partnership, while some find the action less persuasive than the early uncertainty.</p>
+      <p>Choose it for a contained crime problem that grows increasingly volatile. It makes a useful double bill with <em>Crime 101</em>: one film follows people moving toward a job, while this one traps its team with the proceeds. <ExternalLink href={official.rip}>Netflix's film guide</ExternalLink> confirms the cast, premise and release.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="the-weight">
       <h2 id="the-weight" tabIndex={-1}>The Weight: a survival thriller with something to lose</h2>
       <p className="hq-watchlist-facts"><strong>Director:</strong> Padraic McKinley · <strong>Key cast:</strong> Ethan Hawke, Russell Crowe, Julia Jones · <strong>US theatrical release:</strong> September 18, 2026</p>
       <p>During the Great Depression, Samuel Murphy is sent to a prison camp and faces losing his daughter. A warden offers him an apparent route back to her: help carry gold through hostile country. Murphy joins a group of inmates for a journey in which the people sharing the burden may be as dangerous as the terrain.</p>
-      <p>The emotional bargain gives this pick a different shape from a simple escape movie. Freedom is attached to a task, and completing the task means relying on others whose interests may change. Hawke plays Murphy and Crowe the warden; the <a href={reviews.weight}>strong critical reception</a> repeatedly points to Hawke's performance as a reason the stripped-down story holds its weight.</p>
-      <p>Pick this when you want physical hardship and human treachery in the same film. Its appeal is closer to an arduous journey than a rapid succession of revelations. The <a href={official.weight}>producer's announcement</a> confirms the September US opening; its earlier Sundance appearance was also in 2026.</p>
+      <p>The emotional bargain gives this pick a different shape from a simple escape movie. Freedom is attached to a task, and completing the task means relying on others whose interests may change. Hawke plays Murphy and Crowe the warden; the <ExternalLink href={reviews.weight}>strong critical reception</ExternalLink> repeatedly points to Hawke's performance as a reason the stripped-down story holds its weight.</p>
+      <p>Pick this when you want physical hardship and human treachery in the same film. Its appeal is closer to an arduous journey than a rapid succession of revelations. The <ExternalLink href={official.weight}>producer's announcement</ExternalLink> confirms the September US opening; its earlier Sundance appearance was also in 2026.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="primetime">
       <h2 id="primetime" tabIndex={-1}>Primetime: for a more disturbing kind of ambition</h2>
       <p className="hq-watchlist-facts"><strong>Director:</strong> Lance Oppenheim · <strong>Key cast:</strong> Robert Pattinson, Skyler Gisondo, Merritt Wever · <strong>US theatrical release:</strong> September 25, 2026</p>
       <p>In 2006, <em>To Catch a Predator</em> host Chris Hansen sets out to make television history. Robert Pattinson plays Hansen in Oppenheim's dramatization, which turns the machinery of a television sting into the subject of a thriller. The question is what happens to the pursuit of justice when the pursuit of an audience becomes part of it.</p>
-      <p>This is the pick for psychological and moral discomfort. Instead of asking only whether a suspect will be caught, the premise asks who controls the image, who benefits from it and what the demand for spectacle does to everybody involved. <a href={reviews.primetime}>Its generally favorable reception</a> highlights Pattinson and the filmmaking, although critics disagree about how far the film takes its argument.</p>
-      <p>Expect an adult story about exploitation and media power. It is inspired by real events, but it is a dramatic film, not a documentary record of the television series. <a href={official.primetime}>A24's official page</a> provides the release details and current showtimes without requiring a plot recap.</p>
+      <p>This is the pick for psychological and moral discomfort. Instead of asking only whether a suspect will be caught, the premise asks who controls the image, who benefits from it and what the demand for spectacle does to everybody involved. <ExternalLink href={reviews.primetime}>Its generally favorable reception</ExternalLink> highlights Pattinson and the filmmaking, although critics disagree about how far the film takes its argument.</p>
+      <p>Expect an adult story about exploitation and media power. It is inspired by real events, but it is a dramatic film, not a documentary record of the television series. <ExternalLink href={official.primetime}>A24's official page</ExternalLink> provides the release details and current showtimes without requiring a plot recap.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="disclosure-day">
       <h2 id="disclosure-day" tabIndex={-1}>Disclosure Day: for conspiracy suspense on a larger scale</h2>
       <p className="hq-watchlist-facts"><strong>Director:</strong> Steven Spielberg · <strong>Key cast:</strong> Emily Blunt, Josh O'Connor, Colin Firth · <strong>US theatrical release:</strong> June 12, 2026</p>
       <p>A meteorologist and a government cybersecurity whistleblower become involved in an effort to reveal evidence of extraterrestrial life. The threat is bigger than a single crime: proof that changes what people believe about the world also changes the stakes for anyone trying to keep it hidden.</p>
-      <p>Choose <em>Disclosure Day</em> if you want suspense to open outward into science fiction. Spielberg directs from a David Koepp screenplay, with Blunt and O'Connor among the ensemble. The <a href={reviews.disclosure}>critical consensus</a> emphasizes Blunt's work and the film's interest in human connection; reservations concern the way the larger story fits together. That makes it a better match for viewers drawn to discovery and conspiracy than those seeking a tightly bounded detective case.</p>
-      <p>It is also the PG-13 option in this selection. That classification is a useful starting point for a family discussion, rather than a guarantee that every child will find it comfortable. <a href={official.disclosure}>Peacock's US page</a> confirms the premise, credits and current subscription availability.</p>
+      <p>Choose <em>Disclosure Day</em> if you want suspense to open outward into science fiction. Spielberg directs from a David Koepp screenplay, with Blunt and O'Connor among the ensemble. The <ExternalLink href={reviews.disclosure}>critical consensus</ExternalLink> emphasizes Blunt's work and the film's interest in human connection; reservations concern the way the larger story fits together. That makes it a better match for viewers drawn to discovery and conspiracy than those seeking a tightly bounded detective case.</p>
+      <p>It is also the PG-13 option in this selection. That classification is a useful starting point for a family discussion, rather than a guarantee that every child will find it comfortable. <ExternalLink href={official.disclosure}>Peacock's US page</ExternalLink> confirms the premise, credits and current subscription availability.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="apex">
       <h2 id="apex" tabIndex={-1}>Apex: for a chase you can understand immediately</h2>
       <p className="hq-watchlist-facts"><strong>Director:</strong> Baltasar Kormákur · <strong>Key cast:</strong> Charlize Theron, Taron Egerton, Eric Bana · <strong>Netflix release:</strong> April 24, 2026</p>
       <p>A grieving climber heads into the Australian wilderness and finds herself pursued by a killer. Charlize Theron plays Sasha, with Taron Egerton as the man hunting her. Distance, terrain and physical endurance become practical problems rather than background scenery.</p>
-      <p>This is the most straightforward pursuit movie on the list. The reason to choose it is the bodily tension of somebody having to keep moving, find cover and use the landscape. Kormákur's experience with survival stories is a useful fit for that premise. Netflix's <a href={official.apex}>production and cast guide</a> places the shoot in New South Wales and discusses Theron's demanding physical work.</p>
-      <p>Set your expectations accordingly: <a href={reviews.apex}>its reception is more divided</a> than that of the strongest picks above, with praise for Theron and the locations alongside criticism of the familiar story. It earns a place here as a clear recommendation for a particular mood. If you want intricate motives or a mystery to solve, start elsewhere on the list.</p>
+      <p>This is the most straightforward pursuit movie on the list. The reason to choose it is the bodily tension of somebody having to keep moving, find cover and use the landscape. Kormákur's experience with survival stories is a useful fit for that premise. Netflix's <ExternalLink href={official.apex}>production and cast guide</ExternalLink> places the shoot in New South Wales and discusses Theron's demanding physical work.</p>
+      <p>Set your expectations accordingly: <ExternalLink href={reviews.apex}>its reception is more divided</ExternalLink> than that of the strongest picks above, with praise for Theron and the locations alongside criticism of the familiar story. It earns a place here as a clear recommendation for a particular mood. If you want intricate motives or a mystery to solve, start elsewhere on the list.</p>
     </section>
 
     <section className="hq-watchlist-entry" aria-labelledby="send-help">
       <h2 id="send-help" tabIndex={-1}>Send Help: when survival comes with an office grudge</h2>
       <p className="hq-watchlist-facts"><strong>Director:</strong> Sam Raimi · <strong>Leads:</strong> Rachel McAdams, Dylan O'Brien · <strong>US theatrical release:</strong> January 30, 2026</p>
       <p>Two colleagues survive a plane crash and wash up on an island. They need one another, but they also bring a history of resentment into a place where workplace rank has little practical value. The survival problem and the argument over power are inseparable.</p>
-      <p>Raimi's film is the choice for readers who want their tension mixed with cruel humor. The situation offers something especially satisfying to debate afterward: which skills matter once the office disappears, and how quickly should authority change hands? <a href={reviews.help}>Its favorable critical reception</a> singles out the two leads and the film's readiness to push its premise into vicious territory.</p>
-      <p>This is a horror crossover, and its R rating matters if you were expecting a restrained survival drama. We also include it in our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link>; here, the attraction is the two-person contest of wills. The <a href={official.help}>studio's page</a> lists Hulu, Hulu on Disney+ and digital purchase options.</p>
+      <p>Raimi's film is the choice for readers who want their tension mixed with cruel humor. The situation offers something especially satisfying to debate afterward: which skills matter once the office disappears, and how quickly should authority change hands? <ExternalLink href={reviews.help}>Its favorable critical reception</ExternalLink> singles out the two leads and the film's readiness to push its premise into vicious territory.</p>
+      <p>This is a horror crossover, and its R rating matters if you were expecting a restrained survival drama. We also include it in our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link>; here, the attraction is the two-person contest of wills. The <ExternalLink href={official.help}>studio's page</ExternalLink> lists Hulu, Hulu on Disney+ and digital purchase options.</p>
     </section>
 
     <section className="hq-release-index" aria-labelledby="where-to-watch">
@@ -146,13 +147,13 @@ const post: BlogPost = {
         <caption>US viewing information checked October 22, 2026. Local availability can change.</caption>
         <thead><tr><th scope="col">Film</th><th scope="col">Viewing route</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Crime 101</th><td><a href={official.crime}>Prime Video subscription</a></td></tr>
-          <tr><th scope="row">The Rip</th><td><a href={official.rip}>Netflix subscription</a></td></tr>
-          <tr><th scope="row">The Weight</th><td><a href={reviews.weight}>Digital rental or purchase listed on Fandango</a></td></tr>
-          <tr><th scope="row">Primetime</th><td><a href={official.primetime}>Check A24's current theater listings</a></td></tr>
-          <tr><th scope="row">Disclosure Day</th><td><a href={official.disclosure}>Peacock subscription</a></td></tr>
-          <tr><th scope="row">Apex</th><td><a href={official.apex}>Netflix subscription</a></td></tr>
-          <tr><th scope="row">Send Help</th><td><a href={official.help}>Hulu / Hulu on Disney+; digital purchase also listed</a></td></tr>
+          <tr><th scope="row">Crime 101</th><td><ExternalLink href={official.crime}>Prime Video subscription</ExternalLink></td></tr>
+          <tr><th scope="row">The Rip</th><td><ExternalLink href={official.rip}>Netflix subscription</ExternalLink></td></tr>
+          <tr><th scope="row">The Weight</th><td><ExternalLink href={reviews.weight}>Digital rental or purchase listed on Fandango</ExternalLink></td></tr>
+          <tr><th scope="row">Primetime</th><td><ExternalLink href={official.primetime}>Check A24's current theater listings</ExternalLink></td></tr>
+          <tr><th scope="row">Disclosure Day</th><td><ExternalLink href={official.disclosure}>Peacock subscription</ExternalLink></td></tr>
+          <tr><th scope="row">Apex</th><td><ExternalLink href={official.apex}>Netflix subscription</ExternalLink></td></tr>
+          <tr><th scope="row">Send Help</th><td><ExternalLink href={official.help}>Hulu / Hulu on Disney+; digital purchase also listed</ExternalLink></td></tr>
         </tbody>
       </table>
     </section>
