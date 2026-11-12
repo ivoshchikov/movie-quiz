@@ -1,7 +1,8 @@
 import manifest from "./responsiveImages.json";
+import decemberArtwork from "./decemberArtwork.json";
 
 type ImageSources = { src: string; srcSet: string; width: number; height: number };
-const images: Record<string, ImageSources> = manifest;
+const images: Record<string, ImageSources> = { ...manifest, ...decemberArtwork };
 
 /** Keep editorial source URLs intact; serve existing images at display sizes. */
 export function responsiveImage(src: string): { src: string; srcSet?: string; width?: number; height?: number } {

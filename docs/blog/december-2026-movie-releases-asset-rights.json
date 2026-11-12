@@ -1,0 +1,49 @@
+{
+  "/blog-assets/december-2026-480.webp": {
+    "basis": "original_code_artwork",
+    "sourceCode": "docs/blog/artwork/december-2026.py",
+    "sha256": "f8a76110130b0aa16cd07e06b8cad5feea1a88d648ce939fce55e05a9eba549e"
+  },
+  "/blog-assets/december-2026-640.webp": {
+    "basis": "original_code_artwork",
+    "sourceCode": "docs/blog/artwork/december-2026.py",
+    "sha256": "1e75bc38bd602c74039faa1f615bdb89b2985c6f372673a47e57346383650d26"
+  },
+  "/blog-assets/december-2026-800.webp": {
+    "basis": "original_code_artwork",
+    "sourceCode": "docs/blog/artwork/december-2026.py",
+    "sha256": "007ce06b56afed25c2868141710d474da7e7868d5ed99fe78c2c9ad867a3a746"
+  },
+  "/blog-assets/december-2026-cover.webp": {
+    "basis": "original_code_artwork",
+    "sourceCode": "docs/blog/artwork/december-2026.py",
+    "sha256": "4dd9c13cb9993564c7010163f3a0242618be9311d7cfc2f077e18ad47df96d81"
+  },
+  "/blog-assets/december-2026-imax-reel-480.webp": {
+    "basis": "cc0_1_0",
+    "article": "december-2026-movie-releases",
+    "creator": "DiscoA340",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Film_Reel_on_an_IMAX_15_70_mm_Film_Projector.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/84/Film_Reel_on_an_IMAX_15_70_mm_Film_Projector.jpg",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checkedOn": "2026-11-12",
+    "sourceSha256": "ed3da66c768cb8bac58ba7d5eee498bb9274d14fb2cd6dfe2c051a34dde8096e",
+    "sha256": "f62b5afd15b32606ca2ec3899881622c97c41c8e77db546a320c72999f2b18f5"
+  },
+  "/blog-assets/december-2026-imax-reel.webp": {
+    "basis": "cc0_1_0",
+    "article": "december-2026-movie-releases",
+    "creator": "DiscoA340",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Film_Reel_on_an_IMAX_15_70_mm_Film_Projector.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/84/Film_Reel_on_an_IMAX_15_70_mm_Film_Projector.jpg",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checkedOn": "2026-11-12",
+    "sourceSha256": "ed3da66c768cb8bac58ba7d5eee498bb9274d14fb2cd6dfe2c051a34dde8096e",
+    "sha256": "c1172d4f766de5e2d5448d2183401ecd655ee1acab450be3acfa5963197a92a0"
+  },
+  "/blog-assets/december-2026-social.webp": {
+    "basis": "original_code_artwork",
+    "sourceCode": "docs/blog/artwork/december-2026.py",
+    "sha256": "909e62e61b230e97dbe4230642f91da551e338c2fe17e3dd6d196204cb994d00"
+  }
+}

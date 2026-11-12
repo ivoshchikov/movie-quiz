@@ -97,3 +97,13 @@ test("a CC frame cannot silently become an uncredited cover or gallery fallback"
   const markup = ccFrame(f); f.post.gallery = [f.src];
   assert.throws(() => createBlogImageRightsCheck(f).checkArticle(f.post, markup), /reviewed attribution/);
 }));
+
+test("CC0 photography requires its own reviewed source and visible CC0 link", () => fixture(f => {
+  const previous = "https://creativecommons.org/licenses/by/3.0/";
+  const licenseUrl = "https://creativecommons.org/publicdomain/zero/1.0/";
+  const markup = ccFrame(f).replace("Frame from the film", "Photograph of a projector");
+  Object.assign(f.ledger.assets[f.src], { basis: "cc0_1_0", licenseUrl });
+  const reviewed = markup.replace(previous, licenseUrl).replace("CC BY 3.0", "CC0 1.0");
+  createBlogImageRightsCheck(f).checkArticle(f.post, reviewed);
+  assert.throws(() => createBlogImageRightsCheck(f).checkArticle(f.post, markup), /visible creator/);
+}));
