@@ -55,9 +55,19 @@ const ensureDir =
   });
   const { validateBlogPosts, sortBlogPosts, blogCollectionJsonLd, articleMetadata, articleJsonLd } = require(PRESENTATION_BUNDLE);
   validateBlogPosts(posts);
+  const blogDocs = path.join(ROOT, "../docs/blog");
+  const ledger = JSON.parse(fs.readFileSync(path.join(blogDocs, "image-rights-ledger.json"), "utf8"));
+  for (const { slug } of posts) {
+    const recordPath = path.join(blogDocs, `${slug}-asset-rights.json`);
+    if (!fs.existsSync(recordPath)) continue;
+    const assets = JSON.parse(fs.readFileSync(recordPath, "utf8"));
+    for (const [asset, record] of Object.entries(assets)) {
+      if (Object.hasOwn(ledger.assets, asset)) throw new Error(`Duplicate blog image provenance: ${asset}`);
+      ledger.assets[asset] = record;
+    }
+  }
   const imageRights = createBlogImageRightsCheck({
-    root: path.dirname(ROOT), publicDir: path.join(ROOT, "public"),
-    ledger: JSON.parse(fs.readFileSync(path.join(ROOT, "../docs/blog/image-rights-ledger.json"), "utf8")),
+    root: path.dirname(ROOT), publicDir: path.join(ROOT, "public"), ledger,
   });
   const featured = JSON.parse(fs.readFileSync(path.join(ROOT, "src/featuredPostMetadata.json"), "utf8"));
   if (!posts.some(post => post.slug === featured.slug && post.title === featured.title)) throw new Error("Homepage featured article metadata is out of date");

@@ -4,6 +4,10 @@ const path = require("node:path");
 const { createHash } = require("node:crypto");
 
 const origin = "https://hard-quiz.com";
+const commonsLicenses = {
+  cc_by_3_0: "https://creativecommons.org/licenses/by/3.0/",
+  cc0_1_0: "https://creativecommons.org/publicdomain/zero/1.0/",
+};
 const attributes = tag => Object.fromEntries([...tag.matchAll(/\b([a-z][a-z0-9-]*)="([^"]*)"/gi)].map(match => [match[1].toLowerCase(), match[2].replace(/&amp;/g, "&")]));
 const hasClass = (tag, name) => (attributes(tag).class || "").split(/\s+/).includes(name);
 const openingTag = markup => markup.slice(0, markup.indexOf(">") + 1);
@@ -25,8 +29,8 @@ function createBlogImageRightsCheck({ root, publicDir, ledger }) {
       if (!record.sourceCode || !fs.existsSync(path.join(root, record.sourceCode))) throw new Error(`Original artwork has no editable source: ${asset}`);
     } else if (["conditional_apple_promotion", "apple_store_badge"].includes(record.basis)) {
       if (!inline || !(record.articles || [record.article]).includes(post.slug)) throw new Error(`Promotional artwork is restricted to its corresponding inline film card: ${asset}`);
-    } else if (record.basis === "cc_by_3_0") {
-      if (!inline || record.article !== post.slug || !record.creator || record.licenseUrl !== "https://creativecommons.org/licenses/by/3.0/" || !record.sourcePage?.startsWith("https://commons.wikimedia.org/wiki/File:")) throw new Error(`CC film frame needs reviewed attribution and its corresponding article: ${asset}`);
+    } else if (Object.hasOwn(commonsLicenses, record.basis)) {
+      if (!inline || record.article !== post.slug || !record.creator || record.licenseUrl !== commonsLicenses[record.basis] || !record.sourcePage?.startsWith("https://commons.wikimedia.org/wiki/File:")) throw new Error(`Commons image needs reviewed attribution and its corresponding article: ${asset}`);
     } else throw new Error(`Unreviewed image rights basis: ${asset}`);
     if (!checked.has(asset)) {
       const file = path.join(publicDir, asset.slice(1));
@@ -57,11 +61,11 @@ function createBlogImageRightsCheck({ root, publicDir, ledger }) {
           const badgeLink = anchors.find(item => hasClass(openingTag(item), "hq-store-badge") && item.includes('src="/blog-assets/itunes-store-get-badge.svg"'));
           if (!record.storeUrl || attributes(openingTag(posterLink || "")).href !== record.storeUrl || attributes(openingTag(badgeLink || "")).href !== record.storeUrl) throw new Error(`Promotional artwork needs its matching store link and approved badge: ${asset}`);
         }
-        if (record.basis === "cc_by_3_0") {
+        if (Object.hasOwn(commonsLicenses, record.basis)) {
           const figure = figures.find(item => item.includes(`src="${asset}"`));
           const caption = figure?.match(/<figcaption\b[^>]*>([\s\S]*?)<\/figcaption>/)?.[1];
           const links = (caption?.match(/<a\b[^>]*>/g) || []).map(tag => attributes(tag).href);
-          if (!caption?.includes(record.creator) || !links.includes(record.sourcePage) || !links.includes(record.licenseUrl) || !/resized|crop|compress/i.test(caption)) throw new Error(`CC film frame needs visible creator, source, license and change credit: ${asset}`);
+          if (!caption?.includes(record.creator) || !links.includes(record.sourcePage) || !links.includes(record.licenseUrl) || !/resized|crop|compress/i.test(caption)) throw new Error(`Commons image needs visible creator, source, license and change credit: ${asset}`);
         }
         for (const item of (attrs.srcset || "").split(",").filter(Boolean)) checkFile(item.trim().split(/\s+/)[0], post, true);
       }

@@ -4,6 +4,7 @@ import path from "node:path";
 import { mockQuizApi } from "./fixtures";
 const metadata = JSON.parse(readFileSync(path.resolve("src/blogMetadata.json"), "utf8")) as { title: string; description: string; intro: string; url: string };
 
+const december = "December 2026 Movie Releases: US Theater Dates";
 const thanksgiving = "Thanksgiving Movies: What to Watch by Mood";
 const mysteries = "10 Sci-Fi Mystery Movies for Your Next Movie Night";
 const sciFi = "Best Sci-Fi Movies of 2026 So Far: A Spoiler-Free Watchlist";
@@ -17,9 +18,9 @@ const september = "September 2025 Movie Releases: 9 Picks (US)";
 const august = "August 2025 Movie Releases: 7 Picks (US)";
 const explainer = "Why 2.39:1 Feels More Cinematic";
 const cards = (page: Page) => page.locator(".hq-blog-card");
-const guides = (page: Page) => page.getByRole("button", { name: "Movie guides, 11 articles", exact: true });
+const guides = (page: Page) => page.getByRole("button", { name: "Movie guides, 12 articles", exact: true });
 const explainers = (page: Page) => page.getByRole("button", { name: "Explainers, 1 article", exact: true });
-const all = (page: Page) => page.getByRole("button", { name: "All, 12 articles", exact: true });
+const all = (page: Page) => page.getByRole("button", { name: "All, 13 articles", exact: true });
 
 async function open(page: Page, url = "/blog") {
   const calls = await mockQuizApi(page);
@@ -35,14 +36,14 @@ async function collection(page: Page) {
 test("the collection has accurate copy, chronological cards, counted topics and selective archives", async ({ page }) => {
   const calls = await open(page);
   await expect(page.locator(".hq-blog-intro")).toContainText(metadata.intro);
-  await expect(cards(page).getByRole("heading", { level: 2 })).toHaveText([thanksgiving, mysteries, sciFi, miniseries, knives, thriller, november, whalefall, horror, september, explainer, august]);
+  await expect(cards(page).getByRole("heading", { level: 2 })).toHaveText([december, thanksgiving, mysteries, sciFi, miniseries, knives, thriller, november, whalefall, horror, september, explainer, august]);
   await expect(page.getByRole("group", { name: "Article topics" }).getByRole("button")).toHaveCount(3);
   await expect(all(page)).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".hq-blog-count")).toHaveText("12 articles");
+  await expect(page.locator(".hq-blog-count")).toHaveText("13 articles");
   await expect(page.locator(".hq-blog-archive")).toHaveText(["2025 archive", "2025 archive"]);
   await expect(cards(page).filter({ hasText: explainer }).locator(".hq-blog-archive")).toHaveCount(0);
-  await expect(cards(page).locator(".hq-blog-card-topic")).toHaveText(["Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Explainers", "Movie guides"]);
-  await expect(cards(page).locator("time")).toHaveText(["Nov 9, 2026", "Nov 6, 2026", "Nov 3, 2026", "Nov 1, 2026", "Oct 27, 2026", "Oct 22, 2026", "Oct 18, 2026", "Oct 15, 2026", "Oct 12, 2026", "Sep 1, 2025", "Aug 15, 2025", "Aug 13, 2025"]);
+  await expect(cards(page).locator(".hq-blog-card-topic")).toHaveText(["Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Movie guides", "Explainers", "Movie guides"]);
+  await expect(cards(page).locator("time")).toHaveText(["Nov 12, 2026", "Nov 9, 2026", "Nov 6, 2026", "Nov 3, 2026", "Nov 1, 2026", "Oct 27, 2026", "Oct 22, 2026", "Oct 18, 2026", "Oct 15, 2026", "Oct 12, 2026", "Sep 1, 2025", "Aug 15, 2025", "Aug 13, 2025"]);
   await expect(cards(page).first()).toContainText(/~[1-9]\d* min read/);
   expect(calls).toEqual([]);
 });
@@ -50,13 +51,13 @@ test("the collection has accurate copy, chronological cards, counted topics and 
 test("filters survive reload and browser back/forward", async ({ page }) => {
   await open(page);
   await guides(page).click(); await expect(page).toHaveURL(/\/blog\?topic=streaming$/);
-  await expect(cards(page)).toHaveCount(11); await expect(guides(page)).toHaveAttribute("aria-pressed", "true");
-  await page.reload(); await expect(cards(page)).toHaveCount(11);
+  await expect(cards(page)).toHaveCount(12); await expect(guides(page)).toHaveAttribute("aria-pressed", "true");
+  await page.reload(); await expect(cards(page)).toHaveCount(12);
   await explainers(page).click(); await expect(cards(page)).toHaveCount(1);
   await expect(page.locator(".hq-blog-count")).toHaveText("1 article · Explainers");
-  await page.goBack(); await expect(guides(page)).toHaveAttribute("aria-pressed", "true"); await expect(cards(page)).toHaveCount(11);
+  await page.goBack(); await expect(guides(page)).toHaveAttribute("aria-pressed", "true"); await expect(cards(page)).toHaveCount(12);
   await page.goForward(); await expect(explainers(page)).toHaveAttribute("aria-pressed", "true");
-  await all(page).click(); await expect(page).toHaveURL("http://localhost:5173/blog"); await expect(cards(page)).toHaveCount(12);
+  await all(page).click(); await expect(page).toHaveURL("http://localhost:5173/blog"); await expect(cards(page)).toHaveCount(13);
 });
 
 test("an article and related article retain the selected collection after reload", async ({ page }) => {
@@ -65,9 +66,9 @@ test("an article and related article retain the selected collection after reload
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(august);
   await page.reload();
   await expect(page.getByRole("link", { name: "← Back to blog" }).first()).toHaveAttribute("href", "/blog?topic=streaming");
-  await page.locator(".hq-article-card").filter({ hasText: thanksgiving }).click();
+  await page.locator(".hq-article-card").filter({ hasText: december }).click();
   await page.getByRole("link", { name: "← Back to blog" }).first().click();
-  await expect(page).toHaveURL(/\/blog\?topic=streaming$/); await expect(cards(page)).toHaveCount(11);
+  await expect(page).toHaveURL(/\/blog\?topic=streaming$/); await expect(cards(page)).toHaveCount(12);
 });
 
 test("the cover and excerpt open the same native whole-card link", async ({ page }) => {
@@ -76,7 +77,7 @@ test("the cover and excerpt open the same native whole-card link", async ({ page
   await expect(cards(page).first().getByRole("button")).toHaveCount(0);
   await expect(page.getByRole("link", { name: september, exact: true })).toHaveAttribute("href", "/blog/september-2025-new-movies-guide");
   await cards(page).first().locator("img").click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(thanksgiving);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(december);
   await page.goBack(); await cards(page).last().locator(".hq-blog-excerpt").click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(august);
 });
@@ -98,7 +99,7 @@ test("card keyboard activation and a new tab use existing readable article URLs"
 
 for (const query of ["topic=unknown", "topic=", "topic=all", "topic=%3Cscript%3E", "topic=STREAMING"]) test(`unknown topic ${query} safely shows all articles`, async ({ page }) => {
   await open(page, `/blog?${query}`);
-  await expect(cards(page)).toHaveCount(12); await expect(all(page)).toHaveAttribute("aria-pressed", "true");
+  await expect(cards(page)).toHaveCount(13); await expect(all(page)).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", metadata.url);
 });
 
@@ -108,12 +109,12 @@ test("a direct link to the empty known topic has an honest explanation and a way
   await expect(page.getByRole("heading", { name: "No articles in this topic yet" })).toBeVisible();
   await expect(page.locator(".hq-blog-count")).toHaveText("0 articles · Stills & Faces");
   await page.getByRole("button", { name: "Show all articles" }).click();
-  await expect(page).toHaveURL("http://localhost:5173/blog"); await expect(cards(page)).toHaveCount(12);
+  await expect(page).toHaveURL("http://localhost:5173/blog"); await expect(cards(page)).toHaveCount(13);
 });
 
 test("a trailing slash keeps the same filtered collection and clean canonical", async ({ page }) => {
   await open(page, "/blog/?topic=streaming");
-  await expect(cards(page)).toHaveCount(11);
+  await expect(cards(page)).toHaveCount(12);
   await expect(page.locator("main")).toHaveClass(/hq-blog-main/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", metadata.url);
 });
@@ -121,8 +122,8 @@ test("a trailing slash keeps the same filtered collection and clean canonical", 
 test("covers use all declared assets, reserved space and lazy decoding", async ({ page }) => {
   await open(page);
   const images = cards(page).locator("img");
-  await expect(images).toHaveCount(12);
-  const covers = [/thanksgiving-movies-by-mood-640\.webp$/, /sci-fi-mystery-movies-640\.webp$/, /best-sci-fi-movies-2026-640\.webp$/, /completed-miniseries-to-watch-640\.webp$/, /movies-like-knives-out-640\.webp$/, /best-thriller-movies-2026-cover\.webp$/, /november-2026-movie-releases-cover\.webp$/, /whalefall-book-to-film-cover\.webp$/, /best-horror-movies-2026-cover\.webp$/, /archive-september-2025-cover-640\.webp$/, /scope-guide-cover-640\.webp$/, /archive-august-2025-cover-640\.webp$/];
+  await expect(images).toHaveCount(13);
+  const covers = [/december-2026-640\.webp$/, /thanksgiving-movies-by-mood-640\.webp$/, /sci-fi-mystery-movies-640\.webp$/, /best-sci-fi-movies-2026-640\.webp$/, /completed-miniseries-to-watch-640\.webp$/, /movies-like-knives-out-640\.webp$/, /best-thriller-movies-2026-cover\.webp$/, /november-2026-movie-releases-cover\.webp$/, /whalefall-book-to-film-cover\.webp$/, /best-horror-movies-2026-cover\.webp$/, /archive-september-2025-cover-640\.webp$/, /scope-guide-cover-640\.webp$/, /archive-august-2025-cover-640\.webp$/];
   for (const [index, cover] of covers.entries()) await expect(images.nth(index)).toHaveAttribute("src", cover);
   await expect(images.nth(0)).toHaveAttribute("loading", "eager");
   await expect(images.nth(1)).toHaveAttribute("loading", "lazy");
@@ -149,7 +150,7 @@ test("exhausted image fallbacks keep a stable clickable card without a retry loo
   await page.route("**/blog-assets/**", route => { requests++; return route.abort(); });
   await page.goto("/blog");
   // Wait for the lazily loaded collection before measuring its exhausted covers.
-  await expect(cards(page)).toHaveCount(12);
+  await expect(cards(page)).toHaveCount(13);
   await expect(cards(page).locator("img")).toHaveCount(0);
   await expect(cards(page).first().locator(".hq-blog-cover-fallback")).toBeVisible();
   const first = await cards(page).first().boundingBox();
@@ -163,7 +164,7 @@ test("exhausted image fallbacks keep a stable clickable card without a retry loo
 for (const [timezoneId, locale] of [["America/Los_Angeles", "en-US"], ["Pacific/Honolulu", "ru-RU"], ["Pacific/Kiritimati", "de-DE"]]) test(`calendar dates stay English in ${timezoneId}`, async ({ browser }) => {
   const context = await browser.newContext({ timezoneId, locale });
   const page = await context.newPage(); await open(page);
-  await expect(cards(page).first().locator("time")).toHaveText("Nov 9, 2026");
+  await expect(cards(page).first().locator("time")).toHaveText("Nov 12, 2026");
   await page.getByRole("link", { name: september, exact: true }).click();
   await expect(page.locator(".hq-article-meta time").first()).toHaveText("Sep 1, 2025");
   await context.close();
@@ -198,8 +199,8 @@ test("filtered metadata keeps the complete canonical collection and working imag
   for (const selector of ['meta[property="og:url"]']) await expect(page.locator(selector)).toHaveAttribute("content", metadata.url);
   for (const selector of ['meta[property="og:title"]', 'meta[name="twitter:title"]']) await expect(page.locator(selector)).toHaveAttribute("content", metadata.title);
   const json = await collection(page);
-  expect(json.mainEntity.numberOfItems).toBe(12);
-  expect(json.mainEntity.itemListElement.map((entry: { item: { datePublished: string } }) => entry.item.datePublished)).toEqual(["2026-11-09", "2026-11-06", "2026-11-03", "2026-11-01", "2026-10-27", "2026-10-22", "2026-10-18", "2026-10-15", "2026-10-12", "2025-09-01", "2025-08-15", "2025-08-13"]);
+  expect(json.mainEntity.numberOfItems).toBe(13);
+  expect(json.mainEntity.itemListElement.map((entry: { item: { datePublished: string } }) => entry.item.datePublished)).toEqual(["2026-11-12", "2026-11-09", "2026-11-06", "2026-11-03", "2026-11-01", "2026-10-27", "2026-10-22", "2026-10-18", "2026-10-15", "2026-10-12", "2025-09-01", "2025-08-15", "2025-08-13"]);
   expect(JSON.stringify(json)).not.toContain("/cover.webp");
   await guides(page).click(); expect(await collection(page)).toEqual(json);
 });
@@ -229,9 +230,9 @@ test("reduced motion and large text preserve titles, focus and all actions", asy
   await page.addStyleTag({ content: ".hq-blog h2 { font-size:34px !important } .hq-blog-excerpt, .hq-blog-topic { font-size:26px !important }" });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(await cards(page).first().getByRole("link").evaluate(element => getComputedStyle(element).transitionDuration)).toBe("0s");
-  await guides(page).focus(); await page.keyboard.press("Enter"); await expect(cards(page)).toHaveCount(11);
+  await guides(page).focus(); await page.keyboard.press("Enter"); await expect(cards(page)).toHaveCount(12);
   await cards(page).first().getByRole("link").focus(); await page.keyboard.press("Enter");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(thanksgiving);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(december);
 });
 
 test("the production HTML contains collection metadata, native article links and the specific Vercel route", () => {
@@ -241,8 +242,8 @@ test("the production HTML contains collection metadata, native article links and
   expect(html).toContain('<title data-rh="true">Movie guides &amp; film explainers | Hard Quiz</title>');
   expect(html).toContain(`rel="canonical" href="${metadata.url}"`);
   expect(html).toContain('"@type":"CollectionPage"');
-  expect(html).toContain('"numberOfItems":12');
-  for (const slug of ["thanksgiving-movies-by-mood", "sci-fi-mystery-movies", "best-sci-fi-movies-2026", "completed-miniseries-to-watch", "movies-like-knives-out", "best-thriller-movies-2026", "november-2026-movie-releases", "is-whalefall-based-on-a-book", "best-horror-movies-2026", "september-2025-new-movies-guide", "august-2025-new-movies-guide", "why-2-39-1-feels-more-cinematic"]) expect(html).toContain(`href="/blog/${slug}"`);
+  expect(html).toContain('"numberOfItems":13');
+  for (const slug of ["december-2026-movie-releases", "thanksgiving-movies-by-mood", "sci-fi-mystery-movies", "best-sci-fi-movies-2026", "completed-miniseries-to-watch", "movies-like-knives-out", "best-thriller-movies-2026", "november-2026-movie-releases", "is-whalefall-based-on-a-book", "best-horror-movies-2026", "september-2025-new-movies-guide", "august-2025-new-movies-guide", "why-2-39-1-feels-more-cinematic"]) expect(html).toContain(`href="/blog/${slug}"`);
   expect(html).not.toContain("/cover.webp");
   const routes = JSON.parse(readFileSync(path.resolve("vercel.json"), "utf8")).routes;
   expect(routes.find((route: { src: string; dest?: string }) => route.src === "^/blog/?$")?.dest).toBe("/blog.html");

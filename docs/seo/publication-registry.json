@@ -268,6 +268,28 @@
       }
     },
     {
+      "path": "/blog/december-2026-movie-releases",
+      "url": "https://hard-quiz.com/blog/december-2026-movie-releases",
+      "kind": "article",
+      "slug": "december-2026-movie-releases",
+      "publishedOn": "2026-11-12",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/thanksgiving-movies-by-mood",
       "url": "https://hard-quiz.com/blog/thanksgiving-movies-by-mood",
       "kind": "article",

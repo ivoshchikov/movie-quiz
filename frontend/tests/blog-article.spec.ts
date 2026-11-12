@@ -10,7 +10,7 @@ const articles = [
   { slug: "september-2025-new-movies-guide", title: "September 2025 Movie Releases: 9 Picks (US)", date: "2025-09-01", social: "/blog-assets/original/archive-september-2025-social.webp", films: 9 },
   { slug: "why-2-39-1-feels-more-cinematic", title: "Why 2.39:1 Feels More Cinematic", date: "2025-08-15", social: "/blog-assets/original/scope-guide-social.webp", films: 0 },
 ];
-const relatedTitle = "Thanksgiving Movies: What to Watch by Mood";
+const relatedTitle = "December 2026 Movie Releases: US Theater Dates";
 const url = (index: number) => "/blog/" + articles[index].slug;
 async function open(page: Page, index = 0, suffix = "") {
   const calls = await mockQuizApi(page);
@@ -61,6 +61,28 @@ test("a source opens a separate tab and leaves the article open", async ({ page,
   expect(await newTab.evaluate(() => window.opener === null)).toBe(true);
   await expect(page).toHaveURL(articleUrl);
   await newTab.close();
+});
+
+test("December calendar distinguishes wide openings, previews and limited runs on a phone", async ({ page }) => {
+  await mockQuizApi(page);
+  await page.setViewportSize({ width: 320, height: 780 });
+  await page.goto("/blog/december-2026-movie-releases");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("December 2026 Movie Releases: US Theater Dates");
+  const table = page.getByRole("table", { name: "Selected U.S. theatrical openings and special screenings" });
+  await expect(table.locator("tbody tr")).toHaveCount(10);
+  const dune = table.getByRole("row").filter({ hasText: "Dune: Part Three" });
+  const lookBack = table.getByRole("row").filter({ hasText: "Look Back" });
+  await expect(dune.locator("time").first()).toHaveAttribute("datetime", "2026-12-18");
+  await expect(dune.locator('time[datetime="2026-12-14"]')).toHaveCount(1);
+  await expect(dune.locator('time[datetime="2026-12-15"]')).toHaveCount(1);
+  await expect(lookBack).toContainText("Select theaters");
+  await expect(lookBack.locator("time").first()).toHaveAttribute("datetime", "2026-12-30");
+  await expect(lookBack.locator("time").last()).toHaveAttribute("datetime", "2027-01-15");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await dune.getByRole("link", { name: "Dune: Part Three", exact: true }).click();
+  await expect(page).toHaveURL(/#dune-part-three$/);
+  await expect(page.getByRole("heading", { name: "Dune: Part Three", exact: true })).toBeFocused();
+  await expect(page.getByRole("link", { name: "CC0 1.0", exact: true })).toHaveAttribute("target", "_blank");
 });
 
 for (const [index, article] of articles.entries()) {
@@ -182,16 +204,20 @@ test("related articles use a common topic and the explainer honestly offers more
 
 test("Back restores an unfragmented article's reading position after a related link", async ({ page }) => {
   await open(page);
-  await page.locator(".hq-article-card").filter({ hasText: relatedTitle }).scrollIntoViewIfNeeded();
-  const position = await page.evaluate(() => scrollY);
+  const related = page.locator(".hq-article-card").filter({ hasText: relatedTitle });
+  await related.scrollIntoViewIfNeeded();
+  await related.evaluate(link => link.addEventListener("click", () => {
+    document.documentElement.dataset.articleClickScroll = String(scrollY);
+  }, { once: true }));
+  await related.click();
+  const position = await page.evaluate(() => Number(document.documentElement.dataset.articleClickScroll));
   expect(position).toBeGreaterThan(1000);
-  await page.locator(".hq-article-card").filter({ hasText: relatedTitle }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(relatedTitle);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(articles[0].title);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(position, 0);
-  await expect(page.locator(".hq-article-card").filter({ hasText: relatedTitle })).toBeInViewport();
+  await expect(related).toBeInViewport();
 });
 
 test("a configured origin agrees across generated article metadata, RSS and sitemap", () => {
@@ -232,8 +258,9 @@ test("a failed image reserves its space, stops requests and resets on article na
   expect(box!.width / box!.height).toBeCloseTo(2 / 3, 2);
   await page.locator(".hq-article-card").filter({ hasText: relatedTitle }).click();
   await page.locator(".hq-article-image").first().scrollIntoViewIfNeeded();
-  await expect(page.locator(".hq-article-image img").first()).toBeVisible();
-  await expect(page.locator(".hq-article-image img").first()).toHaveAttribute("loading", "eager");
+  const replacement = page.locator(".hq-article-image img").first();
+  await expect(replacement).toHaveAttribute("src", "/blog-assets/december-2026-cover.webp");
+  await expect.poll(() => replacement.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
   await expect(page.locator(".hq-article-image img").first()).toHaveAttribute("decoding", "async");
   await expect(page.locator(".hq-article-image-fallback")).toHaveCount(0);
   expect(requests).toBe(1);

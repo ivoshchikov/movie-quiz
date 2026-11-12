@@ -1,0 +1,20 @@
+{
+  "/blog-assets/december-2026-cover.webp": {
+    "src": "/blog-assets/december-2026-cover.webp",
+    "srcSet": "/blog-assets/december-2026-480.webp 480w, /blog-assets/december-2026-800.webp 800w, /blog-assets/december-2026-cover.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
+  "https://hard-quiz.com/blog-assets/december-2026-640.webp": {
+    "src": "/blog-assets/december-2026-640.webp",
+    "srcSet": "/blog-assets/december-2026-480.webp 480w, /blog-assets/december-2026-640.webp 640w, /blog-assets/december-2026-800.webp 800w",
+    "width": 640,
+    "height": 360
+  },
+  "/blog-assets/december-2026-imax-reel.webp": {
+    "src": "/blog-assets/december-2026-imax-reel.webp",
+    "srcSet": "/blog-assets/december-2026-imax-reel-480.webp 480w, /blog-assets/december-2026-imax-reel.webp 1000w",
+    "width": 1000,
+    "height": 750
+  }
+}
