@@ -42,12 +42,17 @@ async function prepare() {
   const files = fs.readdirSync(dist, { recursive: true }).filter(file => file.endsWith('.html'));
   const errors = new Set(['404.html', 'blog/_not-found.html']);
   const redirectLines = ['# Generated from the built HTML catalog. Keep query strings on redirects.'];
+  // Vite gives its generated assets content-hashed filenames. Public files
+  // with stable names need revalidation and must live outside this directory.
+  if (fs.existsSync(path.resolve('public/assets'))) throw new Error('The /assets/ directory is reserved for hashed build files.');
   const headerLines = [
     `# Generated for the ${profile} deployment. Do not reuse across profiles.`,
     '/*', ...(profile === 'staging'
       ? ['  X-Robots-Tag: noindex, nofollow']
       : ['  Strict-Transport-Security: max-age=63072000']),
     `  Content-Security-Policy: ${contentSecurityPolicy}`,
+    '/assets/*',
+    '  Cache-Control: public, max-age=31536000, immutable',
   ];
   if (profile === 'production') {
     // Defensive exclusion if alternate URLs are ever enabled in the dashboard.

@@ -7,6 +7,7 @@ import Seo from "./Seo";
 import { loginReturnPath } from "../auth/redirect";
 import { markNicknamePrompted, nicknameSetupDestination, withoutNicknameSetup } from "../profile/nickname";
 import metadata from "../profileSetupMetadata.json";
+import "../nickname.css";
 
 export default function ProfileSetupScreen() {
   const { user, loading: authLoading, error: authError, retrySession } = useAuth();

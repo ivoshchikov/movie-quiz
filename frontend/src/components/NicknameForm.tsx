@@ -4,6 +4,7 @@ import { READ_TIMEOUT } from "../hooks/useReadRequest";
 import { clearNicknameDraft, nicknameDestination, nicknameDraft, storeNicknameDraft } from "../profile/nickname";
 import SiteIcon from "./SiteIcon";
 import { nicknameProblem, normalizeNickname } from "../profile/nicknameValidation";
+import "../nickname.css";
 
 type Availability = { nickname: string; state: "checking" | "available" | "taken" | "error" };
 type FormError = { text: string; taken?: boolean };

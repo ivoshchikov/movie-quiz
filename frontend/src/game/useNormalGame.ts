@@ -26,6 +26,13 @@ interface Actions {
 const initial: GameView = { setupError: null, phase: "setup", category: null, level: null, question: null, options: [],
   number: 0, score: 0, lives: 0, seconds: 0, remaining: 1, elapsed: 0, selected: null, feedback: null, imageAttempt: 0 };
 const playIds = new Map<string, string>();
+export interface ClassicGameSelection {
+  categoryId?: number;
+  difficultyId?: number;
+  category?: Category;
+  level?: DifficultyLevel;
+}
+
 function sessionId(key: string) {
   let id = playIds.get(key);
   try { id ??= sessionStorage.getItem(`hq:quiz:session:${key}`) ?? undefined; } catch { /* Memory fallback. */ }
@@ -34,7 +41,8 @@ function sessionId(key: string) {
   return id;
 }
 
-export function useNormalGame(categoryId: number | undefined, difficultyId: number | undefined, playKey: string) {
+export function useNormalGame(selection: ClassicGameSelection | null, playKey: string) {
+  const { categoryId, difficultyId, category: selectedCategory, level: selectedLevel } = selection ?? {};
   const { loading: authLoading, session } = useAuth();
   const ownerId = session?.user.id ?? null;
   const sessionRef = useRef(session);
@@ -106,9 +114,13 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       if (busy || ended || !mounted) return;
       busy = true; update({ phase: "setup", setupError: null });
       try {
-        const [categories, levels] = await Promise.all([getCategories(), getDifficultyLevels()]);
+        // Reuse settings confirmed by the setup screen. Wait before starting
+        // the session so a discarded effect can still cancel the start.
+        const [category, level] = await Promise.all([
+          selectedCategory?.id === catId ? selectedCategory : getCategories().then(items => items.find(item => item.id === catId)),
+          selectedLevel?.id === diffId ? selectedLevel : getDifficultyLevels().then(items => items.find(item => item.id === diffId)),
+        ]);
         if (!mounted || ended) return;
-        const category = categories.find(c => c.id === catId), level = levels.find(l => l.id === diffId);
         if (!category || !level) throw new Error("invalid-settings");
         update({ category, level, seconds: level.time_limit_secs, lives: level.lives });
         const value = await gameRequest("quiz_start", { p_session: id, p_category_id: catId, p_difficulty_id: diffId });
@@ -214,6 +226,6 @@ export function useNormalGame(categoryId: number | undefined, difficultyId: numb
       window.removeEventListener("pagehide", pageHide); window.removeEventListener("pageshow", pageShow); window.removeEventListener("beforeunload", beforeUnload);
       document.removeEventListener("visibilitychange", focus); window.removeEventListener("focus", focus); window.removeEventListener("storage", storage); release();
     };
-  }, [authLoading, categoryId, difficultyId, playKey, navigate, ownerId]);
+  }, [authLoading, categoryId, difficultyId, selectedCategory, selectedLevel, playKey, navigate, ownerId]);
   return { ...view, actions };
 }

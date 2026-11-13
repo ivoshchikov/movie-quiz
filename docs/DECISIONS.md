@@ -1,3 +1,9 @@
+## Frontend loading and browser caching — 13 November 2026
+
+Load secondary screens and forms when they are opened. Pass the already loaded category and difficulty from Classic setup to its play screen, with catalog lookup for older navigation entries that carry IDs alone. Keep timers based on server deadlines and update the progress bars with CSS transforms.
+
+Apply immutable caching to content-hashed build assets served from `/assets/`. HTML revalidates and private documents retain their explicit response policies. Reserve `/assets/` for generated files so a public file with a stable name cannot inherit the long cache lifetime. See the comparative measurements in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
+
 ## ADS-05 — Approve the separate paused SDK diagnostic
 
 9 November 2026. The owner authorized a separate opt-in Worker diagnostic using the official

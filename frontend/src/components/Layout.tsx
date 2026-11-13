@@ -1,7 +1,6 @@
 import { classicCategories } from "../games/classicCategories";
-import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Transition } from "@headlessui/react";
 import { Helmet } from "react-helmet-async";
 import { getProfile, isAdmin } from "../api";
 import { useAuth } from "../AuthContext";
@@ -17,15 +16,15 @@ import { gaEvent, loadGA, pageview, setAnalyticsBlocked } from "../analytics/ga"
 import { useSiteVisits } from "../analytics/useSiteVisits";
 import { useSitePageViews } from "../analytics/useSitePageViews";
 import PrivacyControls from "../privacy/PrivacyControls";
-import PrivacyDiagnostics from "../privacy/PrivacyDiagnostics";
 import { getConsent, getServerConsent, initializeConsent, isPrivacyDiagnostics, isPrivacyDocument, setConsentGameActive, subscribeConsent } from "../privacy/consent";
 import { flushPendingGameResults, recoverInterruptedGame } from "../game/resultStorage";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../homepage.css";
 import { consumeAuthReturn, loginReturnPath, publicSearch, safeReturnPath } from "../auth/redirect";
 import { clearNicknameDraft, markNicknamePrompted, nicknameWasPrompted } from "../profile/nickname";
-import "../login.css";
-import "../nickname.css";
+
+const AccountMenu = lazy(() => import("./AccountMenu"));
+const PrivacyDiagnostics = lazy(() => import("../privacy/PrivacyDiagnostics"));
 
 const CANON_BASE = "https://hard-quiz.com";
 const DEFAULT_OG = `${CANON_BASE}/og/default.png`;
@@ -37,7 +36,7 @@ export interface SiteOutletContext {
 }
 
 export default function Layout() {
-  const { user, session, loading: authLoading, error: authError, retrySession, callbackError, clearCallbackError, authReturned, finishAuthReturn, signOut } = useAuth();
+  const { user, session, loading: authLoading, error: authError, retrySession, callbackError, clearCallbackError, authReturned, finishAuthReturn } = useAuth();
   const navigate = useNavigate();
   const loc = useLocation();
   const pathname = loc.pathname.replace(/\/+$/, "") || "/";
@@ -163,27 +162,16 @@ export default function Layout() {
         </nav>
         <div className="hq-header-actions"><ThemeSlider />
         {authLoading && !authError ? <span className="hq-account-button hq-account" role="status">Checking account…</span> : !user ? <button className="hq-account-button hq-account" onClick={() => { clearCallbackError(); setShowLogin(true); }}>{authError ? "Check account" : "Log in"}</button>
-          : <Menu as="div" className="hq-account">
-            <Menu.Button className="hq-account-button" aria-label="Account menu">
-              <span className="hq-avatar">{(nickname || "U").slice(0, 1).toUpperCase()}</span>
-              <span className="hq-account-name">{nickname || "My account"}</span><SiteIcon name="chevron" />
-            </Menu.Button>
-            <Transition as={Fragment} enter="transition duration-100 ease-out" enterFrom="opacity-0" enterTo="opacity-100" leave="transition duration-75 ease-in" leaveFrom="opacity-100" leaveTo="opacity-0">
-              <Menu.Items className="hq-account-menu">
-                <Menu.Item><Link className="hq-menu-item" to="/profile"><SiteIcon name="chart" />My results</Link></Menu.Item>
-                {!authLoading && profileReady && !nickname && <Menu.Item><button className="hq-menu-item" onClick={chooseNickname}><SiteIcon name="user" />Choose nickname</button></Menu.Item>}
-                {admin?.owner === owner && admin.value && <Menu.Item><Link className="hq-menu-item" to="/admin/questions"><SiteIcon name="settings" />Admin</Link></Menu.Item>}
-                <div className="hq-menu-divider" />
-                <Menu.Item><button className="hq-menu-item" onClick={() => signOut()}><SiteIcon name="logout" />Log out</button></Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu>}
+          : <Suspense fallback={<span className="hq-account-button hq-account" role="status">{nickname || "My account"}</span>}>
+            <AccountMenu nickname={nickname} canChooseNickname={!authLoading && profileReady && !nickname}
+              chooseNickname={chooseNickname} isAdmin={admin?.owner === owner && admin.value} />
+          </Suspense>}
         </div>
       </div>
     </header>}
     <ChristmasDecorations compact={isGameView} />
     <main id="main-content" tabIndex={-1} className={isGameView ? "hq-play-main" : pathname === "/" ? "hq-shell hq-main" : pathname === "/result" ? "hq-result-main" : pathname === "/daily" ? "hq-daily-main" : isBlogIndex ? "hq-shell hq-blog-main" : isBlogArticle ? "hq-shell hq-article-main" : "mx-auto w-full max-w-6xl flex-1 px-4 py-6"}>
-      {privacyDiagnostics && <PrivacyDiagnostics />}
+      {privacyDiagnostics && <Suspense fallback={null}><PrivacyDiagnostics /></Suspense>}
       {pathname !== "/login" && !showLogin && (callbackError || authError && !["/profile", "/setup-profile"].includes(pathname)) && <div className="hq-auth-banner" role="alert"><p>{callbackError || authError}</p><button className="hq-inline-action" onClick={() => { if (authError) retrySession(); else { clearCallbackError(); setShowLogin(true); } }}>{authError ? "Retry sign-in check" : "Try signing in again"}</button></div>}
       {!isGameView && nicknameNotice?.owner === owner && <div className="hq-auth-banner hq-nickname-notice"><p role="status">{nicknameNotice.alreadyChosen ? <>This account already has the nickname <strong>{nicknameNotice.nickname}</strong>. You can continue with it.</> : <>Your nickname is saved: <strong>{nicknameNotice.nickname}</strong>.</>}</p><button className="hq-inline-action" onClick={() => setNicknameNotice(null)}>Dismiss</button></div>}
       <PageErrorBoundary resetKey={loc.pathname}><Outlet context={{ chooseNickname, openLogin: () => setShowLogin(true), setDailyPlaying,
