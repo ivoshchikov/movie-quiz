@@ -206,6 +206,10 @@ test("repeating the real SEO generator preserves HTML and a single release marke
     const html = fs.readFileSync(path.join("dist", row.file), "utf8");
     assert.equal((html.match(/name="hardquiz:revision"/g) || []).length, release.revision ? 1 : 0);
   }
+  const dailyHtml = fs.readFileSync("dist/daily.html", "utf8");
+  const dailyStyles = [...dailyHtml.matchAll(/href="(\/assets\/[^"]+\.css)"/g)]
+    .map(match => fs.readFileSync(path.join("dist", match[1]), "utf8"));
+  assert.ok(dailyStyles.some(css => css.includes(".hq-daily-card")), "Daily's initial HTML must be styled before JavaScript");
 });
 
 test("the real SEO generator records the checkout for a manual build with incomplete metadata", { skip: !fs.existsSync("dist/seo-release.json") }, () => {
