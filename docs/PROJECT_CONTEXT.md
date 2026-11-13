@@ -2,9 +2,9 @@
 
 The guest Classic landing loads Daily, results, account forms and account menu code when those features are used. Starting Classic from its setup screen reuses the category and level already read from Supabase. Entry points that provide only IDs still resolve them through the catalog. The server sets the game rules and confirms the result. Classic and Time Attack update the timer bar with a transform so the browser can skip recalculating layout for each width change.
 
-Five fresh Chromium loads per build on a 390×844 viewport used 150 ms network latency, 1.6 Mbit/s download, 4× CPU slowdown and identical simulated API responses. The baseline was main at `b2bd37e`. The optimized build moved Play readiness from 2.42 to 2.12 seconds and Play-to-answer readiness from 0.89 to 0.74 seconds. Initial JavaScript shrank from 184,497 to 151,905 bytes with gzip. During three seconds of active Classic play, the median browser layout count dropped from 30 to 5. These are controlled browser measurements. Field Core Web Vitals were unavailable.
+Five fresh Chromium loads per build on a 390×844 viewport used 150 ms network latency, 1.6 Mbit/s download, 4× CPU slowdown and identical simulated API responses. The baseline was main at `b2bd37e`. The optimized build moved Play readiness from 2.41 to 2.15 seconds and Play-to-answer readiness from 0.88 to 0.74 seconds. Initial JavaScript shrank from 184,497 to 151,922 bytes with gzip. During three seconds of active Classic play, the median browser layout count dropped from 30 to 5. These are controlled browser measurements. Field Core Web Vitals were unavailable.
 
-Cloudflare now generates a one-year immutable cache rule for the build's content-hashed `/assets/` files. The production-profile integration tests cover that rule, document revalidation and the game, account and admin response policies. Release evidence belongs in the pull request.
+Cloudflare now generates a one-year immutable cache rule for the build's content-hashed `/assets/` files. The production-profile integration tests cover that rule, document revalidation and the game, account and admin response policies. Daily includes its stylesheet in the initial document. Classic can resume deferred privacy messages while the result code is loading. Release evidence belongs in the pull request.
 
 ## Paused AdSense check — publication authorized
 

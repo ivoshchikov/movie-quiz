@@ -59,7 +59,7 @@ export default function App() {
           <Route path="time-attack" element={<TimeAttackPage />} />
           <Route path="time-attack/play" element={<TimeAttackPlayPage />} />
           <Route path="play"          element={<GameScreen />} />
-          <Route path="result"        element={<ResultScreen />} />
+          <Route path="result" element={<Suspense fallback={<p role="status">Loading your result…</p>}><ResultScreen /></Suspense>} />
           <Route path="blog"          element={<BlogIndex />} />
           <Route path="blog/:slug"    element={<BlogPostPage />} />
           <Route path="blog/*"        element={<BlogPostPage />} />

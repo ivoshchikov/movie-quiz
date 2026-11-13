@@ -193,10 +193,23 @@ test("late CMP messages and manual settings wait for the running game without re
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByRole("button", { name: gameAnswers[0], exact: true })).toBeEnabled();
   expect(await page.evaluate(() => (window as unknown as { __consentFixture: { proceeds: boolean[] } }).__consentFixture.proceeds)).toEqual([]);
-  await page.getByRole("button", { name: "Exit quiz", exact: true }).click();
-  await page.getByRole("button", { name: "End quiz & save", exact: true }).click();
-  await expect(page).toHaveURL(/\/result$/);
-  expect(await page.evaluate(() => (window as unknown as { __consentFixture: { proceeds: boolean[] } }).__consentFixture.proceeds)).toEqual([true]);
+  let releaseResult = () => {};
+  const resultChunk = new Promise<void>(resolve => { releaseResult = resolve; });
+  await page.route(/\/(?:src\/components\/ResultScreen\.tsx|assets\/ResultScreen-[^/]+\.js)(?:\?.*)?$/, async route => {
+    await resultChunk;
+    await route.continue();
+  });
+  try {
+    await page.getByRole("button", { name: "Exit quiz", exact: true }).click();
+    await page.getByRole("button", { name: "End quiz & save", exact: true }).click();
+    await expect(page).toHaveURL(/\/result$/);
+    await expect(page.getByText("Loading your result…", { exact: true })).toBeVisible();
+    await expect.poll(() => page.evaluate(() =>
+      (window as unknown as { __consentFixture: { proceeds: boolean[] } }).__consentFixture.proceeds)).toEqual([true]);
+  } finally {
+    releaseResult();
+  }
+  await expect(page.getByRole("link", { name: "Play again", exact: true })).toBeVisible();
 });
 
 test("a fresh policy document never loads CMP or analytics even with a saved grant", async ({ page }) => {
