@@ -192,6 +192,21 @@ test('robots, sitemap and feed remain static and source maps are excluded', asyn
   assert.equal((await get('/assets/' + map)).status, 404);
 });
 
+test('content-hashed assets are immutable while public documents revalidate', async () => {
+  const page = await get('/');
+  assert.match(page.headers.get('cache-control') || '', /max-age=0,.*must-revalidate/);
+  const html = await page.text();
+  const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.(?:js|css))"/g)].map(match => match[1]);
+  assert.ok(assets.some(asset => asset.endsWith('.js')));
+  assert.ok(assets.some(asset => asset.endsWith('.css')));
+  for (const asset of assets) {
+    const response = await get(asset);
+    assert.equal(response.status, 200, asset);
+    assert.equal(response.headers.get('cache-control'), 'public, max-age=31536000, immutable', asset);
+  }
+  assert.doesNotMatch((await get('/assets/missing.js')).headers.get('cache-control') || '', /immutable/);
+});
+
 test('deployment guard rejects the wrong profile, fixture uploads and changed headers', () => {
   assert.throws(() => checkArtifact(production ? 'staging' : 'production', { directory, offline: true }), /profile mismatch/);
   if (manifest.cloudflare.usesFixtureData) assert.throws(() => checkArtifact(profile), /Fixture data/);

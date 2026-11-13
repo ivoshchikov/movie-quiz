@@ -28,7 +28,7 @@
 .hq-game-timer-label strong { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
 .hq-game-timer-label small { font-size: 12px; font-weight: 400; color: var(--hq-muted); }
 .hq-game-time-track { height: 4px; border-radius: 4px; background: var(--hq-border); overflow: hidden; }
-.hq-game-time-fill { height: 100%; border-radius: inherit; background: var(--hq-purple); }
+.hq-game-time-fill { height: 100%; border-radius: inherit; background: var(--hq-purple); transform-origin: left; }
 .hq-game-time-fill.hq-time-low { background: var(--hq-warning); }
 .hq-game-timer-label strong.hq-time-low { color: var(--hq-warning); }
 .hq-game-answers { grid-area: answers; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 9px; }

@@ -16,10 +16,18 @@ test('balanced homepage launches the selected category and actual difficulty rul
   await page.getByRole('radio', { name: /Actors/ }).click();
   await page.getByRole('radio', { name: 'Hard', exact: true }).click();
   await expect(page.getByRole('radio', { name: 'Hard', exact: true })).toHaveAttribute('aria-checked', 'true');
+  await expect(page.getByRole('button', { name: 'Play Actors' })).toBeEnabled();
+  const catalogReads: string[] = [];
+  page.on('request', request => {
+    const path = new URL(request.url()).pathname;
+    if (path === '/rest/v1/category' || path === '/rest/v1/difficulty_level') catalogReads.push(path);
+  });
   await page.getByRole('button', { name: 'Play Actors' }).click();
   await expect(page).toHaveURL(/\/play$/);
-  await expect(page.getByRole('button', { name: 'Fixture answer', exact: true })).toBeVisible();
-  expect(calls.filter(call => call.name === 'quiz_start').every(call => call.payload.p_category_id === 2 && call.payload.p_difficulty_id === 3)).toBeTruthy();
+  await expect(page.getByRole('button', { name: 'Fixture answer', exact: true })).toBeEnabled();
+  expect(catalogReads).toEqual([]);
+  expect(calls.filter(call => call.name === 'quiz_start').map(call => call.payload))
+    .toEqual([expect.objectContaining({ p_category_id: 2, p_difficulty_id: 3 })]);
 });
 
 test('all difficulties share category availability without issuing level-specific counts', async ({ page }) => {

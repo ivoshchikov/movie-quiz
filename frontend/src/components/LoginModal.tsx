@@ -1,8 +1,11 @@
 import { Dialog } from "@headlessui/react";
+import { lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { loginReturnPath, safeReturnPath } from "../auth/redirect";
-import LoginForm from "./LoginForm";
+import "../login.css";
+
+const LoginForm = lazy(() => import("./LoginForm"));
 
 export default function LoginModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const location = useLocation(), { user } = useAuth();
@@ -12,7 +15,9 @@ export default function LoginModal({ open, onClose }: { open: boolean; onClose: 
     <div className="hq-login-overlay"><Dialog.Panel className="hq-login-card hq-panel">
       <div className="hq-login-intro"><Dialog.Title className="hq-page-heading">Log in to Hard Quiz</Dialog.Title>
         <Dialog.Description>Save your personal bests and play Daily Challenge.</Dialog.Description></div>
-      {open && <LoginForm returnPath={destination} onClose={onClose} />}
+      {open && <Suspense fallback={<><p role="status">Loading sign-in…</p><button className="hq-inline-action" onClick={onClose}>Cancel</button></>}>
+        <LoginForm returnPath={destination} onClose={onClose} />
+      </Suspense>}
     </Dialog.Panel></div>
   </Dialog>;
 }

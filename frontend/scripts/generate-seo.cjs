@@ -162,7 +162,7 @@ ${urls}
     const pageStyles = (html, name) => {
       const isCategory = categories.some(category => category.slug === name);
       // Lazy route CSS must also style the content served before JavaScript starts.
-      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || (Object.hasOwn(publicDocumentMetadata, name) ? ["PublicDocumentPage"] : isCategory ? ["ClassicCategoryPage", "quiz-categories"] : []);
+      const prefixes = { "how-to-play": ["HowToPlay"], blog: ["BlogIndex"], article: ["BlogPost"], daily: ["DailyPage", "daily", "game"], leaderboard: ["LeaderboardPage"], "time-attack": ["TimeAttackPage", "time-attack"], "this-or-that": ["ThisThatPage", "this-that"] }[name] || (Object.hasOwn(publicDocumentMetadata, name) ? ["PublicDocumentPage"] : isCategory ? ["ClassicCategoryPage", "quiz-categories"] : []);
       const assetDir = path.join(DEST_DIR, "assets");
       if (!fs.existsSync(assetDir)) return html;
       const tags = fs.readdirSync(assetDir).filter(file => file.endsWith(".css") && prefixes.some(prefix => file.startsWith(prefix + "-"))).map(file => `<link rel="stylesheet" crossorigin href="/assets/${file}" />`).join("");

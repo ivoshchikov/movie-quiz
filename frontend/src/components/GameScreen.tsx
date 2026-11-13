@@ -3,20 +3,20 @@ import { Dialog } from "@headlessui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { classicCategoryLabel as categoryLabel } from "../hooks/useQuizCatalog";
-import { useNormalGame } from "../game/useNormalGame";
+import { useNormalGame, type ClassicGameSelection } from "../game/useNormalGame";
 import Seo from "./Seo";
 import SiteIcon from "./SiteIcon";
 import ThemeSlider from "./ThemeSlider";
 import { GamePrivacyControls } from "../privacy/PrivacyControls";
 import "../game.css";
 
-interface LocationState { categoryId?: number; difficultyId?: number; }
 export default function GameScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { categoryId, difficultyId } = (location.state as LocationState | null) ?? {};
+  const selection = location.state as ClassicGameSelection | null;
+  const { categoryId, difficultyId } = selection ?? {};
   const validSelection = Number.isInteger(categoryId) && Number.isInteger(difficultyId);
-  const game = useNormalGame(validSelection ? categoryId : undefined, validSelection ? difficultyId : undefined, location.key);
+  const game = useNormalGame(validSelection ? selection : null, location.key);
   const { user } = useAuth();
   const [exitOpen, setExitOpen] = useState(false);
   const ready = game.phase === "playing", busyImage = game.phase === "image-loading";
@@ -71,7 +71,7 @@ export default function GameScreen() {
         </div>
         <div className="hq-game-timer" aria-label={ready || game.phase === "feedback" ? `${game.seconds} seconds left` : "Server question timer"}>
           <div className="hq-game-timer-label"><span><SiteIcon name="timer" />Time left</span><strong className={game.seconds <= 5 && ready ? "hq-time-low" : ""}>{game.seconds}<small> s</small></strong></div>
-          <div className="hq-game-time-track"><div className={`hq-game-time-fill${game.seconds <= 5 && ready ? " hq-time-low" : ""}`} style={{ width: `${Math.max(0, Math.min(1, game.remaining)) * 100}%` }} /></div>
+          <div className="hq-game-time-track"><div className={`hq-game-time-fill${game.seconds <= 5 && ready ? " hq-time-low" : ""}`} style={{ transform: `scaleX(${Math.max(0, Math.min(1, game.remaining))})` }} /></div>
         </div>
         <div className="hq-game-answers" aria-label="Answer choices" aria-busy={game.phase === "checking"}>
           {(game.options.length ? game.options : ["…", "…", "…", "…"]).map((option, index) => {

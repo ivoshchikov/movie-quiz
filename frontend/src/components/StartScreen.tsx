@@ -13,10 +13,10 @@ import GameModeLinks from "./GameModeLinks";
 import QuizCategoryLinks from "./QuizCategoryLinks";
 import { gameMode } from "../games/modes";
 import ModePreview from "./ModePreview";
-import DailySetup from "./DailySetup";
 import { useReadRequest } from "../hooks/useReadRequest";
 import "../modes.css";
 
+const DailySetup = lazy(() => import("./DailySetup"));
 const TimeAttackSetup = lazy(() => import("../pages/TimeAttackPage").then(module => ({ default: module.TimeAttackSetup })));
 const ThisThatSetup = lazy(() => import("../pages/ThisThatPage").then(module => ({ default: module.ThisThatSetup })));
 
@@ -61,7 +61,9 @@ export function ClassicSetup({ fixedCategoryName }: { fixedCategoryName?: string
               {count === 0 && <StatusMessage>No questions in this category yet. Try another category.</StatusMessage>}
               <span className="sr-only" role="status">{availability.loading ? "Checking questions…" : ""}</span>
             </>}
-          <button className="hq-primary" disabled={!canPlay} onClick={() => { if (canPlay) navigate("/play", { state: { categoryId, difficultyId } }); }}>
+          <button className="hq-primary" disabled={!canPlay} onClick={() => {
+            if (canPlay) navigate("/play", { state: { categoryId, difficultyId, category, level } });
+          }}>
             {loading ? "Loading…" : error || !category || !level || availability.error ? "Play quiz" : count === 0 ? "Coming soon" : count == null ? "Checking questions…" : `Play ${classicCategoryLabel(category)}`}
             <SiteIcon name="arrow" />
           </button>

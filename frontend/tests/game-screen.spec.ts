@@ -93,7 +93,7 @@ test("last accepted answer ends the server timer before the final feedback anima
     page.getByRole("heading", { name: "All questions completed!" }),
   ).toBeVisible();
   await expect(page.locator(".hq-result-stats dd").first()).toHaveText("00:02");
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Synced with your account",
   );
 });
@@ -126,7 +126,7 @@ test("exit waits for an accepted answer response and sends only the session ID",
   await end(page);
   expect(d.calls.filter((c) => c.name === "quiz_finish")).toHaveLength(0);
   release();
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Synced with your account",
   );
   await expect(page.locator(".hq-result-score strong")).toHaveText("1");
@@ -141,7 +141,7 @@ test("local score and time changes never become a server result", async ({
   d.failFinish = true;
   await start(page);
   await end(page);
-  await expect(page.getByRole("status")).toContainText("Couldn’t sync");
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText("Couldn’t sync");
   await page.evaluate(() => {
     for (const k of Object.keys(localStorage).filter((k) =>
       k.startsWith("hq:quiz:pending:"),
@@ -154,7 +154,7 @@ test("local score and time changes never become a server result", async ({
   });
   d.failFinish = false;
   await page.reload();
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Synced with your account",
   );
   await expect(page.locator(".hq-result-score strong")).toHaveText("0");

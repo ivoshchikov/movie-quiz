@@ -5,15 +5,14 @@ import { lazy, Suspense } from "react";
 
 import Layout              from "./components/Layout";
 import StartScreen         from "./components/StartScreen";
-import ResultScreen from "./components/ResultScreen";
-import LoginScreen         from "./components/LoginScreen";
-import ProfileSetupScreen  from "./components/ProfileSetupScreen";
 import PrivateRoute        from "./PrivateRoute";
-import DailyPage from "./pages/DailyPage";
-// ❌ removed: import DailyStatsPage from "./pages/DailyStatsPage";
 import NotFound            from "./components/NotFound";
 import { classicCategories } from "./games/classicCategories";
 import { publicDocumentPaths } from "./publicDocuments";
+const ResultScreen = lazy(() => import("./components/ResultScreen"));
+const LoginScreen = lazy(() => import("./components/LoginScreen"));
+const ProfileSetupScreen = lazy(() => import("./components/ProfileSetupScreen"));
+const DailyPage = lazy(() => import("./pages/DailyPage"));
 const PublicDocumentPage = lazy(() => import("./pages/PublicDocumentPage"));
 const ClassicCategoryPage = lazy(() => import("./pages/ClassicCategoryPage"));
 const ThisThatPage = lazy(() => import("./pages/ThisThatPage"));
@@ -60,7 +59,7 @@ export default function App() {
           <Route path="time-attack" element={<TimeAttackPage />} />
           <Route path="time-attack/play" element={<TimeAttackPlayPage />} />
           <Route path="play"          element={<GameScreen />} />
-          <Route path="result"        element={<ResultScreen />} />
+          <Route path="result" element={<Suspense fallback={<p role="status">Loading your result…</p>}><ResultScreen /></Suspense>} />
           <Route path="blog"          element={<BlogIndex />} />
           <Route path="blog/:slug"    element={<BlogPostPage />} />
           <Route path="blog/*"        element={<BlogPostPage />} />
