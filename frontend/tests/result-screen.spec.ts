@@ -57,7 +57,7 @@ test("fresh guest result shows mode, server duration and local status with conte
   );
   await expect(page.locator(".hq-result-score strong")).toHaveText("1");
   await expect(page.locator(".hq-result-stats dd")).toHaveText("00:02");
-  await expect(page.getByRole("status")).toHaveText("Saved on this device");
+  await expect(page.locator(".hq-result-card").getByRole("status")).toHaveText("Saved on this device");
   expect(d.calls.some((c) => c.name === "upsert_user_best")).toBe(false);
   await page
     .getByRole("complementary", { name: "Guest account" })
@@ -82,7 +82,7 @@ for (const [name, best, award] of [
     const d = await gameFixture(page, { signedIn: true, best });
     await play(page);
     await end(page);
-    await expect(page.getByRole("status")).toContainText(
+    await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
       "Synced with your account",
     );
     if (award)
@@ -99,11 +99,11 @@ test("an unavailable finish receipt is retryable and never claims saved or inven
   d.failFinish = true;
   await play(page);
   await end(page);
-  await expect(page.getByRole("status")).toContainText("Couldn’t sync");
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText("Couldn’t sync");
   await expect(page.locator(".hq-result-record")).toHaveCount(0);
   d.failFinish = false;
   await page.getByRole("button", { name: "Retry", exact: true }).click();
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Synced with your account",
   );
 });
@@ -119,12 +119,12 @@ test("a held finish shows syncing and still allows replay", async ({
   });
   await play(page);
   await end(page);
-  await expect(page.getByRole("status")).toContainText("Syncing");
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText("Syncing");
   await expect(
     page.getByRole("link", { name: "Play again", exact: true }),
   ).toBeEnabled();
   release();
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Synced with your account",
   );
 });
@@ -143,7 +143,7 @@ test("legacy results remain readable and pending aggregate scores are never uplo
     page.getByRole("heading", { name: "Last quiz result" }),
   ).toBeVisible();
   await expect(page.locator(".hq-result-score strong")).toHaveText("17");
-  await expect(page.getByRole("status")).toContainText("Saved on this device");
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText("Saved on this device");
   expect(
     d.calls.some(
       (c) => c.name === "quiz_finish" || c.name === "upsert_user_best",
@@ -209,7 +209,7 @@ test("unavailable browser storage keeps a guest result visible without a saved c
   await play(page);
   await end(page, false);
   await expect(page.locator(".hq-result-score strong")).toHaveText("0");
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Browser storage is unavailable",
   );
 });
@@ -237,7 +237,7 @@ test("a late older receipt cannot replace the newest locally retained result", a
   const d = await gameFixture(page, { signedIn: true });
   await play(page);
   await end(page, false);
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".hq-result-card").getByRole("status")).toContainText(
     "Synced with your account",
   );
   const first = [...d.games.keys()][0];
