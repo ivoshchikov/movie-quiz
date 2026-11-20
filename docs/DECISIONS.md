@@ -1,3 +1,13 @@
+## BLOG-VOICE — Original selection and a consistent house voice
+
+21 November 2026. The owner explicitly prioritised authorial selection and writing, asked for a distinctive style and commissioned a review and revision of every blog article.
+
+- Use the English Hard Quiz house voice defined in [AUTHORIAL_STYLE.md](blog/AUTHORIAL_STYLE.md): a specific editorial question, supported observations with consequences, useful comparisons and clear reservations.
+- Treat originality as editorial reasoning, not synonym replacement, a repeated set of callout labels, an invented critic or a claim to have personally watched films.
+- Apply the approach to all thirteen current posts and future work. Adapt it to watchlists, release previews, historical calendars, adaptations and explainers rather than imposing one article template.
+- Preserve article URLs, original publication dates, image provenance and the existing external-link behaviour. Record substantive revisions separately from factual verification; a voice edit does not refresh streaming availability.
+- Maintain the scoped blog instruction and a per-article archive review. Use the established PR, checks and main/Cloudflare release flow for this implementation. Account review and advertising settings are separate work.
+
 ## Frontend loading and browser caching — 13 November 2026
 
 Load secondary screens and forms when they are opened. Pass the already loaded category and difficulty from Classic setup to its play screen, with catalog lookup for older navigation entries that carry IDs alone. Keep timers based on server deadlines and update the progress bars with CSS transforms.

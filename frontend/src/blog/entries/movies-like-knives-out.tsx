@@ -38,9 +38,9 @@ const post: BlogPost = {
   slug: "movies-like-knives-out",
   title: "10 Movies Like Knives Out: Whodunits to Match Your Mood",
   seoTitle: "10 Movies Like Knives Out: A Spoiler-Free Guide",
-  excerpt: "Find your next whodunit after Knives Out: ten films grouped by humor, ensemble suspects and puzzle style, with spoiler-free advice and US viewing links.",
+  excerpt: "Choose what you want back after Knives Out: the joke, the puzzle or the power games. Ten mysteries compared through their hosts, rooms and unreliable stories.",
   date: "2026-10-27",
-  modified: "2026-11-09",
+  modified: "2026-11-21",
   tags: ["Streaming & New Releases", "Thriller", "Comedy"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com/blog-assets/movies-like-knives-out-640.webp",
@@ -53,6 +53,7 @@ const post: BlogPost = {
     { id: "christie-mysteries", label: "For a classic Christie puzzle" },
     { id: "duels-and-deceptions", label: "For verbal traps and deception" },
     { id: "watch-tonight", label: "Which one tonight?" },
+    { id: "follow-the-host", label: "Three details that make the match" },
     { id: "where-to-watch", label: "US viewing links" },
     { id: "how-we-chose", label: "How we chose the films" },
     { id: "mystery-questions", label: "Questions before you watch" },
@@ -75,8 +76,8 @@ const post: BlogPost = {
     { label: "Roger Ebert — Deathtrap: contemporary critical discussion (contains plot discussion)", url: sources.deathtrapReview },
   ],
   content: () => <>
-    <p><strong>For a fresh mystery after <em>Knives Out</em>, start with <a href="#the-last-of-sheila">The Last of Sheila</a> for an intricate party game, <a href="#clue">Clue</a> for outright comedy, or <a href="#gosford-park">Gosford Park</a> for a house full of people separated by money and manners.</strong> If you mainly want Daniel Craig's detective back, <a href="#glass-onion">Glass Onion</a> and <a href="#wake-up-dead-man">Wake Up Dead Man</a> are his next two cases.</p>
-    <p>The murder is only half the attraction of <em>Knives Out</em>. There is also the pleasure of watching people explain themselves badly: defending their status, displaying their resentments and mistaking good manners for good character. Different films reproduce different parts of that experience. These ten picks include <strong>two Benoit Blanc sequels and eight alternatives</strong>, grouped by what you want from your next mystery. The descriptions stay with the setup and tone; no culprits, solutions or concealed identities follow.</p>
+    <p>Somebody has invited these people into the same house, and most of them think they deserve to be there more than somebody else. That is a large part of the pleasure of <em>Knives Out</em>: watching an arrangement of money, manners and family history fail to keep everybody looking respectable. Another murder in another mansion will only reproduce part of it.</p>
+    <p><strong>Our first alternative is <a href="#the-last-of-sheila">The Last of Sheila</a> for a party game whose rules deserve your attention.</strong> Choose <a href="#gosford-park">Gosford Park</a> for the social arrangement, or <a href="#clue">Clue</a> for the room full of comic trouble. If the detective is what you want back, choose <a href="#glass-onion">Glass Onion</a> or <a href="#wake-up-dead-man">Wake Up Dead Man</a>. These ten picks include two Blanc follow-ups and eight alternatives. The comparison follows the source of the pleasure, leaving the solutions untouched.</p>
 
     <figure>
       <ArticleImage src={coverPath} alt="Original Hard Quiz illustration of ten suspect cards arranged around a question mark." width={1200} height={675} priority />
@@ -100,7 +101,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Writer-director:</strong> Rian Johnson · <strong>Key cast:</strong> Daniel Craig, Edward Norton, Janelle Monáe</p>
       {filmContent("knives-out-glass-onion", <>
         <p>A tech billionaire brings his friends to a private Greek island for a reunion and a murder-mystery game. Blanc joins a group whose public confidence rests on a much less comfortable web of personal dependencies.</p>
-        <p>The familiar pleasure is the distance between what people say about themselves and what their behavior reveals. The change is in volume: this is a brighter, more conspicuous world of celebrity, influence and ostentatious wealth. Johnson describes it as more of a satire and a mystery farce in <ExternalLink href={sources.glass}>Netflix's film guide</ExternalLink>. Choose it for the detective's return and the ensemble's comic friction; expect a different social circle from the Thrombey family, rather than another inheritance dispute in the same house.</p>
+        <p>The invitation is a miniature power diagram: the host owns the island and the friends arrive on his terms. That is the detail to carry across from the Thrombey household. The social world has changed from family inheritance to influence and conspicuous wealth. Johnson describes a satire and mystery farce in <ExternalLink href={sources.glass}>Netflix's guide</ExternalLink>. Choose it for Blanc and the group's comic dependencies; the brightness of the holiday is part of a different social invitation.</p>
       </>)}
     </section>
 
@@ -119,7 +120,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Jonathan Lynn · <strong>Key cast:</strong> Tim Curry, Madeline Kahn, Eileen Brennan</p>
       {filmContent("knives-out-clue", <>
         <p>A group of guests gathers in a mansion, each carrying an alias and a reason to be nervous. A butler attempts to keep the evening organized. The evening has other ideas.</p>
-        <p><em>Clue</em> is the pick when the interruptions, accusations and bad behavior matter as much as solving the crime. Its board-game origins provide instantly legible pieces: rooms, weapons, suspects and a house that is increasingly difficult to manage. The comedy is broader than <em>Knives Out</em>'s, with Curry's butler at the center of the commotion. Put it on for a lively group watch, especially when nobody wants a solemn procedural. For a restrained investigation or a sympathetic emotional anchor, start elsewhere on this list. <ExternalLink href={sources.clue}>Paramount's page</ExternalLink> identifies the original 1985 film.</p>
+        <p>A board game supplies wonderfully practical things for a farce to mismanage: rooms, weapons, names and people who keep moving between them. That is the reason to choose <em>Clue</em> for a lively group. Curry's butler has a house to organise while the comedy keeps increasing the administrative burden. It is broader and more openly mechanical than the Thrombeys' social embarrassment. Choose it for comic traffic through a mansion; a restrained procedural or a sympathetic emotional anchor calls for a different pick. <ExternalLink href={sources.clue}>Paramount identifies the 1985 original</ExternalLink>.</p>
       </>)}
     </section>
 
@@ -147,7 +148,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Robert Altman · <strong>Writer:</strong> Julian Fellowes · <strong>Key cast:</strong> Maggie Smith, Helen Mirren, Kelly Macdonald</p>
       {filmContent("knives-out-gosford-park", <>
         <p>A country-house shooting party brings guests and servants together for a weekend that becomes a murder investigation. The people serving the dinner hear things the people eating it would prefer to keep private.</p>
-        <p>If the Thrombeys' assumptions about wealth and work interested you more than the mechanics of the crime, make this your first alternative. The household has two overlapping social worlds, and understanding a person's place in them matters. That makes it worth following an exchange even before you know whether it contains a clue.</p>
+        <p>A servant and a guest can occupy the same room on very different terms. That is the organising detail to follow here: who is expected to listen, who can speak freely and whose work makes the gathering possible. If the Thrombeys' assumptions about wealth and labour were your favourite part of <em>Knives Out</em>, this is our strongest match. An exchange can reveal the household's hierarchy before you know whether it contains a clue.</p>
         <p>Allow for an ensemble drama's pace and density. The attraction is the accumulation of relationships, obligations and small acts of condescension, alongside the mystery. It asks for more attention to the room than the rapid comic machinery of <em>Clue</em>. <ExternalLink href={sources.gosford}>Focus Features</ExternalLink> confirms the country-house premise and the substantial ensemble.</p>
       </>)}
     </section>
@@ -196,10 +197,15 @@ const post: BlogPost = {
 
     <div className="hq-article-takeaway" aria-labelledby="watch-tonight">
       <h2 id="watch-tonight" tabIndex={-1}>Which one should you watch tonight?</h2>
-      <p><strong>My starting recommendation for a new puzzle is <em>The Last of Sheila</em>.</strong> Its party-game premise gives the mystery a clear structure, and Johnson's own account of its influence makes it a rewarding companion to the Blanc films.</p>
+      <p><strong>Our starting recommendation for a new puzzle is <em>The Last of Sheila</em>.</strong> Its host controls the invitation and the rules of the activity, making the social situation part of the mechanism. Johnson's own account of its influence gives the comparison a documented foundation.</p>
       <p>For a group that mainly wants to laugh, pick <em>Clue</em>. For a quieter evening with a complicated household, choose <em>Gosford Park</em>. If you have not seen Blanc's other cases, begin with <em>Glass Onion</em> and leave the older films for a second round.</p>
       <p>Want suspense beyond the whodunit? Our <Link to="/blog/best-thriller-movies-2026">2026 thriller guide</Link> branches into heists, survival and conspiracy stories. Recognize a familiar face? Try a movie or actor quiz using <strong>Choose a game</strong> below.</p>
     </div>
+
+    <h2 id="follow-the-host" tabIndex={-1}>Three details that make the match</h2>
+    <p><strong>Follow the host.</strong> In <em>Glass Onion</em> and <em>The Last of Sheila</em>, a powerful person chooses the guest list and supplies the entertainment. Asking what it means to accept the invitation gives you a way to read the group before anybody explains the crime. This is the route for viewers who enjoy a puzzle with social dependencies built into it.</p>
+    <p><strong>Read the room.</strong> <em>Clue</em> makes a mansion useful to comic confusion; <em>Gosford Park</em> makes a household useful to understanding class and work. Both offer an ensemble, but the ensemble has a different job. A large cast is a surface resemblance; what its members are allowed to do in the same space is a more revealing comparison.</p>
+    <p><strong>Listen to who writes the story.</strong> <em>Sleuth</em> and <em>Deathtrap</em> make professional storytellers dangerous company. Choose them if constructing a convincing account interests you more than following a friendly investigator. That shift is why they are marked as duels and deceptions, rather than being passed off as two more Blanc cases.</p>
 
     <section className="hq-release-index hq-viewing-index" aria-labelledby="where-to-watch">
       <h2 id="where-to-watch" tabIndex={-1}>US viewing links: check the film and the edition</h2>

@@ -10,8 +10,8 @@ const negative = frames["tears-of-steel-launch"];
 const post: BlogPost = {
   slug: "why-2-39-1-feels-more-cinematic",
   title: "Why 2.39:1 Feels More Cinematic",
-  excerpt: "See how 2.39:1 changes composition, what a 16:9 crop removes, and why a wide frame and anamorphic lens characteristics are different things.",
-  date: "2025-08-15", modified: "2026-11-09",
+  excerpt: "Follow a hand, a machine and the space around them: a practical 2.39:1 versus 16:9 comparison, with crop arithmetic and a separate look at anamorphic lenses.",
+  date: "2025-08-15", modified: "2026-11-21",
   tags: ["Explainers & Trivia", "Aspect Ratio"],
   coverUrl: "https://hard-quiz.com/blog-assets/original/scope-guide-cover.webp",
   listingCoverUrl: "https://hard-quiz.com/blog-assets/original/scope-guide-cover-640.webp",
@@ -32,11 +32,13 @@ const post: BlogPost = {
     { label: "ARRI — why 6:5 instead of the full 4:3 frame for 2× anamorphic", url: "https://www.arri.com/en/learn/camera-systems/frequently-asked-questions/alexa-sxt-faq/why-6-5-i-thought-you-needed-4-3-for-anamorphic--41676" },
   ],
   content: () => <>
-    <p>A wide frame gives a filmmaker more horizontal space to work with. That can make a landscape, a group of characters or an empty stretch of a room feel very different. The familiar shape of 2.39:1 also carries an association with theatrical cinema. It is a compositional choice, however, rather than a guarantee of a better image.</p>
+    <p>The useful part of a wide frame is often beside the face you noticed first. A second person may be listening, a machine may dwarf its operator, or an empty stretch of a room may make two people seem reluctant to approach each other. <strong>2.39:1 feels cinematic partly through its theatrical associations and partly through what filmmakers do with those horizontal relationships.</strong> We can test the second part with one image.</p>
 
     <h2 id="compare-frames" tabIndex={-1}>Compare 2.39:1 and 16:9</h2>
     <p>Start with one scene. In the second panel, a centered 16:9 crop removes information from the sides. Look at how much of the setting remains around the man and the machine.</p>
     <FrameComparison />
+    <p>Follow the man's hand to the machine. That contact survives the centered crop: you can still understand the immediate action. Now look away from the hand. The wide version gives the railing at the left and the machine at the right more space, placing the man inside an environment. The narrower panel gives that environment less room. The subject remains recognisable; the amount of surrounding information changes.</p>
+    <p>There is arithmetic behind the difference. At the same image height, a 16:9 frame holds about <strong>74% of the width</strong> of a 2.39:1 frame: (16 ÷ 9) ÷ 2.39 ≈ 0.744. A centered crop therefore removes roughly 13% from each side. A face near an edge would need a different crop decision from this central figure.</p>
     <p>A 16:9 television does not have to crop a Scope film. Fitting the full wide image across the screen leaves letterbox bars above and below it. Our comparison deliberately crops the sides to show the difference between preserving and trimming the composition.</p>
 
     <h2 id="what-scope-means" tabIndex={-1}>What Scope means</h2>
@@ -45,9 +47,9 @@ const post: BlogPost = {
 
     <h2 id="composition" tabIndex={-1}>Composition and negative space</h2>
     <h3>Keep several things in view</h3>
-    <p>More horizontal space can hold a conversation, movement and the surrounding setting in one shot. A director can place people at opposite edges or let action unfold across the frame. Whether that works depends on the staging; simply adding width does not make a scene clearer.</p>
+    <p>Try reading a shot in three passes: find the face, find what it is looking toward, then inspect the space between them. A wide composition can keep all three available at once. In a conversation, that might let a listener's reaction remain visible while another person speaks. The width creates an opportunity; staging decides whether the extra information earns its place.</p>
     <h3>Let the surroundings matter</h3>
-    <p>Space around a character can suggest distance, isolation or scale. A wide composition gives you room to build those relationships, while also asking viewers to choose where to look.</p>
+    <p>In the launch image below, find the rocket before scanning the structures on either side. The central light makes the first task easy; the crowded skyline supplies the scale around it. Calling the picture “wide” tells us its shape. Following that sequence of attention explains something about its composition.</p>
     <figure><ArticleImage src={negative.src} alt={negative.alt} width={negative.width} height={negative.height} /><figcaption><FilmFrameCredit id="tears-of-steel-launch" /> The open sky and small rocket set the scale against the dense city. The aspect ratio alone does not create that relationship.</figcaption></figure>
 
     <h2 id="anamorphic" tabIndex={-1}>The lens is a separate choice</h2>
@@ -64,8 +66,8 @@ const post: BlogPost = {
     <p>In every case, decide which part of the captured image will remain in the finished film before composing important details near the edges.</p>
 
     <h2 id="when-to-use" tabIndex={-1}>When another ratio works better</h2>
-    <p>A tall space, a face filling the frame or a video intended for vertical viewing may call for a different shape. Neither 16:9 nor 1.85:1 prevents expressive cinematic composition. The useful question is what the scene needs viewers to see.</p>
-    <div className="hq-article-takeaway"><h3>Choose the frame for the story</h3><p>Use 2.39:1 when the horizontal relationships help the scene. Keep the full composition when presenting it on a different screen, unless a deliberate crop serves a clear purpose.</p></div>
+    <p>A tall doorway, a face filling the image or a video meant to be held vertically may need a different shape. Ask which relationship the scene needs to preserve. A wide room may matter in one shot; the height above a person may matter in the next. 16:9 and 1.85:1 leave filmmakers plenty of expressive choices.</p>
+    <div className="hq-article-takeaway"><h3>A question for the next film you watch</h3><p>When you notice a wide shot, look at both edges before calling it cinematic. What would disappear in a centered crop, and would losing it change your reading of the scene? That is a more useful test than the presence of black bars.</p></div>
   </>,
 };
 export default post;

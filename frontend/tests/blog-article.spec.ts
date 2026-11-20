@@ -89,7 +89,7 @@ for (const [index, article] of articles.entries()) {
   test(article.slug + " has a clear header, true dates, contents and official sources", async ({ page }) => {
     const calls = await open(page, index);
     await expect(page.locator(".hq-article-meta time").first()).toHaveAttribute("datetime", article.date);
-    await expect(page.locator(".hq-article-meta")).toContainText("Updated Nov 9, 2026");
+    await expect(page.locator(".hq-article-meta")).toContainText("Updated Nov 21, 2026");
     await expect(page.locator(".hq-article-meta")).toContainText(/~[1-9]\d* min read/);
     await expect(page.locator(".hq-article-topic")).toHaveText(article.films ? "Movie guides" : "Explainers");
     await expect(page.getByRole("complementary", { name: "Archive notice" })).toHaveCount(article.films ? 1 : 0);
@@ -120,7 +120,7 @@ for (const [index, article] of articles.entries()) {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
     const json = await structuredArticle(page);
     expect(json).toHaveLength(1);
-    expect(json[0]).toMatchObject({ headline: article.title, url: canonical, datePublished: article.date, dateModified: "2026-11-09", publisher: { name: "Hard Quiz" } });
+    expect(json[0]).toMatchObject({ headline: article.title, url: canonical, datePublished: article.date, dateModified: "2026-11-21", publisher: { name: "Hard Quiz" } });
     expect(json[0].author).toBeUndefined();
   });
 }
@@ -385,7 +385,7 @@ test("generated articles are complete without JavaScript, preserve RSS URLs, and
     const redirect = routes.find(rule => !rule.has && rule.src && new RegExp(rule.src).test(url(index) + ".html"));
     expect(redirect?.status).toBe(301);
     const sitemap = readFileSync(path.resolve("dist/sitemap.xml"), "utf8");
-    expect(sitemap).toContain("<loc>https://hard-quiz.com" + url(index) + "</loc><lastmod>2026-11-09</lastmod>");
+    expect(sitemap).toContain("<loc>https://hard-quiz.com" + url(index) + "</loc><lastmod>2026-11-21</lastmod>");
     await expect(page.locator(".hq-article-sources a").first()).toBeVisible();
   }
   const response = await page.goto("/blog/not-a-real-article");

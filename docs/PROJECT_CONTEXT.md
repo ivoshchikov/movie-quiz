@@ -1,3 +1,11 @@
+## Original blog editorial approach — 21 November 2026
+
+The owner made an original approach to selection and writing the first editorial priority. The Hard Quiz house voice notices a supported film detail, explains its consequence and helps the reader choose between actual alternatives. Each article needs its own organising question; a genre keyword or a target count is insufficient. The voice is an observant enthusiast with a clear position and occasional dry humour, with no fictional critic, personal-screening claim or invented biography.
+
+The full thirteen-article archive has received substantive editorial revisions: selection arguments, comparative passages, concrete observations and useful reservations. Release guides remain previews based on announced information. The aspect-ratio article adds a directly observable frame walkthrough and crop arithmetic. Publication dates and stable URLs remain; substantive modifications are dated November 21. Older streaming checks keep their own dates, while fresh source checks are identified specifically.
+
+Read [AUTHORIAL_STYLE.md](blog/AUTHORIAL_STYLE.md) for every future article or rewrite. The instruction is also scoped in `frontend/src/blog/AGENTS.md`. Per-article findings and factual-check limits are recorded in [the archive review](blog/editorial-review-2026-11-21.md). Validation and actual publication evidence belong in the implementation PR; these editorial improvements do not establish AdSense approval.
+
 ## Faster first load and Classic start — 13 November 2026
 
 The guest Classic landing loads Daily, results, account forms and account menu code when those features are used. Starting Classic from its setup screen reuses the category and level already read from Supabase. Entry points that provide only IDs still resolve them through the catalog. The server sets the game rules and confirms the result. Classic and Time Attack update the timer bar with a transform so the browser can skip recalculating layout for each width change.

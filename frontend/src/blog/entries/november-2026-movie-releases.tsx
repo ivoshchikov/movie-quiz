@@ -50,7 +50,7 @@ const films: ReleaseFilm[] = [
     source: sources.cat, sourceLabel: "Warner Bros.",
     body: <>
       <p>Bill Hader voices a Cat with an assignment: help Gabby and Sebastian, two siblings struggling with a move to a new town. His methods involve the kind of imaginative disorder that makes a simple visit rather more complicated. The risk of losing his magical hat gives this new animated adventure its own stakes.</p>
-      <p>The self-contained story makes this a straightforward place to start for a family cinema trip. Be careful with the date: Warner Bros. lists international openings from November 4, while the North American theatrical and IMAX opening is <strong>November 6</strong>.</p>
+      <p>Moving to a new town gives the disorder a useful purpose: unfamiliar surroundings are already the children's problem before the Cat begins complicating them. Choose this premise for a family that wants to enter a new animated story; <em>Hexed</em> below offers a different parent-and-child invitation later in the month. The dates need separate attention: international openings began November 4, while the North American theatrical and IMAX date is <strong>November 6</strong>.</p>
     </>,
   },
   {
@@ -61,7 +61,7 @@ const films: ReleaseFilm[] = [
     source: sources.godzilla, sourceLabel: "TOHO / Godzilla",
     body: <>
       <p>Takashi Yamazaki returns to the Shikishima family's story two years after <em>Godzilla Minus One</em>. The setting is 1949, with a fragile recovery threatened by another catastrophe. Ryunosuke Kamiki and Minami Hamabe return, giving the sequel a direct connection to the earlier film's characters.</p>
-      <p>If you have time for one preparatory watch this month, make it <em>Godzilla Minus One</em> (2023). For booking purposes, there are two dates to distinguish: <ExternalLink href={sources.godzillaEarly}>TOHO and GKIDS confirm IMAX early-access screenings on November 3</ExternalLink>, followed by the wide release in premium and standard formats on November 6.</p>
+      <p>The returning family is the reason to give <em>Godzilla Minus One</em> (2023) your one preparatory slot. A city's destruction has different stakes when its attempted recovery already belongs to people you know. Choose that continuity if it is what you want from a monster-film outing. For the historical calendar, distinguish <ExternalLink href={sources.godzillaEarly}>the November 3 IMAX early-access screenings</ExternalLink> from the November 6 wide opening in premium and standard formats.</p>
     </>,
   },
   {
@@ -72,7 +72,7 @@ const films: ReleaseFilm[] = [
     source: sources.wildHorse, sourceLabel: "Searchlight Pictures",
     body: <>
       <p>Shortly before the 1973 Chilean coup, two CIA agents are sent from Santiago to Easter Island. They bring troubled pasts and current conspiracies with them, and a connection with two students adds another complication. John Malkovich and Sam Rockwell play the agents; Steve Buscemi is their bureau chief.</p>
-      <p>Martin McDonagh writes and directs. The premise offers a different sort of tension from November's monsters and arena spectacle: a small group of people, old grievances and a politically charged setting. Searchlight lists November 6, but does not specify the rollout's scale on its film page. Check your city's listings rather than assuming a nationwide opening.</p>
+      <p>Sending a troubled partnership away from the centre of events does not remove its baggage. That is the reason this Martin McDonagh premise interests us beside the month's larger-scale spectacle: the mission travels with two people who already have problems of their own. Choose it for political intrigue and difficult company. Searchlight's November 6 date did not specify the scale of the rollout at our full-calendar check, so local availability is a separate question.</p>
     </>,
   },
   {
@@ -82,7 +82,7 @@ const films: ReleaseFilm[] = [
     source: sources.ebenezer, sourceLabel: "Paramount's official film site",
     body: <>
       <p>Johnny Depp plays Ebenezer Scrooge in Ti West's new take on the familiar Christmas figure. The ensemble includes Rupert Grint, Andrea Riseborough and Ian McKellen. Paramount's current film site uses the title <em>Ebenezer</em> and gives November 13 as the US opening.</p>
-      <p>The recognizable name makes this an easy title to suggest for a seasonal outing, but check the trailer and current content guidance before making it a family booking. A Christmas setting alone tells you little about how gentle a ghost story will be.</p>
+      <p>A familiar Christmas figure is useful common ground for a group, but the ghosts determine what sort of outing follows. We would choose this prospect for people curious about how a new filmmaker handles an old seasonal story. Check the trailer and current content guidance before turning recognition of Scrooge into a family booking. Familiarity with the name does not establish the intensity of this version.</p>
     </>,
   },
   {
@@ -93,7 +93,7 @@ const films: ReleaseFilm[] = [
     source: sources.bank, sourceLabel: "Amazon MGM Studios' official trailer",
     body: <>
       <p>A bank-robbing crew broadcasts its heists and becomes a social-media phenomenon. That visibility also puts the robbers in the sights of an FBI agent and a software engineer. David Leitch directs, with Nicholas Hoult, Zoë Kravitz and Anna Sawai among the cast.</p>
-      <p>The crew's appetite for an audience is the complication to watch: every new viewer is also another witness. The wide opening remains November 13. <ExternalLink href={sources.bankEarly}>Harkins also lists an early-access screening on November 11</ExternalLink>; check participating locations and showtimes before booking.</p>
+      <p>A robber normally benefits from being hard to identify. Broadcasting the job makes attention both a reward and a liability, which is why this earns the spectacle-driven crime slot. Compare it with <em>Paper Tiger</em>'s family bargain if you want to choose by the source of the trouble. The calendar records November 13 for the wide opening and <ExternalLink href={sources.bankEarly}>November 11 for a Harkins early-access screening</ExternalLink>; those dates describe different engagements.</p>
     </>,
   },
   {
@@ -104,7 +104,7 @@ const films: ReleaseFilm[] = [
     source: sources.paperTiger, sourceLabel: "NEON",
     body: <>
       <p>Two brothers enter a scheme that promises more than it can safely deliver. Their involvement with the Russian mafia then puts pressure on the family ties they rely on. James Gray directs Adam Driver, Scarlett Johansson and Miles Teller in a story about the point where a financial gamble starts to threaten a family.</p>
-      <p><ExternalLink href={sources.paperTiger}>NEON's current film page confirms a November 13 theatrical opening</ExternalLink>. <ExternalLink href={sources.paperTigerExpansion}>TheWrap reported a November 20 nationwide expansion</ExternalLink> when the release was announced in June. At our October 31 check, Paper Tiger was absent from Cinema United's wide-release calendar, and NEON's page did not separately confirm that expansion. November 20 remains a reported rollout date, not a guarantee of screenings in your city; check local showtimes. The calendar's omission alone does not establish a delay.</p>
+      <p>The useful contrast with <em>How to Rob a Bank</em> is what the characters stand to lose: here the scheme puts an existing family bond under pressure. Choose that premise for a crime drama about obligations turning dangerous. <ExternalLink href={sources.paperTiger}>NEON's page, rechecked November 21, now says “In Theaters”</ExternalLink> and supplies tickets. The table preserves the November 13 opening and <ExternalLink href={sources.paperTigerExpansion}>reported November 20 expansion from the announcement</ExternalLink>. The current studio page does not independently establish the scale of that expansion; check your city.</p>
     </>,
   },
   {
@@ -113,7 +113,7 @@ const films: ReleaseFilm[] = [
     source: sources.hunger, sourceLabel: "Stillking Film",
     body: <>
       <p>Haymitch Abernathy takes the central role as the series returns to Panem 24 years before <em>The Hunger Games</em>. Joseph Zada plays the younger Haymitch, and the story begins with the reaping for the 50th Games, the Second Quarter Quell. Francis Lawrence directs the adaptation of Suzanne Collins's novel.</p>
-      <p>The original <em>The Hunger Games</em> (2012) is a useful refresher if you want to reconnect with Panem and the adult Haymitch before this earlier chapter. Reading <em>Sunrise on the Reaping</em> first will reveal its story, so save the novel for afterward if discovering the events on screen matters more to you. <ExternalLink href={sources.hungerDate}>Lionsgate's announced North American release date is November 20</ExternalLink>.</p>
+      <p>The face you bring from the earlier films changes the invitation: this is the younger life of a man audiences may already know as somebody else's mentor. Our one-film refresher would be <em>The Hunger Games</em> (2012) for that relationship with the adult Haymitch. Save the new novel for afterward if discovery on screen is your priority. <ExternalLink href={sources.hungerDate}>Lionsgate's announced North American opening is November 20</ExternalLink>; local showtimes establish where that date becomes a ticket.</p>
     </>,
   },
   {
@@ -124,7 +124,7 @@ const films: ReleaseFilm[] = [
     source: sources.rocky, sourceLabel: "Amazon MGM Studios / About Amazon",
     body: <>
       <p>Anthony Ippolito plays a young Sylvester Stallone trying to get <em>Rocky</em> made with himself in the lead. The drama lies in that condition: getting the screenplay onto a screen is only part of the ambition. Peter Farrelly directs this dramatization of the struggle behind the 1976 film.</p>
-      <p><ExternalLink href={sources.rocky}>Amazon confirms a select-theater opening on November 6</ExternalLink>, while <ExternalLink href={sources.calendar}>Cinema United lists the wide opening on November 20</ExternalLink>. Watching <em>Rocky</em> beforehand gives you the finished film as a point of comparison. There is no need to work through every subsequent boxing sequel to follow this production story.</p>
+      <p>The condition is the interesting detail: Stallone wants the film made with himself in the part, so a successful sale and a successful ambition need not mean the same thing. Choose this for the struggle over who gets to embody a story. <em>Rocky</em> is the relevant preparation; a marathon of boxing sequels would answer a different question. <ExternalLink href={sources.rocky}>Amazon gives November 6 in select theatres</ExternalLink>, with <ExternalLink href={sources.calendar}>November 20 on the wide-release calendar</ExternalLink>.</p>
     </>,
   },
   {
@@ -134,7 +134,7 @@ const films: ReleaseFilm[] = [
     source: sources.hexed, sourceLabel: "Disney",
     body: <>
       <p>Teenager Billie Doe discovers magical abilities that send her from suburbia into Hexe, a realm of witches. Her cautious mother, Alice, comes along, making the mother-daughter relationship central to the adventure. Hailee Steinfeld and Rashida Jones voice Billie and Alice; Jodie Foster voices Queen Celeste.</p>
-      <p>This original Disney fantasy opens on the Wednesday before Thanksgiving. It is an option for a group looking for a new animated world to explore without franchise preparation. Disney now lists <em>Hexed</em> as <strong>PG</strong> on its <ExternalLink href={sources.hexed}>official US film page</ExternalLink>. Check the detailed content guidance before choosing it for younger children.</p>
+      <p>Bringing a cautious mother into a daughter's new realm gives both characters something to negotiate. That relationship is our reason to shortlist this original fantasy for a group wanting a new world together. Its Wednesday opening also gives the holiday plan a useful slot before Thanksgiving itself. Disney's <ExternalLink href={sources.hexed}>US page</ExternalLink> lists <strong>November 25 and PG</strong>, reconfirmed November 21. Check the detailed guidance for the particular children attending.</p>
     </>,
   },
   {
@@ -144,7 +144,7 @@ const films: ReleaseFilm[] = [
     source: sources.focker, sourceLabel: "Universal Pictures",
     body: <>
       <p>The <em>Meet the Parents</em> family gains a new prospective in-law. Ariana Grande plays Olivia, who is involved with Greg Focker's son Henry, bringing Ben Stiller and Robert De Niro back into another round of family scrutiny. <ExternalLink href={sources.fockerTrailer}>The first trailer's lie-detector sequence</ExternalLink> makes the connection to the series' old anxieties plain.</p>
-      <p>John Hamburg, who co-wrote the previous three films, directs this chapter. If your Thanksgiving group wants returning characters and awkward-family comedy, this is the relevant entry in the calendar. <em>Meet the Parents</em> (2000) is the starting point for the Greg-and-Jack relationship. Universal's US opening is <strong>November 25</strong>.</p>
+      <p>A prospective in-law gives an established family a new person to assess, and a new person a reason to assess the family back. Choose this return when that social scrutiny is the comedy your Thanksgiving group wants. <em>Meet the Parents</em> (2000) introduces Greg and Jack's arrangement; John Hamburg, a co-writer of the previous three films, directs the new chapter. The US opening is <strong>November 25</strong>, also listed on Cinema United's calendar at the November 21 check.</p>
     </>,
   },
 ];
@@ -156,9 +156,9 @@ function renderReleaseDate(film: ReleaseFilm) {
 const post: BlogPost = {
   slug: "november-2026-movie-releases",
   title: "November 2026 Movie Releases: US Theater Dates",
-  excerpt: "Plan November 2026 at the movies: ten US releases, from Godzilla Minus Zero to The Hunger Games and Hexed, with dates and spoiler-free previews.",
+  excerpt: "Ten November 2026 US releases compared by the history and company you bring, with preparation choices, rollout distinctions and a November 21 planning update.",
   date: "2026-10-18",
-  modified: "2026-11-09",
+  modified: "2026-11-21",
   tags: ["Streaming & New Releases", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
@@ -167,7 +167,7 @@ const post: BlogPost = {
     { id: "release-dates", label: "November release calendar" },
     ...films.map(film => ({ id: film.id, label: film.title })),
     { id: "thanksgiving-movies", label: "Planning a Thanksgiving movie trip" },
-    { id: "october-31-update", label: "October 31 calendar update" },
+    { id: "october-31-update", label: "Calendar checks and November 21 notes" },
     { id: "release-questions", label: "Release-date questions" },
     { id: "sources", label: "Sources" },
   ],
@@ -180,7 +180,7 @@ const post: BlogPost = {
     { label: "Paramount — Ebenezer: current title, November 13 opening and credits", url: sources.ebenezer },
     { label: "Amazon MGM Studios — How to Rob a Bank: official trailer description, release date and credits", url: sources.bank },
     { label: "Harkins — How to Rob a Bank: November 11 early-access listing at participating theaters", url: sources.bankEarly },
-    { label: "NEON — Paper Tiger: November 13 opening, synopsis and cast", url: sources.paperTiger },
+    { label: "NEON — Paper Tiger: current theatrical status, synopsis and cast", url: sources.paperTiger },
     { label: "TheWrap — June 25 report of Paper Tiger's November 20 nationwide expansion; not separately reconfirmed by NEON's current page", url: sources.paperTigerExpansion },
     { label: "Amazon MGM Studios / About Amazon — I Play Rocky: select-theater opening, story and cast", url: sources.rocky },
     { label: "Stillking Film — The Hunger Games: Sunrise on the Reaping: adaptation, director and cast", url: sources.hunger },
@@ -191,8 +191,8 @@ const post: BlogPost = {
     { label: "Netflix Tudum — Narnia: The Magician's Nephew: current 2027 theatrical and streaming dates", url: sources.narnia },
   ],
   content: () => <>
-    <p><strong>November 2026's US movie releases include <em>Godzilla Minus Zero</em> on November 6, <em>The Hunger Games: Sunrise on the Reaping</em> on November 20, and <em>Hexed</em> and <em>Focker-In-Law</em> on November 25.</strong> Between them are a Christmas ghost story, two very different crime films and the story behind <em>Rocky</em>.</p>
-    <p>These ten selected theatrical releases give you a way to plan the month by date and mood. The calendar distinguishes wide openings, earlier select-theater runs and special screenings; it does not promise that every film will open nationwide. The ten film entries and release details were reviewed on <time dateTime="2026-10-31">October 31, 2026</time>. Paper Tiger's reported expansion needs a local check; see the <a href="#october-31-update">update below</a>.</p>
+    <p>A familiar name on a cinema board can mean several things: a family you want to meet again, a younger version of somebody you know, or a new attempt at an old ghost story. November's selection asks which history you want to bring to the ticket. The alternatives include two crime premises whose problems begin with very different appetites.</p>
+    <p><strong>The calendar runs from <em>Godzilla Minus Zero</em> on November 6 to <em>Hexed</em> and <em>Focker-In-Law</em> on November 25, with <em>Sunrise on the Reaping</em> on November 20.</strong> The ten entries preserve US opening dates, separating wide releases, select-theatre starts and special screenings. The full calendar check was October 31; the <a href="#october-31-update">November 21 notes</a> recheck selected late-month plans and explain the limit on <em>Paper Tiger</em>'s reported expansion. Opening dates alone do not establish today's local showtimes.</p>
 
     <section className="hq-release-index" aria-labelledby="release-dates">
       <h2 id="release-dates" tabIndex={-1}>November 2026 movie release dates at a glance</h2>
@@ -221,17 +221,18 @@ const post: BlogPost = {
     </section>)}
 
     <h2 id="thanksgiving-movies" tabIndex={-1}>What should you see over Thanksgiving?</h2>
-    <p><strong>For a new family adventure, start with <em>The Cat in the Hat</em> or <em>Hexed</em>.</strong> The Cat opens earlier in the month; Disney's witch-world adventure arrives on November 25, the day before the US Thanksgiving holiday. Check age guidance for the children in your group.</p>
-    <p><strong>For an established series, choose the history you want to revisit.</strong> <em>Sunrise on the Reaping</em> returns to Panem, <em>Godzilla Minus Zero</em> continues the Shikishima family's story, and <em>Focker-In-Law</em> revisits Greg and Jack. Those are different kinds of preparation: a previous film can supply emotional context as well as plot.</p>
-    <p><strong>For a group drawn to crime stories, compare the premises.</strong> <em>How to Rob a Bank</em> has a crew turning robbery into a public spectacle; <em>Paper Tiger</em> starts with brothers drawn into a dangerous scheme. <em>Wild Horse Nine</em> moves toward intelligence work, political intrigue and a troubled partnership. These are choices by setup, not a ranking of films we have screened.</p>
+    <p><strong>For a family entering a new world together, compare <em>Hexed</em> and <em>The Cat in the Hat</em>.</strong> One sends a mother and daughter into an unfamiliar realm; the other brings disorder to siblings already dealing with a new town. The former's November 25 opening makes it a fresh Thanksgiving candidate, while the Cat's earlier opening needs a current local-showtime check. Age guidance finishes the decision.</p>
+    <p><strong>If there is time for one preparatory film, spend it on the relationship.</strong> <em>Godzilla Minus One</em> supplies the returning family's history; <em>The Hunger Games</em> supplies a relationship with the older Haymitch; <em>Meet the Parents</em> introduces Greg and Jack. For <em>I Play Rocky</em>, watching <em>Rocky</em> lets you compare an ambition with the film it produced. Choose the relevant connection instead of building a franchise checklist.</p>
+    <p><strong>For crime, choose what makes the scheme dangerous.</strong> Broadcasting a robbery turns attention into a liability in <em>How to Rob a Bank</em>. A tempting deal puts brothers and their obligations under pressure in <em>Paper Tiger</em>. The second is our premise-based choice for a family-bonds drama; the first is the more obvious candidate for public spectacle. These are reasons to investigate the films, with no claim that we have screened them.</p>
 
-    <h2 id="october-31-update" tabIndex={-1}>What changed in our October 31 check?</h2>
-    <p>The selected films retain their announced November openings. This update corrects the distinction between a theatrical opening and a confirmed wide release:</p>
+    <h2 id="october-31-update" tabIndex={-1}>Calendar checks: October 31 and November 21</h2>
+    <p>Our October 31 full-calendar update separated a theatrical opening from a confirmed wide release:</p>
     <ul>
       <li><strong>Paper Tiger:</strong> the table now leads with NEON's confirmed November 13 opening. The November 20 expansion is attributed to TheWrap's announcement report, with its current confirmation limit explained above.</li>
       <li><strong>Wild Horse Nine:</strong> Searchlight still lists November 6; the guide no longer labels that date as a confirmed nationwide opening.</li>
       <li><strong>How to Rob a Bank:</strong> the November 13 wide opening is unchanged; a Harkins early-access listing for November 11 is now marked separately.</li>
     </ul>
+    <p><strong>November 21 planning note:</strong> Cinema United continues to list <em>Hexed</em> and <em>Focker-In-Law</em> for November 25; Disney separately confirms <em>Hexed</em>'s date and PG rating. NEON now marks <em>Paper Tiger</em> “In Theaters” and provides ticket links, without specifying a nationwide expansion date on the film page. The opening and reported expansion remain separate facts. The ten-film table is a selection, rather than a list of every November release.</p>
 
     <section className="hq-article-faq" aria-labelledby="release-questions">
       <h2 id="release-questions" tabIndex={-1}>Questions about November's releases</h2>
@@ -245,9 +246,9 @@ const post: BlogPost = {
       <p>No. These are US theatrical dates. A studio's connection to a streaming service does not establish a subscription release date. Follow the linked official pages for later viewing announcements, and check the country attached to any listing you find.</p>
     </section>
 
-    <h2>More to watch before November</h2>
+    <h2>For a film night at home</h2>
     <p>If you are choosing a tense watch for tonight, our <Link to="/blog/best-horror-movies-2026">2026 horror watchlist</Link> sorts seven films by mood and explains sequel preparation. For another book-to-screen release, our <Link to="/blog/is-whalefall-based-on-a-book">Whalefall novel and movie guide</Link> explains what the adaptation is based on without revealing the ending.</p>
-    <p><small>Prepared with AI assistance from studio, distributor, exhibitor and exhibition-industry sources, plus reporting on the Focker-In-Law trailer and Paper Tiger's announced expansion. This is a release-planning guide, not a review based on screenings. The ten entries, US dates and Hexed's PG rating were reviewed on October 31, 2026. Paramount and Universal's US synopsis details were checked through indexed official-page text; Paper Tiger's expansion is qualified above.</small></p>
+    <p><small>Prepared with AI assistance from studio, distributor, exhibitor and exhibition-industry sources, plus reporting on the Focker-In-Law trailer and Paper Tiger's announced expansion. The comparisons are release-planning judgments, with no claim of personal screenings. The full-calendar verification date remains October 31, 2026. The November 21 check covers the late-month calendar listings, Disney's Hexed page, NEON's current Paper Tiger page and Netflix's Narnia announcement; it does not renew every local-showtime or availability claim.</small></p>
   </>,
 };
 
