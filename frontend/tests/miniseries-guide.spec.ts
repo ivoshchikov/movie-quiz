@@ -34,7 +34,7 @@ test("the weekend guide distinguishes episode counts, total times and the limits
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://hard-quiz.com" + url);
   await expect(page.locator(".hq-article-meta time")).toHaveCount(2);
   await expect(page.locator(".hq-article-meta time").first()).toHaveAttribute("datetime", "2026-11-01");
-  await expect(page.locator(".hq-article-meta time").last()).toHaveAttribute("datetime", "2026-11-09");
+  await expect(page.locator(".hq-article-meta time").last()).toHaveAttribute("datetime", "2026-11-21");
   expect(calls).toEqual([]);
 });
 

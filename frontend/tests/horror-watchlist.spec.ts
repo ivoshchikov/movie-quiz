@@ -36,7 +36,7 @@ test("the new watchlist serves its complete text, own share image and canonical 
     await expect(still).toHaveAttribute("height", /^[1-9]\d+$/);
   }
   const json = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || "{}")).find(item => item["@type"] === "BlogPosting"));
-  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-11-09", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
+  expect(json).toMatchObject({ headline: title, datePublished: "2026-10-12", dateModified: "2026-11-21", image: "https://hard-quiz.com" + socialImage, publisher: { name: "Hard Quiz" } });
   const sharePage = await context.newPage();
   await sharePage.route("**" + socialImage, route => route.fulfill({ contentType: "image/webp", path: "public" + socialImage }));
   await sharePage.setContent('<img src="https://hard-quiz.com' + socialImage + '" alt="Social cover">');

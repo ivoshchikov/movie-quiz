@@ -55,9 +55,9 @@ const post: BlogPost = {
   slug: "best-horror-movies-2026",
   title: "Best Horror Movies of 2026 So Far: A Spoiler-Free Watchlist",
   seoTitle: "Best Horror Movies of 2026 So Far",
-  excerpt: "Seven horror films to watch in 2026, with US viewing options for Halloween, spoiler-free picks by mood, and essential sequel preparation.",
+  excerpt: "Seven 2026 horror films compared by where the fear begins: a room, a relationship, a pursuit or a community. Spoiler-free choices and dated US viewing notes.",
   date: "2026-10-12",
-  modified: "2026-11-09",
+  modified: "2026-11-21",
   tags: ["Streaming & New Releases", "Horror", "Thriller", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com" + coverPath,
@@ -66,6 +66,7 @@ const post: BlogPost = {
     { id: "quick-picks", label: "Choose a film by mood" },
     { id: "where-to-watch", label: "Where to watch in the US" },
     ...picks.map(({ id, title }) => ({ id, label: title })),
+    { id: "where-fear-starts", label: "Decide where the fear should begin" },
     { id: "how-we-chose", label: "How we chose the films" },
     { id: "watchlist-questions", label: "Viewing questions" },
     { id: "sources", label: "Sources" },
@@ -94,8 +95,8 @@ const post: BlogPost = {
     { label: "Rotten Tomatoes — Primate: content advisory and review roundup", url: "https://www.rottentomatoes.com/m/primate_2025" },
   ],
   content: () => <>
-    <p><strong>Start with <a href="#resident-evil">Resident Evil</a> for an action-driven nightmare, <a href="#hokum">Hokum</a> for haunted-house dread, or <a href="#send-help">Send Help</a> for survival horror with a vicious sense of humor.</strong> If a supernatural wish going wrong sounds more unsettling than a monster chasing you, make <a href="#obsession">Obsession</a> your first pick.</p>
-    <p>This spoiler-free shortlist covers seven horror films selected from US theatrical releases through October 12, 2026. Pick by mood, check sequel requirements, and use the <a href="#where-to-watch">US viewing guide</a> to plan a Halloween movie night. Viewing information was checked again on <time dateTime="2026-10-24">October 24, 2026</time>. No endings, surprise appearances or late-film revelations follow.</p>
+    <p>Some horror gives you something to run from. Other horror makes you reconsider the room, the person beside you or the wish you were pleased to have granted. Those are different contracts with an audience. We chose these seven 2026 films by the point where ordinary life becomes unsafe, then asked which kind of evening each contract suits.</p>
+    <p><strong>Our ghost-story choice is <a href="#hokum">Hokum</a>; our action-first invitation is <a href="#resident-evil">Resident Evil</a>.</strong> Choose <a href="#send-help">Send Help</a> for hostile company and dark comedy, or <a href="#obsession">Obsession</a> when the disturbing part is somebody getting what he wants. The selection covers US theatrical releases through October 12. The <a href="#where-to-watch">viewing table</a> records an October 24 catalog check; confirm current offers through its links. The notes stay with the advertised setups.</p>
 
     <figure>
       <ArticleImage src={coverPath} alt="Original illustration of a red-lit doorway, a long shadow and a crescent moon, with the words Horror 2026" width={1200} height={675} priority />
@@ -127,7 +128,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Zach Cregger · <strong>Lead:</strong> Austin Abrams · <strong>US theatrical release:</strong> September 18, 2026</p>
       {filmContent("horror-2026-resident-evil", <>
         <p>A medical courier named Bryan gets caught in a night that becomes a struggle to stay alive. That is the starting point of Cregger's new <em>Resident Evil</em>, rather than another chapter following Alice from the earlier films. Sony describes it as an original story within a reinvented franchise.</p>
-        <p><strong>Why choose it:</strong> this is the recent release to put near the top of an October horror watchlist if you want action, escalating danger and some dark comic relief. Its favorable critical reception makes it a stronger starting point than choosing a familiar franchise name on recognition alone. The appeal is the experience of surviving the nightmare; you do not need a recap of the previous film series.</p>
+        <p>Bryan's job supplies a useful starting contrast: a courier is supposed to get somewhere, while a survival nightmare makes every stretch of the journey a problem. That is our reason to choose this iteration rather than the franchise name alone. Put it near <em>Primate</em> when deciding how direct you want the danger to be. This is the action-and-escalation route, with an original protagonist and no need to reconstruct Alice's film history.</p>
         <p><strong>Choose something else if:</strong> you want a quiet ghost story or little graphic violence. The US rating cites bloody violence and gore. <ExternalLink href={official.residentEvil}>Sony's official film page</ExternalLink> has the correct 2026 version, release details and viewing information.</p>
       </>)}
     </section>
@@ -137,7 +138,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Curry Barker · <strong>Leads:</strong> Michael Johnston, Inde Navarrette · <strong>US theatrical release:</strong> May 15, 2026</p>
       {filmContent("horror-2026-obsession", <>
         <p>A young man uses a mysterious wish-granting object to make his crush return his feelings. The wish works, but its consequences turn a romantic fantasy into something sinister. That premise is enough to go in with; the less you know about what happens next, the better.</p>
-        <p><strong>Why choose it:</strong> the unsettling question is what happens when someone treats another person's affection as something he can obtain. This is a useful pick for viewers drawn to psychological discomfort and supernatural horror together. In her <ExternalLink href="https://www.rogerebert.com/reviews/obsession-curry-barker-movie-review-2026">RogerEbert.com review</ExternalLink>, Katie Rife singles out Navarrette's performance while also questioning how fully the film gives her character a perspective. That tension is worth keeping in mind, rather than reducing the film to a clever curse.</p>
+        <p>The wish is the revealing detail: somebody wants affection without leaving the other person a choice. The supernatural premise makes that ordinary entitlement impossible to overlook. We include it for viewers who want a desire examined as closely as a threat. Katie Rife's <ExternalLink href="https://www.rogerebert.com/reviews/obsession-curry-barker-movie-review-2026">review</ExternalLink> also questions how much perspective the film gives Navarrette's character. Keep that criticism beside the premise; a film can expose control while still inviting questions about whose experience it shows.</p>
         <p><strong>Choose something else if:</strong> coercive relationships and loss of autonomy are subjects you would rather avoid. The <ExternalLink href={official.obsession}>Focus Features page</ExternalLink> confirms the release and credits. Some databases label the film 2025 because it played festivals before its 2026 US theatrical run.</p>
       </>)}
     </section>
@@ -147,7 +148,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Damian McCarthy · <strong>Lead:</strong> Adam Scott · <strong>US theatrical release:</strong> May 1, 2026</p>
       {filmContent("horror-2026-hokum", <>
         <p>Novelist Ohm Bauman visits a remote inn to scatter his parents' ashes. Stories of a witch haunting the honeymoon suite begin to intrude on his stay. The setting is familiar in the best way: a guest, a room and a local warning he cannot comfortably dismiss.</p>
-        <p><strong>Why choose it:</strong> this is our haunted-house pick for a Halloween evening. McCarthy's setup links the supernatural threat to a character carrying his own history into the building. Brian Tallerico's <ExternalLink href="https://www.rogerebert.com/reviews/hokum-adam-scott-film-review-2026">review of Hokum</ExternalLink> praises that serious treatment of the character alongside the scares. It gives you a clearer reason to try the film than simply looking for a haunted location.</p>
+        <p>A warning about a particular room changes the map of an inn. A corridor now has a destination you would rather avoid, and the guest has brought grief of his own into the building. That combination earns <em>Hokum</em> our ghost-story recommendation. Brian Tallerico's <ExternalLink href="https://www.rogerebert.com/reviews/hokum-adam-scott-film-review-2026">review</ExternalLink> discusses its attention to character alongside the scares. Choose it over <em>Backrooms</em> when you want a haunted place with a troubled visitor and a local history, rather than disorientation as the central invitation.</p>
         <p><strong>Choose something else if:</strong> you are in the mood for an action horror film rather than a story built around an ominous place. <em>Hokum</em> is a standalone film; there is no franchise homework. <ExternalLink href={official.hokum}>NEON's page</ExternalLink> provides the official premise and viewing options.</p>
       </>)}
     </section>
@@ -157,7 +158,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Sam Raimi · <strong>Leads:</strong> Rachel McAdams, Dylan O'Brien · <strong>US theatrical release:</strong> January 30, 2026</p>
       {filmContent("horror-2026-send-help", <>
         <p>Two colleagues survive a plane crash and become stranded on an island. Their working relationship comes with them, even though the rules that governed it have become useless. Getting food and shelter is one problem; deciding who holds power is another.</p>
-        <p><strong>Why choose it:</strong> a horror night does not have to mean two hours of solemn dread. <em>Send Help</em> pairs a survival premise with antagonistic characters and dark comedy. It is the pick here for a group that wants tension and laughs in the same film. The central question is easy to grasp without an explanation of supernatural rules: how long can two people cooperate when they already resent each other?</p>
+        <p>The island removes an office while leaving its hierarchy in the survivors' heads. That is the detail worth choosing this for: a title or a salary can keep meaning something to a person after it has lost its practical use. We recommend it for an audience ready to enjoy the argument as much as the survival problem. Its dark comedy makes it the social option beside the more directly physical danger of <em>Primate</em>.</p>
         <p><strong>Choose something else if:</strong> you want a grounded wilderness survival drama. The studio lists comedy, horror and thriller together, and that mixture is the reason to pick it. <ExternalLink href={official.sendHelp}>20th Century Studios</ExternalLink> confirms the release, cast and premise. There are no earlier films to catch up on.</p>
       </>)}
     </section>
@@ -167,7 +168,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Kane Parsons · <strong>Leads:</strong> Chiwetel Ejiofor, Renate Reinsve · <strong>US theatrical release:</strong> May 29, 2026</p>
       {filmContent("horror-2026-backrooms", <>
         <p>A doorway in the basement of a furniture showroom opens onto something it should not. The film builds on the internet's Backrooms concept: ordinary-looking spaces made frightening by emptiness, repetition and the suspicion that you cannot find the way out.</p>
-        <p><strong>Why choose it:</strong> this is the visual-atmosphere pick. If an empty corridor can unsettle you before anything appears in it, the concept has already found its audience. Brian Tallerico's <ExternalLink href="https://www.rogerebert.com/reviews/backrooms-chiwetel-ejiofor-renate-reinsve-a24-film-review-2026">review</ExternalLink> praises Ejiofor and Reinsve for making the situation believable. Their reactions give the unfamiliar space a human point of reference.</p>
+        <p>An ordinary corridor promises a destination. Repetition and emptiness can make you distrust that promise before a threat appears. That is our reason for including this as the spatial-horror pick. Notice how much of your unease can begin with a place and a missing explanation. Tallerico's <ExternalLink href="https://www.rogerebert.com/reviews/backrooms-chiwetel-ejiofor-renate-reinsve-a24-film-review-2026">review</ExternalLink> discusses how Ejiofor and Reinsve give the unfamiliar situation a human anchor. Choose this invitation when the setting itself is what you want to keep studying.</p>
         <p><strong>Choose something else if:</strong> your priority is a neatly explained mythology. You can start with the film without studying online lore. <ExternalLink href={official.backrooms}>A24's page</ExternalLink> has official credits and viewing links. If the use of empty space interests you, our <Link to="/blog/why-2-39-1-feels-more-cinematic">guide to aspect ratios and composition</Link> explains how framing changes what a viewer notices.</p>
       </>)}
     </section>
@@ -177,7 +178,7 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Nia DaCosta · <strong>Key cast:</strong> Ralph Fiennes, Jack O'Connell, Alfie Williams · <strong>US theatrical release:</strong> January 16, 2026</p>
       {filmContent("horror-2026-the-bone-temple", <>
         <p>The Rage Virus has already remade the world. This chapter continues Spike's story while bringing Dr. Kelson and Jimmy Crystal into focus. The infected remain dangerous, but the beliefs and actions of the living are central to its threat.</p>
-        <p><strong>Why choose it:</strong> this is the franchise pick for viewers who want more than an outbreak and a chase. A doctor trying to understand the infected and a cult leader imposing his own worldview offer very different responses to the same ruined society. That conflict gives the sequel a distinct reason to exist. It also makes this a poor choice for someone who wants to avoid cruelty or graphic violence.</p>
+        <p>A doctor trying to understand the infected and a cult leader imposing an explanation make belief part of the threat. We choose this chapter for that social question: who gets to decide what a ruined world means, and what might that decision permit them to do? It gives the sequel a particular place beside the escape-driven <em>Resident Evil</em>. Bring the preceding film's context and an appetite for a harsh story; cruelty and graphic violence are substantial limits to the recommendation.</p>
         <p><strong>Before you watch:</strong> start with <em>28 Years Later</em> (2025). Sony's <ExternalLink href="https://www.sonypictures.com/movies/28yearslaterthebonetemple/official-faqs">official FAQs</ExternalLink> confirm that <em>The Bone Temple</em> continues directly after it. The earlier <em>28 Days Later</em> films provide wider context, but the 2025 film is the immediate lead-in. The <ExternalLink href={official.boneTemple}>official film page</ExternalLink> supplies credits and viewing links.</p>
       </>)}
     </section>
@@ -187,10 +188,15 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><strong>Director:</strong> Johannes Roberts · <strong>Key cast:</strong> Johnny Sequoyah, Jessica Alexander, Troy Kotsur · <strong>US theatrical release:</strong> January 9, 2026</p>
       {filmContent("horror-2026-primate", <>
         <p>A gathering at an isolated Hawaiian home turns dangerous when the family's pet chimpanzee contracts rabies. The vacation setting becomes a trap, and the threat is close enough to turn a familiar place into a survival problem.</p>
-        <p><strong>Why choose it:</strong> sometimes the right horror film is the one with the clearest setup. <em>Primate</em> is the option here for a contained creature feature rather than a curse, a puzzle or a long-running story. Favorable reviews point to its effectiveness as a chiller, although the appeal depends on your appetite for exaggerated carnage. Treat its animal-attack premise as genre fiction.</p>
+        <p>A contained creature feature makes the audience's first question practical: where could somebody go? Choose this when that physical problem is enough to organise the evening. It is the direct animal-attack route through the selection, with much less interest in the interpretation of a wish or a haunted room. The premise is genre fiction, and its exaggerated carnage is a reason to choose it only if that is the experience your group wants.</p>
         <p><strong>Choose something else if:</strong> gore is a deal-breaker. Its <ExternalLink href="https://www.rottentomatoes.com/m/primate_2025">US rating advisory</ExternalLink> includes strong violence and gore. <ExternalLink href={official.primate}>Paramount's listing</ExternalLink> confirms the January 2026 release; a 2025 label on a review site refers to its earlier festival debut, not a different horror film.</p>
       </>)}
     </section>
+
+    <h2 id="where-fear-starts" tabIndex={-1}>Decide where you want the fear to begin</h2>
+    <p>Compare <em>Hokum</em> and <em>Backrooms</em> if a place is the attraction. An inn with a forbidden room suggests a boundary and a history. Repeated unfamiliar spaces make the boundary itself hard to establish. Choose between investigating a troubled location and losing confidence in a location's ordinary rules.</p>
+    <p>Put <em>Obsession</em> beside <em>Send Help</em> for a less comfortable comparison of relationships. A wish tries to secure another person's affection; an island tests whether an old hierarchy can survive new needs. One turns desire into a supernatural problem, while the other gives resentment a survival setting and a comic temperature. The people are a large part of the danger in both invitations.</p>
+    <p>For a more direct physical threat, choose <em>Primate</em> or <em>Resident Evil</em>. Save <em>The Bone Temple</em> for when you want the preceding film's world and its human responses to catastrophe. The choice should follow the kind of fear you enjoy, with the content limits above settling any remaining disagreement.</p>
 
     <h2 id="how-we-chose" tabIndex={-1}>How we chose these horror films</h2>
     <p>We started with released films that had favorable critical reception, cross-checking the <ExternalLink href="https://editorial.rottentomatoes.com/guide/best-new-horror-movies-2026/">Rotten Tomatoes 2026 horror guide</ExternalLink> against individual reviews and official distributor pages. Then we chose a range of viewing experiences: supernatural unease, folk horror, dark comedy, uncanny spaces, action and creature horror. This is a selective watchlist, rather than a claim that every reader will agree on one winner.</p>

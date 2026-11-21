@@ -5,7 +5,7 @@ import ExternalLink from "../components/ExternalLink";
 import { formatBlogDate } from "../presentation";
 import type { BlogPost } from "../types";
 
-const checkedOn = "2026-11-12";
+const checkedOn = "2026-11-21";
 const assetRoot = "/blog-assets/december-2026";
 const cover = `${assetRoot}-cover.webp`;
 const photo = {
@@ -36,56 +36,56 @@ const releases: Release[] = [
   {
     id: "behemoth", title: "Behemoth!", date: "2026-12-04", pick: "A drama about coming home",
     sourceLabel: "Searchlight Pictures", source: "https://www.searchlightpictures.com/behemoth/",
-    preview: <p>Pedro Pascal plays Alex Serian, a cellist who returns to Los Angeles after two decades on the road. Tony Gilroy writes and directs, with Olivia Wilde and Eva Victor among the cast. This is the early-December pick if you want a contemporary drama about a musician coming home to a city he left years ago.</p>,
+    preview: <><p>Pedro Pascal plays Alex Serian, a cellist returning to Los Angeles after twenty years on the road. Tony Gilroy writes and directs, with Olivia Wilde and Eva Victor among the cast.</p><p>We would reserve this early-December slot for a viewer interested in the life organised around making art. Coming home gives the premise a useful question: what is left of a familiar place after a profession has kept someone moving for two decades? Put it beside <em>Look Back</em> as the month's other invitation to think about creative work. This is a reason to follow the announced story, rather than an advance verdict on its execution.</p></>,
   },
   {
     id: "violent-night-2", title: "Violent Night 2", date: "2026-12-04", pick: "R-rated Christmas action",
     sourceLabel: "Universal Pictures", source: "https://www.violentnightmovie.com/",
-    preview: <p>David Harbour's Santa is back, this time taking on a gangster who's terrorizing a shopping mall. The mall gives the action a different setting from the family estate in the 2022 film. Pick it for an action-comedy crowd that likes its Christmas movies loud. <ExternalLink href={violentNightShowtimes}>Cinemark lists it as R</ExternalLink>.</p>,
+    preview: <><p>David Harbour's Santa faces a gangster terrorising a shopping mall, according to <ExternalLink href={violentNightShowtimes}>Cinemark's synopsis</ExternalLink>. The mall replaces the first film's family estate as the announced setting.</p><p>That makes it the Christmas-action invitation: festive retail space supplies a recognisable place for a distinctly unfestive confrontation. Suggest it to the group that wants the holiday treated as action-comedy material. The 2022 <em>Violent Night</em> is the most useful test of whether the combination suits you. <ExternalLink href={cinemaUnited}>Cinema United lists the sequel as R</ExternalLink>, so a Santa costume is insufficient family guidance.</p></>,
   },
   {
     id: "zero-ad", title: "Zero A.D.: The Birth of Christ", date: "2026-12-11", pick: "A biblical drama with high stakes",
     sourceLabel: "Angel Studios", source: "https://www.angel.com/press/zero-ad",
-    preview: <p>The story follows Mary trying to keep her newborn safe as King Herod sees the child as a threat to his rule. Angel lists a PG-13 rating, citing strong violence and bloody imagery. Check that guidance if you're planning a church or family outing with younger viewers.</p>,
+    preview: <><p>Mary tries to keep her newborn safe while King Herod sees the child as a threat to his rule. Angel lists PG-13 for strong violence and bloody imagery.</p><p>The planning distinction is between familiarity with a Nativity story and the intensity of a particular dramatization. This premise places the mother and child's safety under immediate pressure. Choose it for that biblical-drama invitation and check the content guidance before organising a church or mixed-age outing. A seasonal subject cannot settle that decision on its own.</p></>,
   },
   {
     id: "avengers-doomsday", title: "Avengers: Doomsday", date: "2026-12-18", pick: "A Marvel crossover",
     sourceLabel: "Disney Movies", source: "https://movies.disney.com/avengers-doomsday",
-    preview: <p>Anthony and Joe Russo bring together the Avengers, the Fantastic Four and returning X-Men, among others. Robert Downey Jr. plays Victor von Doom. If you're mostly curious about how those teams fit together, use the short catch-up list below to pick a film or two.</p>,
+    preview: <><p>Anthony and Joe Russo bring together the Avengers, the Fantastic Four and returning X-Men, among others. Robert Downey Jr. plays Victor von Doom.</p><p>The booking question is how much of the attraction comes from recognising the people entering the frame. A crossover promises new combinations of shared history; that is a different investment from following Paul's continuing story in <em>Dune</em> on the same date. Choose the ensemble encounter if those meetings are what you want from the ticket. The catch-up suggestions below offer starting points without pretending two films explain an entire screen universe.</p></>,
   },
   {
     id: "dune-part-three", title: "Dune: Part Three", date: "2026-12-18", pick: "Epic science fiction",
     sourceLabel: "Warner Bros.", source: "https://www.dunemovie.com/",
     bookingNote: <>Insider screenings <time dateTime="2026-12-14">Dec 14</time>–<time dateTime="2026-12-15">15</time></>,
-    preview: <p>Denis Villeneuve's third film picks up with Paul Atreides in power and facing the consequences of his reign. If the people and politics of Arrakis are hazy, give yourself time for the first two films. Warner Bros. lists Dune Insider screenings on December 14 and 15 ahead of the December 18 wide release. For a 70mm film print, start with <ExternalLink href={imax70mm}>IMAX's participating venue list</ExternalLink> and check the format on your theater's showtime.</p>,
+    preview: <><p>Denis Villeneuve's third film finds Paul Atreides in power and facing its consequences. Warner Bros. lists Dune Insider screenings on December 14 and 15 before the December 18 wide opening.</p><p>Where <em>Doomsday</em> invites recognition across teams, this invitation depends on following a rise into its aftermath. Give the first two films time if the people and politics of Arrakis have blurred together. For a projected 70mm print, use <ExternalLink href={imax70mm}>IMAX's venue list</ExternalLink> and check the actual showtime's format; the word IMAX alone does not identify a film print. Story preparation and projection choice are two separate parts of this booking.</p></>,
   },
   {
     id: "the-angry-birds-movie-3", title: "The Angry Birds Movie 3", date: "2026-12-23", pick: "An animated comedy before Christmas",
     sourceLabel: "Paramount Pictures", source: "https://www.paramount.com/movies/the-angry-birds-movie-3",
-    preview: <p>Red has a new challenge alongside saving the world: becoming a father. Jason Sudeikis, Josh Gad and Danny McBride return as Red, Chuck and Bomb. With a Wednesday opening, this is an animated option if you want to take the kids to a movie before Christmas Day. Check your theater's showtimes and age guidance when booking.</p>,
+    preview: <><p>Red faces becoming a father alongside saving the world, with Jason Sudeikis, Josh Gad and Danny McBride returning as Red, Chuck and Bomb.</p><p>The family-calendar advantage is practical: its Wednesday opening gives you an option before Christmas Day's crowded selection. The announced parenting turn also supplies a reason to revisit Red beyond meeting the same trio again. Put it on a mixed-age shortlist if the earlier films suit your household, then check the current classification and showtimes. An animated sequel still needs an audience-specific choice.</p></>,
   },
   {
     id: "jumanji-open-world", title: "Jumanji: Open World", date: "2026-12-25", pick: "A group adventure comedy",
     sourceLabel: "Sony Pictures", source: "https://jumanji.movie/",
-    preview: <p>The game's dangers spill into the real world, with Dwayne Johnson, Kevin Hart, Jack Black and Karen Gillan back for the final film in their trilogy. Sony and <ExternalLink href={jumanjiShowtimes}>Cinemark</ExternalLink> both put the opening on Christmas Day. It's an easy candidate to suggest when a group wants action and comedy in the same ticket.</p>,
+    preview: <><p>The game breaks into the real world, with Dwayne Johnson, Kevin Hart, Jack Black and Karen Gillan back for the final film in their trilogy. The <ExternalLink href={jumanjiShowtimes}>exhibitor synopsis</ExternalLink> repeats Sony's Christmas invitation.</p><p>Choose this candidate when the company is the point: a returning comic group has a new boundary for the game to cross. Catching up with <em>Welcome to the Jungle</em> and <em>The Next Level</em> is a more relevant use of preparation time than treating every film bearing the title as homework. This is the ensemble-adventure prospect on Christmas Day, beside the very different invitations of <em>Werwulf</em> and <em>Mr. Irrelevant</em>.</p></>,
   },
   {
     id: "werwulf", title: "Werwulf", date: "2026-12-25", pick: "Christmas-night folk horror",
     sourceLabel: "Focus Features", source: "https://www.focusfeatures.com/werwulf",
     bookingNote: <>35mm in Pleasantville, NY</>,
-    preview: <p>Robert Eggers directs a werewolf story with Aaron Taylor-Johnson, Lily-Rose Depp and Willem Dafoe. For an audience that liked the dread and period detail of <em>The Witch</em> or <em>Nosferatu</em>, this is the horror choice on Christmas Day. The <ExternalLink href={werwulf35mm}>Jacob Burns Film Center</ExternalLink> lists a 35mm presentation in Pleasantville, New York.</p>,
+    preview: <><p>Robert Eggers directs a werewolf story with Aaron Taylor-Johnson, Lily-Rose Depp and Willem Dafoe. The <ExternalLink href={werwulf35mm}>Jacob Burns Film Center</ExternalLink> lists a 35mm presentation opening December 25 in Pleasantville, New York.</p><p>Make this the deliberate horror booking in the Christmas group, especially for viewers drawn to Eggers's earlier period settings in <em>The Witch</em> or <em>Nosferatu</em>. A director's earlier work gives you a reason to be curious, rather than evidence that an unreleased film succeeds. If the film-print presentation is part of the outing, verify the venue and format together; one theatre's listing is not a national 35mm rollout.</p></>,
   },
   {
     id: "mr-irrelevant", title: "Mr. Irrelevant", date: "2026-12-25", pick: "An NFL underdog story",
     sourceLabel: "Paramount Pictures", source: "https://www.paramount.com/movies/mr-irrelevant",
-    preview: <p>David Corenswet plays John Tuggle, the final pick of the 1983 NFL Draft, as he tries to earn a place with the New York Giants. Michael Shannon plays coach Bill Parcells. The draft gives the film its starting point, and the work of staying on the team gives it a story to follow even if you don't watch football.</p>,
+    preview: <><p>David Corenswet plays John Tuggle, the final pick of the 1983 NFL Draft, trying to earn a place with the New York Giants. Michael Shannon plays coach Bill Parcells.</p><p>A draft position is a public assessment before a player gets to demonstrate what he can do. That is the underdog premise worth bringing to this booking. Choose it for the contest between an assigned label and work on a team, even if the NFL is unfamiliar. It gives Christmas Day a sports-drama prospect beside a game-world adventure and a horror film; those audiences should agree on the invitation before buying a row of seats.</p></>,
   },
   {
     id: "look-back", title: "Look Back", date: "2026-12-30", pick: "A coming-of-age story about making art",
     sourceLabel: "GKIDS", source: "https://gkids.com/films/look-back-a-film-by-kore-eda/",
     rollout: "Select theaters",
     bookingNote: <>Nationwide expansion <time dateTime="2027-01-15">Jan 15</time></>,
-    preview: <p>Hirokazu Koreeda's live-action adaptation of Tatsuki Fujimoto's manga follows two girls whose drawings turn a school rivalry into a friendship. It's a quieter option for the end of the month. GKIDS lists a select-theater start on December 30 and a nationwide expansion on January 15, 2027. Check the December run first if you're hoping to catch it before New Year's.</p>,
+    preview: <><p>Hirokazu Koreeda's live-action adaptation of Tatsuki Fujimoto's manga follows two girls whose drawings turn rivalry into a shared creative life. GKIDS lists December 30 in select theatres and January 15, 2027 nationwide.</p><p>This is our end-of-month alternative for somebody interested in the work behind making an image: practice, comparison and finding another person who cares about the same craft. <em>Behemoth!</em> offers the month's other announced creative-life story, at a very different career stage. The useful caution is geographic. A December date on a calendar will not help if your nearest engagement begins with the January expansion.</p></>,
   },
 ];
 
@@ -96,8 +96,9 @@ function releaseDate(film: Release) {
 const post: BlogPost = {
   slug: "december-2026-movie-releases",
   title: "December 2026 Movie Releases: US Theater Dates",
-  excerpt: "Check 10 December 2026 US movie releases, including Dune: Part Three and Avengers: Doomsday, with wide openings, early IMAX shows and limited runs.",
+  excerpt: "Plan December 2026 by the evening you want: Dune or Avengers, a Christmas group outing or a story about making art, with checked US dates and format notes.",
   date: "2026-11-12",
+  modified: "2026-11-21",
   tags: ["Streaming & New Releases", "2020s"],
   coverUrl: `https://hard-quiz.com${cover}`,
   listingCoverUrl: `https://hard-quiz.com${assetRoot}-640.webp`,
@@ -105,6 +106,7 @@ const post: BlogPost = {
   contents: [
     { id: "release-dates", label: "December release calendar" },
     ...releases.map(film => ({ id: film.id, label: film.title })),
+    { id: "reserve-an-evening", label: "Which evening should you reserve?" },
     { id: "what-to-watch-first", label: "What to watch before the sequels" },
     { id: "screening-formats", label: "How to choose a screening" },
     { id: "sources", label: "Sources" },
@@ -116,11 +118,11 @@ const post: BlogPost = {
     { label: "Jacob Burns Film Center — Werwulf in 35mm", url: werwulf35mm },
     { label: "Disney — the returning teams in Avengers: Doomsday", url: marvelRecap },
     { label: "Cinemark — Jumanji: Open World U.S. opening and synopsis", url: jumanjiShowtimes },
-    { label: "Cinemark — Violent Night 2 U.S. opening and rating", url: violentNightShowtimes },
+    { label: "Cinemark — Violent Night 2 synopsis", url: violentNightShowtimes },
   ],
   content: () => <>
-    <p><strong><em>Avengers: Doomsday</em> and <em>Dune: Part Three</em> both open wide on December 18.</strong> On Christmas Day, there's a new <em>Jumanji</em>, a Robert Eggers horror film and an NFL drama. If you're booking for kids before the holiday, <em>The Angry Birds Movie 3</em> opens Wednesday, December 23.</p>
-    <p>These ten picks cover U.S. theater openings, including advance screenings for <em>Dune</em> on December 14 and 15 and a select-theater start for <em>Look Back</em>. Dates and formats were checked on <time dateTime={checkedOn}>November 12, 2026</time>.</p>
+    <p>December's hardest booking may be agreeing on what sort of evening it is. <strong><em>Avengers: Doomsday</em> and <em>Dune: Part Three</em> share December 18</strong>, while Christmas Day offers a comic game-world adventure, an Eggers werewolf film and an NFL drama. The release date brings those choices together; very little about their invitations makes them interchangeable.</p>
+    <p>We chose ten announced US openings to help reserve an evening, decide on preparation and distinguish a national date from a showtime you can actually book. Dates and the cited format listings were rechecked on <time dateTime={checkedOn}>November 21, 2026</time>. These are planning judgments from announced premises and release information, with no claim of advance screenings.</p>
 
     <section className="hq-release-index" aria-labelledby="release-dates">
       <h2 id="release-dates" tabIndex={-1}>December 2026 movie release dates at a glance</h2>
@@ -144,6 +146,11 @@ const post: BlogPost = {
       <p className="hq-watchlist-facts"><time dateTime={film.date}>{formatBlogDate(film.date)}</time> · <ExternalLink href={film.source}>{film.sourceLabel}</ExternalLink></p>
       {film.preview}
     </section>)}
+
+    <h2 id="reserve-an-evening" tabIndex={-1}>Which evening should you reserve?</h2>
+    <p><strong>December 18: a continuing life or a crossover encounter.</strong> We would prioritise <em>Dune</em> for somebody invested in Paul's story, then choose the projection format. We would prioritise <em>Doomsday</em> for a group whose pleasure comes from seeing familiar teams meet. Both decisions are about what you bring to a new film; neither can be settled by the shared opening date.</p>
+    <p><strong>Christmas: choose the company before the ticket.</strong> <em>Jumanji</em> offers returning comic personalities, <em>Werwulf</em> a deliberate horror outing and <em>Mr. Irrelevant</em> an underdog sports story. <em>The Angry Birds Movie 3</em> opens two days earlier, supplying another possible slot for a family plan. Content guidance and local listings should finish that choice.</p>
+    <p><strong>For creative lives, compare the ends of the month.</strong> <em>Behemoth!</em> begins with an established musician returning home; <em>Look Back</em> begins with young artists finding a shared pursuit. Those premises give the selection a route away from franchise catch-up. Check the latter's limited December run before planning a trip around it.</p>
 
     <h2 id="what-to-watch-first" tabIndex={-1}>What to watch before the sequels</h2>
     <ul>
