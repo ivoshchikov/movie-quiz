@@ -27,6 +27,8 @@ function createBlogImageRightsCheck({ root, publicDir, ledger }) {
     if (!record) throw new Error(`Unregistered blog image in ${post.slug}: ${asset}`);
     if (record.basis === "original_code_artwork") {
       if (!record.sourceCode || !fs.existsSync(path.join(root, record.sourceCode))) throw new Error(`Original artwork has no editable source: ${asset}`);
+    } else if (record.basis === "original_generated_artwork") {
+      if (record.article !== post.slug || !record.provenance || !fs.existsSync(path.join(root, record.provenance))) throw new Error(`Generated artwork needs provenance and its corresponding article: ${asset}`);
     } else if (["conditional_apple_promotion", "apple_store_badge"].includes(record.basis)) {
       if (!inline || !(record.articles || [record.article]).includes(post.slug)) throw new Error(`Promotional artwork is restricted to its corresponding inline film card: ${asset}`);
     } else if (Object.hasOwn(commonsLicenses, record.basis)) {
@@ -53,7 +55,7 @@ function createBlogImageRightsCheck({ root, publicDir, ledger }) {
         const attrs = attributes(tag);
         if (!attrs.src) throw new Error(`Blog image has no source in ${post.slug}`);
         const { asset, record } = checkFile(attrs.src, post, true);
-        if (record.basis === "original_code_artwork" && !/original|illustration/i.test(attrs.alt || "")) throw new Error(`Original artwork needs a truthful alt: ${asset}`);
+        if (["original_code_artwork", "original_generated_artwork"].includes(record.basis) && !/original|illustration/i.test(attrs.alt || "")) throw new Error(`Original artwork needs a truthful alt: ${asset}`);
         if (record.basis === "conditional_apple_promotion") {
           const figure = figures.find(item => hasClass(openingTag(item), "hq-store-poster") && item.includes(`src="${asset}"`));
           const anchors = figure?.match(/<a\b[^>]*>[\s\S]*?<\/a>/g) || [];

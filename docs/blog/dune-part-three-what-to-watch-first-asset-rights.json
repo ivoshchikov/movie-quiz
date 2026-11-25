@@ -1,0 +1,14 @@
+{
+  "/blog-assets/dune-viewing-guide.webp": {
+    "basis": "original_generated_artwork",
+    "article": "dune-part-three-what-to-watch-first",
+    "provenance": "docs/blog/dune-part-three-what-to-watch-first.md",
+    "sha256": "a12396782f88cb2d1b17c8b50de385b8577191a6bb3d3cac185233fcff979863"
+  },
+  "/blog-assets/dune-viewing-guide-640.webp": {
+    "basis": "original_generated_artwork",
+    "article": "dune-part-three-what-to-watch-first",
+    "provenance": "docs/blog/dune-part-three-what-to-watch-first.md",
+    "sha256": "7d005de564a64c588f9b15ddfb0adb79c355a1b06040bbf69bbe31589ee87cc1"
+  }
+}

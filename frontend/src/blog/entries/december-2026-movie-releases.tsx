@@ -98,7 +98,7 @@ const post: BlogPost = {
   title: "December 2026 Movie Releases: US Theater Dates",
   excerpt: "Plan December 2026 by the evening you want: Dune or Avengers, a Christmas group outing or a story about making art, with checked US dates and format notes.",
   date: "2026-11-12",
-  modified: "2026-11-21",
+  modified: "2026-11-25",
   tags: ["Streaming & New Releases", "2020s"],
   coverUrl: `https://hard-quiz.com${cover}`,
   listingCoverUrl: `https://hard-quiz.com${assetRoot}-640.webp`,
@@ -154,7 +154,7 @@ const post: BlogPost = {
 
     <h2 id="what-to-watch-first" tabIndex={-1}>What to watch before the sequels</h2>
     <ul>
-      <li><strong><em>Dune: Part Three</em>.</strong> Watch <em>Dune</em> (2021) and <em>Dune: Part Two</em> (2024) in order. The first introduces Paul and the factions competing for Arrakis. The second explains how he gets to the position he holds in the new film.</li>
+      <li><strong><em>Dune: Part Three</em>.</strong> Watch <em>Dune</em> (2021) and <em>Dune: Part Two</em> (2024) in order. The first introduces Paul and the factions competing for Arrakis. The second explains how he gets to the position he holds in the new film. Our <Link to="/blog/dune-part-three-what-to-watch-first">spoiler-free Dune viewing and reading guide</Link> helps you plan the rewatch and decide when to read <em>Dune Messiah</em>.</li>
       <li><strong><em>Avengers: Doomsday</em>.</strong> For two recent films, start with <em>Thunderbolts*</em> and <em>The Fantastic Four: First Steps</em>. If you're returning after a long gap, add <em>Avengers: Endgame</em> as a refresher for the original team. <ExternalLink href={marvelRecap}>The directors describe which teams cross paths in the new film</ExternalLink>.</li>
       <li><strong><em>Jumanji: Open World</em>.</strong> Start with <em>Jumanji: Welcome to the Jungle</em> and continue with <em>Jumanji: The Next Level</em> to meet this group of players and see how their game works.</li>
       <li><strong><em>Violent Night 2</em>.</strong> <em>Violent Night</em> (2022) introduces Harbour's Santa and gives you a quick way to tell whether the series' mix of action and Christmas comedy suits your group.</li>
