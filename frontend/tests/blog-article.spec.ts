@@ -10,7 +10,7 @@ const articles = [
   { slug: "september-2025-new-movies-guide", title: "September 2025 Movie Releases: 9 Picks (US)", date: "2025-09-01", social: "/blog-assets/original/archive-september-2025-social.webp", films: 9 },
   { slug: "why-2-39-1-feels-more-cinematic", title: "Why 2.39:1 Feels More Cinematic", date: "2025-08-15", social: "/blog-assets/original/scope-guide-social.webp", films: 0 },
 ];
-const relatedTitle = "December 2026 Movie Releases: US Theater Dates";
+const relatedTitle = "Before Dune: Part Three: What to Watch and Read";
 const url = (index: number) => "/blog/" + articles[index].slug;
 async function open(page: Page, index = 0, suffix = "") {
   const calls = await mockQuizApi(page);
@@ -259,7 +259,7 @@ test("a failed image reserves its space, stops requests and resets on article na
   await page.locator(".hq-article-card").filter({ hasText: relatedTitle }).click();
   await page.locator(".hq-article-image").first().scrollIntoViewIfNeeded();
   const replacement = page.locator(".hq-article-image img").first();
-  await expect(replacement).toHaveAttribute("src", "/blog-assets/december-2026-cover.webp");
+  await expect(replacement).toHaveAttribute("src", "/blog-assets/dune-viewing-guide.webp");
   await expect.poll(() => replacement.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
   await expect(page.locator(".hq-article-image img").first()).toHaveAttribute("decoding", "async");
   await expect(page.locator(".hq-article-image-fallback")).toHaveCount(0);
