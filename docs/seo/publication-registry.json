@@ -268,12 +268,34 @@
       }
     },
     {
+      "path": "/blog/dune-part-three-what-to-watch-first",
+      "url": "https://hard-quiz.com/blog/dune-part-three-what-to-watch-first",
+      "kind": "article",
+      "slug": "dune-part-three-what-to-watch-first",
+      "publishedOn": "2026-11-25",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/december-2026-movie-releases",
       "url": "https://hard-quiz.com/blog/december-2026-movie-releases",
       "kind": "article",
       "slug": "december-2026-movie-releases",
       "publishedOn": "2026-11-12",
-      "modifiedOn": "2026-11-21",
+      "modifiedOn": "2026-11-25",
       "publication": {
         "status": "not_checked",
         "lastCheckedAt": null,
