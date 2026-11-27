@@ -3,6 +3,7 @@ import type { BlogPost } from "./types";
 import { estimateReadingMinutes } from "./reading";
 
 // Посты
+import mysteryMiniseries from "./entries/mystery-miniseries-complete-story";
 import duneViewingGuide from "./entries/dune-part-three-what-to-watch-first";
 import december2026Movies from "./entries/december-2026-movie-releases";
 import thanksgiving from "./entries/thanksgiving-movies-by-mood";
@@ -20,6 +21,7 @@ import why239              from "./entries/why-2-39-feels-more-cinematic";
 
 export const posts: BlogPost[] = [
   // Самый свежий — сверху (в любом случае список на /blog сортируется по дате)
+  mysteryMiniseries,
   duneViewingGuide,
   december2026Movies,
   thanksgiving,

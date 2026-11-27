@@ -12,6 +12,14 @@ const articles: Record<string, number> = {
   "august-2025-new-movies-guide": 7, "why-2-39-1-feels-more-cinematic": 0,
   "thanksgiving-movies-by-mood": 7, "best-thriller-movies-2026": 0,
   "december-2026-movie-releases": 0, "dune-part-three-what-to-watch-first": 0,
+  "mystery-miniseries-complete-story": 0,
+};
+
+const lastDates: Record<string, string> = {
+  "december-2026-movie-releases": "2026-11-25",
+  "dune-part-three-what-to-watch-first": "2026-11-25",
+  "completed-miniseries-to-watch": "2026-11-27",
+  "mystery-miniseries-complete-story": "2026-11-27",
 };
 
 for (const width of [320, 1440]) test(`real blog media keeps its credits and promotional context at ${width}px`, async ({ page }, testInfo) => {
@@ -20,8 +28,7 @@ for (const width of [320, 1440]) test(`real blog media keeps its credits and pro
   await page.setViewportSize({ width, height: 900 });
   for (const [slug, posterCount] of Object.entries(articles)) {
     await page.goto(`/blog/${slug}`);
-    const lastDate = ["december-2026-movie-releases", "dune-part-three-what-to-watch-first"].includes(slug) ? "2026-11-25" : "2026-11-21";
-    await expect(page.locator(".hq-article-meta time").last()).toHaveAttribute("datetime", lastDate);
+    await expect(page.locator(".hq-article-meta time").last()).toHaveAttribute("datetime", lastDates[slug] ?? "2026-11-21");
     await expect(page.locator(".hq-store-poster")).toHaveCount(posterCount);
     for (const image of await page.locator(".hq-article-prose img").all()) {
       const src = await image.getAttribute("src");

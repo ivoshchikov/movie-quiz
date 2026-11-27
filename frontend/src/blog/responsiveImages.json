@@ -1,4 +1,16 @@
 {
+  "https://hard-quiz.com/blog-assets/mystery-miniseries-640.webp": {
+    "src": "/blog-assets/mystery-miniseries-640.webp",
+    "srcSet": "/blog-assets/mystery-miniseries-640.webp 640w, /blog-assets/mystery-miniseries.webp 1200w",
+    "width": 640,
+    "height": 360
+  },
+  "/blog-assets/mystery-miniseries.webp": {
+    "src": "/blog-assets/mystery-miniseries.webp",
+    "srcSet": "/blog-assets/mystery-miniseries-640.webp 640w, /blog-assets/mystery-miniseries.webp 1200w",
+    "width": 1200,
+    "height": 675
+  },
   "https://hard-quiz.com/blog-assets/dune-viewing-guide-640.webp": {
     "src": "/blog-assets/dune-viewing-guide-640.webp",
     "srcSet": "/blog-assets/dune-viewing-guide-640.webp 640w, /blog-assets/dune-viewing-guide.webp 1200w",

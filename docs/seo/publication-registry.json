@@ -268,6 +268,28 @@
       }
     },
     {
+      "path": "/blog/mystery-miniseries-complete-story",
+      "url": "https://hard-quiz.com/blog/mystery-miniseries-complete-story",
+      "kind": "article",
+      "slug": "mystery-miniseries-complete-story",
+      "publishedOn": "2026-11-27",
+      "modifiedOn": null,
+      "publication": {
+        "status": "not_checked",
+        "lastCheckedAt": null,
+        "lastVerifiedAt": null,
+        "revision": null
+      },
+      "google": {
+        "status": "unknown",
+        "checkedOn": null,
+        "source": null,
+        "lastCrawlOn": null,
+        "lastRequestOn": null,
+        "requestStatus": null
+      }
+    },
+    {
       "path": "/blog/dune-part-three-what-to-watch-first",
       "url": "https://hard-quiz.com/blog/dune-part-three-what-to-watch-first",
       "kind": "article",
@@ -383,7 +405,7 @@
       "kind": "article",
       "slug": "completed-miniseries-to-watch",
       "publishedOn": "2026-11-01",
-      "modifiedOn": "2026-11-21",
+      "modifiedOn": "2026-11-27",
       "publication": {
         "status": "not_checked",
         "lastCheckedAt": null,

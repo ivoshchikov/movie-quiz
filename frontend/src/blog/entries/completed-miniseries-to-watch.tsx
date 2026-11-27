@@ -65,7 +65,7 @@ const post: BlogPost = {
   seoTitle: "10 Completed Miniseries to Watch Over a Weekend",
   excerpt: "Choose a complete story without losing your weekend to episode counts: ten miniseries compared by calculated time, emotional weight and the attention they ask for.",
   date: "2026-11-01",
-  modified: "2026-11-21",
+  modified: "2026-11-27",
   tags: ["Streaming & New Releases", "Drama", "2010s", "2020s"],
   coverUrl: "https://hard-quiz.com" + coverPath,
   listingCoverUrl: "https://hard-quiz.com/blog-assets/completed-miniseries-to-watch-640.webp",
@@ -219,7 +219,7 @@ const post: BlogPost = {
     <p><strong>For one long sitting, Unorthodox is the clearest fit.</strong> With a little more room, <em>When They See Us</em> fits below five hours, though its subject may make separate sittings preferable. A pause does not make a series any less complete.</p>
     <p><strong>For two substantial sessions, compare The Queen's Gambit with One Day.</strong> Their calculated totals round to about 6h 35m and 6h 40m, despite having seven and fourteen episodes respectively. The first offers the forward pull of competition; the second asks you to notice changes between annual meetings. <em>Normal People</em> makes a shorter 5h 40m appointment with frequent stopping points. Add meals, breaks and any advertising to those totals.</p>
     <p><strong>For most of both days, choose Godless, Station Eleven or Maid.</strong> Let the chapters dictate the break instead of dividing the episode count in half. A longer finale can make the last few episodes a much bigger sitting than they first appear.</p>
-    <p>If that is more television than you want, our <Link to="/blog/movies-like-knives-out">movies like Knives Out guide</Link> offers a single-film alternative. Between episodes, you can also test your movie and actor recognition with <strong>Choose a game</strong> below.</p>
+    <p>If you want the weekend to end with an answer to a case, our <Link to="/blog/mystery-miniseries-complete-story">mystery miniseries guide</Link> compares the kinds of endings and gives you ten viewing times. For a single film, our <Link to="/blog/movies-like-knives-out">movies like Knives Out guide</Link> has a range of suspects. Between episodes, you can also test your movie and actor recognition with <strong>Choose a game</strong> below.</p>
 
     <h2 id="how-we-checked" tabIndex={-1}>How we checked episodes, time and availability</h2>
     <p>We checked the official series or distributor pages for the format, premise and credits, then reviewed the released episode lists. The selection combines romance, historical drama, a western, speculative fiction and social drama; it is not a list of ten crime shows or a claim to rank every miniseries.</p>
