@@ -1,0 +1,14 @@
+{
+  "/blog-assets/mystery-miniseries.webp": {
+    "basis": "original_generated_artwork",
+    "article": "mystery-miniseries-complete-story",
+    "provenance": "docs/blog/mystery-miniseries-complete-story.md",
+    "sha256": "f9ed9475c9795d98af16f6eb155802fc9b3a4dd87b98337b45b7a5b7494854eb"
+  },
+  "/blog-assets/mystery-miniseries-640.webp": {
+    "basis": "original_generated_artwork",
+    "article": "mystery-miniseries-complete-story",
+    "provenance": "docs/blog/mystery-miniseries-complete-story.md",
+    "sha256": "06451a34a17056345b78a6203e05200e76231b0797773d4bbb1e992c94645c0a"
+  }
+}
